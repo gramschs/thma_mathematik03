@@ -1,0 +1,48 @@
+# Laplacescher Entwicklungssatz
+
+Hat die Matrix eine höhere Dimension, wird die Determinante rekursiv aus den
+Determinanten von kleineren Teilmatrizen berechnet. Dazu verwenden wir den
+sogenannten **Laplaceschen Entwicklungssatz**.
+
+Bei der Determinantenberechnung mit dem Laplaceschen Entwicklungssatz entwickeln
+wir die Determinante nach einer Zeile oder einer Spalte. Wenn wir die
+Determinante der Matrix $\mathbf{A}\in\mathbb{R}^{n\times n}$ nach der i-ten
+Zeile entwickeln, gilt
+
+$$\det(\mathbf{A}) = \sum_{j=1}^{n} a_{ij}\cdot
+(-1)^{i+j}\cdot\det(\mathbf{A}_{ij}),$$
+
+wobei $\mathbf{A_{ij}}$ diejenige Matrix ist, die entsteht, wenn die i-te Zeile
+und j-te Spalte gestrichen werden.
+
+Wird hingegen nach der j-ten Spalte entwickelt, lautet die Formel folgendermaßen:
+
+$$\det(\mathbf{A}) = \sum_{i=1}^{n} a_{ij}\cdot
+(-1)^{i+j}\cdot \det(\mathbf{A}_{ij}).$$
+
+Auch hier bezeichnet $\mathbf{A}_{ij}$ die Untermatrix, die durch Streichen der
+i-ten Zeile und j-ten Spalte entsteht.
+
+Die Formeln sind trocken und schwer zu merken. Am einfachsten ist es, vorab die
+Matrixelelemente mit einem Schachbrettmuster von Plus und Minus zu versehen, wie
+in dem folgenden Video demonstriert wird.
+
+```{dropdown} Video "Determinante - Laplace Entwicklungssatz" von Mathematrick
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3cG0HWdmHLI?si=UT5KjVo88k9dNPoj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{admonition} Übung "Berechnung von 3x3-Matrizen"
+:class: tip
+Berechnen Sie auf der Internetseite
+[https://matex.mint-kolleg.kit.edu/MATeX/](https://matex.mint-kolleg.kit.edu/MATeX/download.php?0ef5d0cbc6d9fc21b7ad04cc96f84ca4) solange Determinanten von $3\times 3$-Matrizen, bis Sie dreimal hintereinander eine Aufgabe korrekt gelöst haben.
+
+Hinweis: Die Frage nach der Invertierbarkeit können Sie (voererst) ignorieren.
+```
+
+```{admonition} Übung "Berechnung von 4x4-Matrizen"
+:class: tip
+Berechnen Sie auf der Internetseite
+[https://matex.mint-kolleg.kit.edu/MATeX/](https://matex.mint-kolleg.kit.edu/MATeX/download.php?6e6981333ada6c29ae902aae68873c0f) solange Determinanten von $4\times 4$-Matrizen, bis Sie dreimal hintereinander eine Aufgabe korrekt gelöst haben.
+
+Hinweis: Die Frage nach der Invertierbarkeit können Sie (voererst) ignorieren.
+```
