@@ -3,7 +3,7 @@ version: 1
 project:
   id: cf28f878-37b2-403e-90b5-699392a29eb9
   title: Mathematik 3
-  description: Vorlesungsskript für die Mathematik 3 an der TH Mannheim
+  description: Vorlesungsskript für die Vorlesung Mathematik 3 an der TH Mannheim
   keywords: ["Matrix", "Matrizen", "Determinante"]
   authors: ["Simone Gramsch"]
   github: https://github.com/gramschs/book_mathe03
@@ -12,12 +12,9 @@ project:
   exports:
     - format: pdf
       template: plain_latex_book
-      output: exports/book_mathe03.pdf
+      output: exports/thma_mathematik03.pdf
     - format: tex
 
-  # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
-  plugins:
-    - src/myplugin.mjs
   numbering:
     math: false
     headings: false
@@ -77,8 +74,5 @@ project:
     
 site:
   template: book-theme
-  options:
-    style: ./_static/mystyle.css
-    numbering:
   #   favicon: favicon.ico
   #   logo: site_logo.png
