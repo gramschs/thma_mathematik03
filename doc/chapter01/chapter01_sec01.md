@@ -28,7 +28,7 @@ könnte man eine Tabelle nutzen, um die Einnahmen und Ausgaben eines jeden Monat
 zu protokollieren. In den Zeilen stehen die Kategorien wie beispielsweise BAFöG,
 Miete, Abo für das Fitnessstudio oder die Gesamtausgaben für Essen in dem
 jeweiligen Monat. Spaltenweise werden nun die Gesamtsumme an Ausgaben oder
-Einnahmen für diese Kategorie augfeführt. Positive Zahlen stehen für die
+Einnahmen für diese Kategorie aufgeführt. Positive Zahlen stehen für die
 Einnahmen, negative Zahlen für Ausgaben.
 
 |   | Januar | Februar | März  | April  |
@@ -80,14 +80,14 @@ Ein rechteckig angeordnetes Zahlenschema wird in der Mathematik Matrix genannt.
 
 Wir werden später noch sehen, dass Matrizen eine sehr kompakte Art und Weise
 sind, Informationen zu kodieren. Mit Matrizen kann aber auch gerechnet werden.
-Beispielsweise könne man nun in jeder Zeile der Matrix den Mittelwert bilden, um
-die durchschnittlichen Eingaben und Ausgaben über das Jahr hinweg analysieren zu
-können. Bevor wir jedoch zum Rechnen mit Matrizen kommen, lernen wir zunächst
-die Fachbegriffe für die einzelnen Bestandteile einer Matrix kennen.
+Beispielsweise könnten wir nun in jeder Zeile der Matrix den Mittelwert bilden,
+um die durchschnittlichen Eingaben und Ausgaben über das Jahr hinweg zu
+analysieren. Bevor wir jedoch zum Rechnen mit Matrizen kommen, lernen wir
+zunächst die Fachbegriffe für die einzelnen Bestandteile einer Matrix kennen.
 
 Ein wichtiges Merkmal einer Matrix ist die Anzahl ihrer Zeilen und die Anzahl
-ihrer Spalten. In unserem obigen Beispiel hatten wir fünf Zeilen und vier
-Spalten. Die Einträge in der Matrix sind reelle Zahlen. Wir schreiben daher
+ihrer Spalten. Im obigen Beispiel hatten wir fünf Zeilen und vier Spalten. Die
+Einträge in der Matrix sind reelle Zahlen. Wir schreiben daher
 
 \begin{equation*}
 \begin{pmatrix}
@@ -101,8 +101,8 @@ Spalten. Die Einträge in der Matrix sind reelle Zahlen. Wir schreiben daher
 
 und sagen, dass diese Matrix eine $5\times 4$-Matrix ist (sprich: 5 Kreuz 4).
 Die kombinierte Angabe der Anzahl Zeilen und Anzahl Spalten nennen wir
-**Dimension** der Matrix oder **Format** der Matrix. Bei der Angabe der
-Dimension kommt immer die Anzahl der Zeilen zuerst.
+**Dimension** der Matrix. Bei der Angabe der Dimension kommt immer die Anzahl
+der Zeilen zuerst und die Angabe der Spalten als zweites.
 
 Um über einzelne Zahlen in der Matrix reden zu können, können wir ihre Position
 in der Matrix angeben. Beispielsweise steht in 5. Zeile und in der 2. Spalte die
@@ -149,10 +149,10 @@ Schneiden wir aus der Matrix eine ganze Zeile aus, z.B. die 4. Zeile, erhalten
 wir einen Vektor
 
 \begin{equation*}
-\vec{z}_{4} = (-108.74 \; -90.56 \; -110.50 \; -95.80),
+\vec{z}_{4} = \begin{pmatrix} -108.74 & -90.56 & -110.50 & -95.80\end{pmatrix}.
 \end{equation*}
 
-der auch als **Zeilenvektor** bezeichnet wird. Ein **Spaltenvektor** ist eine
+Dieser Vektor wird  **Zeilenvektor** genannt. Ein **Spaltenvektor** ist eine
 ganze Spalte der Matrix, z.B. die erste Spalte
 
 \begin{equation*}
@@ -176,17 +176,17 @@ Die folgende Grafik fasst die Bezeichnungen der Bestandteile einer Matrix
 
 ```{figure} pics/matrix_bezeichnungen.svg
 ---
-width: 50%
+class: responsive-figure-50
 name: matrix_bezeichnungen
 ---
-Bezeichnungen einer Matrix, Quelle:
+Bezeichnungen einer Matrix (Quelle:
 Ralf Pfeifer [Wikimedia Commons](https://commons.wikimedia.org/w/index.php?curid=50327598),
-Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
+Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/))
 ```
 
 ## Quadratische Matrizen
 
-Wir werden noch einige spezielle Matrizen kennenlernen. Eine spezielle Art von
+Wir werden noch einige besondere Matrizen kennenlernen. Eine besondere Art von
 Matrix ist die **quadratische Matrix**. Bei einer quadratischen Matrix ist die
 Anzahl der Zeilen $m$ gleich der Anzahl der Spalten $n$, also $m = n$.
 Beispielsweise ist die $2\times 2$-Matrix
@@ -213,5 +213,5 @@ clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
 
 In diesem Kapitel haben wir Fachbegriffe eingeführt, um eine Matrix zu
 beschreiben. Mit der quadratischen Matrix haben wir einen ersten speziellen Typ
-einer Matrix kennegelernt. In den nächsten Kapiteln werden wir weitere spezielle
+einer Matrix kennengelernt. In den nächsten Kapiteln werden wir weitere besondere
 Matrizen betrachten, bevor wir zu den Rechenoperationen für Matrizen kommen.
