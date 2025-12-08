@@ -1,4 +1,4 @@
-# Fourierreihen (under construction)
+# Eigenwerte und Eigenvektoren
 
 ```{admonition} Hinweis
 :class: warning

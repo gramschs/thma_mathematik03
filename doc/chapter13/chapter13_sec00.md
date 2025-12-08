@@ -1,1 +1,0 @@
-# Fourierreihen (Teil 2)

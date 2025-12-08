@@ -1,1 +1,6 @@
-# DGL 2 (Teil 1)
+# DGL (Teil 2)
+
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich in Bearbeitung.
+```

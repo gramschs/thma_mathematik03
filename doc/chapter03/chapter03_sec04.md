@@ -1,4 +1,4 @@
-# Fourierreihen (under construction)
+# Diagonalisierung
 
 ```{admonition} Hinweis
 :class: warning

@@ -1,4 +1,4 @@
-# Fourierreihen (under construction)
+# Lineare Abbildungen
 
 ```{admonition} Hinweis
 :class: warning
