@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L-Profil Transformationen - Three.js</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        #canvas-container {
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        #controls {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .slider-container label {
+            min-width: 120px;
+            font-weight: bold;
+        }
+        
+        .slider-container input[type="range"] {
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .slider-container span {
+            min-width: 60px;
+            text-align: right;
+            font-family: monospace;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button:active {
+            background-color: #3d8b40;
+        }
+        
+        #matrix-display {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Lineare Abbildungen: L-Profil Transformationen</h1>
+        <div id="canvas-container"></div>
+        
+        <div id="controls">
+            <!-- Rotation -->
+            <div class="control-group">
+                <h3>1. Drehung (Rotation)</h3>
+                <div class="slider-container">
+                    <label for="rotation">Winkel α:</label>
+                    <input type="range" id="rotation" min="0" max="360" value="0" step="1">
+                    <span id="rotation-value">0°</span>
+                </div>
+                <div class="button-group">
+                    <button onclick="setRotation(0)">0°</button>
+                    <button onclick="setRotation(45)">45°</button>
+                    <button onclick="setRotation(90)">90°</button>
+                    <button onclick="setRotation(180)">180°</button>
+                </div>
+            </div>
+            
+            <!-- Spiegelung -->
+            <div class="control-group">
+                <h3>2. Spiegelung</h3>
+                <div class="button-group">
+                    <button onclick="mirrorX()">Spiegelung an x-Achse</button>
+                    <button onclick="mirrorY()">Spiegelung an y-Achse</button>
+                    <button onclick="mirrorDiagonal()">Spiegelung an y=x</button>
+                </div>
+            </div>
+            
+            <!-- Skalierung -->
+            <div class="control-group">
+                <h3>3. Skalierung</h3>
+                <div class="slider-container">
+                    <label for="scale-x">Faktor x:</label>
+                    <input type="range" id="scale-x" min="0.5" max="2" value="1" step="0.1">
+                    <span id="scale-x-value">1.0</span>
+                </div>
+                <div class="slider-container">
+                    <label for="scale-y">Faktor y:</label>
+                    <input type="range" id="scale-y" min="0.5" max="2" value="1" step="0.1">
+                    <span id="scale-y-value">1.0</span>
+                </div>
+            </div>
+            
+            <!-- Reset -->
+            <div class="control-group">
+                <button onclick="resetTransform()" style="background-color: #f44336;">Zurücksetzen</button>
+            </div>
+            
+            <!-- Matrix Anzeige -->
+            <div class="control-group">
+                <h3>Transformationsmatrix</h3>
+                <div id="matrix-display">
+                    <!-- Matrix wird hier dynamisch eingefügt -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js von CDN laden -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    
+    <script>
+        // ========================================
+        // Three.js Setup
+        // ========================================
+        
+        let scene, camera, renderer, lProfile, coordinateSystem;
+        let currentRotation = 0;
+        let currentScaleX = 1;
+        let currentScaleY = 1;
+        
+        function init() {
+            // Szene erstellen
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+            
+            // Orthographische Kamera für 2D-Ansicht (Blick von oben auf xy-Ebene)
+            const aspect = 800 / 600;
+            const frustumSize = 10;
+            camera = new THREE.OrthographicCamera(
+                frustumSize * aspect / -2,  // left
+                frustumSize * aspect / 2,   // right
+                frustumSize / 2,            // top
+                frustumSize / -2,           // bottom
+                0.1,                        // near
+                1000                        // far
+            );
+            camera.position.z = 5;  // Kamera über der xy-Ebene
+            
+            // Renderer erstellen
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(800, 600);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            
+            // Koordinatensystem erstellen
+            createCoordinateSystem();
+            
+            // L-Profil erstellen
+            createLProfile();
+            
+            // Event Listeners für Slider
+            setupEventListeners();
+            
+            // Matrix anzeigen
+            updateMatrixDisplay();
+            
+            // Render-Loop starten
+            animate();
+        }
+        
+        // ========================================
+        // Koordinatensystem zeichnen
+        // ========================================
+        
+        function createCoordinateSystem() {
+            coordinateSystem = new THREE.Group();
+            
+            // x-Achse (rot)
+            const xAxisGeometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-5, 0, 0),
+                new THREE.Vector3(5, 0, 0)
+            ]);
+            const xAxisMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
+            const xAxis = new THREE.Line(xAxisGeometry, xAxisMaterial);
+            coordinateSystem.add(xAxis);
+            
+            // y-Achse (grün)
+            const yAxisGeometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(0, -5, 0),
+                new THREE.Vector3(0, 5, 0)
+            ]);
+            const yAxisMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00, linewidth: 2 });
+            const yAxis = new THREE.Line(yAxisGeometry, yAxisMaterial);
+            coordinateSystem.add(yAxis);
+            
+            // Gitter im Hintergrund
+            const gridHelper = new THREE.GridHelper(10, 10, 0xcccccc, 0xeeeeee);
+            gridHelper.rotation.x = Math.PI / 2; // Gitter in xy-Ebene drehen
+            coordinateSystem.add(gridHelper);
+            
+            scene.add(coordinateSystem);
+        }
+        
+        // ========================================
+        // L-Profil erstellen
+        // ========================================
+        
+        function createLProfile() {
+            // L-Profil als 2D-Shape definieren
+            const shape = new THREE.Shape();
+            
+            // Koordinaten des L-Profils (Einheit: willkürlich, z.B. "Dezimeter")
+            // Vertikaler Teil: 3 Einheiten hoch, 1 Einheit breit
+            // Horizontaler Teil: 3 Einheiten breit, 1 Einheit hoch
+            shape.moveTo(0, 0);           // Startpunkt
+            shape.lineTo(0, 3);           // Hoch
+            shape.lineTo(1, 3);           // Rechts (Schulter)
+            shape.lineTo(1, 1);           // Runter
+            shape.lineTo(3, 1);           // Rechts (Fuß)
+            shape.lineTo(3, 0);           // Runter
+            shape.lineTo(0, 0);           // Zurück zum Start
+            
+            // Shape zu Geometry konvertieren
+            const geometry = new THREE.ShapeGeometry(shape);
+            
+            // Material: Blau mit etwas Transparenz, doppelseitig
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x2196F3,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            lProfile = new THREE.Mesh(geometry, material);
+            
+            // Kontur (Rand) hinzufügen für bessere Sichtbarkeit
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0d47a1, linewidth: 2 });
+            const outline = new THREE.LineSegments(edges, lineMaterial);
+            lProfile.add(outline);
+            
+            // L-Profil zentrieren (Optional: um Ursprung)
+            // Hier verschieben wir es so, dass der "Eckpunkt" im Ursprung liegt
+            lProfile.position.set(-1.5, -1.5, 0);
+            
+            scene.add(lProfile);
+        }
+        
+        // ========================================
+        // Transformationen anwenden
+        // ========================================
+        
+        function applyTransformation() {
+            // WICHTIG: Transformationen in Three.js
+            // Wir bauen die Transformationsmatrix manuell auf
+            
+            // Reset zu Ausgangsposition
+            lProfile.position.set(-1.5, -1.5, 0);
+            lProfile.rotation.set(0, 0, 0);
+            lProfile.scale.set(1, 1, 1);
+            
+            // Matrix erstellen: Erst Skalierung, dann Rotation
+            // (Reihenfolge ist wichtig!)
+            const matrix = new THREE.Matrix4();
+            
+            // 1. Skalierung
+            const scaleMatrix = new THREE.Matrix4();
+            scaleMatrix.makeScale(currentScaleX, currentScaleY, 1);
+            
+            // 2. Rotation (um z-Achse, da wir in xy-Ebene sind)
+            const rotationMatrix = new THREE.Matrix4();
+            const angleRad = (currentRotation * Math.PI) / 180;
+            rotationMatrix.makeRotationZ(angleRad);
+            
+            // Matrizen multiplizieren: Erst skalieren, dann drehen
+            matrix.multiply(rotationMatrix);
+            matrix.multiply(scaleMatrix);
+            
+            // Matrix auf das Objekt anwenden
+            // ACHTUNG: applyMatrix4 verändert die Geometrie permanent
+            // Daher setzen wir stattdessen direkt rotation und scale
+            lProfile.rotation.z = angleRad;
+            lProfile.scale.set(currentScaleX, currentScaleY, 1);
+            
+            // Matrix für Anzeige aktualisieren
+            updateMatrixDisplay();
+        }
+        
+        // ========================================
+        // Matrix-Anzeige aktualisieren
+        // ========================================
+        
+        function updateMatrixDisplay() {
+            // 2D-Transformationsmatrix berechnen
+            const angleRad = (currentRotation * Math.PI) / 180;
+            const cos = Math.cos(angleRad);
+            const sin = Math.sin(angleRad);
+            
+            // Kombinierte Matrix: R * S (Rotation mal Skalierung)
+            const a = cos * currentScaleX;
+            const b = -sin * currentScaleX;
+            const c = sin * currentScaleY;
+            const d = cos * currentScaleY;
+            
+            // Formatierung
+            const matrixHTML = `
+                <strong>2×2 Matrix:</strong><br>
+                ┌                    ┐<br>
+                │ ${a.toFixed(3)}   ${b.toFixed(3)} │<br>
+                │ ${c.toFixed(3)}   ${d.toFixed(3)} │<br>
+                └                    ┘<br>
+                <br>
+                <strong>Transformation:</strong> y = A · x
+            `;
+            
+            document.getElementById('matrix-display').innerHTML = matrixHTML;
+        }
+        
+        // ========================================
+        // Event Listeners
+        // ========================================
+        
+        function setupEventListeners() {
+            // Rotation Slider
+            const rotationSlider = document.getElementById('rotation');
+            const rotationValue = document.getElementById('rotation-value');
+            rotationSlider.addEventListener('input', function() {
+                currentRotation = parseFloat(this.value);
+                rotationValue.textContent = currentRotation.toFixed(0) + '°';
+                applyTransformation();
+            });
+            
+            // Skalierung X Slider
+            const scaleXSlider = document.getElementById('scale-x');
+            const scaleXValue = document.getElementById('scale-x-value');
+            scaleXSlider.addEventListener('input', function() {
+                currentScaleX = parseFloat(this.value);
+                scaleXValue.textContent = currentScaleX.toFixed(1);
+                applyTransformation();
+            });
+            
+            // Skalierung Y Slider
+            const scaleYSlider = document.getElementById('scale-y');
+            const scaleYValue = document.getElementById('scale-y-value');
+            scaleYSlider.addEventListener('input', function() {
+                currentScaleY = parseFloat(this.value);
+                scaleYValue.textContent = currentScaleY.toFixed(1);
+                applyTransformation();
+            });
+        }
+        
+        // ========================================
+        // Button-Funktionen
+        // ========================================
+        
+        function setRotation(angle) {
+            currentRotation = angle;
+            document.getElementById('rotation').value = angle;
+            document.getElementById('rotation-value').textContent = angle + '°';
+            applyTransformation();
+        }
+        
+        function mirrorX() {
+            // Spiegelung an x-Achse: y → -y
+            currentScaleY *= -1;
+            document.getElementById('scale-y').value = currentScaleY;
+            document.getElementById('scale-y-value').textContent = currentScaleY.toFixed(1);
+            applyTransformation();
+        }
+        
+        function mirrorY() {
+            // Spiegelung an y-Achse: x → -x
+            currentScaleX *= -1;
+            document.getElementById('scale-x').value = currentScaleX;
+            document.getElementById('scale-x-value').textContent = currentScaleX.toFixed(1);
+            applyTransformation();
+        }
+        
+        function mirrorDiagonal() {
+            // Spiegelung an y = x: Vertausche x und y
+            // Dies ist komplexer und erfordert eine andere Herangehensweise
+            // Für Demonstration: 90° Drehung + x-Spiegelung
+            alert('Spiegelung an y=x: Für diese Transformation ist eine dedizierte Matrix nötig.\nImplementierung folgt in erweiterter Version.');
+        }
+        
+        function resetTransform() {
+            currentRotation = 0;
+            currentScaleX = 1;
+            currentScaleY = 1;
+            
+            document.getElementById('rotation').value = 0;
+            document.getElementById('rotation-value').textContent = '0°';
+            document.getElementById('scale-x').value = 1;
+            document.getElementById('scale-x-value').textContent = '1.0';
+            document.getElementById('scale-y').value = 1;
+            document.getElementById('scale-y-value').textContent = '1.0';
+            
+            applyTransformation();
+        }
+        
+        // ========================================
+        // Animations-Loop
+        // ========================================
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        
+        // ========================================
+        // Initialisierung beim Laden der Seite
+        // ========================================
+        
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

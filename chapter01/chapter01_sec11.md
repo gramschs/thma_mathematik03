@@ -9,16 +9,20 @@ wir die Determinante nach einer Zeile oder einer Spalte. Wenn wir die
 Determinante der Matrix $\mathbf{A}\in\mathbb{R}^{n\times n}$ nach der i-ten
 Zeile entwickeln, gilt
 
-$$\det(\mathbf{A}) = \sum_{j=1}^{n} a_{ij}\cdot
-(-1)^{i+j}\cdot\det(\mathbf{A}_{ij}),$$
+\begin{equation*}
+\det(\mathbf{A}) = \sum_{j=1}^{n} a_{ij}\cdot
+(-1)^{i+j}\cdot\det(\mathbf{A}_{ij}),
+\end{equation*}
 
 wobei $\mathbf{A_{ij}}$ diejenige Matrix ist, die entsteht, wenn die i-te Zeile
 und j-te Spalte gestrichen werden.
 
 Wird hingegen nach der j-ten Spalte entwickelt, lautet die Formel folgendermaßen:
 
-$$\det(\mathbf{A}) = \sum_{i=1}^{n} a_{ij}\cdot
-(-1)^{i+j}\cdot \det(\mathbf{A}_{ij}).$$
+\begin{equation*}
+\det(\mathbf{A}) = \sum_{i=1}^{n} a_{ij}\cdot
+(-1)^{i+j}\cdot \det(\mathbf{A}_{ij}).
+\end{equation*}
 
 Auch hier bezeichnet $\mathbf{A}_{ij}$ die Untermatrix, die durch Streichen der
 i-ten Zeile und j-ten Spalte entsteht.

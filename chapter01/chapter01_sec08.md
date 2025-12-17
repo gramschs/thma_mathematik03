@@ -1,7 +1,5 @@
 # Rechenregeln inverse Matrizen
 
-TODO
-
 ## Eigenschaften und Rechenregeln für inverse Matrizen
 
 Die Inverse einer Matrix hat mehrere nützliche Eigenschaften, die häufig in der
@@ -14,7 +12,9 @@ Eigenschaften der Inversen einer Matrix auf.
 Die Einheitsmatrix $\mathbf{E}$ ist immer invertierbar, und ihre Inverse ist sie
 selbst:
 
-$$\mathbf{E}^{-1} = \mathbf{E}.$$
+\begin{equation*}
+\mathbf{E}^{-1} = \mathbf{E}.
+\end{equation*}
 
 Dies gilt für jede quadratische Einheitsmatrix beliebiger Dimension.
 
@@ -24,7 +24,9 @@ Wenn $\mathbf{A}$ und $\mathbf{B}$ zwei invertierbare Matrizen der gleichen
 Dimension sind, dann ist auch das Produkt $\mathbf{A} \cdot \mathbf{B}$
 invertierbar, und es gilt:
 
-$$\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot \mathbf{A}^{-1}.$$
+\begin{equation*}
+\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot \mathbf{A}^{-1}.
+\end{equation*}
 
 Die Reihenfolge wird bei der Multiplikation der Inversen umgekehrt. Eine
 Eselsbrücke für diese Rechenregel wird in dem folgenden Video gezeigt.
@@ -40,14 +42,18 @@ encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="stric
 Die Inverse einer Matrix ist eindeutig, und die Inverse der inversen Matrix ist
 die ursprüngliche Matrix:
 
-$$\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}.$$
+\begin{equation*}
+\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}.
+\end{equation*}
 
 ### Inverse der Transponierten
 
 Die Inverse der transponierten Matrix $\mathbf{A}^T$ ist die Transponierte der
 Inversen von $\mathbf{A}$:
 
-$$\left(\mathbf{A}^T\right)^{-1} = (\mathbf{A}^{-1})^T.$$
+\begin{equation*}
+\left(\mathbf{A}^T\right)^{-1} = (\mathbf{A}^{-1})^T.
+\end{equation*}
 
 Das bedeutet, dass die Operationen der Inversion und der Transposition
 miteinander vertauschbar sind.
@@ -57,7 +63,9 @@ miteinander vertauschbar sind.
 Ist $s$ ein Skalar und $\mathbf{A}$ eine $n \times n$-Matrix, dann gilt für die
 Inverse des Produkts von $s$ und $\mathbf{A}$:
 
-$$ (s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}, \quad s \neq 0.$$
+\begin{equation*}
+(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}, \quad s \neq 0.
+\end{equation*}
 
 Das bedeutet, dass wenn der Skalar $s$ aus der Inversenoperation herausgezogen
 wird, mit dem Kehrwert multipliziert werden muss.

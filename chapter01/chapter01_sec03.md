@@ -11,7 +11,7 @@ ersten Mal mit Matrizen rechnen.
 Sie können zwei Matrizen **addieren**, also die Summe zweier Matrizen bilden.
 ```
 
-## Addition zwei Matrizen
+## Addition von zwei Matrizen
 
 Wir greifen das Beispiel auf, ein Fußballspiel statistisch auszuwerten, um im
 darauffolgenden Training Defizite der Mannschaft zu reduzieren. Dazu wird das
@@ -31,12 +31,14 @@ angespielt, 8-mal Spieler 2 angespielt, 3-mal Spieler 3 und am häufigsten
 Spieler 4, den 20-mal von Spieler 1 angespielt wurde. Wir speichern diese
 Informationen etwas kompakter in der Matrix $\textbf{P}_1$
 
-$$ \mathbf{P}_1 = \begin{pmatrix}
+\begin{equation*}
+\mathbf{P}_1 = \begin{pmatrix}
 0 & 8 & 3 & 20 \\
 2 & 0 & 6 & 9 \\
 17 & 4 & 0 & 2 \\
 0 & 3 & 1 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 In den nächsten 5 Minuten werden die folgenden Pässe mitprotokolliert
 
@@ -49,12 +51,14 @@ In den nächsten 5 Minuten werden die folgenden Pässe mitprotokolliert
 
 und als Matrix gespeichert:
 
-$$ \mathbf{P}_2 = \begin{pmatrix}
+\begin{equation*}
+\mathbf{P}_2 = \begin{pmatrix}
 0 & 6 & 8 & 15 \\
 4 & 0 & 6 & 9 \\
 7 & 4 & 0 & 3 \\
 0 & 4 & 0 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Wenn wir jetzt wissen wollen, wie viele Pässe in den ersten 10 Minuten insgesamt
 von einem Spieler zu den anderen gespielt wurden, müssen wir jede Pässe
@@ -71,7 +75,8 @@ Mathematisch ausgedrückt wird jedes Element der Matrix zu dem Element addiert,
 das die gleiche Position hat. Das setzt natürlich voraus, dass die beiden
 Matrizen die gleiche Dimension haben.
 
-$$ \mathbf{P}_1 + \mathbf{P}_2 =
+\begin{equation*}
+\mathbf{P}_1 + \mathbf{P}_2 =
 \begin{pmatrix}
 0 & 8 & 3 & 20 \\
 2 & 0 & 6 & 9 \\
@@ -95,7 +100,8 @@ $$ \mathbf{P}_1 + \mathbf{P}_2 =
 6 & 0 & 12 & 18 \\
 24 & 8 & 0 & 5 \\
 0 & 7 & 1 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 ```{dropdown} Video "Addition von Matrizen" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1LQbgBPYflM"

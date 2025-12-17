@@ -22,41 +22,55 @@ Anhand der Überschrift können Sie schon erahnen, dass auch der Fachbegriff
 **inverse Matrix** nur für quadratische Matrizen definiert ist. Wir beginnen mit
 der Inversen einer $2 \times 2$-Matrix, also allgemein einer Matrix der Form
 
-$$\mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}.$$
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}.
+\end{equation*}
 
 Wenn die Determinante dieser Matrix *ungleich Null* ist, können wir die Inverse
 $\mathbf{A}^{-1}$ mit der Definition
 
-$$\mathbf{A}^{-1}=
-\frac{1}{\det(\mathbf{A})} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$
+\begin{equation*}
+\mathbf{A}^{-1}=
+\frac{1}{\det(\mathbf{A})} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}
+\end{equation*}
 
 bilden. Jetzt ist auch ersichtlich, warum wir $\det{(\mathbf{A})}$ gefordert
 haben, denn das Teilen durch Null ist strikt verboten.
 
 Betrachten wir als Beispiel die Matrix
 
-$$\mathbf{A} = \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}.$$
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}.
+\end{equation*}
 
 Die Determinante lautet
 
-$$\det(\mathbf{A}) = 2 \cdot 5 - 1 \cdot 3 = 10 - 3 = 7 \neq 0.$$
+\begin{equation*}
+\det(\mathbf{A}) = 2 \cdot 5 - 1 \cdot 3 = 10 - 3 = 7 \neq 0.
+\end{equation*}
 
 Da die Determinante ungleich null ist, können wir die Inverse der Matrix
 berechnen. Wir setzen die Werte in die allgemeine Formel ein:
 
-$$\mathbf{A}^{-1} = \frac{1}{7} \begin{pmatrix} 5 & -3 \\ -1 & 2 \end{pmatrix}.$$
+\begin{equation*}
+\mathbf{A}^{-1} = \frac{1}{7} \begin{pmatrix} 5 & -3 \\ -1 & 2 \end{pmatrix}.
+\end{equation*}
 
 Das ergibt die Inverse:
 
-$$\mathbf{A}^{-1} =
-\begin{pmatrix} \frac{5}{7} & \frac{-3}{7} \\ \frac{-1}{7} & \frac{2}{7} \end{pmatrix}.$$
+\begin{equation*}
+\mathbf{A}^{-1} =
+\begin{pmatrix} \frac{5}{7} & \frac{-3}{7} \\ \frac{-1}{7} & \frac{2}{7} \end{pmatrix}.
+\end{equation*}
 
 Warum ist die Inverse so interessant? Wir berechnen das Matrizenprodukt
 $\mathbf{A}\cdot\mathbf{A}^{-1}$:
 
-$$\begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix} \cdot
+\begin{equation*}
+\begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix} \cdot
 \frac{1}{7} \begin{pmatrix} 5 & -3 \\ -1 & 2 \end{pmatrix} =
-\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ \end{pmatrix}.$$
+\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ \end{pmatrix}.
+\end{equation*}
 
 Das Ergebnis ist die Einheitsmatrix der Dimension $2\times 2$. Tatsächlich ist
 das auch die Definition der inversen Matrix.
@@ -67,7 +81,9 @@ Die inverse Matrix $\mathbf{A}^{-1}$ einer quadratischen Matrix $\mathbf{A}$ ist
 ebenfalls eine quadratische Matrix, die wenn sie mit der ursprünglichen Matrix
 multipliziert wird, die Einheitsmatrix $\mathbf{E}$ ergibt:
 
-$$\mathbf{A}^{-1}\cdot \mathbf{A} = \mathbf{E}.$$
+\begin{equation*}
+\mathbf{A}^{-1}\cdot \mathbf{A} = \mathbf{E}.
+\end{equation*}
 ```
 
 ## Inverse Matrix von $n \times n$-Matrizen

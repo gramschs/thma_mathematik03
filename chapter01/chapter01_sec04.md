@@ -34,12 +34,14 @@ jedoch die Pässe während des Trainings. Im Training werden die Spieler in
 Vierergruppen aufgeteilt, und jeder Spieler soll jedem anderen fünfmal den Ball
 zuspielen. Die aufgezeichneten Pässe sind in der folgenden Matrix kodiert:
 
-$$\mathbf{A} = \begin{pmatrix}
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix}
 0 & 5 & 5 & 5 \\
 5 & 0 & 5 & 5 \\
 5 & 4 & 0 & 5 \\
 5 & 5 & 5 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Zur Erinnerung: Eine 5 in der ersten Zeile und in der zweiten Spalte (also
 $a_{12} = 5$) bedeutet, dass der 1. Spieler dem 2. Spieler fünfmal den Ball
@@ -52,29 +54,34 @@ Nun soll diese Übung zwei weitere Male korrekt wiederholt werden. Diesmal
 verläuft die Übung fehlerfrei, und die neue Matrix zeigt die korrekten Pässe des
 zweiten und dritten Durchgangs:
 
-$$\mathbf{B} = \begin{pmatrix}
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix}
 0 & 5 & 5 & 5 \\
 5 & 0 & 5 & 5 \\
 5 & 5 & 0 & 5 \\
 5 & 5 & 5 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Nach Abschluss der drei Übungen sollen alle Pässe insgesamt summiert werden. Wir
 könnten jedes Element einzeln addieren, indem wir die Anzahl der Pässe für jede
 Übung zusammenzählen:
 
-$$\mathbf{A} + \mathbf{B} + \mathbf{B} =
+\begin{equation*}
+\mathbf{A} + \mathbf{B} + \mathbf{B} =
 \begin{pmatrix}
 0+0+0 & 5+5+5 & 5+5+5 & 5+5+5 \\
 5+5+5 & 0+5+5 & 5+5+5 & 5+5+5 \\
 5+5+5 & 4+5+5 & 0+5+5 & 5+5+5 \\
 5+5+5 & 5+5+5 & 5+5+5 & 0+5+5 \\
-\end{pmatrix}$$
+\end{pmatrix}.
+\end{equation*}
 
 Da die zweite und dritte Übung identisch abliefen, können wir die Pässe der
 zweiten und dritten Übung auch direkt verdoppeln:
 
-$$\mathbf{B} + \mathbf{B} = 2\cdot\mathbf{B} =
+\begin{equation*}
+\mathbf{B} + \mathbf{B} = 2\cdot\mathbf{B} =
 \begin{pmatrix}
 2\cdot 0 & 2\cdot 5 & 2\cdot 5 & 2\cdot 5 \\
 2\cdot 5 & 2\cdot 0 & 2\cdot 5 & 2\cdot 5 \\
@@ -86,7 +93,8 @@ $$\mathbf{B} + \mathbf{B} = 2\cdot\mathbf{B} =
 10 & 0 & 10 & 10 \\
 10 & 10 & 0 & 10 \\
 10 & 10 & 10 & 0 \\
-\end{pmatrix}$$
+\end{pmatrix}.
+\end{equation*}
 
 Allgemein wird bei einer Skalarmultiplikation eine Matrix mit einer reellen Zahl
 (Skalar) multipliziert, indem jedes Element der Matrix mit dem Skalar
@@ -101,8 +109,10 @@ indem jedes Element der Matrix mit diesem Skalar multipliziert wird.
 Ein weiteres Beispiel für eine Skalarmultiplikation ist die folgende Rechnung,
 bei der jedes Element der Matrix mit dem Bruch $1/2$ multipliziert wird:
 
-$$\frac{1}{2}\cdot\begin{pmatrix} 2 & 7 \\ -10 & \frac{3}{5} \end{pmatrix} =
-\begin{pmatrix} 1 & 3.5 \\ -5 & \frac{3}{10} \end{pmatrix}.$$
+\begin{equation*}
+\frac{1}{2}\cdot\begin{pmatrix} 2 & 7 \\ -10 & \frac{3}{5} \end{pmatrix} =
+\begin{pmatrix} 1 & 3.5 \\ -5 & \frac{3}{10} \end{pmatrix}.
+\end{equation*}
 
 Das folgende Video veranschaulicht ein weiteres Beispiel zur Skalarmultiplikation.
 
@@ -120,7 +130,8 @@ daher zunächst mit der Berechnung von zwei gleichen Matrizen befasst. Für die
 vollständige Summe fehlt jedoch noch die Addition der Pässe aus der ersten
 Übung:
 
-$$2\cdot\mathbf{B} + \mathbf{A} =
+\begin{equation*}
+2\cdot\mathbf{B} + \mathbf{A} =
 \begin{pmatrix}
 0 & 10 & 10 & 10 \\
 10 & 0 & 10 & 10 \\
@@ -138,11 +149,14 @@ $$2\cdot\mathbf{B} + \mathbf{A} =
 15 & 0 & 15 & 15 \\
 15 & 14 & 0 & 15 \\
 15 & 15 & 15 & 0 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Ist diese Vorgehensweise überhaupt erlaubt? Gilt also
 
-$$2\cdot\mathbf{B} + \mathbf{A} \overset{?}{=} \mathbf{A} + \mathbf{B} + \mathbf{B} \,?$$
+\begin{equation*}
+2\cdot\mathbf{B} + \mathbf{A} \overset{?}{=} \mathbf{A} + \mathbf{B} + \mathbf{B} \,?
+\end{equation*}
 
 Ja, denn sowohl die Addition als auch die Skalarmultiplikation werden
 *elementweise* mit reellen Zahlen durchgeführt. Für reelle Zahlen gelten das
@@ -155,7 +169,8 @@ Kommutativgesetz der reellen Zahlen auf Matrizen. Das bedeutet, dass die
 Addition zweier Matrizen unabhängig von der Reihenfolge der Matrizen ist, wie
 die folgende allgemeine Rechnung zeigt:
 
-$$\mathbf{A} + \mathbf{B} =
+\begin{equation*}
+\mathbf{A} + \mathbf{B} =
 \begin{pmatrix}
 a_{11} + b_{11} & a_{12} + b_{12} & \ldots & a_{1n} + b_{1n} \\
 a_{21} + b_{21} & a_{22} + b_{22} & \ldots & a_{2n} + b_{2n} \\
@@ -168,7 +183,8 @@ b_{21} + a_{21} & b_{22} + a_{22} & \ldots & b_{2n} + a_{2n} \\
 \vdots & \vdots &        & \vdots \\
 b_{m1} + a_{m1} & b_{m2} + a_{m2} & \ldots & b_{mn} + a_{mn}
 \end{pmatrix} =
-\mathbf{B} + \mathbf{A}.$$
+\mathbf{B} + \mathbf{A}.
+\end{equation*}
 
 Auf dieselbe Weise kann auch das Assoziativgesetz angewendet werden: Es spielt
 keine Rolle, ob man zuerst zwei Matrizen addiert und dann die dritte dazu nimmt
@@ -213,23 +229,25 @@ Skalarmultiplikation mit dem Faktor $-1$. Um Berechnungen zu vereinfachen führe
 wir dennoch die **Subtraktion zweier Matrizen** als elementweise Subtraktion der
 Einträge ein:
 
-$$\mathbf{A} - \mathbf{B} =
+\begin{equation*}
+\mathbf{A} - \mathbf{B} =
 \begin{pmatrix}
 a_{11} - b_{11} & a_{12} - b_{12} & \ldots & a_{1n} - b_{1n} \\
 a_{21} - b_{21} & a_{22} - b_{22} & \ldots & a_{2n} - b_{2n} \\
 \vdots          & \vdots          &        & \vdots \\
 a_{m1} - b_{m1} & a_{m2} - b_{m2} & \ldots & a_{mn} - b_{mn} \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Soll beispielsweise die Differenz der folgenden zwei Matrizen gebildet werden,
 werden die entsprechenden Einträge der beiden Matrizen elementweise voneinander
 subtrahiert:
 
-$$
+\begin{equation*}
 \begin{pmatrix} 3 & -5 \\ 1.5 & 8 \end{pmatrix} -
 \begin{pmatrix} 2 &  3 \\ 0   & -3 \end{pmatrix} =
-\begin{pmatrix} 1 & -8 \\ 1.5 & 11 \end{pmatrix}
-.$$
+\begin{pmatrix} 1 & -8 \\ 1.5 & 11 \end{pmatrix}.
+\end{equation*}
 
 Wie bei der Vektoraddition kann die Differenz zweier Matrizen nur gebildet
 werden, wenn die Dimension der beiden Matrizen übereinstimmt, d.h. die Anzahl an

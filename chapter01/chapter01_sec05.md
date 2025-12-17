@@ -35,10 +35,9 @@ Dieses Prinzip wird in der folgenden Skizze verdeutlicht.
 width: 50%
 name: matrix_multiplication
 ---
-Anforderungen an Spaltenanzahl der ersten Matrix und Zeilenanzahl der zweiten Matrix,
-Quelle: Quartl [Wikimedia Commons]
-(https://de.wikipedia.org/wiki/Datei:Matrix_multiplication_qtl1.svg),
-Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
+Anforderungen an Spaltenanzahl der ersten Matrix und Zeilenanzahl der zweiten Matrix
+(Quelle: Quartl [Wikimedia Commons](https://de.wikipedia.org/wiki/Datei:Matrix_multiplication_qtl1.svg),
+Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/))
 ```
 
 Nun kennen wir die Bedingungen, unter denen zwei Matrizen multipliziert werden
@@ -46,7 +45,8 @@ dürfen, und wissen, welche Dimension die Produktmatrix hat. Aber wie wird die
 Matrizenmultiplikation tatsächlich durchgeführt? Dazu betrachten wir ein
 Beispiel. Gegeben seien die beiden Matrizen:
 
-$$\mathbf{A} =
+\begin{equation*}
+\mathbf{A} =
 \begin{pmatrix}
 1 & 0  \\
 2 & -1 \\
@@ -57,7 +57,8 @@ $$\mathbf{A} =
 \begin{pmatrix}
 -1 & 0 & 2 \\
  2 & 3 & 5 \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Zunächst überprüfen wir, ob wir die beiden Matrizen multiplizieren dürfen. Da
 die Spaltenanzahl der ersten Matrix $\mathbf{A}$ zwei und die Zeilenanzahl der
@@ -65,50 +66,57 @@ zweiten Matrix $\mathbf{B}$ ebenfalls zwei ist, dürfen wir das Matrixprodukt
 berechnen. Die Produktmatrix wird die Dimension $4\times 3$ haben und die
 folgende Form annehmen:
 
-$$\mathbf{C} =
+\begin{equation*}
+\mathbf{C} =
 \begin{pmatrix}
 c_{11} & c_{12} & c_{13} \\
 c_{21} & c_{22} & c_{23} \\
 c_{31} & c_{32} & c_{33} \\
 c_{41} & c_{42} & c_{43} \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Um das Element in der ersten Zeile und ersten Spalte, also $c_{11}$, zu
 berechnen, nehmen wir die erste Zeile von $\mathbf{A}$ und die erste Spalte von
 $\mathbf{B}$ und bilden das *Skalarprodukt* dieser beiden Vektoren:
 
-$$c_{11} =
+\begin{equation*}
+c_{11} =
 \begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} -1 \\ 2 \end{pmatrix} =
 1\cdot(-1)+0\cdot 2 = -1.
-$$
+\end{equation*}
 
 Dann berechnen wir das Element $c_{12}$, indem wir die erste Zeile von
 $\mathbf{A}$ mit der zweiten Spalte von $\mathbf{B}$ elementweise multiplizieren
 und aufaddieren:
 
-$$c_{12} =
+\begin{equation*}
+c_{12} =
 \begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 3 \end{pmatrix} =
 1\cdot 0 + 0\cdot 3 = 0.
-$$
+\end{equation*}
 
 Das Element $c_{13}$ berechnen wir analog aus dem Skalarprodukt der ersten Zeile
 von $\mathbf{A}$ mit der dritten Spalte von $\mathbf{B}$:
 
-$$c_{13} =
+\begin{equation*}
+c_{13} =
 \begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 2 \\ 5 \end{pmatrix} =
 1\cdot 2 + 0\cdot 5 = 2.
-$$
+\end{equation*}
 
 Damit haben wir die ersten drei Elemente der Produktmatrix $\mathbf{C}$
 berechnet:
 
-$$\mathbf{C} =
+\begin{equation*}
+\mathbf{C} =
 \begin{pmatrix}
 -1 & 0 & 2 \\
 c_{21} & c_{22} & c_{23} \\
 c_{31} & c_{32} & c_{33} \\
 c_{41} & c_{42} & c_{43} \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Um die zweite Zeile der Produktmatrix zu berechnen, berechnen wir das
 Skalarprodukt der zweiten Zeile von $\mathbf{A}$ mit der ersten, zweiten und
@@ -128,20 +136,23 @@ c_{23} &=
 
 Damit haben wir die Hälfte der Elemente von $\mathbf{C}$ berechnet:
 
-$$\mathbf{C} =
+\begin{equation*}
+\mathbf{C} =
 \begin{pmatrix}
 -1 & 0 & 2 \\
 -4 & -3 & -1 \\
 c_{31} & c_{32} & c_{33} \\
 c_{41} & c_{42} & c_{43} \\
-\end{pmatrix}.$$
+\end{pmatrix}.
+\end{equation*}
 
 Für die dritte Zeile von $\mathbf{C}$ berechnen wir die Skalarprodukte der
 dritten Zeile von $\mathbf{A}$ mit der ersten, zweiten und dritten Spalte von
 $\mathbf{B}$. Und zuletzt berechnen wir noch die vierte Zeile von $\mathbf{C}$
 auf die gleiche Weise. Insgesamt erhalten wir
 
-$$\mathbf{A}\cdot\mathbf{B} =
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
 \begin{pmatrix}
 1 & 0  \\
 2 & -1 \\
@@ -158,7 +169,7 @@ $$\mathbf{A}\cdot\mathbf{B} =
  3 & 9 & 21 \\
 -2 & 3 & 13 \\
 \end{pmatrix}.
-$$
+\end{equation*}
 
 Um den Überblick bei der Matrizenmultiplikation zu behalten, kann das sogenannte
 **Falk-Schema** genutzt werden. Es hilft, die einzelnen Skalarprodukte
@@ -195,7 +206,8 @@ nicht gilt. Es gibt zwar Ausnahmen, in denen $\mathbf{A}\cdot\mathbf{B} =
 
 Im obigen Beispiel haben wir berechnet:
 
-$$\mathbf{A}\cdot\mathbf{B} =
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
 \begin{pmatrix}
 1 & 0  \\
 2 & -1 \\
@@ -212,11 +224,12 @@ $$\mathbf{A}\cdot\mathbf{B} =
  3 & 9 & 21 \\
 -2 & 3 & 13 \\
 \end{pmatrix}.
-$$
+\end{equation*}
 
 Wenn wir jedoch $\mathbf{B}\cdot\mathbf{A}$ berechnen wollen, also
 
-$$\mathbf{B}\cdot\mathbf{A} =
+\begin{equation*}
+\mathbf{B}\cdot\mathbf{A} =
 \begin{pmatrix}
 -1 & 0 & 2 \\
  2 & 3 & 5 \\
@@ -227,26 +240,28 @@ $$\mathbf{B}\cdot\mathbf{A} =
 3 & 3  \\
 4 & 1  \\
 \end{pmatrix},
-$$
+\end{equation*}
 
 wäre das gar nicht möglich, da die Anzahl der Spalten der ersten Matrix drei und
 die Anzahl der Zeilen der zweiten Matrix vier ist. Selbst wenn die Dimensionen
 der beiden Matrizen passen würden, gilt das Kommutativgesetz meist nicht, wie
 das folgende Beispiel zeigt. Es gilt:
 
-$$\mathbf{A}\cdot\mathbf{B} =
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
 \begin{pmatrix} 1 & 2 \\ 3 & 4 \\ \end{pmatrix} \cdot
 \begin{pmatrix} 0 & 1 \\ 1 & 0 \\ \end{pmatrix} =
 \begin{pmatrix} 2 & 1 \\ 4 & 3 \\ \end{pmatrix},
-$$
+\end{equation*}
 
 doch für $\mathbf{B}\cdot\mathbf{A}$ erhalten wir:
 
-$$\mathbf{B}\cdot\mathbf{A} =
+\begin{equation*}
+\mathbf{B}\cdot\mathbf{A} =
 \begin{pmatrix} 0 & 1 \\ 1 & 0 \\ \end{pmatrix} \cdot
 \begin{pmatrix} 1 & 2 \\ 3 & 4 \\ \end{pmatrix} =
 \begin{pmatrix} 3 & 4 \\ 1 & 2 \\ \end{pmatrix}.
-$$
+\end{equation*}
 
 Glücklicherweise gelten für die Matrizenmultiplikation das Assoziativgesetz und
 das Distributivgesetz, die uns das Rechnen mit Matrizen häufig erleichtern:

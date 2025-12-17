@@ -15,7 +15,9 @@ notieren.
 5. Ist $s$ ein Skalar und $\mathbf{A}$ eine quadratische Matrix der Dimension
    $n\times n$, dann gilt:
 
-   $$\det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}).$$
+   \begin{equation*}
+   \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}).
+   \end{equation*}
 
 6. Hat die Matrix eine Zeile oder eine Spalte, die komplett aus Nullen besteht,
    dann ist die Determinante Null.
