@@ -1,5 +1,30 @@
 # Rechenregeln inverse Matrizen
 
+Was eine inverse Matrix ist und wie sie berechnet wird, haben wir im letzten
+Kapitel gelernt. In diesem Kapitel werden wir uns damit beschäftigen,
+Rechenregeln für inverse Matrizen zu nutzen. Die Rechnregeln helfen uns,
+Rechnungen mit inversen Matrizen zu vereinfachen.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+Sie kennen die **Rechenregeln für inverse Matrizen** und können sie anwenden:
+
+* $\mathbf{E}^{-1} = \mathbf{E}$,
+* $\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot
+  \mathbf{A}^{-1}$,
+* $\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}$,
+* $\left(\mathbf{A}^T\right)^{-1} = (\mathbf{A}^{-1})^T$,
+* $(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}, \quad s \neq
+  0$.
+
+Darüber hinaus gilt: Die Inverse einer symmetrischen Matrix ist wieder
+symmetrisch.
+```
+
+Gehen wir die Rechenregeln einzeln durch und erläutern wir sie.
+
 ## Eigenschaften und Rechenregeln für inverse Matrizen
 
 Die Inverse einer Matrix hat mehrere nützliche Eigenschaften, die häufig in der
@@ -68,7 +93,8 @@ Inverse des Produkts von $s$ und $\mathbf{A}$:
 \end{equation*}
 
 Das bedeutet, dass wenn der Skalar $s$ aus der Inversenoperation herausgezogen
-wird, mit dem Kehrwert multipliziert werden muss.
+wird, mit dem Kehrwert multipliziert werden muss. Dazu muss der Skalar ungleich
+Null sein.
 
 ### Inverse bei symmetrischen Matrizen
 
@@ -84,12 +110,6 @@ encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="stric
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir die Berechnung und Eigenschaften der Inversen von
-Matrizen behandelt. Dabei haben wir gesehen, dass die Inverse existiert, wenn
-die Determinante ungleich null ist, und wie man sie mit dem Gauß-Algorithmus
-berechnet.
-
-Im nächsten Kapitel werden wir orthogonale Matrizen untersuchen, die besondere
-Eigenschaften haben, wie die Gleichheit von Transponierter und Inverser. Diese
-Matrizen werden beispielsweise in der Robotik eingesetzt, um Rotationen zu
-beschreiben.
+Die Rechenregeln für inverse Matrizen vereinfachen so manche Rechnung. In den
+nächsten Kapiteln werden wir uns mit einer sehr wichtigen Eigenschaft einer
+Matrix beschäftigen, der sogenannten Determinante.

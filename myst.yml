@@ -37,6 +37,7 @@ project:
       - file: chapter01/chapter01_sec10.md
       - file: chapter01/chapter01_sec11.md
       - file: chapter01/chapter01_sec12.md
+      - file: chapter01/chapter01_sec13.md
     - title: Matrizen (Teil 2)
       children:
         - file: chapter03/chapter03_sec01.md

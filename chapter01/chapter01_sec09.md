@@ -1,235 +1,123 @@
-# Lineare Gleichungssysteme mit Matrizenrechnung lösen
+# Determinanten
 
-Die Lösung linearer Gleichungssysteme haben wir im 5. Part kennengelernt als es
-darum ging, Schnitte von Geraden und Ebenen zu bestimmen. Da wir
-dreidimensionale Räume betrachtet haben, bestanden die linearen Gleichungssyteme
-aus drei Gleichungen. Mit Hilfe der Matrizenrechnung können auch größere Systeme
-effizient und systematisch gelöst werden. In diesem Kapitel lernen wir, wie
-lineare Gleichungssysteme durch die Anwendung von Matrizen und deren Inversen
-gelöst werden können.
+In den vorangegangenen Kapiteln haben wir Matrizen kennengelernt, die eine
+besondere Struktur haben. In diesem Kapitel geht es um eine Eigenschaft von
+quadratischen Matrizen, die durch eine Zahl gemessen wird und nützliche
+Anwendungen hat, die sogenannte Determinante.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie verstehen, wie lineare Gleichungssysteme mit Hilfe von Matrizen
-  dargestellt werden können.
-* Sie können eine inverse Matrix dazu benutzen, ein lineares Gleichungssystem zu
-  lösen.
-* Sie können den **Gauß-Algorithmus in Matrix-Darstellung** zur Lösung von
-  linearen Gleichungssystemen anwenden.
-
+* Sie können die **Determinante** einer $2\times 2$-Matrix berechnen.
+* Sie können die Determinante einer $3\times 3$-Matrix berechnen, indem Sie die
+  **Regel von Sarrus** anwenden.
 ```
 
-## Matrixdarstellung eines linearen Gleichungssystems
+## Determinante von $2\times 2$-Matrizen
 
-Ein lineares Gleichungssystem kann kompakt in Matrixform dargestellt werden.
-Betrachten wir ein allgemeines lineares Gleichungssystem mit $n$ Gleichungen und
-$n$ Unbekannten:
-
-\begin{align*}
-a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n &= b_1 \\
-a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n &= b_2 \\
-\vdots \\
-a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nn}x_n &= b_n.
-\end{align*}
-
-Dies lässt sich in kompakter Matrixschreibweise darstellen als:
+Die Determinante gibt es nur für quadratische Matrizen. Für eine $2\times
+2$-Matrix
 
 \begin{equation*}
-\mathbf{A} \vec{x} = \vec{b},
+\mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}
 \end{equation*}
 
-wobei $\mathbf{A} \in \mathbb{R}^{n \times n}$ die **Koeffizientenmatrix**
-  
+wird die Determinante durch den Ausdruck $a\cdot d - c\cdot b$ berechnet.Die
+Determinante ordnet jeder quadratischen Matrix eine reelle Zahl zu. Diese
+Eigenschaft ist also eine Funktion und wird in der Regel mit $\det$ abgekürzt.
+Es gilt also
+
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-a_{11} & a_{12} & \dots & a_{1n} \\
-a_{21} & a_{22} & \dots & a_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_{n1} & a_{n2} & \dots & a_{nn}
-\end{pmatrix}
+\det(\mathbf{A}) = a\cdot d - c\cdot b.
 \end{equation*}
 
-ist und $\vec{x} \in \mathbb{R}^n$ der **Vektor der Unbekannten** mit
+Manchmal werden auch zwei senkrechte Striche genommen, die die Matrixklammern
+ersetzen, um die Determinante einer Matrix zu kennzeichnen:
 
 \begin{equation*}
-\vec{x} = \begin{pmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_n
-\end{pmatrix}.
+\left|\begin{matrix} a & b \\ c & d \end{matrix}\right|
+= a\cdot d - c\cdot b.
 \end{equation*}
 
-Die rechte Seite des linearen Gleichungssystems wird im **Ergebnisvektor**
-$\vec{b} \in \mathbb{R}^n $ zusammengefasst:
+In diesem Skript verwendet wir die Funktionsschreibweise $\det()$.
+
+Hinweis: Diesen Ausdruck haben wir bereits kennengelernt. Es ist der gleiche
+Ausdruck, den wir verwendet haben, um zu testen, ob eine $2\times 2$-Matrix
+invertierbar ist.
+
+Wir betrachten ein Beispiel:
 
 \begin{equation*}
-\vec{b} = \begin{pmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_n
-\end{pmatrix}.
+\det\begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix} =
+\left|\begin{matrix} 2 & 3 \\ 1 & 5 \end{matrix}\right| =
+2\cdot 5 - 1\cdot 3 = 7.
 \end{equation*}
 
-Betrachten wir das folgende lineare Gleichungssystem:
+## Determinante von $3\times 3$-Matrizen
+
+Nun betrachten wir $3\times 3$-Matrizen. Eine solche Matrix hat im Allgemeinen
+die Form
 
 \begin{equation*}
-\begin{align*}
-3x_1 - 4x_2 - 4x_3 &= -4  \\
-6x_1 - 6x_2 - 7x_3 &= -11 \\
--3x_1 + 6x_2 + 7x_3 &= 11 \\
-\end{align*}
-\end{equation*}
-
-Dieses Gleichungssystem können wir in Matrixform darstellen. Die
-Koeffizientenmatrix $\mathbf{A}$ ist:
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-3 & -4 & -4 \\
-6 & -6 & -7 \\
--3 & 6 & 7
-\end{pmatrix}.
-\end{equation*}
-
-Der Vektor der Unbekannten $\vec{x}$ ist:
-
-\begin{equation*}
-\vec{x} = \begin{pmatrix}
-x_1 \\
-x_2 \\
-x_3
-\end{pmatrix}
-\end{equation*}
-
-und der Ergebnisvektor $\vec{b}$ ist:
-
-\begin{equation*}
-\vec{b} = \begin{pmatrix}
--4 \\
--11 \\
-11
-\end{pmatrix}.
-\end{equation*}
-
-Das gesamte lineare Gleichungssystem lässt sich nun in Matrixform schreiben als
-$\mathbf{A} \vec{x} = \vec{b}$, also
-
-\begin{equation*}
+\mathbf{A} =
 \begin{pmatrix}
-3 & -4 & -4 \\
-6 & -6 & -7 \\
--3 & 6 & 7
-\end{pmatrix}
-\begin{pmatrix}
-x_1 \\
-x_2 \\
-x_3
-\end{pmatrix}
-= \begin{pmatrix}
--4 \\
--11 \\
-11
+a_{11} & a_{12} & a_{13}\\
+a_{21} & a_{22} & a_{23}\\
+a_{31} & a_{32} & a_{33}\\
 \end{pmatrix}.
 \end{equation*}
 
-## Lösung des linearen Gleichungssystems mit Hilfe der inversen Matrix
-
-Um das zuvor dargestellte lineare Gleichungssystem zu lösen, können wir die
-Inverse der Koeffizientenmatrix $ \mathbf{A}$ berechnen, sofern
-$\det(\mathbf{A})\neq 0$ ist. Die Lösung eines linearen Gleichungssystems der
-Form
+Die Determinante der Matrix wird mit der **Regel von Sarrus** berechnet:
 
 \begin{equation*}
-\mathbf{A} \vec{x} = \vec{b}
+\det(\mathbf{A}) =
+a_{11} a_{22} a_{33} + a_{12} a_{23} a_{31} + a_{13} a_{21} a_{32} -
+a_{13} a_{22} a_{31} - a_{11} a_{23} a_{32} - a_{12} a_{21} a_{33}.
 \end{equation*}
 
-kann dann durch die folgende Gleichung bestimmt werden:
+Es sind also sechs Summanden zu berechnen und jeder dieser Summanden besteht aus
+einem Produkt von drei Elementen der Matrix. Es ist schwieirg, sich diese Regel
+zu merken. Daher gibt es eine Eselsbrücke, die visuell veranschaulicht, welches
+Element in welcher Reihenfolge multipliziert und summiert werden muss.
 
-\begin{equation*}
-\vec{x} = \mathbf{A}^{-1} \vec{b}.
-\end{equation*}
-
-Diese Rechnung führen wir nun für das Beispiel aus.
-
-Zuerst überprüfen wir, ob die Matrix $\mathbf{A}$ eine Inverse besitzt, indem
-wir ihre Determinante berechnen. Die Determinante von $\mathbf{A}$ berechnet
-sich wie folgt:
-
-\begin{equation*}
-\det(\mathbf{A}) = 3 \cdot \det\begin{pmatrix} -6 & -7 \\ 6 & 7 \end{pmatrix} - (-4) \cdot
-\det\begin{pmatrix} 6 & -7 \\ -3 & 7 \end{pmatrix} - 4 \cdot
-\det\begin{pmatrix} 6 & -6 \\ -3 & 6 \end{pmatrix}.
-\end{equation*}
-
-Dies ergibt:
-
-\begin{equation*}
-\det(\mathbf{A}) = 3 \cdot (-42 + 42) + 4 \cdot (42 - 21) - 4 \cdot (36 - 18)
-= 12.
-\end{equation*}
-
-Da $\det(\mathbf{A}) \neq 0$ gilt, hat die Koeffizientenmatrix eine Inverse. Wir
-rechnen die inverse Matrix $\mathbf{A}^{-1}$ mit dem Gauß-Algorithmus aus und
-erhalten
-
-\begin{equation*}
-\mathbf{A}^{-1} = \frac{1}{12}\cdot
-\begin{pmatrix}
-0 & 4 & 4 \\
--21 & 9 & -3 \\
-18 & -6 & 6 \\
-\end{pmatrix}.
-\end{equation*}
-
-Die gesuchte Lösung des linearen Gleichungssystems erhalten wir nun, indem wir
-die Inverse mit dem Ergebnisvektor multiplizieren:
-
-\begin{equation*}
-\vec{x}=\mathbf{A}^{-1}\cdot\vec{b}=
-\frac{1}{12}\cdot
-\begin{pmatrix}
-0 & 4 & 4 \\
--21 & 9 & -3 \\
-18 & -6 & 6 \\
-\end{pmatrix} \cdot
-\begin{pmatrix}
--4 \\
--11 \\
-11
-\end{pmatrix} =
-\begin{pmatrix}
-0 \\ -4 \\ 5
-\end{pmatrix}.
-\end{equation*}
-
-Die gesuchte Lösung ist also $x_1 = 0$, $x_2 = -4$ und $x_3 = 5$.
-
-Haben wir einmal die inverse Marix bestimmt, können wir sie immer wieder
-benutzen. Sollte nun ein anderes Gleichungssystem gelöst werden, bei dem die
-Koeffizientenmatrix gleich bleibt, sich aber der Ergebnisvektor ändert, brauchen
-wir nur die Inverse mit dem neuen Ergebnisvektor zu multiplizieren.
-
-Sollten wir sicher sein, dass wir nur für einen einzigen Ergebnisvektor das
-lineare Gleichungssystem lösen wollen, können wir den Gauß-Algorithmus auch
-direkt mit der Koeffizientenmatrix und dem Ergebnisvektor durchführen. Diese
-Kurzschreibweise nennt man **erweiterte Koeffizientenmatrix**. Sie wird in dem
-folgenden Video vorgestellt.
-
-```{dropdown} Video "Lineare Gleichungssysteme (LGS) lösen - Gauß Verfahren" von MathePeter
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ac8r-E5h9FI?si=kStQbW4DMKyP7odg"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```{figure} pics/sarrus_rule.svg
+---
+class: responsive-figure-50
+name: sarrus_rule
+---
+Eselsbrücke für die Regel von Sarrus
+(Quelle: [Kmhkmh - Wikimedia](https://commons.wikimedia.org/w/index.php?curid=127614131);
+Lizenz: CC BY 4.0)
 ```
+
+Zuerst wird die Matrix erweitert, die erste und die zweite Spalte werden rechts
+wiederholt (in grauer Farbe). Als nächstes bilden wir die Produkte entlang der
+Pfeile. Wir beginnen mit dem ersten roten Pfeil ganz links und berechnen
+
+\begin{equation*}
+\textcolor{red}{\text{1. roter Pfeil}} = a_{11} \cdot a_{22} \cdot a_{33}.
+\end{equation*}
+
+So berechnen wir auch das 2. und das 3. Produkt entlang des mittleren und des
+rechten roten Pfeils. Dann beginnen wir wieder links und berechnen das 4.
+Produkt entlang des linken blauen Pfeils:
+
+\begin{equation*}
+\textcolor{blue}{\text{1. blauer Pfeil}} = a_{31} \cdot a_{22} \cdot a_{13}.
+\end{equation*}
+
+Nachdem diese sechs Produkte gebildet wurde, wird die Gesamtsumme gebildet:
+
+\begin{align*}
+\det(\mathbf{A})&=
+\textcolor{red}{\text{1. roter Pfeil}} + \textcolor{red}{\text{2. roter Pfeil}} +
+\textcolor{red}{\text{3. roter Pfeil}} \\&- \textcolor{blue}{\text{1. blauer Pfeil}} -
+\textcolor{blue}{\text{2. blauer Pfeil}} - \textcolor{blue}{\text{3. blauer Pfeil}}.\\
+\end{align*}
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir eine alternative Darstellung kennengelernt, lineare
-Gleichungssysteme mit Matrizen zu lösen. Insbesondere Computerprogramme und
-Verfahren der Künstlichen Intelligenz nutzen diese kompakte und effiziente Art
-und Weise, Informationen darzustellen und zu verarbeiten. Im nächsten Kapitel
-werden wir Eigenschaften von Matrizen lernen, die zur Beschreibung von
-schwingenden Systemen essentiell sind.
+Die Determinanten für $2\times 2$-Matrizen und $3\times 3$-Matrizen lassen sich
+mit diesen beiden Regeln leicht berechnen. Für $n\times n$-Matrizen, die größer
+sind ($n > 3$), brauchen wir eine neue Regel.

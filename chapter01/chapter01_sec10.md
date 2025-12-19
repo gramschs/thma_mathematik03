@@ -1,53 +1,67 @@
-# Determinanten
+# Laplacescher Entwicklungssatz
 
-In den vorangegangenen Kapiteln haben wir Matrizen kennengelernt, die eine
-besondere Struktur haben. In diesem Kapitel geht es um eine Eigenschaft von
-quadratischen Matrizen, die durch eine Zahl gemessen wird und nützliche
-Anwendungen hat, die sogenannte Determinante.
+Hat die Matrix eine höhere Dimension, wird die Determinante rekursiv aus den
+Determinanten von kleineren Teilmatrizen berechnet. Dazu verwenden wir den
+sogenannten **Laplaceschen Entwicklungssatz**.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie können die **Determinante** einer $2\times 2$-Matrix berechnen.
-* Sie können die Determinante einer $n\times n$-Matrix mit $n>2$ berechnen,
-  indem Sie den **Laplaceschen Entwicklungssatz** anwenden.
+Sie können die Determinante einer $n\times n$-Matrix mit $n>2$ berechnen, indem
+Sie den **Laplaceschen Entwicklungssatz** anwenden.
 ```
 
-## Determinante von $2\times 2$-Matrizen
+## Determinante für größere Matrizen
 
-Die Determinante gibt es nur für quadratische Matrizen. Für eine $2\times
-2$-Matrix
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}
-\end{equation*}
-
-wird die Determinante durch den Ausdruck $a\cdot d - c\cdot b$ berechnet.Die
-Determinante ordnet jeder quadratischen Matrix eine reelle Zahl zu. Diese
-Eigenschaft ist also eine Funktion und wird in der Regel mit $\det$ abgekürzt.
-Es gilt also
+Bei der Determinantenberechnung mit dem Laplaceschen Entwicklungssatz entwickeln
+wir die Determinante nach einer Zeile oder einer Spalte. Wenn wir die
+Determinante der Matrix $\mathbf{A}\in\mathbb{R}^{n\times n}$ nach der i-ten
+Zeile entwickeln, gilt
 
 \begin{equation*}
-\det(\mathbf{A}) = a\cdot d - c\cdot b.
+\det(\mathbf{A}) = \sum_{j=1}^{n} (-1)^{i+j}\cdot
+a_{ij}\cdot\det(\mathbf{A}_{ij}),
 \end{equation*}
 
-Manchmal werden auch zwei senkrechte Striche genommen, die die Matrixklammern
-ersetzen, um die Determinante einer Matrix zu kennzeichnen:
+wobei $\mathbf{A_{ij}}$ diejenige Matrix ist, die entsteht, wenn die i-te Zeile
+und j-te Spalte gestrichen werden.
+
+Wird hingegen nach der j-ten Spalte entwickelt, lautet die Formel folgendermaßen:
 
 \begin{equation*}
-\left|\begin{matrix} a & b \\ c & d \end{matrix}\right|
-= a\cdot d - c\cdot b.
+\det(\mathbf{A}) = \sum_{i=1}^{n} (-1)^{i+j}\cdot
+a_{ij}\cdot \det(\mathbf{A}_{ij}).
 \end{equation*}
 
-Wir betrachten ein Beispiel:
+Auch hier bezeichnet $\mathbf{A}_{ij}$ die Untermatrix, die durch Streichen der
+i-ten Zeile und j-ten Spalte entsteht.
 
-\begin{equation*}
-\det\begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix} =
-\left|\begin{matrix} 2 & 3 \\ 1 & 5 \end{matrix}\right| =
-2\cdot 5 - 1\cdot 3 = 7.
-\end{equation*}
+Die Formeln sind trocken und schwer zu merken. Am einfachsten ist es, vorab die
+Matrixelelemente mit einem Schachbrettmuster von Plus und Minus zu versehen, wie
+in dem folgenden Video demonstriert wird.
 
-## Determinante von $3\times 3$-Matrizen
+```{dropdown} Video "Determinante - Laplace Entwicklungssatz" von Mathematrick
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3cG0HWdmHLI?si=UT5KjVo88k9dNPoj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
-TODO: Sarrus
+```{admonition} Übung "Berechnung von Determinanten
+:class: tip
+Gehen Sie auf die Internetseite
+
+> [https://matex.mint-kolleg.kit.edu/MATeX/browse.php](https://matex.mint-kolleg.kit.edu/MATeX/browse.php)
+
+und wählen Sie dort `02 LA: Determinantenberechnung` aus. Wählen Sie dann `Mit
+zufälligen Parametern starten` aus. Fangen Sie bei Stufe 1 an. Wenn Sie dreimal
+hintereinander eine Aufgabe korrekt gelöst haben, gehen Sie zu Stufe 2 weiter.
+Sobald Sie auf Stufe 2 dreimal hintereinander eine Aufgabe gelöst haben, gehen
+Sie weiter zu Stufe 3.
+
+Hinweis: Die Frage nach der Invertierbarkeit können Sie (voererst) ignorieren.
+```
+
+## Zusammenfassung und Ausblick
+
+Nachdem wir in diesem und im letzten Kapitel gelernt haben, wie Determinanten
+berechnet werden, lernen wir im nächsten Kapitel Rechenregeln, die die
+Berechnung von Determinanten vereinfachen können.
