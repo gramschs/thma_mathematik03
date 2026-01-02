@@ -45,15 +45,15 @@ project:
         - file: chapter03/chapter03_sec03a.md
         - file: chapter03/chapter03_sec03b.md
         - file: chapter03/chapter03_sec04.md
-    - title: DGL (Teil 1)
-      children:
-        - file: chapter06/chapter06_sec00.md
-    - title: DGL (Teil 2)
-      children:
-        - file: chapter09/chapter09_sec00.md
-    - title: Fourierreihen
-      children:
-        - file: chapter12/chapter12_sec00.md
+#    - title: DGL (Teil 1)
+#      children:
+#        - file: chapter06/chapter06_sec00.md
+#    - title: DGL (Teil 2)
+#      children:
+#        - file: chapter09/chapter09_sec00.md
+#    - title: Fourierreihen
+#      children:
+#        - file: chapter12/chapter12_sec00.md
     
 site:
   template: book-theme

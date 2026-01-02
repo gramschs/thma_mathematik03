@@ -1,4 +1,4 @@
-# Eigenschaften von Determinanten
+# TODO: Eigenschaften von Determinanten
 
 Die Determinante ist eine Eigenschaft von quadratischen Matrizen, aber sie
 selbst hat auch wiederum Eigenschaften und Besonderheiten, die wir hier
