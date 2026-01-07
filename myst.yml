@@ -6,7 +6,7 @@ project:
   description: Vorlesungsskript für die Vorlesung Mathematik 3 an der TH Mannheim
   keywords: ["Matrix", "Matrizen", "Determinante"]
   authors: ["Simone Gramsch"]
-  github: https://github.com/gramschs/book_mathe03
+  #github: https://github.com/gramschs/book_mathe03
   license: CC-BY-NC-SA-4.0
   open_access: true
   exports:
@@ -59,7 +59,9 @@ site:
   template: book-theme
   options:
     style: ./_static/my_styling.css
-  #   favicon: favicon.ico
-  #   logo: site_logo.png
+  #  favicon: favicon.ico
+  #  logo: logo.png
     static:
       - assets
+  #parts:
+  #  primary_sidebar_footer: primary-sidebar-footer.md
