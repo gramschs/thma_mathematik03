@@ -133,7 +133,7 @@ n}$.
   \quad \Rightarrow \quad \det(\mathbf{A}\cdot\mathbf{B}) = 6 = 6 \cdot 1
   \end{equation*}
 
-* Multipliziert man eine Zeile (oder eine Spalte) der Matrix mit einem Skalar,
+* Multipliziert man *eine* Zeile (oder *eine* Spalte) der Matrix mit einem Skalar,
   so wird auch die Determinante mit diesem Skalar multipliziert. Multipliziert
   man die gesamte Matrix mit diesem Skalar $s$, dann erhalten wir
   \begin{equation*} \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}), \quad
