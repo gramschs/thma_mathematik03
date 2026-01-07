@@ -1,34 +1,188 @@
-# TODO: Eigenschaften von Determinanten
+# Eigenschaften von Determinanten
 
 Die Determinante ist eine Eigenschaft von quadratischen Matrizen, aber sie
 selbst hat auch wiederum Eigenschaften und Besonderheiten, die wir hier
-notieren.
+notieren. Diese Eigenschaften helfen uns vor allem, die Berechnung von
+Determinanten zu vereinfachen.
 
-1. Die Determinante der Einheitmatrix ist Eins.
-2. Die Determinante der transponierten Marix ist gleich der Determinanten der
-   ursprünglichen Matrix.
-3. Für quadratische Matrizen gleicher Dimension gilt:
+## Lernziele
 
-   $$\det(\mathbf{A}\cdot\mathbf{B}) = \det(\mathbf{A})\cdot\det(\mathbf{B}).$$
-4. Multipliziert man eine Zeile der Matrix mit einem Skalar, so wird auch die
-   Determinante mit diesen Skalar multipliziert.
-5. Ist $s$ ein Skalar und $\mathbf{A}$ eine quadratische Matrix der Dimension
-   $n\times n$, dann gilt:
+```{admonition} Lernziele
+:class: attention
+Sie kennen die in diesem Kapitel aufgelisteten Eigenschaften von Determinanten
+und können die Rechenregeln anwenden.
+```
 
-   \begin{equation*}
-   \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}).
-   \end{equation*}
+## Determinante Null
 
-6. Hat die Matrix eine Zeile oder eine Spalte, die komplett aus Nullen besteht,
-   dann ist die Determinante Null.
-7. Sind zwei Zeilen gleich, ist die Determinante Null.
-8. Sind zwei Spalten gleich, ist die Determinante Null.
-9. Vertauscht man zwei Zeilen, dann wechselt das Vorzeichen der Determinante.
-10. Vertauscht man zwei Spalten, dann wechselt das Vorzeichen der Determinante.
-11. Addiert man das Vielfache einer anderen Zeile(Spalte) zu einer anderen Zeile, dann
-    ändert sich die Determinante nicht. Das kann man ausnutzen, um die
-    Determinante einer Matrix beispielsweise mit dem Gauß-Algorithmus zu
-    berechnen oder viele Nullen in der Matrix zu erzeugen.
+* Hat die Matrix eine Zeile oder eine Spalte, die komplett aus Nullen besteht,
+  dann ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 4 & 5 & 6 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{A}) = 0
+  \end{equation*}
+
+* Sind zwei Zeilen der Matrix gleich, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{B} = \begin{pmatrix} 2 & 3 \\ 2 & 3 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{B}) = 2 \cdot 3 - 3 \cdot 2 = 0
+  \end{equation*}
+
+* Sind zwei Spalten der Matrix gleich, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{C} = \begin{pmatrix} 1 & 1 & 5 \\ 2 & 2 & 6 \\ 3 & 3 & 7 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{C}) = 0
+  \end{equation*}
+
+* Gibt es in der Matrix eine Zeile, die ein Vielfaches einer anderen Zeile ist,
+  ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{D} = \begin{pmatrix} 1 & 2 \\ 3 & 6 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{D}) = 1 \cdot 6 - 2 \cdot 3 = 0
+  \end{equation*}
+  (Die zweite Zeile ist das Dreifache der ersten Zeile.)
+
+* Gibt es in der Matrix eine Spalte, die ein Vielfaches einer anderen Spalte
+  ist, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{E} = \begin{pmatrix} 2 & 4 & 1 \\ 3 & 6 & 5 \\ 1 & 2 & 7 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{E}) = 0
+  \end{equation*}
+  (Die zweite Spalte ist das Doppelte der ersten Spalte.)
+
+## Determinante Dreiecks- oder Diagonalmatrizen
+
+* Die Determinante der Einheitsmatrix ist Eins.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{I} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{I}) = 1
+  \end{equation*}
+
+* Die Determinante einer Diagonalmatrix ist das Produkt der Elemente in der
+  Diagonalen.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{F} = \begin{pmatrix} 2 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 4 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{F}) = 2 \cdot (-3) \cdot 4 = -24
+  \end{equation*}
+
+* Die Determinante einer unteren oder oberen Dreiecksmatrix ist das Produkt der
+  Elemente in der Diagonalen.
+  
+  Beispiel (obere Dreiecksmatrix):
+  \begin{equation*}
+  \mathbf{G} = \begin{pmatrix} 3 & 1 & 2 \\ 0 & 2 & 5 \\ 0 & 0 & -1 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{G}) = 3 \cdot 2 \cdot (-1) = -6
+  \end{equation*}
+  
+  Beispiel (untere Dreiecksmatrix):
+  \begin{equation*}
+  \mathbf{H} = \begin{pmatrix} 2 & 0 & 0 \\ 4 & 3 & 0 \\ 1 & 5 & -2 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{H}) = 2 \cdot 3 \cdot (-2) = -12
+  \end{equation*}
+
+## Rechenregeln
+
+Die folgenden Rechenregeln für Determinanten gelten für quadratische Matrizen,
+d.h. $\mathbf{A}\in\mathbb{R}^{n\times n}$ und $\mathbf{B}\in\mathbb{R}^{n\times
+n}$.
+
+* Die Determinante der transponierten Matrix ist gleich der Determinanten der
+  ursprünglichen Matrix. Es gilt also:
+  \begin{equation*} \det(\mathbf{A}^{T}) = \det(\mathbf{A}). \end{equation*}
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}^{T} = \begin{pmatrix} 1 & 3 \\ 2 & 4 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = 1 \cdot 4 - 2 \cdot 3 = -2, \quad
+  \det(\mathbf{A}^{T}) = 1 \cdot 4 - 3 \cdot 2 = -2
+  \end{equation*}
+
+* Die Determinante eines Produkts von quadratischen Matrizen ist gleich dem
+  Produkt der Determinanten der einzelnen Matrizen. Es gilt also:
+  \begin{equation*}
+  \det(\mathbf{A}\cdot\mathbf{B}) = \det(\mathbf{A})\cdot\det(\mathbf{B}).
+  \end{equation*}
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}, \quad
+  \mathbf{B} = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = 6, \quad \det(\mathbf{B}) = 1
+  \end{equation*}
+  \begin{equation*}
+  \mathbf{A}\cdot\mathbf{B} = \begin{pmatrix} 2 & 4 \\ 0 & 3 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{A}\cdot\mathbf{B}) = 6 = 6 \cdot 1
+  \end{equation*}
+
+* Multipliziert man eine Zeile (oder eine Spalte) der Matrix mit einem Skalar,
+  so wird auch die Determinante mit diesem Skalar multipliziert. Multipliziert
+  man die gesamte Matrix mit diesem Skalar $s$, dann erhalten wir
+  \begin{equation*} \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}), \quad
+  s\in\mathbb{R}. \end{equation*}
+  
+  Beispiel (eine Zeile multiplizieren):
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 2 & 4 \\ 3 & 4 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 2 \cdot 4 - 4 \cdot 3 = -4 = 2 \cdot (-2)
+  \end{equation*}
+  
+  Beispiel (gesamte Matrix multiplizieren):
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  3\cdot\mathbf{A} = \begin{pmatrix} 3 & 6 \\ 9 & 12 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(3\cdot\mathbf{A}) = 3 \cdot 12 - 6 \cdot 9 = -18 = 3^{2} \cdot (-2) = 9 \cdot \det(\mathbf{A})
+  \end{equation*}
+
+* Vertauscht man zwei Zeilen (oder zwei Spalten), dann wechselt das Vorzeichen
+  der Determinante.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 3 & 4 \\ 1 & 2 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 3 \cdot 2 - 4 \cdot 1 = 2 = -\det(\mathbf{A})
+  \end{equation*}
+
+* Addiert man das Vielfache einer Zeile zu einer anderen Zeile, dann ändert sich
+  die Determinante nicht. Das gilt sinngemäß auch für Spalten. Das kann man
+  ausnutzen, um die Determinante einer Matrix beispielsweise mit dem
+  Gauß-Algorithmus zu berechnen oder viele Nullen in der Matrix zu erzeugen.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 1 & 2 \\ 0 & -2 \end{pmatrix}
+  \end{equation*}
+  (Die zweite Zeile wurde ersetzt durch: Zeile 2 - 3·Zeile 1)
+  \begin{equation*}
+  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 1 \cdot (-2) - 2 \cdot 0 = -2
+  \end{equation*}
 
 Diese und weitere Rechenregeln werden auch in dem folgenden Video erläutert.
 
