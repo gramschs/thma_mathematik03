@@ -19,26 +19,30 @@ und können die Rechenregeln anwenden.
   dann ist die Determinante Null.
   
   Beispiel:
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 4 & 5 & 6 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{A}) = 0
-  \end{equation*}
+  \begin{align*}
+  \mathbf{A} &= \begin{pmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 4 & 5 & 6 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{A}) &\overset{\text{Sarrus}}{=} 1\cdot 0\cdot 6 + 2\cdot 0 \cdot 4 + 3\cdot 0\cdot 5 -
+  \left(4\cdot 0\cdot 3 + 5\cdot 0\cdot 1 + 6\cdot 0\cdot 2\right)\\
+  & = 0\\
+  \end{align*}
 
 * Sind zwei Zeilen der Matrix gleich, ist die Determinante Null.
   
   Beispiel:
   \begin{equation*}
   \mathbf{B} = \begin{pmatrix} 2 & 3 \\ 2 & 3 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{B}) = 2 \cdot 3 - 3 \cdot 2 = 0
+  \quad \Rightarrow \quad \det(\mathbf{B}) = 2 \cdot 3 - 2 \cdot 3 = 0
   \end{equation*}
 
 * Sind zwei Spalten der Matrix gleich, ist die Determinante Null.
   
   Beispiel:
-  \begin{equation*}
-  \mathbf{C} = \begin{pmatrix} 1 & 1 & 5 \\ 2 & 2 & 6 \\ 3 & 3 & 7 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{C}) = 0
-  \end{equation*}
+  \begin{align*}
+  \mathbf{C} &= \begin{pmatrix} 1 & 1 & 5 \\ 2 & 2 & 6 \\ 3 & 3 & 7 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{C}) &= 1\cdot 2\cdot 7 + 1\cdot 6\cdot 3 + 5\cdot 2\cdot 3 -
+  \left(3\cdot 2\cdot 5 + 3\cdot 6\cdot 1 + 7\cdot 2\cdot 1\right)\\
+  &= 14 + 18 + 30 -(30 + 18 + 14) = 0\\
+  \end{align*}
 
 * Gibt es in der Matrix eine Zeile, die ein Vielfaches einer anderen Zeile ist,
   ist die Determinante Null.
@@ -46,7 +50,7 @@ und können die Rechenregeln anwenden.
   Beispiel:
   \begin{equation*}
   \mathbf{D} = \begin{pmatrix} 1 & 2 \\ 3 & 6 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{D}) = 1 \cdot 6 - 2 \cdot 3 = 0
+  \quad \Rightarrow \quad \det(\mathbf{D}) = 1 \cdot 6 - 3 \cdot 2 = 0
   \end{equation*}
   (Die zweite Zeile ist das Dreifache der ersten Zeile.)
 
@@ -54,10 +58,12 @@ und können die Rechenregeln anwenden.
   ist, ist die Determinante Null.
   
   Beispiel:
-  \begin{equation*}
-  \mathbf{E} = \begin{pmatrix} 2 & 4 & 1 \\ 3 & 6 & 5 \\ 1 & 2 & 7 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{E}) = 0
-  \end{equation*}
+  \begin{align*}
+  \mathbf{E} &= \begin{pmatrix} 2 & 4 & 1 \\ 3 & 6 & 5 \\ 1 & 2 & 7 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{E}) &= 2\cdot 6\cdot 7 + 4\cdot 5\cdot 1+1\cdot 3\cdot 2 -
+  \left(1\cdot 6\cdot 1 + 2\cdot 5\cdot 2 + 7\cdot 3\cdot 4\right)\\
+  &= 84 + 20 + 6 - (6 + 20 + 84) = 0\\
+  \end{align*}
   (Die zweite Spalte ist das Doppelte der ersten Spalte.)
 
 ## Determinante Dreiecks- oder Diagonalmatrizen
@@ -65,34 +71,42 @@ und können die Rechenregeln anwenden.
 * Die Determinante der Einheitsmatrix ist Eins.
   
   Beispiel:
-  \begin{equation*}
-  \mathbf{I} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{I}) = 1
-  \end{equation*}
+  \begin{align*}
+  \mathbf{I} &= \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{I}) &= 1\cdot 1\cdot 1 + 0\cdot 0\cdot 0 + 0\cdot 0\cdot 0 -
+  0\cdot 1\cdot0 + 0\cdot 0\cdot 1 + 1\cdot 0\cdot 0)\\
+  &= 1.
+  \end{align*}
 
 * Die Determinante einer Diagonalmatrix ist das Produkt der Elemente in der
   Diagonalen.
   
   Beispiel:
-  \begin{equation*}
-  \mathbf{F} = \begin{pmatrix} 2 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 4 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{F}) = 2 \cdot (-3) \cdot 4 = -24
-  \end{equation*}
+  \begin{align*}
+  \mathbf{F} &= \begin{pmatrix} 2 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 4 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{F}) &= 2 \cdot (-3) \cdot 4 + 0\cdot 0\cdot 0  + 0\cdot 0\cdot 0 -
+  \left(0\cdot (-3)\cdot 0 + 0\cdot 0\cdot 2 + 4\cdot 0\cdot 0\right)\\
+  &= 2\cdot (-3)\cdot 4 = -24.
+  \end{align*}
 
 * Die Determinante einer unteren oder oberen Dreiecksmatrix ist das Produkt der
   Elemente in der Diagonalen.
   
   Beispiel (obere Dreiecksmatrix):
-  \begin{equation*}
-  \mathbf{G} = \begin{pmatrix} 3 & 1 & 2 \\ 0 & 2 & 5 \\ 0 & 0 & -1 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{G}) = 3 \cdot 2 \cdot (-1) = -6
-  \end{equation*}
+  \begin{align*}
+  \mathbf{G} &= \begin{pmatrix} 3 & 1 & 2 \\ 0 & 2 & 5 \\ 0 & 0 & -1 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{G}) &= 3 \cdot 2 \cdot (-1) + 1\cdot 5\cdot 0 + 2\cdot 0\cdot 0 -
+  \left( 0\cdot 2\cdot 2 + 0\cdot 5\cdot 3 + (-1)\cdot 0\cdot 1\right)\\
+  &= 3\cdot 2 \cdot (-1) = -6.
+  \end{align*}
   
   Beispiel (untere Dreiecksmatrix):
-  \begin{equation*}
-  \mathbf{H} = \begin{pmatrix} 2 & 0 & 0 \\ 4 & 3 & 0 \\ 1 & 5 & -2 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{H}) = 2 \cdot 3 \cdot (-2) = -12
-  \end{equation*}
+  \begin{align*}
+  \mathbf{H} &= \begin{pmatrix} 2 & 0 & 0 \\ 4 & 3 & 0 \\ 1 & 5 & -2 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{H}) &= 2 \cdot 3 \cdot (-2) + 0\cdot 0\cdot 1 + 0\cdot 4\cdot 5-
+  \left(1\cdot 3\cdot 0 + 5\cdot 0\cdot 2 + (-2)\cdot 4\cdot 0 \right)\\
+  &=2\cdot 3\cdot (-2) = -12.
+  \end{align*}
 
 ## Rechenregeln
 
@@ -110,8 +124,8 @@ n}$.
   \mathbf{A}^{T} = \begin{pmatrix} 1 & 3 \\ 2 & 4 \end{pmatrix}
   \end{equation*}
   \begin{equation*}
-  \det(\mathbf{A}) = 1 \cdot 4 - 2 \cdot 3 = -2, \quad
-  \det(\mathbf{A}^{T}) = 1 \cdot 4 - 3 \cdot 2 = -2
+  \det(\mathbf{A}) = 1 \cdot 4 - 3 \cdot 2 = -2, \quad
+  \det(\mathbf{A}^{T}) = 1 \cdot 4 - 2 \cdot 3 = -2
   \end{equation*}
 
 * Die Determinante eines Produkts von quadratischen Matrizen ist gleich dem
@@ -139,14 +153,15 @@ n}$.
   \begin{equation*} \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}), \quad
   s\in\mathbb{R}. \end{equation*}
   
-  Beispiel (eine Zeile multiplizieren):
+  Beispiel (eine Zeile multiplizieren, hier die erste):
   \begin{equation*}
   \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
   \mathbf{A}' = \begin{pmatrix} 2 & 4 \\ 3 & 4 \end{pmatrix}
   \end{equation*}
-  \begin{equation*}
-  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 2 \cdot 4 - 4 \cdot 3 = -4 = 2 \cdot (-2)
-  \end{equation*}
+  \begin{align*}
+  &\det(\mathbf{A}) = 1\cdot 4 - 3\cdot 2 = -2, \\
+  &\det(\mathbf{A}') = 2 \cdot 4 - 4 \cdot 3 = -4 = 2 \cdot (-2) = 2\cdot\det(\mathbf{A})\\
+  \end{align*}
   
   Beispiel (gesamte Matrix multiplizieren):
   \begin{equation*}
