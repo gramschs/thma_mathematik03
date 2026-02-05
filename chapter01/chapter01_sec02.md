@@ -27,8 +27,8 @@ Spieler 3 den Ball an Spieler 2, erhöhen wir die Anzahl der Pässe in Zeile 3 u
 Spalte 2. Zu Beginn des Spiels ist die Tabelle jedoch komplett mit Nullen
 gefüllt.
 
-|   | Spieler 1 | Spieler 2 | Spieler 3 |
-|---|---|---|---|
+| | Spieler 1 | Spieler 2 | Spieler 3 |
+| --- | --- | --- | --- |
 | Spieler 1 | 0 | 0 | 0 |
 | Spieler 2 | 0 | 0 | 0 |
 | Spieler 3 | 0 | 0 | 0 |

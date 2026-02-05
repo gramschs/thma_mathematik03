@@ -18,12 +18,12 @@ darauffolgenden Training Defizite der Mannschaft zu reduzieren. Dazu wird das
 Passspiel der ersten fünf Minuten in einer Tabelle protokolliert (wir zeigen
 hier nur das Passspiel von vier Spielern):
 
-|   | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
-|---|---|---|---|---|
+| | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
+| --- | --- | --- | --- | --- |
 | Spieler 1 | 0 | 8 | 3 | 20 |
-| Spieler 2 | 2 | 0 | 6 | 9  |
-| Spieler 3 | 17| 4 | 0 | 2  |
-| Spieler 4 | 0 | 3 | 1 | 0  |
+| Spieler 2 | 2 | 0 | 6 | 9 |
+| Spieler 3 | 17 | 4 | 0 | 2 |
+| Spieler 4 | 0 | 3 | 1 | 0 |
 
 Die Tabelle lesen wir folgendermaßen. In der ersten Zeile stehen die Pässe des
 Spielers 1 an die anderen Spieler. Spieler 1 hat also 0-mal sich selbst
@@ -42,12 +42,12 @@ Informationen etwas kompakter in der Matrix $\textbf{P}_1$
 
 In den nächsten 5 Minuten werden die folgenden Pässe mitprotokolliert
 
-|   | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
-|---|---|---|---|---|
+| | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
+| --- | --- | --- | --- | --- |
 | Spieler 1 | 0 | 6 | 8 | 15 |
 | Spieler 2 | 4 | 0 | 6 | 9 |
-| Spieler 3 | 7 | 4 | 0 | 3  |
-| Spieler 4 | 0 | 4 | 0 | 0  |
+| Spieler 3 | 7 | 4 | 0 | 3 |
+| Spieler 4 | 0 | 4 | 0 | 0 |
 
 und als Matrix gespeichert:
 
@@ -64,12 +64,12 @@ Wenn wir jetzt wissen wollen, wie viele Pässe in den ersten 10 Minuten insgesam
 von einem Spieler zu den anderen gespielt wurden, müssen wir jede Pässe
 addieren:
 
-|   | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
-|---|---|---|---|---|
+| | Spieler 1 | Spieler 2 | Spieler 3 | Spieler 4 |
+| --- | --- | --- | --- | --- |
 | Spieler 1 | 0 | 8+6 | 3+8 | 20+15 |
 | Spieler 2 | 2+4 | 0 | 6+6 | 9+9 |
-| Spieler 3 | 17+7 | 4+4 | 0 | 2+3  |
-| Spieler 4 | 0 | 3+4 | 1+0 | 0  |
+| Spieler 3 | 17+7 | 4+4 | 0 | 2+3 |
+| Spieler 4 | 0 | 3+4 | 1+0 | 0 |
 
 Mathematisch ausgedrückt wird jedes Element der Matrix zu dem Element addiert,
 das die gleiche Position hat. Das setzt natürlich voraus, dass die beiden

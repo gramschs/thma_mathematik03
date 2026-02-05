@@ -32,7 +32,7 @@ Anders als beim klassischen Basketball wird nur auf einen Korb geworfen.
 
 Wir möchten nun das Passspiel der Spieler analysieren und legen dazu eine Tabelle an.
 
-|   | Spieler 1 | Spieler 2 | Spieler 3 |
+| | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
 | **Spieler 1** | | | |
 | **Spieler 2** | | | |
@@ -42,7 +42,7 @@ Die Pässe werden wie folgt mitprotokolliert. Passt Spieler 1 den Ball zu Spiele
 3, dann machen wir in dem Feld in der erste Zeile (Spieler 1) und der dritten
 Spalte (Spieler 3) einen Strich.
 
-|     | Spieler 1 | Spieler 2 | Spieler 3 |
+| | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
 | Spieler 1 | | | \| |
 | Spieler 2 | | | |
@@ -51,7 +51,7 @@ Spalte (Spieler 3) einen Strich.
 Spielt dann Spieler 3 den Ball an Spieler 2 weiter, machen wir in der dritten
 Zeile und der zweiten Spalte einen Strich.
 
-|     | Spieler 1 | Spieler 2 | Spieler 3 |
+| | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
 | Spieler 1 | | | \| |
 | Spieler 2 | | | |
@@ -60,7 +60,7 @@ Zeile und der zweiten Spalte einen Strich.
 Am Ende zählen wir die Striche bzw. die Anzahl der Pässe und erhalten
 beispielsweise folgende Tabelle:
 
-|     | Spieler 1 | Spieler 2 | Spieler 3 |
+| | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
 | Spieler 1 | 0 | 1 | 3 |
 | Spieler 2 | 2 | 0 | 0 |
@@ -235,13 +235,13 @@ Haushaltsbuch. Protokollieren wir Eingaben und Ausgaben im ersten Quartal, so
 haben wir drei Spalten (Monate) und mehr als drei Zeilen (Posten) wie in dem
 folgenden Beispiel:
 
-|   | Januar | Februar | März  |
-|---|---|---|---|
-| BAFöG | 956.00 €| 956.00 €| 956.00 €|
+| | Januar | Februar | März |
+| --- | --- | --- | --- |
+| BAFöG | 956.00 € | 956.00 € | 956.00 € |
 | Miete | -530.00 € | -530.00 € | -530.00 € |
 | Fitnessstudio | -24.99 € | -24.99 € | -24.99 € |
-| Essen | -108.74 €  | -90.56 €| -110.50 € |
-| Netflix |-12.99 € | -12.99 € | -17.99 € |
+| Essen | -108.74 € | -90.56 € | -110.50 € |
+| Netflix | -12.99 € | -12.99 € | -17.99 € |
 
 Die Tabelle als Matrix formuliert ergibt eine $5\times 3$-Matrix
 
