@@ -1,0 +1,1 @@
+import{a}from"/thma_mathematics01/build/_shared/chunk-26VS2IBC.js";import"/thma_mathematics01/build/_shared/chunk-J3PKFMLQ.js";import"/thma_mathematics01/build/_shared/chunk-OZE3FFNP.js";export default a();
