@@ -10,10 +10,10 @@ site:
 
 TH Mannheim
 
+<!-- markdownlint-disable MD001 -->
 ### Vorlesungsskript Mathematik 3
+<!-- markdownlint-enable MD001 -->
 
 ![Mathematics](title.png)
 
 Dieses Vorlesungsskript dienst zur Unterstützung der Vorlesung Mathematik 3.
-
-{button}`toc`
