@@ -1,1 +1,1 @@
-import{a}from"/thma_mathematics01/build/_shared/chunk-J7L62EVI.js";import"/thma_mathematics01/build/_shared/chunk-VCINEGR4.js";import"/thma_mathematics01/build/_shared/chunk-OZE3FFNP.js";export default a();
+import{a}from"/thma_mathematik03/build/_shared/chunk-J7L62EVI.js";import"/thma_mathematik03/build/_shared/chunk-VCINEGR4.js";import"/thma_mathematik03/build/_shared/chunk-OZE3FFNP.js";export default a();

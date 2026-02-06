@@ -1,1 +1,1 @@
-import{a,b,c,d,e}from"/thma_mathematics01/build/_shared/chunk-265RPIE7.js";import"/thma_mathematics01/build/_shared/chunk-OZE3FFNP.js";e();export{a as javascript,b as json,c as jsonld,d as typescript};
+import{a,b,c,d,e}from"/thma_mathematik03/build/_shared/chunk-265RPIE7.js";import"/thma_mathematik03/build/_shared/chunk-OZE3FFNP.js";e();export{a as javascript,b as json,c as jsonld,d as typescript};
