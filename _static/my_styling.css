@@ -19,3 +19,11 @@
 .responsive-figure-50 {
   text-align: center;
 }
+
+.link-icon {
+  width: 0.9em;
+  height: 0.9em;
+  display: inline-block;
+  vertical-align: -0.1em;
+  margin-left: 0.2em;
+}
