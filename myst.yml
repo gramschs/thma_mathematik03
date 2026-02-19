@@ -9,11 +9,6 @@ project:
   #github: https://github.com/gramschs/book_mathe03
   license: CC-BY-NC-SA-4.0
   open_access: true
-  exports:
-    - format: pdf
-      template: plain_latex_book
-      output: exports/thma_mathematik03.pdf
-    - format: tex
 
   numbering:
     math: false
@@ -58,10 +53,10 @@ project:
 site:
   template: book-theme
   options:
-    style: ./_static/my_styling.css
+    style: ./my_styling.css
   #  favicon: favicon.ico
   #  logo: logo.png
-    static:
-      - assets
+  #  static:
+  #    - assets
   #parts:
   #  primary_sidebar_footer: primary-sidebar-footer.md
