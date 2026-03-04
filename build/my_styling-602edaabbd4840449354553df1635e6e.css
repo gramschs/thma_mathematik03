@@ -1,4 +1,13 @@
-/* Responsive Bilder */
+/* ===== CODE-ZELLEN GRÜN ===== */
+div.myst-code {
+  border-left-color: #19a249 !important;
+}
+
+.dark div.myst-code {
+  border-left-color: #18a046 !important;
+}
+
+/* ===== RESPONSIVE BILDER ===== */
 .responsive-figure-50 img,
 .responsive-figure-50 svg {
   width: 90%;
@@ -20,13 +29,3 @@
   text-align: center;
 }
 
-/* External link icons - mit !important */
-svg.link-icon,
-a.link svg.link-icon,
-.link-icon[data-slot="icon"] {
-    width: 1em !important;
-    height: 1em !important;
-    display: inline-block !important;
-    vertical-align: -0.125em !important;
-    margin-left: 0.25em !important;
-}
