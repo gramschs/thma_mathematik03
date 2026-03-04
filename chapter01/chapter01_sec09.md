@@ -93,7 +93,9 @@ Lizenz: CC BY 4.0)
 
 Zuerst wird die Matrix erweitert, die erste und die zweite Spalte werden rechts
 wiederholt (in grauer Farbe). Als nächstes bilden wir die Produkte entlang der
-Pfeile. Wir beginnen mit dem ersten roten Pfeil ganz links und berechnen
+Haupt- und Nebendiagonalen. Zur Verdeutlichung, sind diese mit roten
+(Hauptdiagonalen) und blauen (Nebendiagonalen) Pfeilen gekennzeichnet. Wir
+beginnen mit dem ersten roten Pfeil ganz links und berechnen
 
 \begin{equation*}
 \textcolor{red}{\text{1. roter Pfeil}} = a_{11} \cdot a_{22} \cdot a_{33}.
@@ -115,6 +117,53 @@ Nachdem diese sechs Produkte gebildet wurde, wird die Gesamtsumme gebildet:
 \textcolor{red}{\text{3. roter Pfeil}} \\&- \textcolor{blue}{\text{1. blauer Pfeil}} -
 \textcolor{blue}{\text{2. blauer Pfeil}} - \textcolor{blue}{\text{3. blauer Pfeil}}.\\
 \end{align*}
+
+**Beispiel:** Im Folgenden rechnen wir ein Beispiel. Gegeben sei die Matrix:
+
+\begin{equation*}
+A =
+\begin{pmatrix}
+2 & 1 & 3 \\
+0 & -1 & 4 \\
+5 & 2 & -2
+\end{pmatrix}.
+\end{equation*}
+
+Als Hilfskonstruktion erweitern wir die Matrix um ihre ersten beiden Spalten:
+
+\begin{equation*}
+\begin{array}{ccc|cc}
+2  &  1 &  3 & 2  &  1 \\
+0  & -1 &  4 & 0  & -1 \\
+5  &  2 & -2 & 5  &  2
+\end{array}
+\end{equation*}
+
+Hinweis: Diese Hilfskonstruktion ist keine Matrix. Daher dürfen wir nicht
+$\mathbf{A} = $ davor schreiben oder die Matrix direkt erweitern.
+
+Dann berechnen wir die Produkte entlang der roten Pfeile:
+
+\begin{align*}
+&\textcolor{red}{\text{1. Pfeil}} = 2 \cdot (-1) \cdot (-2) = 4 \\
+&\textcolor{red}{\text{2. Pfeil}} = 1 \cdot 4 \cdot 5       = 20 \\
+&\textcolor{red}{\text{3. Pfeil}} = 3 \cdot 0 \cdot 2       = 0
+\end{align*}
+
+Nun berechen wir die Produkte entlang der blauen Pfeile:
+
+\begin{align*}
+&\textcolor{blue}{\text{1. Pfeil}} = 5 \cdot (-1) \cdot 3     = -15\\
+&\textcolor{blue}{\text{2. Pfeil}} = 2 \cdot 4 \cdot 2        = 16\\
+&\textcolor{blue}{\text{3. Pfeil}} = (-2) \cdot 0 \cdot 1      = 0
+\end{align*}
+
+Das Ergebnis ist
+
+\begin{equation*}
+\det(A)
+= 4 + 20 + 0 - (-15) - 16 - 0 = 23.
+\end{equation*}
 
 ## Zusammenfassung und Ausblick
 
