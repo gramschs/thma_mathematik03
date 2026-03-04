@@ -77,7 +77,7 @@ a_{13} a_{22} a_{31} - a_{11} a_{23} a_{32} - a_{12} a_{21} a_{33}.
 \end{equation*}
 
 Es sind also sechs Summanden zu berechnen und jeder dieser Summanden besteht aus
-einem Produkt von drei Elementen der Matrix. Es ist schwieirg, sich diese Regel
+einem Produkt von drei Elementen der Matrix. Es ist schwierig, sich diese Regel
 zu merken. Daher gibt es eine Eselsbrücke, die visuell veranschaulicht, welches
 Element in welcher Reihenfolge multipliziert und summiert werden muss.
 
