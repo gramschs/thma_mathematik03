@@ -7,11 +7,11 @@ von Matrizen und deren Inversen gelöst werden können.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie verstehen, wie lineare Gleichungssysteme mit Hilfe von Matrizen
+* [ ] Sie verstehen, wie lineare Gleichungssysteme mit Hilfe von Matrizen
   dargestellt werden können.
-* Sie können eine inverse Matrix dazu benutzen, ein lineares Gleichungssystem zu
-  lösen.
-* Sie können den **Gauß-Algorithmus in Matrix-Darstellung** zur Lösung von
+* [ ] Sie können eine inverse Matrix dazu benutzen, ein lineares
+  Gleichungssystem zu lösen.
+* [ ] Sie können den **Gauß-Algorithmus in Matrix-Darstellung** zur Lösung von
   linearen Gleichungssystemen anwenden.
 ```
 

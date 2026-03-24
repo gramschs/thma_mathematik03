@@ -9,8 +9,8 @@ Determinanten zu vereinfachen.
 
 ```{admonition} Lernziele
 :class: attention
-Sie kennen die in diesem Kapitel aufgelisteten Eigenschaften von Determinanten
-und können die Rechenregeln anwenden.
+* [ ] Sie kennen die in diesem Kapitel aufgelisteten Eigenschaften von
+  Determinanten und können die Rechenregeln anwenden.
 ```
 
 ## Determinante Null
@@ -207,8 +207,12 @@ Diese und weitere Rechenregeln werden auch in dem folgenden Video erläutert.
 
 ## Zusammenfassung und Ausblick
 
-Zunächst ist die Determinante nur eine Kennzahl einer quadratischen Matrix. Wir
-haben uns in diesem Kapitel mit der Definition und den Rechenregeln beschäftigt.
-In den nächsten Kapiteln werden wir die Determinante anwenden um beispielsweise
-zu entscheiden, ob eine Matrix invertierbar ist oder um die Eigenwerte und
-Eigenvektoren von Matrizen zu berechnen.
+Die Rechenregeln für Determinanten vereinfachen die Berechnung erheblich:
+Nullzeilen, gleiche oder proportionale Zeilen lassen die Determinante sofort
+auf Null fallen, ohne dass man rechnen muss; Dreiecks- und Diagonalmatrizen
+erlauben eine direkte Ablesung als Produkt der Diagonalelemente. Diese
+Eigenschaften deuten bereits an, dass die Determinante mehr ist als ein reines
+Rechenwerkzeug. Im nächsten Kapitel sehen wir, was eine Determinante von Null
+über die Struktur einer Matrix aussagt: Sie entscheidet über die lineare
+Abhängigkeit von Vektoren, über die eindeutige Lösbarkeit linearer
+Gleichungssysteme und steht im Kern des Spatprodukts sowie des Vektorprodukts.

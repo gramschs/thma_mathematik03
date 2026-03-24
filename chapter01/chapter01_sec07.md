@@ -10,12 +10,12 @@ dem Kehrwert einer Zahl und hat wichtige Anwendungen.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie wissen, was die **inverse Matrix** einer quadratischen
-  Matrix ist und wann es erlaubt ist, sie zu berechnen.
-* Sie kennen den Fachbegriff **invertierbar**.
-* Sie können die **Inverse einer $2\times 2$-Matrix** berechnen.
-* Sie können die **Inverse einer Diagonalmatrix** angeben und berechnen.
-* Sie können die **Inverse einer $n\times n$-Matrix** für $n>2$ berechnen.
+* [ ] Sie wissen, was die **inverse Matrix** einer quadratischen Matrix ist und
+  wann es erlaubt ist, sie zu berechnen.
+* [ ] Sie kennen den Fachbegriff **invertierbar**.
+* [ ] Sie können die **Inverse einer $2\times 2$-Matrix** berechnen.
+* [ ] Sie können die **Inverse einer Diagonalmatrix** angeben und berechnen.
+* [ ] Sie können die **Inverse einer $n\times n$-Matrix** für $n>2$ berechnen.
 ```
 
 ## Inverse Matrix von $2\times 2$-Matrizen

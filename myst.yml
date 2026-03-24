@@ -6,7 +6,7 @@ project:
   description: Vorlesungsskript für die Vorlesung Mathematik 3 an der TH Mannheim
   keywords: ["Matrix", "Matrizen", "Determinante"]
   authors: ["Simone Gramsch"]
-  #github: https://github.com/gramschs/book_mathe03
+  github: https://github.com/gramschs/book_mathe03
   license: CC-BY-NC-SA-4.0
   open_access: true
 
@@ -33,22 +33,42 @@ project:
       - file: chapter01/chapter01_sec11.md
       - file: chapter01/chapter01_sec12.md
       - file: chapter01/chapter01_sec13.md
-    - title: Matrizen (Teil 2)
-      children:
-        - file: chapter03/chapter03_sec01.md
-        - file: chapter03/chapter03_sec02.md
-        - file: chapter03/chapter03_sec03a.md
-        - file: chapter03/chapter03_sec03b.md
-        - file: chapter03/chapter03_sec04.md
+#    - title: Matrizen (Teil 2)
+#      children:
+#       - file: chapter02/chapter03_sec01.md
+#        - file: chapter02/chapter03_sec02.md
+#        - file: chapter02/chapter03_sec03.md
+#        - file: chapter02/chapter03_sec04.md
+#        - file: chapter02/chapter03_sec05.md
+#        - file: chapter02/chapter03_sec06.md
+#        - file: chapter02/chapter03_sec07.md
+#        - file: chapter03/chapter03_sec01.md
+#        - file: chapter03/chapter03_sec02.md
+#        - file: chapter03/chapter03_sec03a.md
+#        - file: chapter03/chapter03_sec03b.md
+#        - file: chapter03/chapter03_sec04.md
 #    - title: DGL (Teil 1)
 #      children:
-#        - file: chapter06/chapter06_sec00.md
+#        - file: chapter06/chapter06_sec01.md
+#        - file: chapter06/chapter06_sec02.md
+#        - file: chapter06/chapter06_sec03.md
+#        - file: chapter06/chapter06_sec04.md        
 #    - title: DGL (Teil 2)
 #      children:
-#        - file: chapter09/chapter09_sec00.md
+#        - file: chapter09/chapter09_sec01.md
+#        - file: chapter09/chapter09_sec02.md
+#        - file: chapter09/chapter09_sec03.md
+#        - file: chapter09/chapter09_sec04.md
+#        - file: chapter09/chapter09_sec05.md
+#        - file: chapter09/chapter09_sec06.md
 #    - title: Fourierreihen
 #      children:
-#        - file: chapter12/chapter12_sec00.md
+#        - file: chapter12/chapter12_sec01.md
+#        - file: chapter12/chapter12_sec02.md
+#        - file: chapter12/chapter12_sec03.md
+#        - file: chapter12/chapter12_sec04.md
+#        - file: chapter12/chapter12_sec05.md
+ 
     
 site:
   template: book-theme

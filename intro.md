@@ -16,4 +16,4 @@ TH Mannheim
 
 ![Mathematics](title.png)
 
-Dieses Vorlesungsskript dienst zur Unterstützung der Vorlesung Mathematik 3.
+Dieses Vorlesungsskript dient zur Unterstützung der Vorlesung Mathematik 3.

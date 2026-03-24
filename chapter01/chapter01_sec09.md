@@ -9,9 +9,9 @@ Anwendungen hat, die sogenannte Determinante.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie können die **Determinante** einer $2\times 2$-Matrix berechnen.
-* Sie können die Determinante einer $3\times 3$-Matrix berechnen, indem Sie die
-  **Regel von Sarrus** anwenden.
+* [ ] Sie können die **Determinante** einer $2\times 2$-Matrix berechnen.
+* [ ] Sie können die Determinante einer $3\times 3$-Matrix berechnen, indem Sie
+  die **Regel von Sarrus** anwenden.
 ```
 
 ## Determinante von $2\times 2$-Matrizen
@@ -42,9 +42,9 @@ ersetzen, um die Determinante einer Matrix zu kennzeichnen:
 
 In diesem Skript verwendet wir die Funktionsschreibweise $\det()$.
 
-Hinweis: Diesen Ausdruck haben wir bereits kennengelernt. Es ist der gleiche
-Ausdruck, den wir verwendet haben, um zu testen, ob eine $2\times 2$-Matrix
-invertierbar ist.
+Hinweis: Den Ausdruck $a\cdot d - c\cdot b$ haben wir bereits kennengelernt. Es
+ist der gleiche Ausdruck, den wir verwendet haben, um zu testen, ob eine
+$2\times 2$-Matrix invertierbar ist.
 
 Wir betrachten ein Beispiel:
 

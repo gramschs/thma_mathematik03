@@ -15,7 +15,7 @@ berechnen.
 ## Definition von Eigenwerten und Eigenvektoren
 
 Auch für $3\times 3$-Matrizen bleibt die Definition eines Eigenwertes und von
-eigenvektoren gleich. Eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{3
+Eigenvektoren gleich. Eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{3
 \times 3}$ hat einen Eigenvektor $\vec{v} \neq \vec{0}$, wenn gilt:
 
 \begin{equation*}

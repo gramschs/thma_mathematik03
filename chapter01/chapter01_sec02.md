@@ -10,10 +10,10 @@ die Diagonalmatrix und die Einheitsmatrix sowie die Dreiecksmatrix.
 ```{admonition} Lernziele
 :class: attention
 Sie kennen die besonderen Matrizen
-* **Nullmatrix**,
-* **Diagonalmatrix**,
-* **Einheitsmatrix** und
-* **untere Dreiecksmatrix** bzw. **obere Dreiecksmatrix**.
+* [ ] **Nullmatrix**,
+* [ ] **Diagonalmatrix**,
+* [ ] **Einheitsmatrix** und
+* [ ] **untere Dreiecksmatrix** bzw. **obere Dreiecksmatrix**.
 ```
 
 ## Nullmatrix

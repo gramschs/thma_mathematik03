@@ -9,8 +9,8 @@ Anwendungsmöglichkeiten erläutert.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie wissen, was eine **orthogonale** Matrix ist.
-* Sie kennen die wichtigsten **Eigenschaften von orthogonalen Matrizen**.
+* [ ] Sie wissen, was eine **orthogonale** Matrix ist.
+* [ ] Sie kennen die wichtigsten **Eigenschaften von orthogonalen Matrizen**.
 ```
 
 ## Orthogonale Matrix

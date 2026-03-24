@@ -9,11 +9,11 @@ erfolgt die Matrizenmultiplikation nicht elementweise *nicht elementweise*.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie können zwei Matrizen miteinander multiplizieren.
-* Sie wissen, dass die Matrixmultiplikation *nicht kommutativ* ist, d.h. dass im 
+* [ ] Sie können zwei Matrizen miteinander multiplizieren.
+* [ ] Sie wissen, dass die Matrixmultiplikation *nicht kommutativ* ist, d.h. dass im 
   Allgemeinen $\mathbf{A}\cdot\mathbf{B} \textcolor{red}{\neq}
   \mathbf{B}\cdot\mathbf{A}$ gilt.
-* Sie können die Rechenregeln der Matrizenmultiplikation anwenden, insbesondere
+* [ ] Sie können die Rechenregeln der Matrizenmultiplikation anwenden, insbesondere
   * Assoziativgesetz und
   * Distributivgesetz.
 ```
@@ -263,14 +263,20 @@ doch für $\mathbf{B}\cdot\mathbf{A}$ erhalten wir:
 \begin{pmatrix} 3 & 4 \\ 1 & 2 \\ \end{pmatrix}.
 \end{equation*}
 
-Glücklicherweise gelten für die Matrizenmultiplikation das Assoziativgesetz und
-das Distributivgesetz, die uns das Rechnen mit Matrizen häufig erleichtern:
+Glücklicherweise gelten für die Matrizenmultiplikation das Assoziativgesetz
+
+\begin{equation*}
+(\mathbf{A}\cdot\mathbf{B})\cdot\mathbf{C} = \mathbf{A}\cdot(\mathbf{B}\cdot\mathbf{C})
+\end{equation*}
+
+und das Distributivgesetz
 
 \begin{align*}
-(\mathbf{A}\cdot\mathbf{B})\cdot\mathbf{C} &= \mathbf{A}\cdot(\mathbf{B}\cdot\mathbf{C}) \\
 \mathbf{A}\cdot(\mathbf{B}+\mathbf{C}) &= \mathbf{A}\cdot\mathbf{B} + \mathbf{A}\cdot\mathbf{C} \\
-(\mathbf{A}+\mathbf{B})\cdot\mathbf{C} &= \mathbf{A}\cdot\mathbf{C} + \mathbf{B}\cdot\mathbf{C}
+(\mathbf{A}+\mathbf{B})\cdot\mathbf{C} &= \mathbf{A}\cdot\mathbf{C} + \mathbf{B}\cdot\mathbf{C},
 \end{align*}
+
+die uns das Rechnen mit Matrizen häufig erleichtern.
 
 Diese Regeln sind besonders nützlich, wenn es darum geht, komplexere
 Matrizenprodukte zu berechnen. In den folgenden Videos wird auf die Rechenregeln

@@ -8,12 +8,12 @@ transponierte Matrix und die symmetrische Matrix.
 
 ```{admonition} Lernziele
 :class: attention
-* Sie wissen, was eine **transponierte Matrix** ist und können zu einer
+* [ ] Sie wissen, was eine **transponierte Matrix** ist und können zu einer
   gegebenen Matrix die transponierte Matrix berechnen.
-* Sie kennen die **Rechenregeln für transponierte Matrizen**.
-* Sie können überprüfen, ob eine Matrix **symmetrisch** oder
+* [ ] Sie kennen die **Rechenregeln für transponierte Matrizen**.
+* [ ] Sie können überprüfen, ob eine Matrix **symmetrisch** oder
   **antisymmetrisch/schiefsymmetrisch** oder nichts davon ist.
-* Sie können eine Matrix in einen symmetrischen und antisymmetrischen Teil
+* [ ] Sie können eine Matrix in einen symmetrischen und antisymmetrischen Teil
   zerlegen.
 ```
 
