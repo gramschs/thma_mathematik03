@@ -203,12 +203,6 @@ statisch unbestimmt oder kinematisch beweglich.
 der Steifigkeitsmatrix den Starrkörpermoden des nicht gelagerten Systems. Diese müssen
 vor der Berechnung durch Randbedingungen beseitigt werden.
 
-```{dropdown} Video "Kern einer Matrix" von MathePeter
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uQhTuRlWMxw"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-```
-
 ## Zusammenfassung und Ausblick
 
 Der Kern einer Matrix $\mathbf{A}$ ist die Menge aller Vektoren $\vec{v}$, für die

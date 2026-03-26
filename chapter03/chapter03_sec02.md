@@ -1,151 +1,228 @@
-# Orthogonale Matrizen
+# Definition und Eigenschaften linearer Abbildungen
 
-Orthogonale Matrizen spielen eine wichtige Rolle zur Beschreibung von Drehungen
-und Spiegelungen in der Geometrie. In diesem Kapitel werden die Definition und
-Eigenschaften orthogonaler Matrizen vorgestellt sowie deren
-Anwendungsmöglichkeiten erläutert.
+In den vorigen Kapiteln haben wir zahlreiche Beispiele linearer Abbildungen
+kennengelernt: Streckungen, Spiegelungen, Projektionen und Scherungen. All diese
+Transformationen werden durch eine Matrix-Vektor-Multiplikation beschrieben. In
+diesem Kapitel definieren wir den Begriff der linearen Abbildung formal und lernen
+die zwei Eigenschaften kennen, die jede lineare Abbildung erfüllt. Diese Eigenschaften
+sind die mathematische Grundlage des Superpositionsprinzips, das in der gesamten
+Ingenieurtechnik eine zentrale Rolle spielt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was eine **orthogonale** Matrix ist.
-* [ ] Sie kennen die wichtigsten **Eigenschaften von orthogonalen Matrizen**.
+* Sie kennen die formale **Definition einer linearen Abbildung**
+  $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$.
+* Sie kennen die beiden charakteristischen Eigenschaften einer linearen Abbildung:
+    * **Homogenität**: $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$,
+    * **Additivität**: $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$.
+* Sie können überprüfen, ob eine gegebene Abbildung linear ist, indem Sie
+  Homogenität und Additivität nachweisen.
+* Sie verstehen den Zusammenhang zwischen Linearität und dem technisch wichtigen
+  **Superpositionsprinzip**.
+* Sie wissen, dass nicht jede geometrisch einfach wirkende Abbildung linear ist,
+  und können Gegenbeispiele angeben.
 ```
 
-## Orthogonale Matrix
+## Formale Definition
 
-Eine quadratische Matrix $\mathbf{Q}\in\mathbb{R}^{n\times n}$ heißt orthogonal,
-wenn sie die Bedingung erfüllt:
-
-\begin{equation*}
-\mathbf{Q}^{T}\cdot\mathbf{Q} = \mathbf{Q}\cdot\mathbf{Q}^{T} = \mathbf{E},
-\end{equation*}
-
-wobei $\mathbf{Q}^{T}$ die Transponierte von $\mathbf{Q}$ ist. Mit $\mathbf{E}$
-bezeichnen wir wie üblich die Einheitsmatrix.
-
-Eine orthogonale Matrix hat die Eigenschaft, dass ihre Zeilen- und
-Spaltenvektoren paarweise orthonormal sind, d.h. sie sind orthogonal zueinander
-und haben jeweils die Länge 1.
-
-Ein Beispiel für eine orthogonale Matrix ist
+Nachdem wir viele Beispiele gesehen haben, ist es an der Zeit, den Begriff der
+linearen Abbildung präzise zu formulieren. Durch die Multiplikation einer festen
+Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ mit einem Vektor $\vec{v} \in
+\mathbb{R}^n$ entsteht ein neuer Vektor $\vec{w} \in \mathbb{R}^m$. Diese Zuordnung
+ist eine Funktion und heißt **lineare Abbildung**:
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.
+F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
+\vec{v} \mapsto \vec{w} = \mathbf{A} \cdot \vec{v}.
 \end{equation*}
 
-Um zu überprüfen, ob $\mathbf{A}$ orthogonal ist, müssen wir die Definition
-anwenden und zeigen, dass $\mathbf{A}^{T}\cdot\mathbf{A}=\mathbf{E}$ gilt. Wir
-berechnen zunächst die transponierte Matrix:
+Die Angabe $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ beschreibt den
+**Definitionsbereich** $\mathbb{R}^n$ (alle möglichen Eingaben) und den
+**Wertebereich** $\mathbb{R}^m$ (alle möglichen Ausgaben). Der Pfeil $\vec{v}
+\mapsto \vec{w}$ zeigt, wie ein konkreter Eingabevektor $\vec{v}$ auf den
+Ausgabevektor $\vec{w}$ abgebildet wird.
+
+```{admonition} Was ist ... eine lineare Abbildung?
+:class: note
+Durch Multiplikation einer festen Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$
+wird jedem Vektor $\vec{v} \in \mathbb{R}^n$ eindeutig ein Vektor
+$\vec{w} \in \mathbb{R}^m$ zugeordnet. Diese Funktion
 
 \begin{equation*}
-\mathbf{A}^T = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.
+F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
+F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}
 \end{equation*}
 
-Dann multiplizieren wir $\mathbf{A}^{T}$ mit $\mathbf{A}$:
+heißt **lineare Abbildung**.
+```
+
+## Homogenität
+
+Die erste fundamentale Eigenschaft einer linearen Abbildung ist die
+**Homogenität**. Sie besagt, dass es gleichgültig ist, ob man einen Vektor erst
+skaliert und dann abbildet, oder erst abbildet und dann skaliert. Das Ergebnis ist
+in beiden Fällen dasselbe:
 
 \begin{equation*}
-\mathbf{A}^{T}\cdot\mathbf{A} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
-\cdot \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.
+F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})
+\quad \text{für alle } \vec{v} \in \mathbb{R}^n \text{ und alle } \alpha \in \mathbb{R}.
 \end{equation*}
 
-Das ergibt
+Geometrisch bedeutet das: Wird ein Vektor vor der Abbildung um den Faktor $\alpha$
+gestreckt oder gestaucht, so ist das Ergebnis dasselbe wie das $\alpha$-fache des
+Bildvektors. Im Maschinenbau steckt dahinter ein wichtiges physikalisches Prinzip:
+Verdoppelt man beispielsweise die Kraft an einem elastischen Bauteil, so verdoppelt
+sich auch die Verformung, solange das Materialverhalten linear ist. Das Hookesche
+Gesetz $F = k \cdot x$ ist genau die Homogenität der linearen Abbildung, die die
+Kraft auf die Verformung abbildet.
+
+Diese Eigenschaft folgt direkt aus den Rechengesetzen der Matrizenmultiplikation.
+Für eine allgemeine $2\times 2$-Matrix überprüfen wir dies konkret:
+
+\begin{align*}
+F_{\mathbf{A}}(\alpha \cdot \vec{v})
+&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} \alpha v_x \\ \alpha v_y \end{pmatrix}
+= \begin{pmatrix} a_{11} \alpha v_x + a_{12} \alpha v_y \\ a_{21} \alpha v_x + a_{22} \alpha v_y \end{pmatrix} \\
+&= \alpha \begin{pmatrix} a_{11} v_x + a_{12} v_y \\ a_{21} v_x + a_{22} v_y \end{pmatrix}
+= \alpha \cdot \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} v_x \\ v_y \end{pmatrix}
+= \alpha \cdot F_{\mathbf{A}}(\vec{v}).
+\end{align*}
+
+Dieses Ergebnis gilt für beliebige $m \times n$-Matrizen, da die Skalarmultiplikation
+elementweise definiert ist.
+
+Eine wichtige Konsequenz der Homogenität ist, dass lineare Abbildungen den Nullvektor
+auf den Nullvektor abbilden. Setzt man $\alpha = 0$, so ergibt sich:
 
 \begin{equation*}
-\mathbf{A}^T \cdot\mathbf{A} =
-\begin{pmatrix} (0 \cdot 0 + (-1) \cdot (-1)) & (0 \cdot 1 + (-1) \cdot 0) \\
-(1 \cdot 0 + 0 \cdot (-1)) & (1 \cdot 1 + 0 \cdot 0) \end{pmatrix}
-= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.
+F_{\mathbf{A}}(\vec{0}) = F_{\mathbf{A}}(0 \cdot \vec{v}) = 0 \cdot F_{\mathbf{A}}(\vec{v}) = \vec{0}.
 \end{equation*}
 
-Das Ergebnis ist die Einheitsmatrix der Dimension $2\times 2$. Ein weiteres sehr
-bekanntes Beispiel einer orthogonalen Matrix ist die $2\times 2$-Rotationsmatrix
+Diese Eigenschaft ist ein nützliches Kriterium: Eine Abbildung, die den Nullvektor
+nicht auf den Nullvektor abbildet, kann nicht linear sein.
+
+## Additivität
+
+Die zweite fundamentale Eigenschaft ist die **Additivität**. Sie besagt, dass es
+gleichgültig ist, ob man zwei Vektoren erst addiert und dann abbildet, oder erst
+jeden Vektor einzeln abbildet und dann die Bilder addiert:
 
 \begin{equation*}
-\mathbf{R}(\varphi) =
-\begin{pmatrix}\cos(\varphi)&-\sin(\varphi) \\ \sin(\varphi)&\cos(\varphi)\end{pmatrix},
+F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)
+\quad \text{für alle } \vec{v}_1, \vec{v}_2 \in \mathbb{R}^n.
 \end{equation*}
 
-die für jeden Winkel $\varphi$ orthogonal ist. Wir bilden zuerst die Transponierte:
+Geometrisch bedeutet das: Die Abbildung der Summe zweier Vektoren liefert dieselbe
+Summe wie die Abbildung der einzelnen Vektoren. In der Strukturmechanik steckt dahinter
+das Prinzip der Lastfallüberlagerung: Wirken auf ein Bauteil gleichzeitig zwei Lasten
+$\vec{F}_1$ und $\vec{F}_2$, so ist die resultierende Verformung gleich der Summe der
+Verformungen, die jede Last einzeln erzeugt hätte. Das erlaubt es, in der FEM komplexe
+Lastsituationen durch Überlagerung einfacher Einzellastfälle zu berechnen.
+
+Auch diese Eigenschaft folgt aus den Rechengesetzen der Matrizenmultiplikation.
+Wir überprüfen sie für eine allgemeine $2\times 2$-Matrix mit den Vektoren
+$\vec{v}_1 = \begin{pmatrix} v_{1x} \\ v_{1y} \end{pmatrix}$ und
+$\vec{v}_2 = \begin{pmatrix} v_{2x} \\ v_{2y} \end{pmatrix}$:
+
+\begin{align*}
+F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2)
+&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} v_{1x} + v_{2x} \\ v_{1y} + v_{2y} \end{pmatrix} \\
+&= \begin{pmatrix} a_{11}(v_{1x} + v_{2x}) + a_{12}(v_{1y} + v_{2y}) \\
+                   a_{21}(v_{1x} + v_{2x}) + a_{22}(v_{1y} + v_{2y}) \end{pmatrix} \\ +
+&= \begin{pmatrix} a_{11}v_{1x} + a_{12}v_{1y} \\ a_{21}v_{1x} + a_{22}v_{1y} \end{pmatrix}
+\begin{pmatrix} a_{11}v_{2x} + a_{12}v_{2y} \\ a_{21}v_{2x} + a_{22}v_{2y} \end{pmatrix} \\
+&= F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2).
+\end{align*}
+
+## Superpositionsprinzip
+
+Homogenität und Additivität lassen sich zu einer einzigen Aussage zusammenfassen,
+die in der Ingenieurtechnik als **Superpositionsprinzip** bekannt ist:
 
 \begin{equation*}
-\mathbf{R}^T(\varphi) =
-\begin{pmatrix} \cos(\varphi) & \sin(\varphi) \\ -\sin(\varphi) & \cos(\varphi) \end{pmatrix}.
-\end{equation*}
+F_{\mathbf{A}}(\alpha_1 \vec{v}_1 + \alpha_2 \vec{v}_2)
+= \alpha_1 \cdot F_{\mathbf{A}}(\vec{v}_1) + \alpha_2 \cdot F_{\mathbf{A}}(\vec{v}_2).
+\end{equation*>
 
-Das ergibt
+Das Superpositionsprinzip besagt, dass die Abbildung einer Linearkombination von
+Vektoren gleich der entsprechenden Linearkombination der Bildvektoren ist.
 
-\begin{equation*} \begin{split} &\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) = \\
-&= \begin{pmatrix}
-\cos^2(\varphi) + \sin^2(\varphi) & \cos(\varphi)(-\sin(\varphi)) + \sin(\varphi) \cos(\varphi) \\
-(-\sin(\varphi))\cos(\varphi) + \cos(\varphi)\sin(\varphi) & \sin^2(\varphi) + \cos^2(\varphi)
-\end{pmatrix}.
-\end{split} \end{equation*}
+Dieses Prinzip ist das mathematische Fundament einer Vielzahl von Berechnungsmethoden
+im Maschinenbau:
 
-Die trigonometrischen Terme können weiter vereinfacht werden, denn es gelten:
+In der **Festigkeitslehre** erlaubt das Superpositionsprinzip, die Biegespannung und
+die Normalkraft getrennt zu berechnen und anschließend zu überlagern, solange das
+Material im linear-elastischen Bereich bleibt. Das Hookesche Gesetz garantiert dabei
+die Linearität.
 
-- $\cos^2(\varphi) + \sin^2(\varphi) = 1$ (trigonometrische Identität)
-- $\cos(\varphi)(-\sin(\varphi)) + \sin(\varphi)\cos(\varphi) = 0$
-- $(- \sin(\varphi))\cos(\varphi) + \cos(\varphi)\sin(\varphi) = 0$
-- $\sin^2(\varphi) + \cos^2(\varphi) = 1$
+In der **Finite-Elemente-Methode** wird das globale Gleichungssystem $\mathbf{K}
+\vec{u} = \vec{f}$ aus den Elementsteifigkeitsmatrizen zusammengesetzt. Die
+Linearität der Abbildung $\vec{f} \mapsto \vec{u}$ erlaubt es, mehrere Lastfälle mit
+einer einzigen Faktorisierung der Steifigkeitsmatrix $\mathbf{K}$ zu lösen.
 
-Somit erhalten wir erneut die $2\times 2$-Einheitsmatrix
+In der **Regelungstechnik** beschreiben lineare Zustandsraummodelle das Verhalten
+dynamischer Systeme. Die Linearität ermöglicht den Einsatz von Methoden wie der
+Laplace-Transformation und der Bode-Diagramm-Analyse.
 
-\begin{equation*}
-\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) =
-\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.
-\end{equation*}
+In der **Schwingungsanalyse** erlaubt das Superpositionsprinzip, die Eigenformen
+eines Systems unabhängig voneinander zu berechnen und zur Gesamtantwort zu überlagern.
+Auf diese Grundlage werden wir im Kapitel über Eigenwerte und Eigenvektoren genauer
+eingehen.
 
-## Eigenschaften von orthogonalen Matrizen
+## Welche Abbildungen sind nicht linear?
 
-### Längen- und Winkeltreue
-
-Wird eine orthogonale Matrix $\mathbf{Q}$ mit einem Vektor multipliziert, ändert
-sich seine Länge nicht. Es gilt also
-
-\begin{equation*}
-\|\mathbf{Q}\cdot\vec{x}\| = \|\vec{x}\|.
-\end{equation*}
-
-Auch der Winkel zwischen zwei Vektoren bleibt erhalten. Es gilt
+Nicht jede geometrisch einfach wirkende Abbildung ist linear. Ein wichtiges
+Gegenbeispiel ist die **Translation**: Jeder Punkt wird um einen festen Vektor
+$\vec{t}$ verschoben:
 
 \begin{equation*}
-\left(\mathbf{Q}\cdot\vec{x}\right) \cdot \left(\mathbf{Q}\cdot\vec{y}\right)
-= \vec{x}\cdot\vec{y}.
+f(\vec{v}) = \vec{v} + \vec{t}, \quad \vec{t} \neq \vec{0}.
 \end{equation*}
 
-Gemäß der geometrischen Interpretation des Skalarproduktes bleibt der Winkel
-also gleich. Diese Eigenschaften von orthogonalen Matrizen werden ausgenutzt, um
-Drehungen und Spiegelungen zu beschreiben.
+Diese Abbildung ist nicht linear, weil sie den Nullvektor nicht auf den Nullvektor
+abbildet: $f(\vec{0}) = \vec{t} \neq \vec{0}$. Damit ist bereits die Homogenität
+verletzt. Im Maschinenbau bedeutet das: Die Verschiebung eines Körpers im Raum um
+einen konstanten Betrag ist keine lineare Operation. Deshalb werden in der Robotik und
+in der Computergrafik sogenannte homogene Koordinaten eingesetzt, die es ermöglichen,
+auch Translationen als Matrixmultiplikation darzustellen.
 
-### Determinante orthogonaler Matrizen ist Eins
+Ein weiteres Gegenbeispiel aus der Technik sind nichtlineare Materialgesetze: Die
+Spannungs-Dehnungs-Beziehung von Gummi oder von Stahl im plastischen Bereich ist
+nicht linear. Für solche Materialien gilt das Superpositionsprinzip nicht, was die
+Berechnung erheblich aufwändiger macht.
 
-Die Determinante einer orthogonalen Matrix ist immer $\pm 1$. Eine Determinante
-von $1$ bedeutet, dass die Transformation eine Drehung ist, während $−1$ auf
-eine Spiegelung hinweist.
+```{admonition} Lineare Abbildung: Homogenität und Additivität
+:class: note
+Eine Abbildung $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ mit
+$F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ ist linear, weil sie folgende
+zwei Eigenschaften erfüllt:
 
-### Invertierbarkeit
+**Homogenität:** $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$
 
-Jede orthogonale Matrix ist invertierbar, und ihre Inverse ist gleich ihrer
-Transponierten:
+**Additivität:** $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$
 
-\begin{equation*}
-\mathbf{A}^{-1} = \mathbf{A}^{T}.
-\end{equation*}
+Diese beiden Eigenschaften gelten für alle $\vec{v}, \vec{v}_1, \vec{v}_2 \in
+\mathbb{R}^n$ und alle $\alpha \in \mathbb{R}$. Zusammen bilden sie das
+**Superpositionsprinzip**, das in der Festigkeitslehre, der FEM und der
+Regelungstechnik grundlegend ist.
 
-Diese Eigenschaft und auch die anderen werden in dem folgenden Video demonstriert.
-
-```{dropdown} Video "Orthogonale Matrizen" von MathePeter
-<iframe width="560" height="315" src="https://www.youtube.com/embed/X4oTwBusjMk"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+Eine notwendige Bedingung für Linearität ist, dass der Nullvektor auf den
+Nullvektor abgebildet wird: $F_{\mathbf{A}}(\vec{0}) = \vec{0}$.
 ```
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir die Definition und Eigenschaften orthogonaler
-Matrizen kennengelernt. Orthogonale Matrizen werden insbesondere dann verwendet,
-wenn Längen und Winkel unverändert bleiben müssen. Im nächsten Kapitel werden
-wir erneut auf das Thema Lösen von linearen Gleichungssystemen zuwenden, diesmal
-aber die Matrizenschreibweise benutzen.
+Eine lineare Abbildung $F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ erfüllt
+die Homogenität und die Additivität. Beide Eigenschaften folgen direkt aus den
+Rechengesetzen der Matrizenmultiplikation und spiegeln das technisch wichtige
+Superpositionsprinzip wider: In linearen Systemen dürfen Teilwirkungen getrennt
+berechnet und anschließend überlagert werden. Nicht-lineare Abbildungen wie
+Translationen oder nichtlineare Materialgesetze erfüllen diese Eigenschaft nicht.
+In den nächsten Kapiteln werden wir zwei wichtige Konzepte kennenlernen, die
+beschreiben, welche Vektoren durch eine lineare Abbildung auf den Nullvektor
+abgebildet werden (Kern) und welche Vektoren als Ergebnis auftreten können (Bild).

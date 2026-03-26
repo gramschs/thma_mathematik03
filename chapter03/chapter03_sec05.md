@@ -122,7 +122,7 @@ folgt:
 \begin{equation*}
 \mathbf{A} \cdot \vec{x} = \vec{b} \text{ ist lösbar} \quad \Longleftrightarrow \quad
 \vec{b} \in \text{Bild}(\mathbf{A}).
-\end{equation*>
+\end{equation*}
 
 Das Gleichungssystem ist genau dann lösbar, wenn der Vektor $\vec{b}$ im Bild der
 Matrix liegt. Im Maschinenbau treten folgende Varianten auf:
@@ -141,7 +141,7 @@ $\vec{b} \in \text{Bild}(\mathbf{A})$.
 
 ## Übersicht: Kern, Bild, Rang und Dimensionsformel
 
-| Situation | $\dim(\text{Kern})$ | $\text{Rang}$ | Ingenieurische Bedeutung |
+| Situation | $\dim(\text{Kern})$ | $\text{Rang}$ | Bedeutung in der Praxis |
 | --- | --- | --- | --- |
 | Invertierbare $n\times n$-Matrix | $0$ | $n$ | Eindeutig lösbar, z.B. gelagerte FEM-Struktur |
 | Singulare $n\times n$-Matrix | $\geq 1$ | $< n$ | Unendlich viele Lösungen oder unlösbar |
