@@ -1,5 +1,10 @@
 # Basiswechsel
 
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
 Bisher haben wir Vektoren stets in kartesischen Koordinaten beschrieben, also
 bezüglich der Standardbasis mit den Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und
 $\vec{e}_3$. In der Ingenieurpraxis ist die Standardbasis jedoch häufig nicht die

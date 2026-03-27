@@ -1,5 +1,10 @@
 # Definition und Eigenschaften linearer Abbildungen
 
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
 In den vorigen Kapiteln haben wir zahlreiche Beispiele linearer Abbildungen
 kennengelernt: Streckungen, Spiegelungen, Projektionen und Scherungen. All diese
 Transformationen werden durch eine Matrix-Vektor-Multiplikation beschrieben. In
@@ -147,7 +152,7 @@ die in der Ingenieurtechnik als **Superpositionsprinzip** bekannt ist:
 \begin{equation*}
 F_{\mathbf{A}}(\alpha_1 \vec{v}_1 + \alpha_2 \vec{v}_2)
 = \alpha_1 \cdot F_{\mathbf{A}}(\vec{v}_1) + \alpha_2 \cdot F_{\mathbf{A}}(\vec{v}_2).
-\end{equation*>
+\end{equation*}
 
 Das Superpositionsprinzip besagt, dass die Abbildung einer Linearkombination von
 Vektoren gleich der entsprechenden Linearkombination der Bildvektoren ist.

@@ -1,5 +1,10 @@
 # Kern einer Matrix
 
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
 Wir wissen nun, was eine lineare Abbildung ist und welche Eigenschaften sie erfüllt.
 Als nächstes stellen wir die Frage: Welche Eingabevektoren werden durch eine gegebene
 Abbildung auf den Nullvektor abgebildet? Die Antwort auf diese Frage führt zum Begriff

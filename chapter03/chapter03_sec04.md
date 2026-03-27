@@ -1,5 +1,10 @@
 # Bild und Rang einer Matrix
 
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
 Wir haben im vorigen Kapitel den Kern einer Matrix kennengelernt: die Menge der
 Eingabevektoren, die auf den Nullvektor abgebildet werden. Nun stellen wir die
 umgekehrte Frage: Welche Vektoren können überhaupt als Ergebnis einer linearen

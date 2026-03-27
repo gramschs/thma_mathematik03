@@ -1,5 +1,10 @@
 # Dimensionsformel
 
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
 Kern und Bild einer Matrix beschreiben zwei grundlegende Aspekte einer linearen
 Abbildung: Was geht verloren, und was ist erreichbar? In diesem Kapitel lernen wir
 einen eleganten Zusammenhang zwischen der Dimension des Kerns und der Dimension des
