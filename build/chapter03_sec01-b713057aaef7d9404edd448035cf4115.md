@@ -1,0 +1,267 @@
+# Lineare Abbildungen im 2D
+
+Matrizen beschreiben geometrische Transformationen. In diesem Kapitel lernen wir,
+wie eine Matrix einen Vektor in einen neuen Vektor umwandelt, und sehen an konkreten
+Beispielen aus dem Maschinenbau, warum dieses Konzept in der Ingenieurpraxis
+unverzichtbar ist.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* Sie verstehen, dass eine Matrix eine **lineare Abbildung** beschreibt, die
+  einen Vektor $\vec{v}$ auf einen neuen Vektor $\vec{w}$ abbildet.
+* Sie kennen die **Matrix-Vektor-Schreibweise** einer linearen Abbildung:
+  \begin{equation*}
+  F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}.
+  \end{equation*}
+* Sie können die Wirkung einer $2\times 2$-Matrix geometrisch interpretieren,
+  insbesondere für die folgenden Transformationen im $\mathbb{R}^2$:
+    * **gleichmäßige Streckung**,
+    * **Spiegelung** an der Winkelhalbierenden,
+    * **Scherung**.
+* Sie kennen den Zusammenhang zwischen der **Determinante** einer
+  Abbildungsmatrix und der Änderung des **Flächeninhalts**.
+```
+
+## Matrizen als geometrische Transformationen
+
+In CAD-Programmen wie CATIA oder SolidWorks lassen sich Bauteile verschieben,
+drehen, spiegeln und skalieren. Was auf dem Bildschirm wie ein einfacher
+Mausklick aussieht, ist im Hintergrund eine mathematische Operation: die
+Multiplikation einer Matrix mit einem Vektor. Auch in der Finite-Elemente-Methode
+werden Verschiebungen von Knoten durch Matrix-Vektor-Produkte berechnet. Das
+Ergebnis einer FEM-Simulation, das als farbige Verformungsgrafik erscheint, basiert
+auf Milliarden solcher Operationen.
+
+Betrachten wir ein einfaches ebenes Bauteilprofil, das durch eine Menge von
+Punkten im $\mathbb{R}^2$ beschrieben wird. Jeder Punkt wird durch einen
+Ortsvektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ dargestellt. Eine
+**lineare Abbildung** transformiert jeden solchen Punkt durch die Multiplikation
+mit einer festen Matrix $\mathbf{A}$:
+
+\begin{equation*}
+F_{\mathbf{A}}\!\left(\underbrace{\vec{v}}_{\text{Input}}\right)
+= \mathbf{A} \cdot \vec{v}
+= \underbrace{\vec{w}}_{\text{Output}}.
+\end{equation*}
+
+Der Eingabevektor $\vec{v}$ beschreibt die ursprüngliche Position, der
+Ausgabevektor $\vec{w}$ die transformierte Position. Die Matrix $\mathbf{A}$
+legt dabei vollständig fest, welche Transformation durchgeführt wird.
+
+Um die Wirkung einer Matrix systematisch zu verstehen, genügt es, die beiden
+**Standardbasisvektoren**
+
+\begin{equation*}
+\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+\quad \text{und} \quad
+\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\end{equation*}
+
+durch die Abbildung zu schicken. Jeder beliebige Vektor
+$\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix} = x \cdot \vec{e}_1 + y \cdot
+\vec{e}_2$ lässt sich als Linearkombination dieser beiden Vektoren darstellen.
+Die Bilder von $\vec{e}_1$ und $\vec{e}_2$ sind nichts anderes als die erste
+und zweite **Spalte** der Matrix $\mathbf{A}$.
+
+## Gleichmäßige Streckung
+
+Das einfachste Beispiel ist die gleichmäßige Streckung: Jeder Punkt des Profils
+wird um den gleichen Faktor $s > 0$ von der Mitte weg verschoben. In einem
+CAD-System entspricht das dem maßstäblichen Vergrößern eines Bauteils in alle
+Richtungen gleichmäßig, zum Beispiel wenn ein Normteil in einem anderen Maßstab
+wiederverwendet werden soll. Die zugehörige Abbildungsmatrix ist
+
+\begin{equation*}
+\mathbf{A}_{\text{Streckung}} = \begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}.
+\end{equation*}
+
+Für den Streckungsfaktor $s = 2$ ergibt sich:
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}.
+\end{equation*}
+
+Wir verfolgen, was mit den Standardbasisvektoren passiert:
+
+\begin{equation*}
+F_{\mathbf{A}}\!\left(\begin{pmatrix} 1 \\ 0 \end{pmatrix}\right)
+= \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+= \begin{pmatrix} 2 \\ 0 \end{pmatrix}, \quad
+F_{\mathbf{A}}\!\left(\begin{pmatrix} 0 \\ 1 \end{pmatrix}\right)
+= \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Beide Basisvektoren werden doppelt so lang. Für einen beliebigen Vektor gilt
+entsprechend:
+
+\begin{equation*}
+\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} 2x \\ 2y \end{pmatrix}
+= 2 \cdot \begin{pmatrix} x \\ y \end{pmatrix}.
+\end{equation*}
+
+Die Matrix verdoppelt jeden Vektor. Richtung und Form bleiben erhalten, nur die
+Größe ändert sich. Das Einheitsquadrat mit den Ecken $(0,0)$, $(1,0)$, $(1,1)$,
+$(0,1)$ wird auf ein Quadrat mit den Ecken $(0,0)$, $(2,0)$, $(2,2)$, $(0,2)$
+abgebildet. Der Flächeninhalt vervierfacht sich von $1$ auf $4$.
+
+Diesen Zusammenhang liefert die **Determinante** der Matrix:
+
+\begin{equation*}
+\det(\mathbf{A}) = \det\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}
+= 2 \cdot 2 - 0 \cdot 0 = 4.
+\end{equation*}
+
+Dass die Determinante den Flächenskalierungsfaktor liefert, ist kein Zufall, sondern
+eine allgemeine Eigenschaft linearer Abbildungen. In der Kontinuumsmechanik wird
+diese Eigenschaft genutzt, um zu beschreiben, wie sich das Volumen eines
+Materialelements unter Deformation verändert. Die Determinante des sogenannten
+Deformationsgradienten, den Sie in der Höheren Technischen Mechanik kennenlernen
+werden, gibt direkt das Volumenverhältnis zwischen verformtem und unverformtem Zustand
+an.
+
+```{admonition} Determinante und Flächenskalierung
+:class: note
+Der **Betrag der Determinante** einer $2\times 2$-Abbildungsmatrix gibt an, um
+welchen Faktor sich der Flächeninhalt eines Gebietes unter der Abbildung ändert.
+
+* $|\det(\mathbf{A})| > 1$: Flächeninhalt nimmt zu (Streckung).
+* $|\det(\mathbf{A})| = 1$: Flächeninhalt bleibt erhalten.
+* $|\det(\mathbf{A})| < 1$: Flächeninhalt nimmt ab (Stauchung).
+* $\det(\mathbf{A}) < 0$: zusätzlich Umkehrung der Orientierung (Spiegelung).
+* $\det(\mathbf{A}) = 0$: Dimensionsverlust, das Gebiet wird auf eine Linie
+  oder einen Punkt abgebildet.
+```
+
+## Spiegelung an der Winkelhalbierenden
+
+Eine weitere wichtige Transformation ist die **Spiegelung**. In der
+Bauteilkonstruktion entstehen häufig spiegelsymmetrische Teile wie linke und rechte
+Lagerschalen, Links- und Rechtsgewinde oder gespiegelte Halterungen. Anstatt das
+gespiegelte Bauteil neu zu modellieren, wendet das CAD-System eine Spiegelmatrix auf
+alle Punkte des Originals an. Auch in der Messtechnik tritt Spiegelung auf, wenn
+Messdaten zwischen einem rechts- und einem linkshändigen Koordinatensystem
+umgerechnet werden, etwa bei der Kalibrierung optischer Messsysteme.
+
+Die Spiegelung an der Winkelhalbierenden, also der Geraden $y = x$, vertauscht
+die $x$- und $y$-Koordinate jedes Punktes. Die zugehörige Matrix ist
+
+\begin{equation*}
+\mathbf{A}_{\text{Spiegelung}} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}.
+\end{equation*}
+
+Wir überprüfen dies an den Standardbasisvektoren und einem allgemeinen Vektor:
+
+\begin{equation*}
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \quad
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 1 \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Die Basisvektoren werden vertauscht. Für einen beliebigen Vektor gilt:
+
+\begin{equation*}
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} y \\ x \end{pmatrix}.
+\end{equation*}
+
+Der Punkt $(x, y)$ wird auf den Punkt $(y, x)$ abgebildet, also genau die
+Spiegelung an der Winkelhalbierenden $y = x$.
+
+Die Determinante dieser Matrix ist
+
+\begin{equation*}
+\det(\mathbf{A}_{\text{Spiegelung}}) = 0 \cdot 0 - 1 \cdot 1 = -1.
+\end{equation*}
+
+Der Betrag $|\det| = 1$ zeigt, dass der Flächeninhalt erhalten bleibt. Das negative
+Vorzeichen zeigt an, dass die Orientierung umgekehrt wird: Ein ursprünglich gegen den
+Uhrzeigersinn beschriebenes Profil wird nach der Abbildung im Uhrzeigersinn
+beschrieben. In der Mechanik spricht man von einem Wechsel zwischen rechts- und
+linkshändigem Koordinatensystem.
+
+## Scherung
+
+Eine **Scherung** (engl. _shear_) verschiebt Punkte parallel zu einer Achse,
+proportional zu ihrer Entfernung von dieser Achse. Dieses Phänomen tritt im
+Maschinenbau an vielen Stellen auf. In der Festigkeitslehre beschreibt die Scherung
+die Verformung eines Querschnitts unter Schubbelastung: Ein ursprünglich rechteckiger
+Querschnitt verformt sich zu einem Parallelogramm, wenn eine Schubspannung $\tau$
+angreift. In der Werkstoffkunde beschreibt die Scherung die Verschiebung von
+Gitterebenen bei der plastischen Verformung von Metallen. Beim Walzen oder Ziehen
+entstehen in der Mikrostruktur des Materials genau diese Scherverformungen, die die
+mechanischen Eigenschaften des Werkstoffs verändern.
+
+Die Matrix für eine Scherung in $x$-Richtung mit dem Scherungsparameter $k$ ist
+
+\begin{equation*}
+\mathbf{A}_{\text{Scherung}} = \begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Für $k = 1$ gilt zum Beispiel:
+
+\begin{equation*}
+\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+= \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
+\end{equation*}
+
+Der erste Basisvektor $\vec{e}_1$ bleibt unverändert, während $\vec{e}_2$ um den
+Wert $k=1$ in $x$-Richtung verschoben wird. Für einen allgemeinen Punkt ergibt sich:
+
+\begin{equation*}
+\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} x + y \\ y \end{pmatrix}.
+\end{equation*}
+
+Das Einheitsquadrat wird durch diese Scherung zu einem Parallelogramm mit den
+Ecken $(0,0)$, $(1,0)$, $(2,1)$, $(1,1)$. Die Determinante ist
+
+\begin{equation*}
+\det(\mathbf{A}_{\text{Scherung}}) = 1 \cdot 1 - 1 \cdot 0 = 1,
+\end{equation*}
+
+was bedeutet, dass der Flächeninhalt des Parallelogramms gleich dem des
+ursprünglichen Quadrats ist. Das ist eine bekannte Eigenschaft der Scherung und
+erklärt, warum reine Scherverformungen in der Festigkeitslehre keine Volumenänderung
+des Materials bewirken, sondern nur eine Formänderung.
+
+## Übersicht: Wichtige 2D-Abbildungsmatrizen
+
+Die folgende Tabelle fasst die besprochenen Transformationen zusammen und ergänzt
+sie um weitere praxisrelevante Fälle.
+
+| Transformation | Matrix $\mathbf{A}$ | $\det(\mathbf{A})$ | Beispiel im Maschinenbau |
+| --- | --- | --- | --- |
+| Gleichm. Streckung um $s$ | $\begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}$ | $s^2$ | Maßstabsänderung in CAD |
+| Spiegelung an $y = x$ | $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ | $-1$ | Spiegelteile in CAD |
+| Spiegelung an $x$-Achse | $\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ | $-1$ | Umrechnung Koordinatensysteme |
+| Scherung in $x$-Richtung | $\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}$ | $1$ | Schubverformung eines Querschnitts |
+| Projektion auf $x$-Achse | $\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ | $0$ | Projektion auf eine Messachse |
+
+```{admonition} Was ist ... eine lineare Abbildung im $\mathbb{R}^2$?
+:class: note
+Eine **lineare Abbildung** $F_{\mathbf{A}}: \mathbb{R}^2 \to \mathbb{R}^2$ wird
+durch eine $2\times 2$-Matrix $\mathbf{A}$ beschrieben. Sie ordnet jedem Vektor
+$\vec{v} \in \mathbb{R}^2$ eindeutig einen Bildvektor
+$\vec{w} = \mathbf{A} \cdot \vec{v} \in \mathbb{R}^2$ zu.
+
+Die geometrische Wirkung der Abbildung lässt sich vollständig aus den Bildern
+der Standardbasisvektoren $\vec{e}_1$ und $\vec{e}_2$ ablesen. Diese entsprechen
+den **Spalten** der Matrix $\mathbf{A}$.
+```
+
+## Zusammenfassung und Ausblick
+
+In diesem Kapitel haben wir gesehen, wie $2\times 2$-Matrizen geometrische
+Transformationen im $\mathbb{R}^2$ beschreiben: Strecken, Spiegeln und Scheren sind
+allesamt lineare Abbildungen der Form $\vec{w} = \mathbf{A} \cdot \vec{v}$. Diese
+Operationen bilden das mathematische Fundament von CAD-Systemen, der FEM und der
+Messtechnik. Die Determinante liefert dabei eine wichtige Zusatzinformation über die
+Änderung des Flächeninhalts und die Orientierung. Im nächsten Kapitel erweitern wir
+diese Ideen auf den dreidimensionalen Raum.

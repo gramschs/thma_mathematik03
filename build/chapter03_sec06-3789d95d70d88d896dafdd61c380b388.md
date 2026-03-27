@@ -1,0 +1,242 @@
+# Basiswechsel
+
+Bisher haben wir Vektoren stets in kartesischen Koordinaten beschrieben, also
+bezüglich der Standardbasis mit den Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und
+$\vec{e}_3$. In der Ingenieurpraxis ist die Standardbasis jedoch häufig nicht die
+sinnvollste Wahl. Ein Konstrukteur beschreibt ein Bauteil im körperfesten
+Koordinatensystem, das mit dem Bauteil mitdreht. Ein Schwingungsanalytiker wählt
+die Eigenformen des Systems als Basis, weil die Bewegungsgleichungen in dieser
+Basis vollständig entkoppeln. In diesem Kapitel lernen wir, wie man denselben
+Vektor in verschiedenen Basen darstellt und wie man zwischen Basen wechselt.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* Sie wissen, was eine **Basis** des $\mathbb{R}^n$ ist, und kennen die
+  **kanonische Basis**.
+* Sie können einen Vektor $\vec{a} \in \mathbb{R}^n$ als **Linearkombination**
+  von Basisvektoren darstellen.
+* Sie kennen den **Koordinatenvektor** ${}_{V}\vec{a}$ eines Vektors $\vec{a}$
+  bezüglich einer Basis $V$ und können ihn berechnen.
+* Sie können einen **Basiswechsel** durchführen, indem Sie das lineare
+  Gleichungssystem $V \cdot {}_{V}\vec{a} = \vec{a}$ lösen.
+```
+
+## Wiederholung: Lineare Unabhängigkeit und Basis
+
+Bevor wir den Basiswechsel einführen, erinnern wir uns an die notwendigen
+Grundbegriffe.
+
+Vektoren $\vec{v}_1, \ldots, \vec{v}_m \in \mathbb{R}^n$ heißen **linear
+unabhängig**, wenn die Vektorgleichung
+
+\begin{equation*}
+\lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_m \vec{v}_m = \vec{0}
+\end{equation*}
+
+nur für $\lambda_1 = \lambda_2 = \cdots = \lambda_m = 0$ erfüllt wird. Kein Vektor
+lässt sich dann als Linearkombination der anderen darstellen.
+
+Eine Menge von $n$ linear unabhängigen Vektoren $V = (\vec{v}_1, \ldots, \vec{v}_n)$
+im $\mathbb{R}^n$ heißt **Basis** des $\mathbb{R}^n$. Eine Basis ermöglicht es,
+jeden Vektor $\vec{a} \in \mathbb{R}^n$ als eindeutige Linearkombination der
+Basisvektoren darzustellen.
+
+Der Zusammenhang zwischen linearer Unabhängigkeit und Determinante ist dabei
+besonders nützlich: Fasst man die Basisvektoren als Spalten einer quadratischen
+Matrix $V = (\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_n)$ zusammen, so gilt:
+
+\begin{equation*}
+\det(V) \neq 0 \quad \Longleftrightarrow \quad \vec{v}_1, \ldots, \vec{v}_n \text{ sind linear unabhängig.}
+\end{equation*}
+
+## Die kanonische Basis
+
+Die einfachste und am häufigsten verwendete Basis ist die **kanonische Basis** (auch
+Standardbasis genannt). Im $\mathbb{R}^2$ besteht sie aus den beiden Einheitsvektoren
+
+\begin{equation*}
+\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad
+\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix},
+\end{equation*}
+
+und im $\mathbb{R}^3$ aus den drei Einheitsvektoren
+
+\begin{equation*}
+\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}, \quad
+\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}.
+\end{equation*}
+
+Bezüglich der kanonischen Basis sind die Koordinaten eines Vektors $\vec{a}$ gerade
+seine Einträge selbst:
+
+\begin{equation*}
+\vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
+= a_1 \cdot \vec{e}_1 + a_2 \cdot \vec{e}_2 + a_3 \cdot \vec{e}_3.
+\end{equation*}
+
+## Koordinatenvektoren bezüglich einer neuen Basis
+
+Nun betrachten wir eine andere Basis $V = (\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_n)$.
+Jeder Vektor $\vec{a} \in \mathbb{R}^n$ lässt sich eindeutig als Linearkombination
+der Basisvektoren schreiben:
+
+\begin{equation*}
+\vec{a} = \lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_n \vec{v}_n.
+\end{equation*}
+
+Die Koeffizienten $\lambda_1, \lambda_2, \ldots, \lambda_n$ dieser Linearkombination
+heißen die **Koordinaten** von $\vec{a}$ bezüglich der Basis $V$. Sie werden im
+**Koordinatenvektor** zusammengefasst:
+
+\begin{equation*}
+{}_V\vec{a} = \begin{pmatrix} \lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_n \end{pmatrix}.
+\end{equation*}
+
+Derselbe geometrische Vektor $\vec{a}$ wird durch verschiedene Zahlentupel
+beschrieben, je nachdem welche Basis verwendet wird. Das geometrische Objekt selbst
+ändert sich nicht, nur seine Darstellung.
+
+## Basiswechsel als lineares Gleichungssystem
+
+Die Berechnung des Koordinatenvektors ${}_V\vec{a}$ führt auf ein lineares
+Gleichungssystem. Schreibt man die Gleichung in Matrixform, indem man die
+Basisvektoren als Spalten der Matrix $V$ zusammenfasst, erhält man:
+
+\begin{equation*}
+\vec{a} = V \cdot {}_V\vec{a}, \quad \text{mit } V = (\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_n).
+\end{equation*}
+
+Da $V$ aus linear unabhängigen Vektoren besteht, ist $\det(V) \neq 0$ und die Matrix
+ist invertierbar. Der Koordinatenvektor ergibt sich daher durch:
+
+\begin{equation*}
+{}_V\vec{a} = V^{-1} \cdot \vec{a}.
+\end{equation*}
+
+In der Praxis berechnet man ${}_V\vec{a}$ meist nicht über die explizite Inverse,
+sondern durch Lösung des Gleichungssystems $V \cdot {}_V\vec{a} = \vec{a}$ mit dem
+Gauß-Algorithmus.
+
+## Vollständiges Beispiel
+
+Wir berechnen die Koordinaten des Vektors $\vec{a} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$
+bezüglich der Basis
+
+\begin{equation*}
+V = (\vec{v}_1, \vec{v}_2, \vec{v}_3)
+\quad \text{mit} \quad
+\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+\vec{v}_2 = \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix}, \quad
+\vec{v}_3 = \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
+\end{equation*}
+
+Zunächst überprüfen wir, ob die Vektoren tatsächlich eine Basis bilden. Wir berechnen
+die Determinante der Koeffizientenmatrix $V = \begin{pmatrix} 1 & 0 & -1 \\ 1 & 2 & 0 \\ 0 & -2 & -2 \end{pmatrix}$.
+Es gilt $\det(V) \neq 0$, also sind die drei Vektoren linear unabhängig und bilden
+eine Basis des $\mathbb{R}^3$.
+
+Wir suchen $\lambda_1, \lambda_2, \lambda_3$ mit $\vec{a} = \lambda_1 \vec{v}_1 +
+\lambda_2 \vec{v}_2 + \lambda_3 \vec{v}_3$, also
+
+\begin{equation*}
+\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
+= \lambda_1 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}
++ \lambda_2 \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix}
++ \lambda_3 \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
+\end{equation*}
+
+Mit dem Gauß-Algorithmus erhält man die Lösung:
+
+\begin{equation*}
+\lambda_1 = -3, \quad \lambda_2 = \frac{5}{2}, \quad \lambda_3 = -4,
+\end{equation*}
+
+und damit den Koordinatenvektor:
+
+\begin{equation*}
+{}_V\vec{a} = \begin{pmatrix} -3 \\ \frac{5}{2} \\ -4 \end{pmatrix}.
+\end{equation*}
+
+## Anwendungen des Basiswechsels im Maschinenbau
+
+Der Basiswechsel ist in der Ingenieurpraxis überall präsent. Die folgenden Beispiele
+zeigen, wie sich der Stoff aus diesem Kapitel in den späteren Vorlesungen
+wiederfinden wird.
+
+**Roboterkinematik:** Ein Roboterarm wird zunächst in einem weltfesten
+Koordinatensystem beschrieben. Für die Steuerung der Gelenke ist es günstiger, die
+Koordinaten im körperfesten System des jeweiligen Armgliedes anzugeben. Der Übergang
+zwischen beiden Systemen ist ein Basiswechsel, der sich als Matrixmultiplikation
+darstellt. In der Vorlesung Robotik werden Sie die sogenannte Denavit-Hartenberg-
+Konvention kennenlernen, die systematisch Basiswechsel entlang der Gelenkkette
+aufstellt.
+
+**Hauptachsentransformation in der Festigkeitslehre:** Der allgemeine Spannungszustand
+in einem Punkt eines Bauteils wird durch den Spannungstensor beschrieben, eine
+symmetrische $3\times 3$-Matrix. In einem geeignet gewählten Koordinatensystem, den
+sogenannten Hauptachsen, nimmt dieser Tensor eine Diagonalgestalt an. Die
+Diagonalelemente sind die Hauptspannungen $\sigma_1$, $\sigma_2$, $\sigma_3$, die
+entscheidend für die Festigkeitsbewertung sind. Die geeigneten Basisvektoren heißen
+Eigenvektoren, und die Hauptspannungen heißen Eigenwerte. Den mathematischen Apparat
+dafür werden Sie im nächsten Kapitel kennenlernen.
+
+**Modalanalyse in der Schwingungstechnik:** Bei der Analyse von Maschinenschwingungen
+wählt man die Eigenformen des schwingenden Systems als neue Basis. In dieser Basis
+zerfällt das gekoppelte Differentialgleichungssystem mit vielen wechselwirkenden
+Freiheitsgraden in vollständig entkoppelte Einzelschwingungen. Jede Eigenform kann
+dann getrennt analysiert werden. Die mathematische Grundlage dafür ist das Kapitel
+über Eigenwerte und Eigenvektoren sowie die Diagonalisierung, die in den folgenden
+Kapiteln behandelt werden.
+
+**FEM: Lokale und globale Koordinaten:** In der Finite-Elemente-Methode werden
+Steifigkeitsmatrizen zunächst im lokalen Koordinatensystem jedes Elements berechnet
+und dann durch Basiswechsel in das globale Koordinatensystem transformiert, bevor
+sie zur globalen Steifigkeitsmatrix zusammengefügt werden. Dieser Schritt ist für
+jedes FEM-Programm fundamental.
+
+```{admonition} Was ist ... ein Basiswechsel?
+:class: note
+Gegeben sei ein Vektor $\vec{a} \in \mathbb{R}^n$ und eine Basis
+$V = (\vec{v}_1, \ldots, \vec{v}_n)$ des $\mathbb{R}^n$.
+
+Der **Koordinatenvektor** ${}_V\vec{a}$ enthält die Koeffizienten
+$\lambda_1, \ldots, \lambda_n$ der eindeutigen Darstellung
+
+\begin{equation*}
+\vec{a} = \lambda_1 \vec{v}_1 + \cdots + \lambda_n \vec{v}_n = V \cdot {}_V\vec{a}.
+\end{equation*}
+
+Der **Basiswechsel** wird berechnet durch Lösung des linearen Gleichungssystems
+
+\begin{equation*}
+V \cdot {}_V\vec{a} = \vec{a},
+\end{equation*}
+
+wobei $V = (\vec{v}_1, \ldots, \vec{v}_n)$ die Matrix der Basisvektoren als
+Spalten ist.
+```
+
+```{dropdown} Video "Basiswechsel" von MathePeter
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3g1kBHgUWAY"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+## Zusammenfassung und Ausblick
+
+Eine Basis des $\mathbb{R}^n$ ist eine Menge von $n$ linear unabhängigen Vektoren,
+bezüglich derer jeder Vektor eindeutig als Linearkombination dargestellt werden kann.
+Der Basiswechsel berechnet den Koordinatenvektor eines gegebenen Vektors bezüglich
+einer neuen Basis durch Lösung des Gleichungssystems $V \cdot {}_V\vec{a} = \vec{a}$.
+
+Im Maschinenbau ist der Basiswechsel allgegenwärtig: in der Roboterkinematik, der FEM,
+der Festigkeitslehre und der Schwingungsanalyse. Besonders bedeutsam ist er als
+Vorbereitung auf die Eigenwertrechnung: Die Eigenvektoren einer Matrix bilden eine
+besonders günstige Basis, in der die lineare Abbildung eine Diagonalgestalt annimmt.
+In dieser Basis lassen sich Schwingungsanalysen, Stabilitätsuntersuchungen und
+Hauptspannungsberechnungen mit minimalem Rechenaufwand durchführen. Diese
+entscheidend wichtige Technik werden wir im nächsten Kapitel über Eigenwerte und
+Eigenvektoren eingehend behandeln.
