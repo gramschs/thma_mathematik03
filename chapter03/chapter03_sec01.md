@@ -1,10 +1,5 @@
 # Lineare Abbildungen 2D und 3D
 
-```{admonition} Hinweis
-:class: warning
-Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
-```
-
 Matrizen beschreiben geometrische Transformationen. In diesem Kapitel lernen wir,
 wie eine Matrix einen Vektor in einen neuen Vektor umwandelt, zunächst in der Ebene
 und dann im Raum. An konkreten Beispielen aus dem Maschinenbau sehen wir, warum

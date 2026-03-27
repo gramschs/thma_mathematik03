@@ -1,10 +1,5 @@
 # Bild und Rang einer Matrix
 
-```{admonition} Hinweis
-:class: warning
-Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
-```
-
 Wir haben im vorigen Kapitel den Kern einer Matrix kennengelernt: die Menge der
 Eingabevektoren, die auf den Nullvektor abgebildet werden. Nun stellen wir die
 umgekehrte Frage: Welche Vektoren können überhaupt als Ergebnis einer linearen
@@ -89,6 +84,12 @@ Steifigkeitsmatrix $\mathbf{K}$ sind die Kräftevektoren, die entstehen, wenn ma
 jeweils genau einen Freiheitsgrad um eine Einheit auslenkt. Das Bild von $\mathbf{K}$
 ist die Menge aller möglichen inneren Kräftezustände der Struktur.
 
+```{dropdown} Video "Bild einer Matrix berechnen" von Loay
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/FD03SOlmnvM"
+title="BILD einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Definition und Berechnung des Rangs
 
 Die Dimension des Bildes, also die Anzahl der linear unabhängigen Spalten der Matrix,
@@ -164,6 +165,13 @@ t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \quad s, t \in \mathbb{
 \end{equation*}
 
 und $\text{Rang}(\mathbf{D}) = 2$.
+
+```{dropdown} Video "Rang einer Matrix bestimmen" von MathePeter
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/4SYRA4Ff3RM"
+title="Rang einer Matrix bestimmen | Beispiel (3x4)-Matrix mit Parameter" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Wann liegt ein Vektor im Bild?
 

@@ -1,10 +1,5 @@
 # Definition und Eigenschaften linearer Abbildungen
 
-```{admonition} Hinweis
-:class: warning
-Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
-```
-
 In den vorigen Kapiteln haben wir zahlreiche Beispiele linearer Abbildungen
 kennengelernt: Streckungen, Spiegelungen, Projektionen und Scherungen. All diese
 Transformationen werden durch eine Matrix-Vektor-Multiplikation beschrieben. In
@@ -143,6 +138,30 @@ F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2)
 \begin{pmatrix} a_{11}v_{2x} + a_{12}v_{2y} \\ a_{21}v_{2x} + a_{22}v_{2y} \end{pmatrix} \\
 &= F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2).
 \end{align*}
+
+```{dropdown} Video "Matrizen als Abbildungen - Teil 1" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/VUeOx_gXEoU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildungen - Teil 1" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrizen als Abbildungen - Teil 2" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/6RldoWw6L_8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildungen - Teil 2" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrizen als Abbildungen - Teil 3" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/QPhELH1Gupg?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildung - Teil 3" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Superpositionsprinzip
 

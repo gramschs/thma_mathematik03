@@ -1,10 +1,5 @@
 # Kern einer Matrix
 
-```{admonition} Hinweis
-:class: warning
-Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
-```
-
 Wir wissen nun, was eine lineare Abbildung ist und welche Eigenschaften sie erfüllt.
 Als nächstes stellen wir die Frage: Welche Eingabevektoren werden durch eine gegebene
 Abbildung auf den Nullvektor abgebildet? Die Antwort auf diese Frage führt zum Begriff
@@ -182,6 +177,18 @@ Der Kern ist:
 \text{Kern}(\mathbf{D}) = \left\{ t \cdot \begin{pmatrix} -2 \\ 0 \\ 1 \end{pmatrix}
 \;\middle|\; t \in \mathbb{R} \right\}, \quad \dim(\text{Kern}(\mathbf{D})) = 1.
 \end{equation*}
+
+```{dropdown} Video "Kern einer Matrix berechnen" von Loay
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/td9t2WohViw"
+title="KERN einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Wie man den Kern einer Matrix berechnet" von BrainPi
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/HrBjQXd1MB8"
+title="Wie man den Kern einer Matrix berechnet" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Geometrische Bedeutung und Anwendungen
 

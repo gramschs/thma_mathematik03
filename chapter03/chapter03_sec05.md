@@ -1,10 +1,5 @@
 # Dimensionsformel
 
-```{admonition} Hinweis
-:class: warning
-Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
-```
-
 Kern und Bild einer Matrix beschreiben zwei grundlegende Aspekte einer linearen
 Abbildung: Was geht verloren, und was ist erreichbar? In diesem Kapitel lernen wir
 einen eleganten Zusammenhang zwischen der Dimension des Kerns und der Dimension des
@@ -111,6 +106,13 @@ Ergebnis überein: Eine quadratische Matrix ist genau dann invertierbar, wenn ih
 Determinante von null verschieden ist. Für die Steifigkeitsmatrix in der FEM bedeutet
 das: Sie ist genau dann invertierbar, wenn alle Starrkörperbewegungen durch
 Randbedingungen unterdrückt wurden.
+
+```{dropdown} Video "Dimension und Basis von Bild und Kern einer Matrix bestimmen"von The Bright Side of Mathematics
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/lBdwtUa_BGM"
+title="Dimension und Basis von Bild und Kern einer Matrix bestimmen" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Lösbarkeit linearer Gleichungssysteme
 
