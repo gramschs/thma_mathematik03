@@ -76,8 +76,13 @@ mit den Spaltenvektoren $\vec{a}_j$ gilt:
 \end{equation*}
 
 Das Ergebnis ist immer eine Linearkombination der Spalten von $\mathbf{A}$. Das
-Bild ist damit genau die Menge aller Linearkombinationen der Spalten, der sogenannte
-**Spaltenraum** der Matrix. Das Bild wird durch die Spalten der Matrix aufgespannt.
+Bild ist damit genau die Menge aller Linearkombinationen der Spalten, der
+sogenannte **Spaltenraum** der Matrix. Das Bild wird durch die Spalten der
+Matrix aufgespannt. Dies wird mathematisch abgekürzt als
+
+\begin{equation*}
+\langle a_1, a_2, \ldots, a_n \rangle.
+\end{equation*}
 
 Diese Interpretation ist in der FEM direkt erkennbar: Die Spalten der globalen
 Steifigkeitsmatrix $\mathbf{K}$ sind die Kräftevektoren, die entstehen, wenn man
@@ -128,6 +133,13 @@ linear unabhängig. Das Bild ist:
 x_2 \cdot \begin{pmatrix} 0 \\ -1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
 \end{equation*}
 
+Alternativ schreiben wir:
+
+\begin{equation*}
+\text{Bild}(\mathbf{A}) =
+\langle \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ -1 \end{pmatrix} \rangle.
+\end{equation*}
+
 Da die zwei Spalten den $\mathbb{R}^2$ aufspannen, ist $\text{Rang}(\mathbf{A}) = 2$.
 Die Abbildung ist surjektiv: Jeder Vektor im $\mathbb{R}^2$ ist erreichbar.
 
@@ -146,6 +158,13 @@ sind linear unabhängig. Das Bild ist:
 x_2 \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
 \end{equation*}
 
+Alternativ schreiben wir:
+
+\begin{equation*}
+\text{Bild}(\mathbf{C}) =
+\langle \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \rangle.
+\end{equation*}
+
 Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathbf{C}) = 2$.
 
 **Beispiel 3:** Für die Matrix
@@ -162,6 +181,13 @@ unabhängig. Das Bild ist:
 \begin{equation*}
 \text{Bild}(\mathbf{D}) = s \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix} +
 t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \quad s, t \in \mathbb{R},
+\end{equation*}
+
+oder kurz
+
+\begin{equation*}
+\text{Bild}(\mathbf{D}) =
+\langle \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}, \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \rangle.
 \end{equation*}
 
 und $\text{Rang}(\mathbf{D}) = 2$.
