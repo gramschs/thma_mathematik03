@@ -1,0 +1,217 @@
+# Bild und Rang einer Matrix
+
+Wir haben im vorigen Kapitel den Kern einer Matrix kennengelernt: die Menge der
+Eingabevektoren, die auf den Nullvektor abgebildet werden. Nun stellen wir die
+umgekehrte Frage: Welche Vektoren können überhaupt als Ergebnis einer linearen
+Abbildung auftreten? Diese Frage führt zum Begriff des Bildes einer Matrix und
+zur damit eng verwandten Größe des Rangs. Beide Konzepte sind in der Praxis
+unverzichtbar: Das Bild bestimmt, ob ein Kräftegleichgewicht existiert, ob ein
+Reglerauftrag erfüllbar ist und ob ein FEM-System eine Lösung hat.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* Sie kennen die Definition des **Bildes** einer Matrix und können es geometrisch
+  interpretieren.
+* Sie wissen, dass das Bild einer Matrix durch die **Spalten der Matrix**
+  aufgespannt wird.
+* Sie kennen die Definition des **Rangs** einer Matrix als Dimension des Bildes.
+* Sie können den Rang einer Matrix bestimmen, indem Sie die Anzahl der linear
+  unabhängigen Spalten zählen.
+* Sie können überprüfen, ob ein gegebener Vektor im Bild einer Matrix liegt,
+  und dieses Ergebnis mit der Lösbarkeit eines linearen Gleichungssystems
+  verknüpfen.
+```
+
+## Motivation: Welche Vektoren sind erreichbar?
+
+Wir betrachten erneut die Projektionsmatrix auf die $xy$-Ebene:
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Welche Vektoren $\vec{w}$ können als Ergebnis $\vec{w} = \mathbf{A} \cdot \vec{v}$
+auftreten? Für einen beliebigen Eingabevektor $\vec{v} = \begin{pmatrix} x \\ y \\ z
+\end{pmatrix}$ ergibt die Abbildung:
+
+\begin{equation*}
+\mathbf{A} \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Das Ergebnis hat immer eine dritte Komponente gleich null. Ein Vektor wie
+$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ kann niemals als Ergebnis auftreten.
+Die Menge aller erreichbaren Ausgabevektoren ist genau die $xy$-Ebene. In der
+Messtechnik bedeutet das: Eine Kamera, die dreidimensionale Objekte projiziert, kann
+nicht alle Punkte im Raum als Bildpunkte erzeugen, sondern nur Punkte in ihrer
+Bildebene. Diese Menge heißt das **Bild** der Matrix.
+
+## Definition des Bildes
+
+```{admonition} Was ist ... das Bild einer Matrix?
+:class: note
+Sei $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ eine lineare Abbildung mit der
+Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Das **Bild** von $\mathbf{A}$,
+geschrieben $\text{Bild}(\mathbf{A})$, ist die Menge aller Vektoren
+$\vec{w} \in \mathbb{R}^m$, die als Ergebnis der Abbildung auftreten können:
+
+\begin{equation*}
+\text{Bild}(\mathbf{A}) = \{ \vec{w} \in \mathbb{R}^m \mid \vec{w} = \mathbf{A} \cdot \vec{v}
+\text{ für ein } \vec{v} \in \mathbb{R}^n \}.
+\end{equation*}
+```
+
+## Das Bild als Spaltenraum
+
+Das Bild einer Matrix lässt sich besonders einfach berechnen, wenn man die
+Matrix-Vektor-Multiplikation als Linearkombination der Spalten der Matrix schreibt.
+Für eine $m \times n$-Matrix $\mathbf{A} = (\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n)$
+mit den Spaltenvektoren $\vec{a}_j$ gilt:
+
+\begin{equation*}
+\mathbf{A} \cdot \vec{v}
+= v_1 \cdot \vec{a}_1 + v_2 \cdot \vec{a}_2 + \cdots + v_n \cdot \vec{a}_n.
+\end{equation*}
+
+Das Ergebnis ist immer eine Linearkombination der Spalten von $\mathbf{A}$. Das
+Bild ist damit genau die Menge aller Linearkombinationen der Spalten, der sogenannte
+**Spaltenraum** der Matrix. Das Bild wird durch die Spalten der Matrix aufgespannt. Dies wird mathematisch abgekürzt als
+
+\begin{equation*}
+\langle A \rangle = \{\lambda_1 a_1 + \lambda_2 a_2 + \ldots + \lambda_n a_n |
+\lambda_1, \lambda_2, \ldots, \lambda_n \in \mathbb{R} \}
+\end{equation*}
+
+Diese Interpretation ist in der FEM direkt erkennbar: Die Spalten der globalen
+Steifigkeitsmatrix $\mathbf{K}$ sind die Kräftevektoren, die entstehen, wenn man
+jeweils genau einen Freiheitsgrad um eine Einheit auslenkt. Das Bild von $\mathbf{K}$
+ist die Menge aller möglichen inneren Kräftezustände der Struktur.
+
+```{dropdown} Video "Bild einer Matrix berechnen" von Loay
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/FD03SOlmnvM"
+title="BILD einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Definition und Berechnung des Rangs
+
+Die Dimension des Bildes, also die Anzahl der linear unabhängigen Spalten der Matrix,
+heißt **Rang** der Matrix:
+
+```{admonition} Was ist ... der Rang einer Matrix?
+:class: note
+Der **Rang** einer Matrix $\mathbf{A}$, geschrieben $\text{Rang}(\mathbf{A})$, ist
+die Dimension des Bildes von $\mathbf{A}$:
+
+\begin{equation*}
+\text{Rang}(\mathbf{A}) = \dim(\text{Bild}(\mathbf{A})).
+\end{equation*}
+
+Der Rang entspricht der maximalen Anzahl linear unabhängiger Spalten (und
+gleichwertig: Zeilen) der Matrix. Für eine $m\times n$-Matrix gilt stets
+$\text{Rang}(\mathbf{A}) \leq \min(m, n)$.
+```
+
+Um das Bild und den Rang zu bestimmen, sucht man die maximal linear unabhängigen
+Spalten der Matrix. Diese spannen dann das Bild auf.
+
+## Beispiele
+
+**Beispiel 1:** Für die Diagonalmatrix
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+\end{equation*}
+
+sind beide Spalten $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0 \\ -1 \end{pmatrix}$
+linear unabhängig. Das Bild ist:
+
+\begin{equation*}
+\text{Bild}(\mathbf{A}) = x_1 \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix} +
+x_2 \cdot \begin{pmatrix} 0 \\ -1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
+\end{equation*}
+
+Da die zwei Spalten den $\mathbb{R}^2$ aufspannen, ist $\text{Rang}(\mathbf{A}) = 2$.
+Die Abbildung ist surjektiv: Jeder Vektor im $\mathbb{R}^2$ ist erreichbar.
+
+**Beispiel 2:** Für die Projektionsmatrix
+
+\begin{equation*}
+\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\end{equation*}
+
+hat die mittlere Spalte nur Nullen und trägt damit nichts zum Bild bei. Die beiden
+übrigen Spalten $\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$
+sind linear unabhängig. Das Bild ist:
+
+\begin{equation*}
+\text{Bild}(\mathbf{C}) = x_1 \cdot \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} +
+x_2 \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
+\end{equation*}
+
+Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathbf{C}) = 2$.
+
+**Beispiel 3:** Für die Matrix
+
+\begin{equation*}
+\mathbf{D} = \begin{pmatrix} 1 & 2 & 2 \\ 1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}
+\end{equation*}
+
+ist die dritte Spalte ein Vielfaches der ersten:
+$\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}$.
+Sie trägt keine neue Richtung zum Bild bei. Die ersten beiden Spalten sind linear
+unabhängig. Das Bild ist:
+
+\begin{equation*}
+\text{Bild}(\mathbf{D}) = s \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix} +
+t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \quad s, t \in \mathbb{R},
+\end{equation*}
+
+und $\text{Rang}(\mathbf{D}) = 2$.
+
+```{dropdown} Video "Rang einer Matrix bestimmen" von MathePeter
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/4SYRA4Ff3RM"
+title="Rang einer Matrix bestimmen | Beispiel (3x4)-Matrix mit Parameter" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Wann liegt ein Vektor im Bild?
+
+In der Praxis stellt man häufig die Frage: Liegt ein gegebener Vektor $\vec{b}$ im
+Bild der Matrix $\mathbf{A}$? Diese Frage ist gleichbedeutend damit, ob das lineare
+Gleichungssystem $\mathbf{A} \cdot \vec{x} = \vec{b}$ lösbar ist.
+
+In der **Strukturmechanik** lautet diese Frage: Kann die gegebene äußere Last
+$\vec{b}$ durch die inneren Kräfte der Struktur aufgenommen werden? Nur wenn $\vec{b}$
+im Bild der Steifigkeitsmatrix liegt, existiert ein Gleichgewichtszustand.
+
+In der **Regelungstechnik** entspricht diese Frage der Steuerbarkeit: Kann ein
+dynamisches System durch eine geeignete Eingabe in jeden gewünschten Zustand
+überführt werden? Wenn das Bild der Eingangsmatrix den gesamten Zustandsraum
+aufspannt, also der Rang maximal ist, dann ist das System vollständig steuerbar.
+
+In der **FEM** ist die Frage, ob $\vec{b}$ im Bild von $\mathbf{K}$ liegt,
+gleichbedeutend damit, ob die Lastsituation für die gegebene Struktur lösbar ist.
+Wenn die Steifigkeitsmatrix einen nichttrivialen Kern hat (weil die Lagerung
+fehlt), dann ist nicht jeder Lastvektor $\vec{b}$ im Bild, und das System hat
+keine Lösung.
+
+Als konkretes Zahlenbeispiel: Im Falle der Projektionsmatrix
+$\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$
+liegt der Vektor $\vec{b} = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$ nicht im
+Bild, weil das Bild nur Vektoren mit einer mittleren Komponente von null enthält.
+Das Gleichungssystem $\mathbf{C} \cdot \vec{x} = \vec{b}$ ist daher unlösbar.
+
+## Zusammenfassung und Ausblick
+
+Das Bild einer Matrix ist die Menge aller Vektoren, die als Ergebnis der linearen
+Abbildung auftreten können. Es wird durch die Spalten der Matrix aufgespannt, und der
+Rang gibt die Anzahl der linear unabhängigen Spalten an. Ein Vektor $\vec{b}$ liegt
+genau dann im Bild, wenn das lineare Gleichungssystem $\mathbf{A} \cdot \vec{x} =
+\vec{b}$ lösbar ist. Diese Verknüpfung ist der Schlüssel zur Lösbarkeitsanalyse in
+der FEM, der Strukturmechanik und der Regelungstechnik. Im nächsten Kapitel stellen
+wir den Zusammenhang zwischen der Dimension des Kerns und der Dimension des Bildes
+durch die Dimensionsformel her.
