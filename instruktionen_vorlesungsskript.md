@@ -39,15 +39,15 @@ H2-Überschriften.
 
 Jede Sektion folgt **exakt** diesem narrativen Bogen, ohne Abweichung:
 
-```
+```markdown
 # Titel der Sektion
 
-Einleitungsabsatz (2–4 Sätze): Anknüpfung an die vorherige Sektion,
+Einleitungsabsatz (2-4 Sätze): Anknüpfung an die vorherige Sektion,
 Einführung eines konkreten physikalischen oder technischen Szenarios,
 das das neue Konzept motiviert. Niemals mit einer Definition oder
 einer Formel beginnen.
 
-## Lernziele
+### Lernziele
 
 [Lernziele-Admonition, siehe unten]
 
@@ -62,11 +62,9 @@ Definitionsbox, siehe Prinzip "Erst Beispiel, dann abstrakt"]
 
 ## Zusammenfassung und Ausblick
 
-Kurzer Rückblick (2–4 Sätze). Vorschau auf die nächste Sektion.
+Kurzer Rückblick (2-4 Sätze). Vorschau auf die nächste Sektion.
 Konkreter Vorwärtsverweis auf ein späteres Thema im Kurs.
 ```
-
----
 
 ## Prinzip: Erst Beispiel, dann abstrakt
 
@@ -75,14 +73,14 @@ Jeder neue Begriff und jede neue Formel wird nach dem folgenden Dreischritt
 eingeführt:
 
 1. **Konkretes Beispiel zuerst.** Wir beobachten ein physikalisches oder
-   technisches Phänomen oder ein Beispiel aus dem Alltag von Studierenden und beschreiben es in Alltagssprache. Die
-   Studierenden sollen das Gefühl haben, dass die Mathematik eine Antwort
-   auf eine echte Frage ist.
+   technisches Phänomen oder ein Beispiel aus dem Alltag von Studierenden und
+   beschreiben es in Alltagssprache. Die Studierenden sollen das Gefühl haben,
+   dass die Mathematik eine Antwort auf eine echte Frage ist.
 2. **Informelle Beschreibung.** Wir benennen das Muster, das wir im Beispiel
    sehen, und formulieren es noch ohne formale Notation.
 3. **Formale Definition (Definitionsbox).** Erst jetzt schreiben wir die
-   abstrakte Definition oder Formel. Die Definitionsbox fasst zusammen,
-   sie führt nicht ein.
+   abstrakte Definition oder Formel. Die Definitionsbox fasst zusammen, sie
+   führt nicht ein.
 
 Nach jeder Definitionsbox wird die Definition **sofort auf das laufende
 Beispiel angewendet** und mit konkreten Zahlen durchgerechnet. Ergebnisse
@@ -107,7 +105,8 @@ Faden.
 
 Regeln für das durchgehende Beispiel:
 
-- Es muss **physikalisch konkret** und für den Maschinenbau relevant sein oder es muss aus dem Alltag stammen.
+- Es muss **physikalisch konkret** und für den Maschinenbau relevant sein oder
+  es muss aus dem Alltag stammen.
 - Wenn eine neue Konfiguration des Beispiels eingeführt wird, beschreiben wir
   sie erst physikalisch, wählen dann Koordinaten oder Parameter und schreiben
   schließlich die Gleichung oder Matrix auf. Diese Reihenfolge ist verbindlich.
@@ -129,11 +128,13 @@ Unterabschnittsüberschriften sollen als **Fragen oder kurze Aussagen**
 formuliert werden, die ein Studierender natürlich stellen oder denken würde.
 
 Gute Beispiele:
+
 - "Wann ist ein Gleichungssystem eindeutig lösbar?"
 - "Was verrät uns die Determinante über das Volumen?"
 - "Wie berechnen wir das Vektorprodukt?"
 
 Schlechte Beispiele (abstrakte Substantivphrasen):
+
 - "Definition der Determinante"
 - "Eigenschaften inverser Matrizen"
 - "Anwendungen"
@@ -151,7 +152,6 @@ Schlechte Beispiele (abstrakte Substantivphrasen):
 * [ ] Sie kennen die **Matrix-Vektor-Schreibweise**
   $F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}$.
 * [ ] Sie können ...
-```
 ```
 
 Regeln:
@@ -176,7 +176,6 @@ Für neue Fachbegriffe wird eine Box im Format `note` verwendet:
 :class: note
 Fließtext der Definition. Formeln in LaTeX.
 ```
-```
 
 Regeln:
 
@@ -191,7 +190,7 @@ Regeln:
 ## Sprache und Stil
 
 - Sprache: **Deutsch**.
-- Kein Gedankenstrich (`–`) im Fließtext. Satzkonstruktionen umformulieren
+- Kein Gedankenstrich (`-`) im Fließtext. Satzkonstruktionen umformulieren
   oder einen Punkt setzen.
 - Kein `d.h.` oder `z.B.` mitten im Satz. Entweder ausschreiben oder in
   Klammern setzen.
@@ -222,11 +221,13 @@ Jede Sektion soll enthalten:
   die Antwort vorwegzunehmen.
 
 Gute Stellen für Vorwärtsverweise:
+
 - Im Fließtext, wo ein Zusammenhang angedeutet wird: "Den Grund dafür werden
   wir verstehen, wenn wir im Kapitel über Eigenwerte ..."
 - In der Zusammenfassung, als expliziter Ausblick.
 
 Schlechte Vorwärtsverweise:
+
 - "Dies wird später behandelt." (zu vage)
 - "Im nächsten Abschnitt sehen wir ..." (zu selbstverständlich)
 
@@ -239,7 +240,6 @@ Schlechte Vorwärtsverweise:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-```
 ```
 
 Regeln:
@@ -432,7 +432,7 @@ Nicht den `legend entries={...}`-Schlüssel am Axis-Objekt verwenden.
 
 Jede Abbildung in der MyST-Quelldatei erhält eine Beschriftung der Form:
 
-```
+```figure
 Darstellung von [was die Abbildung zeigt].
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
@@ -455,7 +455,7 @@ Vor dem Ausgeben einer Sektion prüfen:
 - [ ] YAML-Front-Matter-Block vorhanden?
 - [ ] Einleitung beginnt mit einem konkreten Szenario, nicht mit einer
   Definition?
-- [ ] Lernziele mit `* [ ]` formatiert, unmittelbar nach dem H1-Titel?
+- [ ] Lernziele mit `* [ ]` formatiert.
 - [ ] Prinzip "Erst Beispiel, dann abstrakt" in jedem Abschnitt eingehalten?
 - [ ] Durchgehendes Beispiel mit konkreten Zahlen vorhanden und am Ende
   vollständig abgeschlossen?

@@ -50,6 +50,7 @@ project:
        - file: chapter04/chapter04_sec05.md
        - file: chapter04/chapter04_sec06.md
        - file: chapter04/chapter04_sec07.md
+       - file: chapter04/chapter04_sec08.md
     - title: Diagonalisierung und Anwendungen
       children:
        - file: chapter05/chapter05_sec01.md
