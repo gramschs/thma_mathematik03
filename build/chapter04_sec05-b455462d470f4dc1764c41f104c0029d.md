@@ -1,0 +1,35 @@
+# Eigenwerte und Eigenvektoren: Motivation und Definition
+
+```{admonition} Hinweis
+:class: warning
+Dieses Vorlesungsskript befindet sich gerade in Bearbeitung.
+```
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie verstehen, was ein **Eigenvektor** und ein **Eigenwert** einer
+  quadratischen Matrix sind, und können die definierende Gleichung
+  $\mathbf{A}\vec{v} = \lambda\vec{v}$ erläutern.
+* [ ] Sie können geometrisch beschreiben, was es bedeutet, dass ein Vektor
+  Eigenvektor einer Abbildung ist: Er wird durch die Abbildung nur gestreckt
+  oder gestaucht, nicht gedreht.
+* [ ] Sie wissen, dass der Nullvektor kein Eigenvektor ist.
+* [ ] Sie kennen mindestens zwei maschinenbauliche Anwendungen von Eigenwerten,
+  etwa **Hauptspannungen** in der Festigkeitslehre und **Eigenfrequenzen** in
+  der Schwingungsanalyse.
+```
+
+## Was sind Eigenwerte und Eigenvektoren?
+
+Gegeben sei eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{2 \times 2}$.
+Ein Vektor $\vec{v} \neq \vec{0} $ heißt **Eigenvektor** von $\mathbf{A}$, wenn
+für einen Skalar $\lambda \in \mathbb{R}$ die folgende Gleichung gilt:
+
+$$\mathbf{A} \vec{v} = \lambda \vec{v}.$$
+
+Der Skalar $\lambda$ wird dabei als **Eigenwert** von $\mathbf{A}$ bezeichnet.
+Dies bedeutet, dass die Wirkung der Matrix $\mathbf{A}$ auf den Vektor $\vec{v}$
+lediglich eine Streckung oder Stauchung des Vektors um den Faktor $\lambda$
+darstellt, ohne dessen Richtung zu verändern.
