@@ -164,6 +164,22 @@ $\boldsymbol{\sigma}\mathbf{V} = \mathbf{V}\mathbf{D}$ gilt:
 
 Beide Seiten stimmen überein. Die Diagonalisierung ist korrekt.
 
+```{dropdown} Video (EN) "Visualizing Diagonalization" von QualityMathVisuals
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/yJ3EfoJmTFg"
+title="Visualizing Diagonalization" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrix diagonalisieren" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/KmFq0Pl2nxM" title="Matrix diagonalisieren + Matrixpotenzen Einfach Erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrix diagonalisierbar?" von The Bright Side of Mathematics
+<iframe width="1020" height="566" src="https://www.youtube.com/embed/FEGL0xo45ME"
+title="Matrix diagonalisierbar?" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Wann schlägt die Diagonalisierung fehl?
 
 *Funktioniert das Verfahren immer?* Nein. In Abschnitt 5.1 haben wir die Matrix

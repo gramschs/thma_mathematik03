@@ -136,6 +136,12 @@ charakteristische Polynom und damit dieselben Eigenwerte mit denselben
 algebraischen Vielfachheiten.
 ```
 
+```{dropdown} Video "Ähnlichkeit von Matrizen" von Mathe für Wiwis
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/K6R4o3YTwqY"
+title="Ähnlichkeit von Matrizen" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Ähnliche Matrizen beschreiben dieselbe lineare Abbildung in verschiedenen

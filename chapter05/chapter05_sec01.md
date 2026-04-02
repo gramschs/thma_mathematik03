@@ -59,6 +59,12 @@ ist $d_6 = 2$.
 Hier gilt also $d_6 = m_6 = 2$. Das ist der günstige Fall: So viele
 unabhängige Richtungen wie der Eigenwert „verspricht", gibt es tatsächlich.
 
+```{dropdown} Video "Algebraische und geometrische Vielfachheit?" von The bright Side of Mathematics
+<iframe width="1020" height="566" src="https://www.youtube.com/embed/xV2TWp1K_CQ"
+title="Algebraische und geometrische Vielfachheit?" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Das Beispiel: Trägheitstensor eines L-Profils
 
 Als weiteres Beispiel betrachten wir den Flächenträgheitstensor eines Balkens
