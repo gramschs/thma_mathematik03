@@ -1,0 +1,128 @@
+# Eigenwerte: algebraische und geometrische Vielfachheit
+
+Im letzten Kapitel haben wir gesehen, dass ein Eigenwert mehrfach als
+Nullstelle des charakteristischen Polynoms auftreten kann und dass dann der
+zugehörige Eigenraum zweidimensional sein kann, aber nicht muss. Wann ist das
+der Fall, und warum ist das entscheidend? Diese Frage führt uns auf zwei
+Begriffe, die wir jetzt präzisieren.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie kennen den Begriff der **algebraischen Vielfachheit** $m_\lambda$ eines
+  Eigenwerts als Vielfachheit der zugehörigen Nullstelle des charakteristischen
+  Polynoms.
+* [ ] Sie kennen den Begriff der **geometrischen Vielfachheit** $d_\lambda$ eines
+  Eigenwerts als Anzahl der linear unabhängigen Eigenvektoren zu diesem Eigenwert.
+* [ ] Sie wissen, dass stets $1 \leq d_\lambda \leq m_\lambda$ gilt, und können an
+  Beispielen erläutern, wann die Ungleichung strikt ist.
+* [ ] Sie können für einen gegebenen Eigenwert sowohl $m_\lambda$ als auch
+  $d_\lambda$ berechnen und die Ergebnisse vergleichen.
+```
+
+## Wie oft tritt ein Eigenwert auf?
+
+In Abschnitt 4.7 haben wir für die Matrix
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 5 & -1 & 2 \\ -1 & 5 & 2 \\ 2 & 2 & 2 \end{pmatrix}
+\end{equation*}
+
+das charakteristische Polynom $p(\lambda) = -\lambda(\lambda - 6)^2$ berechnet.
+Die Nullstellen sind $\lambda_3 = 0$ und $\lambda_{1,2} = 6$. Der Eigenwert $6$
+taucht als doppelte Nullstelle auf. Wir haben dort bereits informell gesagt, er
+hat die "algebraische Vielfachheit 2".
+
+Die **algebraische Vielfachheit** $m_\lambda$ eines Eigenwerts ist schlicht die
+Antwort auf die Frage: *Wie oft ist dieser Wert eine Nullstelle des
+charakteristischen Polynoms?* Für unser Beispiel gilt also $m_0 = 1$ und
+$m_6 = 2$.
+
+## Wie viele unabhängige Eigenvektoren gibt es dazu?
+
+Das ist eine andere Frage. In Abschnitt 4.7 haben wir gesehen, dass zum
+Eigenwert $\lambda = 6$ tatsächlich zwei linear unabhängige Eigenvektoren
+existieren:
+
+\begin{equation*}
+\vec{v}_1 = \begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}
+\quad \text{und} \quad
+\vec{v}_2 = \begin{pmatrix} 2 \\ 0 \\ 1 \end{pmatrix}.
+\end{equation*}
+
+Die Anzahl der linear unabhängigen Eigenvektoren zu einem Eigenwert nennen wir
+die **geometrische Vielfachheit** $d_\lambda$. Sie ist die Dimension des
+Eigenraums $\text{Kern}(\mathbf{A} - \lambda\mathbf{E})$. In unserem Beispiel
+ist $d_6 = 2$.
+
+Hier gilt also $d_6 = m_6 = 2$. Das ist der günstige Fall: So viele
+unabhängige Richtungen wie der Eigenwert „verspricht", gibt es tatsächlich.
+
+## Das Beispiel: Trägheitstensor eines L-Profils
+
+Als weiteres Beispiel betrachten wir den Flächenträgheitstensor eines Balkens
+mit L-förmigem Querschnitt. Dieser Tensor beschreibt, wie widerstandsfähig der
+Querschnitt gegen Biegung in verschiedene Richtungen ist:
+
+\begin{equation*}
+\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
+\end{equation*}
+
+Das charakteristische Polynom lautet:
+
+\begin{equation*}
+p(\lambda) = (5 - \lambda)(2 - \lambda) - 4 = \lambda^2 - 7\lambda + 6 =
+(\lambda - 6)(\lambda - 1).
+\end{equation*}
+
+Beide Eigenwerte $\lambda_1 = 6$ und $\lambda_2 = 1$ sind einfache Nullstellen:
+$m_{\lambda_1} = m_{\lambda_2} = 1$. Zu jedem einfachen Eigenwert gibt es
+immer genau einen unabhängigen Eigenvektor, also $d_{\lambda_1} = d_{\lambda_2} = 1$.
+Auch hier gilt $d_\lambda = m_\lambda$; alles ist unkompliziert.
+
+Die Eigenwerte sind die **Hauptträgheitsmomente** des Profils, die Eigenvektoren
+zeigen in die **Hauptträgheitsachsen**, also in die Richtungen, in denen der
+Balken am steifsten und am biegsamsten ist.
+
+## Der problematische Fall: eine defekte Matrix
+
+*Muss die geometrische Vielfachheit immer gleich der algebraischen sein?* Nein.
+Wir betrachten die Matrix
+
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 3 & 1 \\ 0 & 3 \end{pmatrix}.
+\end{equation*}
+
+Das charakteristische Polynom ist $p(\lambda) = (3 - \lambda)^2$, der Eigenwert
+$\lambda = 3$ hat also algebraische Vielfachheit $m_\lambda = 2$. Wir berechnen
+den Eigenraum:
+
+\begin{equation*}
+\mathbf{B} - 3\mathbf{E} = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}
+\quad \Rightarrow \quad v_2 = 0, \quad v_1 \text{ frei}.
+\end{equation*}
+
+Es gibt nur einen einzigen unabhängigen Eigenvektor:
+$\vec{v} = t\begin{pmatrix} 1 \\ 0 \end{pmatrix}$.
+Die geometrische Vielfachheit ist $d_\lambda = 1$, obwohl $m_\lambda = 2$.
+
+Hier gilt also $d_\lambda < m_\lambda$. Eine solche Matrix heißt **defekt**,
+sie hat zu wenige Eigenvektoren. Das hat eine konkrete Konsequenz: Sie kann
+nicht diagonalisiert werden, was wir in Abschnitt 5.4 genauer sehen werden.
+
+Für die Ingenieurpraxis ist die gute Nachricht: Bei symmetrischen Matrizen wie
+dem Trägheitstensor oder dem Spannungstensor tritt dieser Fall **niemals** auf.
+Für symmetrische Matrizen gilt stets $d_\lambda = m_\lambda$ für alle
+Eigenwerte. Warum das so ist, erklären wir in Abschnitt 5.2.
+
+## Zusammenfassung und Ausblick
+
+Die algebraische Vielfachheit $m_\lambda$ zählt, wie oft ein Eigenwert als
+Nullstelle des charakteristischen Polynoms auftritt. Die geometrische
+Vielfachheit $d_\lambda$ zählt, wie viele linear unabhängige Eigenvektoren dazu
+existieren. Es gilt immer $d_\lambda \leq m_\lambda$, aber nicht immer
+Gleichheit. Im günstigen Fall $d_\lambda = m_\lambda$ für alle Eigenwerte ist
+die Matrix diagonalisierbar — das ist das Thema von Abschnitt 5.4. Zunächst
+schauen wir uns in Abschnitt 5.2 an, warum symmetrische Matrizen immer im
+günstigen Fall landen.
