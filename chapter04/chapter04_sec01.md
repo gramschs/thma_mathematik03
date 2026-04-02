@@ -118,6 +118,12 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
+```{dropdown} Video "Orthogonale Matrizen" von Prof. Hielscher
+<iframe width="742" height="613" src="https://www.youtube.com/embed/3RCcnjyKRPg?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Orthogonale Matrizen" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 In diesem Kapitel haben wir die Definition und Eigenschaften orthogonaler

@@ -130,6 +130,12 @@ Wir können beide Schritte auch zur Gesamtdrehmatrix kombinieren:
 $\mathbf{D} = \mathbf{D}_z(45°)\cdot\mathbf{D}_x(30°)$. Die Länge des Sensors
 ist erhalten: $\|\vec{s}'\| = \sqrt{0.354^2 + 0.354^2 + 0.866^2} \approx 1$.
 
+```{dropdown} Video "Drehmatrizen" von Prof. Hielscher
+<iframe width="742" height="613" src="https://www.youtube.com/embed/aXAikhRe6v0?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Drehmatrizen" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Warum ist die Reihenfolge der Drehungen wichtig?
 
 Anders als bei reellen Zahlen gilt für Matrizen im Allgemeinen
@@ -160,6 +166,13 @@ Flugzustände.
 jede Drehmatrix im $\mathbb{R}^3$ immer den Eigenwert $\lambda = 1$, und der
 zugehörige Eigenvektor zeigt genau in die Drehachse. Diese Verbindung werden
 wir in den folgenden Abschnitten dieses Kapitels herstellen.*
+
+```{dropdown} Video "Orthogonale Matrizen im R^3" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/-Zp-hz7XevM?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
+title="Orthogonale Matrizen im R^3 | Drehmatrix, Spiegelmatrix, Drehspiegelmatrix (Komplettübersicht)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Zusammenfassung und Ausblick
 

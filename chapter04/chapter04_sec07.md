@@ -206,6 +206,15 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
+```{dropdown} Video "Eigenwerte und Eigenvektoren berechnen" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/YMC_-87gbR8?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
+title="Eigenwerte und Eigenvektoren berechnen + wichtige Eigenschaften von EW&amp;EV"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Was ist das Resultat: die Eigenzerlegung im Überblick
 
 Fassen wir das Ergebnis für unser Hauptbeispiel zusammen. Die symmetrische

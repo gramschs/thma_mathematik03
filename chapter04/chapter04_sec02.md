@@ -179,6 +179,29 @@ die Schwingungsformen einer Struktur betrachten? Dann begegnen wir einem noch
 tieferen Zusammenhang zwischen orthogonalen Basen und Matrizen, den wir in den
 Kapiteln über Eigenwerte und Eigenvektoren aufdecken werden.*
 
+```{dropdown} Video "Gram Schmidt" von Mathematrick
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/oJkqxWrQM88"
+title="Gram Schmidt Verfahren Beispiel - Orthogonalisierungsverfahren mit 3 Vektoren"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Gram Schmidt" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/l6pr1W3MQoE"
+title="Orthogonale Basis bestimmen (Gram Schmidt Orthogonalisierungsverfahren)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Gram-Schmidt" von The Bright Side of Mathematics
+<iframe width="1020" height="566" src="https://www.youtube.com/embed/sqwVvJL3WTw"
+title="Gram-Schmidt (Gram-Schmidt&#39;sches Orthonormalisierungsverfahren)" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Das Gram-Schmidt-Verfahren wandelt ein linear unabhängiges Vektorensystem

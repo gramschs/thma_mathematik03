@@ -96,6 +96,18 @@ wenn sie mit der ursprünglichen Matrix $\mathbf{A}$ multipliziert wird:
 Eine Matrix, die eine inverse Matrix besitzt, wird **invertierbar** genannt.
 ```
 
+```{dropdown} Video "Inverse Matrix, Definition" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/S6bH3c7IALE"
+title="0146 Inverse Matrix, Definition" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Inverse Matrix, 2x2-Matrix" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/SVfCsB5qjHE"
+title="0147 Inverse Matrix, Berechnung 2x2" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Inverse von Diagonalmatrizen
 
 Wenn eine quadratische Matrix eine Inverse besitzt, ist diese inverse Matrix
@@ -205,6 +217,26 @@ Am einfachsten ist es, sich den Gauß-Algorithmus im folgenden Video anzusehen.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/usya1zz-skM?si=TfW-HC43dbkEjoog"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
 encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Inverse Matrix, nxn-Matrix" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/9DuDN_sJil8"
+title="0148 Inverse Matrix, Berechnung nxn" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Inverse Matrix, Gauß-Jordan-Verfahren" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/uBXDo-X9X8M"
+title="0149 Inverse Matrix, Berechnung: warum das Gauß-Jordan-Verfahren funktioniert"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Matrix invertieren mit Gauß-Jordan-Verfahren" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/jGHTVeJ0xto?list=PLvBnQVOJXCUEqznry7PU0wsseLh-dXR4k" title="Matrix invertieren mit Gauß-Jordan-Verfahren
+Einfach Erklärt + Beispiel" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick

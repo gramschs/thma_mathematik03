@@ -153,6 +153,15 @@ von einer Drehung um $60°$ ergibt dasselbe wie eine einzige Drehung um $90°$.
 *Und was geschieht, wenn wir in drei Dimensionen drehen wollen? Dann reicht eine
 einzige Matrix nicht mehr aus, wie wir im nächsten Abschnitt sehen werden.
 
+```{dropdown} Video "Orthogonale Matrizen, Drehmatrix" von MathePeter
+<iframe width="1020" height="574" 
+src="https://www.youtube.com/embed/Enj_IYsPfc8?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
+title="Orthogonale Matrizen im R^2 | Drehmatrix, Spiegelmatrix (Komplettübersicht)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Die Drehmatrix $\mathbf{D}(\varphi)$ ist eine orthogonale $2\times 2$-Matrix mit

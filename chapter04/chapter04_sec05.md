@@ -136,6 +136,14 @@ energiehypothese (von-Mises-Kriterium) ankommt. Die Eigenvektoren zeigen in die
 Richtungen, in denen keine Schubspannungen auftreten. Diese Verbindung werden
 Sie in der Technischen Mechanik II vertiefen.
 
+```{dropdown} Video "Eigenwertproblem Einfach Erklärt!" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/eJWgKvrhDmE?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
+title="Eigenwertproblem Einfach Erklärt! | Eigenwerte und Eigenvektoren: Bedeutung, Anwendung, Herleitung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ```{dropdown} Video (EN) "Eigenvectors and Eigenvalues" von 3Blue1Brown
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PFDu9oVAE-g"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;

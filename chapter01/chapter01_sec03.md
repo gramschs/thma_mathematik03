@@ -144,6 +144,12 @@ Wie bei der Vektoraddition kann die Differenz zweier Matrizen nur gebildet
 werden, wenn die Dimension der beiden Matrizen übereinstimmt, d.h. die Anzahl an
 Zeilen und Spalten übereinstimmt.
 
+```{dropdown} Vide "Subtraktion von Matrizen" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/6WVotA0jhVs"
+title="0128 Subtraktion von Matrizen" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Nachdem wir in diesem Kapitel gelernt haben, wie zwei Matrizen addiert oder

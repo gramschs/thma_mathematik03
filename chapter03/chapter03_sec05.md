@@ -107,7 +107,7 @@ Determinante von null verschieden ist. Für die Steifigkeitsmatrix in der FEM be
 das: Sie ist genau dann invertierbar, wenn alle Starrkörperbewegungen durch
 Randbedingungen unterdrückt wurden.
 
-```{dropdown} Video "Dimension und Basis von Bild und Kern einer Matrix bestimmen"von The Bright Side of Mathematics
+```{dropdown} Video "Dimension und Basis von Bild und Kern einer Matrix bestimmen" von The Bright Side of Mathematics
 <iframe width="1054" height="593" src="https://www.youtube.com/embed/lBdwtUa_BGM"
 title="Dimension und Basis von Bild und Kern einer Matrix bestimmen" frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;

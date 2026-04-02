@@ -199,6 +199,12 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
+```{dropdown} Video "Rang einer Matrix" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/KQ0Wi9W5YIs"
+title="0159 Rang einer Matrix Definition und Beispiele" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Wann liegt ein Vektor im Bild?
 
 In der Praxis stellt man häufig die Frage: Liegt ein gegebener Vektor $\vec{b}$ im
@@ -225,6 +231,18 @@ $\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$
 liegt der Vektor $\vec{b} = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$ nicht im
 Bild, weil das Bild nur Vektoren mit einer mittleren Komponente von null enthält.
 Das Gleichungssystem $\mathbf{C} \cdot \vec{x} = \vec{b}$ ist daher unlösbar.
+
+```{dropdown} Video "Rang einer Matrix - Invertierbarkeit" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/_XchLKH6E4U"
+title="0161 Rang einer Matrix Invertierbarkeit" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown}  Video "Rang einer Matrix - Lösbarkeit LGS" von Mathematische Methoden
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/UNDha90yrT0"
+title="0162 Rang einer Matrix Lösbarkeit von LGS" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Zusammenfassung und Ausblick
 

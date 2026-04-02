@@ -29,7 +29,7 @@ einer Matrix vertauscht. Gegeben sei beispielsweise die Matrix
 Diese Matrix hat die Dimension $3\times 2$, also drei Zeilen und zwei Spalten.
 Die ttansponierte Matrix hat dann zwei Zeilen und drei Spalten. Die erste Zeile
 wird zur ersten Spalte, die zweite Zeile zur zweiten Spalte und die dritte Zeile
-zur dritten Spalte. Insgesamt erhalten wir fúr die transponierte Matrix den
+zur dritten Spalte. Insgesamt erhalten wir für die transponierte Matrix den
 Ausdruck
 
 \begin{equation*}
