@@ -125,19 +125,20 @@ Spalten der Matrix. Diese spannen dann das Bild auf.
 \mathbf{A} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
 \end{equation*}
 
-sind beide Spalten $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0 \\ -1 \end{pmatrix}$
-linear unabhängig. Das Bild ist:
+sind beide Spalten $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0
+\\ -1 \end{pmatrix}$ linear unabhängig. Das Bild ist:
 
 \begin{equation*}
-\text{Bild}(\mathbf{A}) = x_1 \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix} +
-x_2 \cdot \begin{pmatrix} 0 \\ -1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
+\text{Bild}(\mathbf{A}) = \left\{ x_1 \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix} +
+x_2 \cdot \begin{pmatrix} 0 \\ -1 \end{pmatrix} \,\Big|\, x_1, x_2 \in \mathbb{R}\right\}.
 \end{equation*}
 
 Alternativ schreiben wir:
 
 \begin{equation*}
 \text{Bild}(\mathbf{A}) =
-\langle \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ -1 \end{pmatrix} \rangle.
+\left\langle \begin{pmatrix} 1 \\ 0 \end{pmatrix},
+\begin{pmatrix} 0 \\ -1 \end{pmatrix} \right\rangle.
 \end{equation*}
 
 Da die zwei Spalten den $\mathbb{R}^2$ aufspannen, ist $\text{Rang}(\mathbf{A}) = 2$.
@@ -150,19 +151,20 @@ Die Abbildung ist surjektiv: Jeder Vektor im $\mathbb{R}^2$ ist erreichbar.
 \end{equation*}
 
 hat die mittlere Spalte nur Nullen und trägt damit nichts zum Bild bei. Die beiden
-übrigen Spalten $\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$
-sind linear unabhängig. Das Bild ist:
+übrigen Spalten $\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und
+$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ sind linear unabhängig. Das Bild ist:
 
 \begin{equation*}
-\text{Bild}(\mathbf{C}) = x_1 \cdot \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} +
-x_2 \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \quad x_1, x_2 \in \mathbb{R}.
+\text{Bild}(\mathbf{C}) = \left\{x_1 \cdot \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} +
+x_2 \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \,\Bigg |\, x_1, x_2 \in \mathbb{R}\right\}.
 \end{equation*}
 
 Alternativ schreiben wir:
 
 \begin{equation*}
 \text{Bild}(\mathbf{C}) =
-\langle \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \rangle.
+\left\langle \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
+\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \right\rangle.
 \end{equation*}
 
 Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathbf{C}) = 2$.
@@ -174,20 +176,22 @@ Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathb
 \end{equation*}
 
 ist die dritte Spalte ein Vielfaches der ersten:
-$\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}$.
+$\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot
+\begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}$.
 Sie trägt keine neue Richtung zum Bild bei. Die ersten beiden Spalten sind linear
 unabhängig. Das Bild ist:
 
 \begin{equation*}
-\text{Bild}(\mathbf{D}) = s \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix} +
-t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \quad s, t \in \mathbb{R},
+\text{Bild}(\mathbf{D}) = \left\{s \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix} +
+t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \,\Bigg |\, s, t \in \mathbb{R}\right\},
 \end{equation*}
 
 oder kurz
 
 \begin{equation*}
 \text{Bild}(\mathbf{D}) =
-\langle \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}, \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \rangle.
+\langle \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix},
+\begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \rangle.
 \end{equation*}
 
 und $\text{Rang}(\mathbf{D}) = 2$.

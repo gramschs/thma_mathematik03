@@ -129,5 +129,5 @@ web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></if
 In diesem Kapitel haben wir die Definition und Eigenschaften orthogonaler
 Matrizen kennengelernt. Orthogonale Matrizen werden insbesondere dann verwendet,
 wenn Längen und Winkel unverändert bleiben müssen. Im nächsten Kapitel werden
-wir erneut auf das Thema Lösen von linearen Gleichungssystemen zuwenden, diesmal
-aber die Matrizenschreibweise benutzen.
+wir sehen, wir wir aus beliebigen linear unabhängigen Vektoren zueinander
+orthogonale Vektoren erzeugen können.
