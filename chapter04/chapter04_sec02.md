@@ -68,6 +68,12 @@ Der Ausdruck $\frac{\vec{v} \cdot \vec{w}}{\vec{w} \cdot \vec{w}}$ ist ein
 Skalar, der angibt, wie viel von $\vec{v}$ in Richtung $\vec{w}$ steckt.
 Multipliziert mit $\vec{w}$ ergibt sich der Vektor, der abgezogen werden muss.
 
+```{dropdown} Video "Orthogonale Projektion (Vektoren)" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/K6ZCP8cpCc8"
+title="Orthogonale Projektion (Vektoren) + Beispiele" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ```{admonition} Was ist ... das Gram-Schmidt-Verfahren?
 :class: note
 Gegeben seien $n$ linear unabhängige Vektoren $\vec{v}_1, \ldots, \vec{v}_n$.
@@ -122,11 +128,17 @@ Wir überprüfen die Orthogonalität:
 $\vec{w}_1 \cdot \vec{w}_2 = 1 \cdot \frac{1}{2} + 1 \cdot (-\frac{1}{2}) + 0 \cdot 1 = 0$.
 Das Ergebnis stimmt.
 
-**Schritt 3:** Vom dritten Vektor $\vec{v}_3$ subtrahieren wir die Anteile in
-Richtung $\vec{w}_1$ und $\vec{w}_2$:
+**Schritt 3:** Vom dritten Vektor $\vec{v}_3$ subtrahieren wir den Anteil in
+Richtung $\vec{w}_1$
 
 \begin{equation*}
 \vec{v}_3 \cdot \vec{w}_1 = 0 + 1 + 0 = 1, \quad
+\vec{w}_1 \cdot \vec{w}_1 = 1 + 1 + 0 = 2,
+\end{equation*}
+
+und den Anteil in Richtung $\vec{w}_2$:
+
+\begin{equation*}
 \vec{v}_3 \cdot \vec{w}_2 = 0 \cdot \tfrac{1}{2} + 1 \cdot (-\tfrac{1}{2}) + 1 \cdot 1
 = \tfrac{1}{2}, \quad
 \vec{w}_2 \cdot \vec{w}_2 = \tfrac{1}{4} + \tfrac{1}{4} + 1 = \tfrac{3}{2}.
@@ -136,8 +148,8 @@ Damit ergibt sich:
 
 \begin{align*}
 \vec{w}_3
-&= \vec{v}_3 - \frac{1}{2}\vec{w}_1 - \frac{\frac{1}{2}}{\frac{3}{2}}\vec{w}_2 \\ -
-&= \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}
+&= \vec{v}_3 - \frac{1}{2}\vec{w}_1 - \frac{\frac{1}{2}}{\frac{3}{2}}\vec{w}_2 \\
+&= \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} -
 \frac{1}{2}\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} -
 \frac{1}{3}\begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix} \\
 &= \begin{pmatrix} 0 - \frac{1}{2} - \frac{1}{6} \\ 1 - \frac{1}{2} + \frac{1}{6} \\ 1 - 0 - \frac{1}{3} \end{pmatrix}
@@ -193,13 +205,6 @@ title="Orthogonale Basis bestimmen (Gram Schmidt Orthogonalisierungsverfahren)"
 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
 picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
-```
-
-```{dropdown} Video "Gram-Schmidt" von The Bright Side of Mathematics
-<iframe width="1020" height="566" src="https://www.youtube.com/embed/sqwVvJL3WTw"
-title="Gram-Schmidt (Gram-Schmidt&#39;sches Orthonormalisierungsverfahren)" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
