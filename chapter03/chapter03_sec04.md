@@ -176,8 +176,10 @@ Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathb
 \end{equation*}
 
 ist die dritte Spalte ein Vielfaches der ersten:
-$\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot
-\begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}$.
+\begin{equation*}
+\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot
+\begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}.
+\end{equation*}
 Sie trägt keine neue Richtung zum Bild bei. Die ersten beiden Spalten sind linear
 unabhängig. Das Bild ist:
 
