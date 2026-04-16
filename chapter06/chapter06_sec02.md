@@ -1,54 +1,10 @@
-# Grafisches Lösen – Richtungsfelder
-
-Bevor wir uns analytischen oder numerischen Lösungsverfahren zuwenden, lernen
-wir eine grafische Methode kennen: das **Richtungsfeld**. Es erlaubt, das
-qualitative Verhalten von Lösungskurven einer gewöhnlichen Differentialgleichung
-zu verstehen, ohne die Lösung explizit berechnen zu müssen.
+# Richtungsfelder: Lösungskurven sehen, bevor man rechnet
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, dass eine gDGL 1. Ordnung in expliziter Form $y' = F(x, y)$ in
-  jedem Punkt $(x, y)$ die **Steigung der Lösungskurve** durch diesen Punkt
-  angibt.
-* [ ] Sie können das **Richtungsfeld** einer gDGL 1. Ordnung skizzieren, indem Sie
-  in ausgewählten Punkten $(x, y)$ Linienelemente mit der zugehörigen Steigung
-  $F(x, y)$ einzeichnen.
-* [ ] Sie können zu einem gegebenen **Startpunkt** (Anfangsbedingung) die
-  Lösungskurve im Richtungsfeld einzeichnen, indem Sie den Linienelementen
-  folgen.
+* [ ] Sie wissen, dass eine gDGL 1. Ordnung in expliziter Form $y' = F(x, y)$ in jedem Punkt $(x, y)$ die **Steigung der Lösungskurve** durch diesen Punkt vorschreibt.
+* [ ] Sie können zu einer gDGL 1. Ordnung ein **Richtungsfeld** skizzieren, indem Sie an ausgewählten Punkten Linienelemente mit der jeweiligen Steigung $F(x, y)$ einzeichnen.
+* [ ] Sie können zu einem gegebenen Startpunkt eine **Lösungskurve** in ein Richtungsfeld einzeichnen, indem Sie den Linienelementen folgen.
 ```
-
-## Richtungsfeld
-
-Bei einer expliziten gDGL 1. Ordnung
-
-$$y' = F(x, y)$$
-
-gibt $F(x, y)$ für jeden Punkt $(x, y)$ der Ebene die Steigung der
-Lösungskurve an, die durch diesen Punkt verläuft. Zeichnet man in hinreichend
-vielen Punkten kurze Linienelemente mit dieser Steigung ein, so entsteht das
-**Richtungsfeld** der Differentialgleichung.
-
-```{admonition} Was ist ... ein Richtungsfeld?
-:class: note
-Das **Richtungsfeld** einer expliziten gDGL 1. Ordnung $y' = F(x, y)$ ist die
-Gesamtheit aller Linienelemente, die in den Punkten $(x, y)$ mit der Steigung
-$F(x, y)$ eingezeichnet werden. Jede Lösungskurve verläuft tangential zu den
-Linienelementen.
-```
-
-## Lösungskurve aus dem Richtungsfeld ablesen
-
-Ist ein Startpunkt $(x_0, y_0)$ (Anfangsbedingung) vorgegeben, lässt sich die
-Lösungskurve grafisch bestimmen, indem man ausgehend von $(x_0, y_0)$ den
-Linienelementen des Richtungsfeldes folgt. Auf diese Weise erhält man ohne
-analytische Rechnung einen qualitativen Überblick über den Verlauf der Lösung.
-
-## Zusammenfassung und Ausblick
-
-Das Richtungsfeld ermöglicht eine qualitative Analyse von Lösungen gewöhnlicher
-Differentialgleichungen. Im nächsten Kapitel lernen wir ein numerisches
-Verfahren kennen – das **Euler-Verfahren** –, das aus der Idee des Richtungsfeldes
-einen Algorithmus zur näherungsweisen Berechnung von Lösungswerten ableitet.

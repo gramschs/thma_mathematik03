@@ -50,7 +50,6 @@ project:
        - file: chapter04/chapter04_sec05.md
        - file: chapter04/chapter04_sec06.md
        - file: chapter04/chapter04_sec07.md
-       - file: chapter04/chapter04_sec08.md
     - title: Diagonalisierung und Anwendungen
       children:
        - file: chapter05/chapter05_sec01.md
@@ -58,8 +57,35 @@ project:
        - file: chapter05/chapter05_sec03.md
        - file: chapter05/chapter05_sec04.md
        - file: chapter05/chapter05_sec05.md
-
-
+    - title: 6. Gewöhnliche Differentialgleichungen
+      children:
+       - file: chapter06/chapter06_sec01.md
+       - file: chapter06/chapter06_sec02.md
+       - file: chapter06/chapter06_sec03.md
+    - title: 7. Separation der Variablen
+      children:
+       - file: chapter07/chapter07_sec01.md
+       - file: chapter07/chapter07_sec02.md
+    - title: 8. Lineare DGL 1. Ordnung mit konstanten Koeffizienten
+      children:
+       - file: chapter08/chapter08_sec01.md
+       - file: chapter08/chapter08_sec02.md
+       - file: chapter08/chapter08_sec03.md
+       - file: chapter08/chapter08_sec04.md
+    - title: 9. Variation der Konstanten
+      children:
+       - file: chapter09/chapter09_sec01.md
+       - file: chapter09/chapter09_sec02.md
+    - title: 10. Lineare DGL 2. Ordnung - homogene Lösung
+      children:
+       - file: chapter10/chapter10_sec01.md
+       - file: chapter10/chapter10_sec02.md
+       - file: chapter10/chapter10_sec03.md
+    - title: 11.  Lineare DGL 2. Ordnung - Schwingungen und Resonanz
+      children:
+       - file: chapter11/chapter11_sec01.md
+       - file: chapter11/chapter11_sec02.md
+       - file: chapter11/chapter11_sec03.md
 
 #    - title: DGL (Teil 1)
 #      children:
