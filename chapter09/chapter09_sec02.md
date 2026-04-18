@@ -1,5 +1,10 @@
 # Konstante Koeffizienten und der Resonanzfall
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

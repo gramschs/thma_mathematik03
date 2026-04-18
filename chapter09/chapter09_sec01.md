@@ -1,5 +1,10 @@
 # Variation der Konstanten: aus einer Konstante wird eine Funktion
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

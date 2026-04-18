@@ -1,5 +1,10 @@
 # Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

@@ -1,5 +1,10 @@
 # Schwingungen und Bewegungsgleichungen: DGL 2. Ordnung in der Technik
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

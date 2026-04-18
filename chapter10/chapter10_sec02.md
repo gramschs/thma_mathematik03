@@ -1,5 +1,10 @@
 # Wann spannen zwei Lösungen den gesamten Lösungsraum auf?
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

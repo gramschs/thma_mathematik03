@@ -1,5 +1,10 @@
 # Substitution: eine versteckte separierbare DGL sichtbar machen
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

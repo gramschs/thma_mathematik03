@@ -1,5 +1,10 @@
 # Separation der Variablen: die erste analytische Lösungsmethode
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

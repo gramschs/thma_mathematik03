@@ -1,5 +1,10 @@
 # Die charakteristische Gleichung: drei Fälle, drei Lösungstypen
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

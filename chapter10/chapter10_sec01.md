@@ -1,5 +1,10 @@
 # Lineare DGL 2. Ordnung: wenn auch die Beschleunigung eine Rolle spielt
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

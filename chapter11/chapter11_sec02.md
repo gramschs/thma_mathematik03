@@ -1,5 +1,10 @@
 # Anfangswertprobleme 2. Ordnung: zwei Bedingungen, zwei Konstanten
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

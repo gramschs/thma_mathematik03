@@ -1,5 +1,10 @@
 # Lineare DGL in der Praxis: Abkühlung, Ladung und Zerfall
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele

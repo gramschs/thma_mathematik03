@@ -1,5 +1,10 @@
 # Die partikuläre Lösung: Störfunktionen bei DGL 2. Ordnung
 
+```{admonition} Warnung
+:class: warning
+Dieses Vorlesungsskript befindet sich im Umbau.
+```
+
 ## Lernziele
 
 ```{admonition} Lernziele
