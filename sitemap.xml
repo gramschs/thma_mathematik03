@@ -100,4 +100,55 @@
   <url>
     <loc>http://localhost:3000/chapter05-sec05</loc>
   </url>
+  <url>
+    <loc>http://localhost:3000/chapter06-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter06-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter06-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter07-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter07-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter09-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter09-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter10-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter10-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter10-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter11-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter11-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter11-sec03</loc>
+  </url>
 </urlset>
