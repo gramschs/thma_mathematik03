@@ -6,7 +6,7 @@ kernelspec:
   display_name: 'Python 3'
 ---
 
-# Das Euler-Verfahren: eine Lösungskurve Schritt für Schritt verfolgen
+# 6.3 Das Euler-Verfahren: eine Lösungskurve Schritt für Schritt verfolgen
 
 In Abschnitt 6.2 haben wir gesehen, wie man einer Lösungskurve im Richtungsfeld
 mit dem Auge folgt: Man beginnt am Startpunkt und bewegt sich immer in Richtung

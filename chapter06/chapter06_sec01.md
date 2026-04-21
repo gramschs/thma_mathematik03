@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# Was ist eine Differentialgleichung?
+# 6.1 Was ist eine Differentialgleichung?
 
 Am Ende von Kapitel 5 haben wir gesehen, wie die Modalanalyse ein gekoppeltes
 Schwingungssystem auf seine Eigenfrequenzen zurückführt. Dabei sind Ausdrücke
@@ -159,6 +159,19 @@ $C = 0$ liegt man von Beginn an exakt auf der Grenzgeschwindigkeit. Die
 Gesamtheit aller Lösungen bildet eine Kurvenschar, in der $v_\infty$ als
 waagerechte Asymptote erscheint. In Abschnitt 6.2 werden wir dieses Bild
 systematisch als Richtungsfeld darstellen, noch bevor wir die Lösung berechnen.
+
+<!-- markdownlint-disable MD033 -->
+<div id="applet-container-720">
+
+<iframe
+  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_kurvenschar.html"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+
+</div>
+<!-- markdownlint-enable MD033 -->
 
 ## Wie legt eine Bedingung die Lösung fest?
 

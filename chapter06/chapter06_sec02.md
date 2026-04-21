@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# Richtungsfelder: Lösungskurven sehen, bevor man rechnet
+# 6.2 Richtungsfelder: Lösungskurven sehen, bevor man rechnet
 
 In Abschnitt 6.1 haben wir die spezielle Lösung $v(t) = v_\infty(1 - e^{-kt})$
 durch Einsetzen und Verifizieren kennengelernt, aber noch nicht hergeleitet.
@@ -71,8 +71,8 @@ Das ist genau die Grenzgeschwindigkeit $v_\infty$. Da die rechte Seite nicht
 von $t$ abhängt, sind alle Isoklinen waagerechte Geraden, jeweils bei
 $v = (g - c)/k$ für eine gewählte Steigung $c$.
 
-```{figure} richtungsfeld_fallschirmspringer.svg
-:name: fig-richtungsfeld
+```{figure} pics/chap06_richtungsfeld_fallschirmspringer.svg
+:name: chap06_richtungsfeld_fallschirmspringer
 :width: 80%
 Richtungsfeld der ODE $\dot{v} = g - kv$ mit $k = 0.2~\text{s}^{-1}$ und
 $g = 9.81~\text{m\,s}^{-2}$. Die gestrichelte Linie bei $v_\infty = 49.05~\text{m\,s}^{-1}$
@@ -113,6 +113,19 @@ bewegt sich ein kurzes Stück in Richtung des dortigen Linienelementes, liest am
 neuen Punkt die nächste Steigung ab und setzt die Kurve fort. Dieses Vorgehen
 ist qualitativ; ein exakter Algorithmus daraus wird das Euler-Verfahren in
 Abschnitt 6.3 sein.
+
+<!-- markdownlint-disable MD033 -->
+<div id="applet-container-720">
+
+<iframe
+  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_richtungsfeld.html"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+
+</div>
+<!-- markdownlint-enable MD033 -->
 
 Für unser AWP $v(0) = 0$ beginnt die Kurve bei $(0, 0)$. Das Linienelement
 dort hat die Steigung $\dot{v}(0) = g = 9.81~\text{m\,s}^{-2}$, die Kurve
