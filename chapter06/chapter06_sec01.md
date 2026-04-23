@@ -223,6 +223,31 @@ Da die Bedingungen an zwei verschiedenen Stellen liegen, handelt es sich um ein
 Randwertproblem. *Warum führen RWP auf andere mathematische Schwierigkeiten als
 AWP?* Das werden wir in Abschnitt 6.6 bei ODEs 2. Ordnung genauer untersuchen.
 
+## Weiteres Lernmaterial
+
+Die folgenden beiden Videos stammen von Prof. Hielscher der TH Mannheim.
+
+```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Anfangswert- und Randwertprobleme" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/kEuTsYsK5nk?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Anfangswert- und Randwertprobleme" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+Das folgende Video zeigt eine Einführung in Differentialgleichungen für
+Ingenieure an der Hochschule Bochum, die im traditionellen Vorlesungsstil
+gehalten wird.
+
+```{dropdown} Video "Gewöhnliche Differentialgleichungen - Ein Einstieg" von Jörg Frochte
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/kN5CxBG_z-k"
+title="Gewöhnliche Differentialgleichungen - Ein Einstieg -" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Eine gewöhnliche Differentialgleichung (ODE) sucht nicht eine Zahl, sondern

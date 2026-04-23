@@ -135,6 +135,15 @@ Das stimmt genau mit der in Abschnitt 6.1 berechneten Lösung
 $v(t) = v_\infty(1 - e^{-0.2\,t})$ überein: steiler Anstieg nahe $t = 0$,
 asymptotische Annäherung an $v_\infty$ für große $t$.
 
+## Weiteres Lernmaterial
+
+Das folgende Video zeigt das Richtungsfeld **bis** ca. Zeitindex 8:16 min.
+
+```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Das Richtungsfeld einer ODE 1. Ordnung macht die qualitative Struktur aller

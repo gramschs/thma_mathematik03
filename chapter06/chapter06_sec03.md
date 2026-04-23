@@ -199,6 +199,15 @@ Verfahren. In der Ingenieurpraxis werden genauere Methoden wie das
 linken Rand, sondern an mehreren Stellen innerhalb des Intervalls auswertet.
 Python, MATLAB und Simulink nutzen im Standard solche Verfahren.
 
+## Weiteres Lernmaterial
+
+Das folgende Video zeigt das Euler-Verfahren **ab** ca. Zeitindex 8:16 min.
+
+```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Das Euler-Verfahren übersetzt die geometrische Idee des Richtungsfeldes in
