@@ -1,15 +1,238 @@
-# Lineare DGL in der Praxis: Abkühlung, Ladung und Zerfall
+---
+authors:
+  - name: Simone Gramsch
+---
 
-```{admonition} Warnung
-:class: warning
-Dieses Vorlesungsskript befindet sich im Umbau.
-```
+# 8.4 Technische Anwendungen linearer ODEs 1. Ordnung
+
+In Abschnitt 7.3 haben wir separierbare ODEs auf zwei konkrete Ingenieurprobleme
+angewandt und dabei den vollständigen Weg von der Physik zur Lösung zur Interpretation
+geübt. Diesen Weg gehen wir hier erneut, diesmal für inhomogene lineare ODEs mit
+konstanten Koeffizienten. Die Lösungstheorie aus den Abschnitten 8.2 und 8.3 liefert
+das Werkzeug; die Beispiele zeigen, wie sich technisch so verschiedene Phänomene wie das
+Aufladen eines Kondensators und das Aufwärmen einer Maschinenkomponente auf dieselbe
+mathematische Struktur zurückführen lassen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können ein technisches oder physikalisches Problem (RC-Schaltkreis, Abkühlprozess, Wachstum und Zerfall) als lineare DGL 1. Ordnung mit konstanten Koeffizienten modellieren.
-* [ ] Sie können die zugehörige DGL vollständig lösen und die Lösung physikalisch interpretieren.
-* [ ] Sie können aus gegebenen Anfangsbedingungen die Integrationskonstante $A$ bestimmen und damit die **partikuläre Lösung** des Anwendungsproblems angeben.
+* [ ] Sie können ein technisches Problem als inhomogene lineare ODE 1. Ordnung mit
+  konstanten Koeffizienten modellieren und die Lösung $y_{\text{allgemein}} = y_h + y_p$
+  vollständig berechnen.
+* [ ] Sie können die Integrationskonstante aus einer gegebenen Anfangsbedingung bestimmen
+  und die **partikuläre Lösung** des Anfangswertproblems angeben.
+* [ ] Sie können die Lösung physikalisch interpretieren und zwischen dem
+  **transienten Anteil** (klingt ab) und dem **stationären Anteil** (bleibt dauerhaft)
+  unterscheiden.
 ```
+
+## Beispiel 1: Aufladen eines Kondensators im RC-Kreis
+
+In der Steuerungs- und Antriebstechnik begegnen RC-Schaltkreise als Verzögerungsglieder,
+Tiefpassfilter und Energiespeicher. Das Ladevorgang eines Kondensators ist das einfachste
+Beispiel für ein dynamisches Verhalten mit Zeitkonstante, und er führt auf eine ODE, die
+wir mit den Methoden aus Abschnitt 8.3 vollständig lösen können.
+
+### Aufstellen der ODE
+
+Ein Kondensator mit Kapazität $C = 100~\mu\text{F}$ liegt in Reihe mit einem Widerstand
+$R = 10~\text{k}\Omega$ an einer Gleichspannungsquelle $U_0 = 12~\text{V}$. Die
+Maschenregel liefert $U_0 = u_R + u_C$, wobei $u_R = R\,i$ und $i = C\,\dot{u}_C$. Nach
+dem Einsetzen und Division durch $RC$:
+
+\begin{equation*}
+\dot{u}_C + \frac{1}{RC}\,u_C = \frac{U_0}{RC}.
+\end{equation*}
+
+Mit der **Zeitkonstante** $\tau = RC = 10^4~\Omega \cdot 10^{-4}~\text{F} = 1~\text{s}$:
+
+\begin{equation*}
+\dot{u}_C + \frac{1}{\tau}\,u_C = \frac{U_0}{\tau}.
+\end{equation*}
+
+Das ist eine lineare ODE mit konstanten Koeffizienten $f(t) = 1/\tau$ und der konstanten
+Störfunktion $g(t) = U_0/\tau$. Der Kondensator sei zu Beginn ungeladen: $u_C(0) = 0$.
+
+### Lösung
+
+**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 1/\tau$):
+
+\begin{equation*}
+u_h(t) = A\,e^{-t/\tau}.
+\end{equation*}
+
+**Partikuläre Lösung** (Ansatz $u_p = C_0$ für konstante Störfunktion):
+
+\begin{equation*}
+\dot{u}_p + \frac{1}{\tau}\,u_p = 0 + \frac{C_0}{\tau}
+  \stackrel{!}{=} \frac{U_0}{\tau}
+\quad \Rightarrow \quad C_0 = U_0.
+\end{equation*}
+
+**Allgemeine Lösung:**
+
+\begin{equation*}
+u_C(t) = A\,e^{-t/\tau} + U_0.
+\end{equation*}
+
+**Anfangsbedingung** $u_C(0) = 0$: $A + U_0 = 0$, also $A = -U_0$. Die spezielle Lösung:
+
+\begin{equation*}
+u_C(t) = U_0\!\left(1 - e^{-t/\tau}\right) = 12\!\left(1 - e^{-t}\right)~\text{V}.
+\end{equation*}
+
+**Verifikation:** $\dot{u}_C = \frac{U_0}{\tau}\,e^{-t/\tau}$ und
+$\frac{1}{\tau}u_C = \frac{U_0}{\tau}(1 - e^{-t/\tau})$, also:
+
+\begin{equation*}
+\dot{u}_C + \frac{1}{\tau}u_C
+  = \frac{U_0}{\tau}\,e^{-t/\tau} + \frac{U_0}{\tau} - \frac{U_0}{\tau}\,e^{-t/\tau}
+  = \frac{U_0}{\tau}. \quad \checkmark
+\end{equation*}
+
+### Physikalische Interpretation
+
+Die Lösung gliedert sich in zwei Anteile. Der **transiente Anteil** $-U_0\,e^{-t/\tau}$
+stammt aus $u_h$ und klingt mit der Zeitkonstante $\tau = 1~\text{s}$ ab; er beschreibt,
+wie stark das System vom stationären Zustand entfernt ist. Der **stationäre Anteil**
+$u_p = U_0 = 12~\text{V}$ ist die partikuläre Lösung; er beschreibt den Endzustand, den
+der Kondensator für $t \to \infty$ anstrebt.
+
+Nach einer Zeitkonstante gilt $u_C(\tau) = 12(1 - e^{-1}) \approx 7{,}58~\text{V}$: Der
+Kondensator hat $63{,}2\%$ seiner Endspannung erreicht. Nach fünf Zeitkonstanten beträgt
+die Spannung $u_C(5\tau) \approx 11{,}92~\text{V}$, also $99{,}3\%$ des Endwertes. In der
+Praxis gilt ein System nach fünf Zeitkonstanten als eingeschwungen. Diese Faustregeln
+für $\tau$ sind in der Antriebstechnik und Regelungstechnik grundlegend; Sie werden ihnen
+in der Vorlesung Elektrische Antriebe und Leistungselektronik wieder begegnen.
+
+## Beispiel 2: Maschinenkomponente bei periodischer Wärmequelle
+
+Viele Maschinenkomponenten sind Wärmequellen ausgesetzt, deren Intensität sich zeitlich
+ändert: ein Elektromotor mit periodisch wechselnder Last, ein Getriebe im Fahrzyklus oder
+eine Produktionsanlage mit getaktetem Betrieb. Wenn die Wärmequelle näherungsweise
+sinusförmig variiert, führt das auf eine lineare ODE mit trigonometrischer Störfunktion,
+wie wir sie in Abschnitt 8.3 mit dem $\sin$/$\cos$-Ansatz gelöst haben.
+
+<!-- markdownlint-disable -->
+### Aufstellen der ODE
+<!-- markdownlint-enable -->
+
+Eine Maschinenkomponente mit der Temperatur $T(t)$ gibt Wärme proportional zur
+Temperaturdifferenz gegenüber der Umgebung ab (Newtonsches Abkühlgesetz) und nimmt
+gleichzeitig eine sinusförmig variierende Wärmeleistung auf. Mit dem
+Wärmeübergangskoeffizienten $\alpha = 0{,}5~\text{s}^{-1}$, der Umgebungstemperatur
+null als Bezugspunkt und der Wärmequelle mit Amplitude $\beta = 10~\text{K\,s}^{-1}$
+sowie Kreisfrequenz $\omega = 1~\text{s}^{-1}$:
+
+\begin{equation*}
+\dot{T} + \alpha\,T = \beta\sin(\omega t)
+\quad \Longrightarrow \quad
+\dot{T} + 0{,}5\,T = 10\sin(t).
+\end{equation*}
+
+Die Komponente hat zur Zeit $t = 0$ die Temperatur $T(0) = 20~\text{°C}$.
+
+<!-- markdownlint-disable -->
+### Lösung
+<!-- markdownlint-enable -->
+
+**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 0{,}5$):
+
+\begin{equation*}
+T_h(t) = A\,e^{-0{,}5\,t}.
+\end{equation*}
+
+**Partikuläre Lösung** (Ansatz für trigonometrische Störfunktion aus Abschnitt 8.3):
+
+\begin{equation*}
+T_p = P\cos(t) + Q\sin(t)
+\quad \Rightarrow \quad
+\dot{T}_p = -P\sin(t) + Q\cos(t).
+\end{equation*}
+
+Einsetzen in $\dot{T} + 0{,}5\,T = 10\sin(t)$:
+
+\begin{align*}
+(-P\sin t + Q\cos t) + 0{,}5(P\cos t + Q\sin t) &= 10\sin t, \\
+(0{,}5Q - P)\sin t + (0{,}5P + Q)\cos t &= 10\sin t.
+\end{align*}
+
+**Koeffizientenvergleich:**
+
+\begin{align*}
+\sin(t)\text{-Koeffizient:} &\quad 0{,}5\,Q - P = 10, \\
+\cos(t)\text{-Koeffizient:} &\quad 0{,}5\,P + Q = 0
+  \quad \Rightarrow \quad P = -2Q.
+\end{align*}
+
+Einsetzen in die erste Gleichung: $0{,}5\,Q + 2Q = 2{,}5\,Q = 10$, also $Q = 4$
+und $P = -8$. Die partikuläre Lösung lautet:
+
+\begin{equation*}
+T_p(t) = -8\cos(t) + 4\sin(t)~\text{°C}.
+\end{equation*}
+
+**Allgemeine Lösung:**
+
+\begin{equation*}
+T(t) = A\,e^{-0{,}5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
+\end{equation*}
+
+**Anfangsbedingung** $T(0) = 20~\text{°C}$:
+
+\begin{equation*}
+A\,e^{0} - 8\cos(0) + 4\sin(0) = A - 8 = 20
+\quad \Rightarrow \quad A = 28.
+\end{equation*}
+
+Die spezielle Lösung:
+
+\begin{equation*}
+T(t) = 28\,e^{-0{,}5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
+\end{equation*}
+
+**Verifikation:** Mit $\dot{T} = -14\,e^{-0{,}5\,t} + 8\sin(t) + 4\cos(t)$:
+
+\begin{align*}
+\dot{T} + 0{,}5\,T
+  &= \bigl(-14\,e^{-0{,}5\,t} + 8\sin t + 4\cos t\bigr) +
+     0{,}5\bigl(28\,e^{-0{,}5\,t} - 8\cos t + 4\sin t\bigr) \\
+  &= (-14 + 14)\,e^{-0{,}5\,t} + (8 + 2)\sin t + (4 - 4)\cos t \\
+  &= 10\sin(t). \quad \checkmark
+\end{align*}
+
+<!-- markdownlint-disable -->
+### Physikalische Interpretation
+<!-- markdownlint-enable -->
+
+Auch hier gliedert sich die Lösung in zwei Anteile. Der transiente Anteil
+$28\,e^{-0{,}5\,t}$ klingt mit der Zeitkonstante $1/\alpha = 2~\text{s}$ ab:
+Nach etwa zehn Sekunden ist er praktisch null. Übrig bleibt der stationäre
+Anteil $T_p(t) = -8\cos(t) + 4\sin(t)$, eine dauerhaft anhaltende Schwingung mit
+der Kreisfrequenz $\omega = 1~\text{s}^{-1}$ der Wärmequelle. Die Amplitude des
+eingeschwungenen Zustands beträgt $\sqrt{(-8)^2 + 4^2} = 4\sqrt{5} \approx
+8{,}9~\text{K}$ und ist damit kleiner als der Wert $\beta/\omega = 10~\text{K}$,
+den ein einfacher Amplitudenvergleich mit der Störfunktion $\beta\sin(\omega t)$
+nahelegen würde: Die Trägheit der Komponente dämpft die Temperaturschwankung ab.
+
+*Warum ist das für den Maschinenbau relevant?* Das Verhältnis von Eingangs- zu
+Ausgangsamplitude bei periodischer Anregung beschreibt die
+Übertragungseigenschaften des Systems. In der Regelungstechnik heißt dieser
+Zusammenhang Frequenzgang; er ist das zentrale Werkzeug zur Auslegung von
+Reglern. Für ODEs 2. Ordnung werden wir in Kapitel 11 sehen, dass dieser
+Zusammenhang noch reichhaltiger wird und den Resonanzfall einschließt.
+
+## Zusammenfassung und Ausblick
+
+Beide Beispiele zeigen dieselbe universelle Struktur: Die allgemeine Lösung
+$y_{\text{allgemein}} = y_h + y_p$ besteht aus einem transienten Anteil, der das
+Anfangsverhalten beschreibt und mit der Zeitkonstante $1/a$ abklingt, und einem
+stationären Anteil, der dauerhaft erhalten bleibt und die Form der Störfunktion
+trägt. Diese Zweiteilung ist kein Zufall, sondern eine direkte Konsequenz des
+Superpositionsprinzips aus Abschnitt 8.3.
+
+In Kapitel 9 lernen wir die Variation der Konstanten kennen: ein
+Lösungsverfahren, das die partikuläre Lösung auch dann findet, wenn die
+Störfunktion nicht in die Ansatztabelle passt, und das den Resonanzfall
+automatisch korrekt behandelt.

@@ -10,9 +10,9 @@ site:
 
 TH Mannheim
 
-<!-- markdownlint-disable MD001 -->
+<!-- markdownlint-disable -->
 ### Vorlesungsskript Mathematik 3
-<!-- markdownlint-enable MD001 -->
+<!-- markdownlint-enable -->
 
 ![Mathematics](title.png)
 

@@ -1,16 +1,202 @@
-# Substitution: eine versteckte separierbare DGL sichtbar machen
+---
+authors:
+  - name: Simone Gramsch
+---
 
-```{admonition} Warnung
-:class: warning
-Dieses Vorlesungsskript befindet sich im Umbau.
-```
+# 7.2 Substitution: wenn die Trennung scheitert
+
+In Abschnitt 7.1 haben wir gelernt, ODEs der Form $y' = f(x) \cdot g(y)$ durch Trennung
+der Variablen exakt zu lösen. Das Verfahren setzt jedoch voraus, dass sich die rechte Seite
+als Produkt zweier voneinander unabhängiger Faktoren schreiben lässt. Viele ODEs, die in
+der technischen Praxis auftreten, erfüllen diese Bedingung nicht: Der Ausdruck auf der
+rechten Seite hängt von $x$ und $y$ so verflochten ab, dass eine direkte Trennung nicht
+möglich ist. Ein einfaches Beispiel ist die ODE $y' = (x + y)^2 - 1$. Hier erscheinen
+$x$ und $y$ gemeinsam im Quadrat, und keine algebraische Umformung führt auf ein Produkt
+$f(x) \cdot g(y)$. Wenn aber der Ausdruck, von dem die rechte Seite abhängt, eine lineare
+Kombination von $x$ und $y$ ist, gibt es einen eleganten Ausweg: die **Substitution**.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie erkennen eine gDGL der Form $y' = f(ax + by + c)$ mit $b \neq 0$ und wissen, dass eine direkte Separation nicht möglich ist.
-* [ ] Sie können die **Substitution** $u = ax + by + c$ durchführen, $y'$ durch $u'$ ausdrücken und die DGL in eine separierbare DGL in $u$ und $u'$ umformen.
-* [ ] Sie können die umgeformte DGL durch Separation der Variablen lösen und anschließend durch **Resubstitution** $u = ax + by + c$ die Lösung in den ursprünglichen Variablen angeben.
-* [ ] Sie beachten den Sonderfall $a + b \cdot f(u) = 0$ und können die zugehörige Lösung gesondert bestimmen.
+* [ ] Sie erkennen eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$ und wissen,
+  dass eine direkte Separation im Allgemeinen nicht möglich ist.
+* [ ] Sie können die **Substitution** $u = ax + by + c$ durchführen, $y'$ durch $u'$
+  ausdrücken und die ODE in eine separierbare ODE in $u$ und $u'$ umformen.
+* [ ] Sie können die umgeformte ODE durch Separation der Variablen lösen und anschließend
+  durch **Resubstitution** $u = ax + by + c$ die Lösung in den ursprünglichen Variablen
+  angeben.
+* [ ] Sie beachten den Sonderfall $a + b \cdot f(u) = 0$ und können die zugehörige Lösung
+  gesondert bestimmen.
 ```
+
+## Warum scheitert die direkte Trennung?
+
+Wir betrachten die ODE $y' = (x + y)^2 - 1$. Um zu prüfen, ob sie separierbar ist,
+versuchen wir, die rechte Seite als Produkt $f(x) \cdot g(y)$ zu schreiben. Das Ausmultiplizieren ergibt:
+
+\begin{equation*}
+(x + y)^2 - 1 = x^2 + 2xy + y^2 - 1.
+\end{equation*}
+
+Hier treten $x^2$, $y^2$ und das gemischte Produkt $2xy$ auf. Es gibt keine Faktorisierung
+in einen reinen $x$-Faktor und einen reinen $y$-Faktor. Die direkte Separation schlägt
+fehl.
+
+Was wir aber sehen: Die rechte Seite ist eine Funktion von $x + y$ allein, also von einer
+linearen Kombination beider Variablen. *Und wenn wir diese Kombination als neue Variable
+einführen?* Dann beschreibt die ODE in der neuen Variablen vielleicht etwas viel
+Einfacheres.
+
+## Wie verwandelt die Substitution die ODE?
+
+Wir benennen die Kombination $x + y$ als neue unbekannte Funktion $u(x)$:
+
+\begin{equation*}
+u = x + y \quad \Leftrightarrow \quad y = u - x.
+\end{equation*}
+
+Leiten wir beide Seiten nach $x$ ab, ergibt sich für die linke Seite $u'$ und für die
+rechte Seite $y' + 1$, also:
+
+\begin{equation*}
+u' = 1 + y' \quad \Leftrightarrow \quad y' = u' - 1.
+\end{equation*}
+
+Wir setzen in die ursprüngliche ODE ein. Die linke Seite $y'$ wird zu $u' - 1$, die rechte
+Seite $(x + y)^2 - 1$ wird zu $u^2 - 1$:
+
+\begin{equation*}
+u' - 1 = u^2 - 1 \quad \Rightarrow \quad u' = u^2.
+\end{equation*}
+
+Das ist eine separierbare ODE in $u$ und $x$, die wir mit dem Verfahren aus Abschnitt 7.1
+lösen können. Die Substitution hat ihre Schuldigkeit getan.
+
+```{admonition} Was ist ... die Substitutionsmethode für $y' = f(ax + by + c)$?
+:class: note
+Gegeben sei eine ODE der Form
+
+\begin{equation*}
+y' = f(ax + by + c)
+\end{equation*}
+
+mit Konstanten $a, b, c \in \mathbb{R}$ und $b \neq 0$. Die **Substitution**
+$u = ax + by + c$ führt auf
+
+\begin{equation*}
+u' = a + b \cdot y' = a + b \cdot f(u).
+\end{equation*}
+
+Diese ODE in $u$ und $x$ ist separierbar (sofern $a + b \cdot f(u) \neq 0$) und kann
+durch Trennung der Variablen gelöst werden. Nach der Lösung liefert die **Resubstitution**
+$u = ax + by + c$ die Lösung in den ursprünglichen Variablen $x$ und $y$.
+```
+
+Für unser Beispiel: $a = 1$, $b = 1$, $c = 0$ und $f(u) = u^2 - 1$. Die substituierte ODE
+lautet $u' = 1 + 1 \cdot (u^2 - 1) = u^2$, wie wir gerade berechnet haben.
+
+## Lösung durch Separation und Resubstitution
+
+Wir lösen $u' = u^2$ durch Trennung der Variablen, wobei wir zunächst $u \neq 0$
+voraussetzen.
+
+**Schritt 1: Trennen.**
+
+\begin{equation*}
+\frac{du}{u^2} = dx.
+\end{equation*}
+
+**Schritt 2 und 3: Integrieren und Stammfunktionen einsetzen.**
+
+\begin{equation*}
+\int u^{-2}\,du = \int dx \quad \Rightarrow \quad -\frac{1}{u} = x + C, \quad C \in \mathbb{R}.
+\end{equation*}
+
+**Schritt 4: Nach $u$ auflösen.**
+
+\begin{equation*}
+u = -\frac{1}{x + C}.
+\end{equation*}
+
+**Resubstitution.** Wir ersetzen $u$ durch $x + y$:
+
+\begin{equation*}
+x + y = -\frac{1}{x + C}.
+\end{equation*}
+
+Auflösen nach $y$ ergibt die allgemeine Lösung in den ursprünglichen Variablen:
+
+\begin{equation*}
+y(x) = -x - \frac{1}{x + C}, \quad C \in \mathbb{R}.
+\end{equation*}
+
+**Verifikation.** Wir prüfen, ob diese Funktion die ODE $y' = (x + y)^2 - 1$ erfüllt.
+
+Ableitung der Lösung:
+\begin{equation*}
+y'(x) = -1 + \frac{1}{(x + C)^2}.
+\end{equation*}
+
+Rechte Seite der ODE:
+\begin{align*}
+(x + y)^2 - 1
+  &= \left(x - x - \frac{1}{x+C}\right)^2 - 1
+   = \frac{1}{(x+C)^2} - 1.
+\end{align*}
+
+Linke und rechte Seite stimmen überein. Die Lösung ist verifiziert. $\checkmark$
+
+In der Regelungstechnik, die Sie in höheren Semestern kennenlernen, erscheinen ODEs dieser
+Struktur bei der Analyse nichtlinearer Regelkreise, deren Zustandsänderung von einer
+skalierten Linearkombination von Zustands- und Stellgröße abhängt. Das Substitutionsverfahren
+ist dort ein Standardwerkzeug zur Gewinnung analytischer Näherungslösungen.
+
+## Was ist der Sonderfall $a + b \cdot f(u) = 0$?
+
+Im Trennungsschritt haben wir durch $u^2$ dividiert und dabei $u \neq 0$ vorausgesetzt.
+*Was passiert, wenn $u = 0$ ist?* Dann ist $u' = u^2 = 0$: Die Funktion $u$ ist konstant
+gleich null. Das entspricht in den ursprünglichen Variablen der Bedingung
+$x + y = 0$, also $y = -x$.
+
+Allgemein: Wenn $a + b \cdot f(u) = 0$ für einen Wert $u = u_0$ gilt, dann ist
+$u \equiv u_0$ eine konstante Lösung der substituierten ODE. Die zugehörige Lösung in den
+Originalvariablen ergibt sich aus $ax + by + c = u_0$, aufgelöst nach $y$.
+
+Wir prüfen für unser Beispiel. Mit $y = -x$ gilt $y' = -1$. Einsetzen in die ODE:
+
+\begin{equation*}
+(x + (-x))^2 - 1 = 0 - 1 = -1 = y'. \quad \checkmark
+\end{equation*}
+
+Die Funktion $y = -x$ ist tatsächlich eine Lösung. Sie lässt sich aus der allgemeinen
+Lösung $y = -x - 1/(x+C)$ für kein endliches $C$ gewinnen: Im Grenzwert
+$|C| \to \infty$ verschwindet der Bruch zwar, aber $C = \infty$ ist keine zulässige
+reelle Konstante. Es handelt sich um eine **singuläre Lösung**, die separat neben der
+allgemeinen Lösung anzugeben ist.
+
+```{admonition} Was ist ... die vollständige Lösung im Substitutionsverfahren?
+:class: note
+Gegeben sei eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$. Die vollständige
+Lösung besteht aus:
+
+1. Der **allgemeinen Lösung**, erhalten durch Substitution, Separation und Resubstitution
+   (gilt für $a + b \cdot f(u) \neq 0$).
+2. Den **singulären Lösungen**, die aus den Nullstellen $u_0$ von $a + b \cdot f(u) = 0$
+   durch Resubstitution $ax + by + c = u_0$ folgen.
+```
+
+## Zusammenfassung und Ausblick
+
+ODEs der Form $y' = f(ax + by + c)$ lassen sich nicht direkt trennen, weil $x$ und $y$
+gemeinsam im Argument der Funktion auftreten. Die Substitution $u = ax + by + c$ ersetzt
+dieses Argument durch eine neue Funktion und verwandelt die ODE in die separierbare Form
+$u' = a + b \cdot f(u)$, die wir mit dem Verfahren aus Abschnitt 7.1 lösen. Nach der
+Resubstitution erhalten wir die allgemeine Lösung in den Originalvariablen. Der Sonderfall
+$a + b \cdot f(u) = 0$ liefert singuläre Lösungen, die separat zu prüfen und anzugeben sind.
+
+In Abschnitt 7.3 verlassen wir den methodischen Werkzeugkasten und kehren zur
+Ingenieurpraxis zurück. Wir wenden beide Verfahren dieses Kapitels auf konkrete technische
+Probleme an: den Fallschirmspringer aus Kapitel 6, dessen Lösung wir in Abschnitt 7.1
+erstmals hergeleitet haben, sowie zwei weitere Szenarien aus dem Maschinenbau, an denen
+deutlich wird, wie die Wahl des richtigen Lösungswegs vom Typ der ODE abhängt.

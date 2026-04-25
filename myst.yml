@@ -66,6 +66,7 @@ project:
       children:
        - file: chapter07/chapter07_sec01.md
        - file: chapter07/chapter07_sec02.md
+       - file: chapter07/chapter07_sec03.md
     - title: 8. Lineare DGL 1. Ordnung mit konstanten Koeffizienten
       children:
        - file: chapter08/chapter08_sec01.md
@@ -76,6 +77,7 @@ project:
       children:
        - file: chapter09/chapter09_sec01.md
        - file: chapter09/chapter09_sec02.md
+       - file: chapter09/chapter09_sec03.md
     - title: 10. Lineare DGL 2. Ordnung - homogene Lösung
       children:
        - file: chapter10/chapter10_sec01.md

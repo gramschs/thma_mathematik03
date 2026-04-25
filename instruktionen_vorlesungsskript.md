@@ -26,7 +26,7 @@ Datei beginnt mit einem YAML-Front-Matter-Block:
 ```markdown
 ---
 authors:
-  - name:
+  - name:n Simone Gramsch
 ---
 ```
 
