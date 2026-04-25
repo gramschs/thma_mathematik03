@@ -1,0 +1,225 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 8.3 Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
+
+In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der Fallschirmspringer-
+Gleichung hergeleitet. Sie beschreibt das freie Abklingen ohne Antrieb. Die vollständige
+Gleichung $\dot{v} + kv = 9{,}81~\text{m\,s}^{-2}$ hat aber eine Störfunktion, die die
+Schwerkraft als dauerhaften Antrieb modelliert. Dieser Antrieb erzeugt einen zweiten Teil
+der Lösung: die **partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine
+Lösung der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
+dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit den Bogen,
+der in Kapitel 6 geöffnet wurde.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
+  $y_{\text{allgemein}} = y_h + y_p$ aus homogener Lösung und partikulärer Lösung
+  zusammensetzt.
+* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
+  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
+* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
+  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
+* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
+  Anfangsbedingungen anpassen.
+```
+
+## Warum reicht die homogene Lösung nicht aus?
+
+Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv = 9{,}81$
+erfüllt:
+
+\begin{equation*}
+\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9{,}81.
+\end{equation*}
+
+$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die Störfunktion
+$g(t) = 9{,}81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und wird von $v_h$
+nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die genau diesen
+fehlenden Anteil liefert.
+
+*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der ODE.
+Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+
+<!-- markdownlint-disable -->
+\begin{align*}
+(y_h + y_p)' + f(x)\,(y_h + y_p)
+  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
+   = g(x). \quad \checkmark
+\end{align*}
+<!-- markdownlint-enable -->
+
+Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
+die Störfunktion reproduziert. Dieses Zusammenspiel heißt
+**Superpositionsprinzip**.
+
+```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
+:class: note
+Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
+setzt sich zusammen aus
+
+\begin{equation*}
+y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
+\end{equation*}
+
+wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
+$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
+Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
+festgelegt.
+```
+
+## Wie wählen wir den richtigen Ansatz?
+
+Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
+$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
+$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
+Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
+Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
+$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
+die drei wichtigsten Typen zusammen:
+
+<!-- markdownlint-disable -->
+| Störfunktion $g(x)$ | Ansatz für $y_p$ |
+| --- | --- |
+| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
+| Exponential: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
+| Trigonometrisch: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
+<!-- markdownlint-enable -->
+
+Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
+homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
+null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
+werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
+
+## Beispiel 1: der Fallschirmspringer
+
+Die inhomogene ODE lautet $\dot{v} + kv = 9{,}81~\text{m\,s}^{-2}$ mit $k =
+0{,}2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9{,}81~\text{m\,s}^{-2}$ ist ein
+Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
+
+\begin{equation*}
+v_p = C, \quad C \in \mathbb{R}.
+\end{equation*}
+
+Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
+
+\begin{equation*}
+\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9{,}81.
+\end{equation*}
+
+**Koeffizientenvergleich** liefert unmittelbar:
+
+\begin{equation*}
+C = \frac{9{,}81}{k} = \frac{9{,}81}{0{,}2} = 49{,}05~\text{m\,s}^{-1} = v_\infty.
+\end{equation*}
+
+Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
+physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
+Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
+A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
+
+\begin{equation*}
+v(t) = A\,e^{-kt} + v_\infty.
+\end{equation*}
+
+**Anfangsbedingung** $v(0) = 0$:
+
+\begin{equation*}
+v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
+\quad \Rightarrow \quad A = -v_\infty.
+\end{equation*}
+
+Die spezielle Lösung des AWP lautet:
+
+\begin{equation*}
+v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
+     = 49{,}05\,\bigl(1 - e^{-0{,}2\,t}\bigr)~\text{m\,s}^{-1}.
+\end{equation*}
+
+Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen hergeleitet
+und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir ihre Struktur
+vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus $y_h$, die
+Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
+
+## Beispiel 2: eine Sinus-Störfunktion
+
+Wir betrachten die ODE
+
+\begin{equation*}
+y' + y = \sin(x).
+\end{equation*}
+
+Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
+(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
+\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
+
+\begin{equation*}
+y_p = P\cos(x) + Q\sin(x).
+\end{equation*}
+
+Wir leiten ab: $y_p' = -P\sin(x) + Q\cos(x)$. Einsetzen in $y' + y = \sin(x)$:
+
+\begin{align*}
+y_p' + y_p
+  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
+  &= (Q - P)\sin(x) + (P + Q)\cos(x)
+   \stackrel{!}{=} \sin(x).
+\end{align*}
+
+**Koeffizientenvergleich** — wir vergleichen die Koeffizienten von $\sin(x)$ und
+$\cos(x)$ auf beiden Seiten:
+
+\begin{align*}
+\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
+\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
+\end{align*}
+
+Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
+= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
+lautet:
+
+\begin{equation*}
+y_p = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
+\end{equation*}
+
+Die allgemeine Lösung ist:
+
+\begin{equation*}
+y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
+\end{equation*}
+
+**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
+
+\begin{align*}
+y' + y
+  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
+     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
+  &= \sin(x). \quad \checkmark
+\end{align*}
+
+Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
+durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
+Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
+Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
+
+## Zusammenfassung und Ausblick
+
+Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
+Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
+beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
+trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
+funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
+Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
+Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
+$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
+Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
+
+In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
+an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
+Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
+nicht in die Ansatztabelle passt.
