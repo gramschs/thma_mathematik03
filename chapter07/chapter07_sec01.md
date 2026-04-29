@@ -207,6 +207,24 @@ Spezialfall $C = 0$. Das muss nicht immer so sein: Bei nichtlinearen DGL kann di
 konstante Lösung außerhalb der allgemeinen Lösungsschar liegen und ist dann separat
 anzugeben.
 
+```{dropdown} Video "Trennung der Variable" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/IPbG7lnzccE?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Trennung der Variablen" von Mathematrick
+<iframe width="927" height="521" src="https://www.youtube.com/embed/Sm0Go9IioJ4"
+title="Differentialgleichung lösen - DGL 1. Ordnung, Anfangswertproblem, Trennung der Variablen" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Separierbare Differentialgleichungen" von MathePeter
+<iframe width="927" height="521" src="https://www.youtube.com/embed/Oa7a6rP8Zd4"
+title="Separierbare Differentialgleichungen | Trennung der Veränderlichen (3-Schritte-Methode)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Die Separation der Variablen überführt eine separierbare DGL $y' = f(x) \cdot g(y)$

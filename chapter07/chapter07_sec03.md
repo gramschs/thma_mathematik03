@@ -96,6 +96,13 @@ Lasten mit kleiner Haltekraft zu sichern. In der Auslegung von Riemengetrieben u
 Seilzügen, die Sie in der Vorlesung Maschinenelemente vertiefen werden, ist das
 Euler-Eytelwein-Gesetz eine Grundformel.
 
+```{dropdown} Video "Seilreibung" von Studyflix
+<iframe width="927" height="521" src="https://www.youtube.com/embed/CP69S-F40Mk"
+title="Seilreibung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Beispiel 2: Entleerung eines Hydraulikbehälters
 
 Ein zylindrischer Hydraulikbehälter mit konstantem Querschnitt hat zum Zeitpunkt $t = 0$
@@ -198,6 +205,13 @@ das physikalisch realistischere Bild. In der Hydraulik, die Sie in der
 Strömungslehre vertiefen werden, bildet das Torricellische Ausflussgesetz die
 Grundlage für die Dimensionierung von Ablaufventilen und
 Druckausgleichsbehältern.
+
+```{dropdown} Video (EN) "Torricelli's Law" von GekkoFactor-Calculus
+<iframe width="927" height="521" src="https://www.youtube.com/embed/SfXm22iQD2Y"
+title="Modelling with differential equations - Torricelli&#39;s Law" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
 ## Welche Methode für welche ODE?
 

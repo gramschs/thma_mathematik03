@@ -186,6 +186,16 @@ Lösung besteht aus:
    durch Resubstitution $ax + by + c = u_0$ folgen.
 ```
 
+```{dropdown} Video "Trennung der Variable nach vorheriger Substitution" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/A0Cg4tRNrfI?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable nach vorheriger Substitution" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Differentialgleichung lösen durch Substitution" von Kochrezepte für Mathematik
+<iframe width="927" height="521" src="https://www.youtube.com/embed/oIjnic9GT3o"
+title="Differentialgleichung lösen durch Substitution - DGL" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 ODEs der Form $y' = f(ax + by + c)$ lassen sich nicht direkt trennen, weil $x$ und $y$
