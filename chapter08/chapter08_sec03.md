@@ -5,22 +5,23 @@ authors:
 
 # 8.3 Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
 
-In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der Fallschirmspringer-
-Gleichung hergeleitet. Sie beschreibt das freie Abklingen ohne Antrieb. Die vollständige
-Gleichung $\dot{v} + kv = 9{,}81~\text{m\,s}^{-2}$ hat aber eine Störfunktion, die die
-Schwerkraft als dauerhaften Antrieb modelliert. Dieser Antrieb erzeugt einen zweiten Teil
-der Lösung: die **partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine
-Lösung der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
-dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit den Bogen,
-der in Kapitel 6 geöffnet wurde.
+In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
+Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
+ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
+hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
+modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
+**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
+der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
+dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
+den Bogen, der in Kapitel 6 geöffnet wurde.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
 * [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
-  $y_{\text{allgemein}} = y_h + y_p$ aus homogener Lösung und partikulärer Lösung
-  zusammensetzt.
+  $$y_{\text{allgemein}} = y_h + y_p$$
+  aus homogener Lösung und partikulärer Lösung zusammensetzt.
 * [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
   rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
 * [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
@@ -31,20 +32,20 @@ der in Kapitel 6 geöffnet wurde.
 
 ## Warum reicht die homogene Lösung nicht aus?
 
-Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv = 9{,}81$
-erfüllt:
+Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
+9.81$ erfüllt:
 
 \begin{equation*}
-\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9{,}81.
+\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
 \end{equation*}
 
-$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die Störfunktion
-$g(t) = 9{,}81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und wird von $v_h$
-nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die genau diesen
-fehlenden Anteil liefert.
+$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
+Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
+wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
+genau diesen fehlenden Anteil liefert.
 
-*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der ODE.
-Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
+ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
 
 <!-- markdownlint-disable -->
 \begin{align*}
@@ -84,11 +85,11 @@ $\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze fü
 die drei wichtigsten Typen zusammen:
 
 <!-- markdownlint-disable -->
-| Störfunktion $g(x)$ | Ansatz für $y_p$ |
+| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
 | --- | --- |
 | Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
-| Exponential: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
-| Trigonometrisch: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
+| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
+| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
 <!-- markdownlint-enable -->
 
 Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
@@ -96,10 +97,10 @@ homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wiede
 null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
 werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
 
-## Beispiel 1: der Fallschirmspringer
+## Beispiel 1: der Fallschirmsprung
 
-Die inhomogene ODE lautet $\dot{v} + kv = 9{,}81~\text{m\,s}^{-2}$ mit $k =
-0{,}2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9{,}81~\text{m\,s}^{-2}$ ist ein
+Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
+0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
 Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
 
 \begin{equation*}
@@ -109,13 +110,13 @@ v_p = C, \quad C \in \mathbb{R}.
 Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
 
 \begin{equation*}
-\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9{,}81.
+\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
 \end{equation*}
 
 **Koeffizientenvergleich** liefert unmittelbar:
 
 \begin{equation*}
-C = \frac{9{,}81}{k} = \frac{9{,}81}{0{,}2} = 49{,}05~\text{m\,s}^{-1} = v_\infty.
+C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
 \end{equation*}
 
 Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
@@ -141,10 +142,10 @@ v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
      = 49{,}05\,\bigl(1 - e^{-0{,}2\,t}\bigr)~\text{m\,s}^{-1}.
 \end{equation*}
 
-Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen hergeleitet
-und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir ihre Struktur
-vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus $y_h$, die
-Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
+Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
+hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
+ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
+$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
 
 ## Beispiel 2: eine Sinus-Störfunktion
 
@@ -159,19 +160,20 @@ Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}
 \sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
 
 \begin{equation*}
-y_p = P\cos(x) + Q\sin(x).
+y_p(x) = P\cos(x) + Q\sin(x).
 \end{equation*}
 
-Wir leiten ab: $y_p' = -P\sin(x) + Q\cos(x)$. Einsetzen in $y' + y = \sin(x)$:
+Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
+\sin(x)$:
 
 \begin{align*}
-y_p' + y_p
+y_p'(x) + y_p(x)
   &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
   &= (Q - P)\sin(x) + (P + Q)\cos(x)
    \stackrel{!}{=} \sin(x).
 \end{align*}
 
-**Koeffizientenvergleich** — wir vergleichen die Koeffizienten von $\sin(x)$ und
+**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
 $\cos(x)$ auf beiden Seiten:
 
 \begin{align*}
@@ -184,7 +186,7 @@ Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
 lautet:
 
 \begin{equation*}
-y_p = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
+y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
 \end{equation*}
 
 Die allgemeine Lösung ist:
@@ -206,6 +208,24 @@ Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von au
 durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
 Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
 Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
+
+```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
+<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
+<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
+title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+<!-- markdownlint-enable -->
 
 ## Zusammenfassung und Ausblick
 

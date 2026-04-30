@@ -99,12 +99,11 @@ wie stark das System vom stationären Zustand entfernt ist. Der **stationäre An
 $u_p = U_0 = 12~\text{V}$ ist die partikuläre Lösung; er beschreibt den Endzustand, den
 der Kondensator für $t \to \infty$ anstrebt.
 
-Nach einer Zeitkonstante gilt $u_C(\tau) = 12(1 - e^{-1}) \approx 7{,}58~\text{V}$: Der
-Kondensator hat $63{,}2\%$ seiner Endspannung erreicht. Nach fünf Zeitkonstanten beträgt
-die Spannung $u_C(5\tau) \approx 11{,}92~\text{V}$, also $99{,}3\%$ des Endwertes. In der
+Nach einer Zeitkonstante gilt $u_C(\tau) = 12(1 - e^{-1}) \approx 7.58~\text{V}$: Der
+Kondensator hat $63.2\%$ seiner Endspannung erreicht. Nach fünf Zeitkonstanten beträgt
+die Spannung $u_C(5\tau) \approx 11.92~\text{V}$, also $99.3\%$ des Endwertes. In der
 Praxis gilt ein System nach fünf Zeitkonstanten als eingeschwungen. Diese Faustregeln
-für $\tau$ sind in der Antriebstechnik und Regelungstechnik grundlegend; Sie werden ihnen
-in der Vorlesung Elektrische Antriebe und Leistungselektronik wieder begegnen.
+für $\tau$ sind in der Antriebstechnik und Regelungstechnik grundlegend.
 
 ## Beispiel 2: Maschinenkomponente bei periodischer Wärmequelle
 
@@ -121,14 +120,14 @@ wie wir sie in Abschnitt 8.3 mit dem $\sin$/$\cos$-Ansatz gelöst haben.
 Eine Maschinenkomponente mit der Temperatur $T(t)$ gibt Wärme proportional zur
 Temperaturdifferenz gegenüber der Umgebung ab (Newtonsches Abkühlgesetz) und nimmt
 gleichzeitig eine sinusförmig variierende Wärmeleistung auf. Mit dem
-Wärmeübergangskoeffizienten $\alpha = 0{,}5~\text{s}^{-1}$, der Umgebungstemperatur
+Wärmeübergangskoeffizienten $\alpha = 0.5~\text{s}^{-1}$, der Umgebungstemperatur
 null als Bezugspunkt und der Wärmequelle mit Amplitude $\beta = 10~\text{K\,s}^{-1}$
 sowie Kreisfrequenz $\omega = 1~\text{s}^{-1}$:
 
 \begin{equation*}
 \dot{T} + \alpha\,T = \beta\sin(\omega t)
 \quad \Longrightarrow \quad
-\dot{T} + 0{,}5\,T = 10\sin(t).
+\dot{T} + 0.5\,T = 10\sin(t).
 \end{equation*}
 
 Die Komponente hat zur Zeit $t = 0$ die Temperatur $T(0) = 20~\text{°C}$.
@@ -137,10 +136,10 @@ Die Komponente hat zur Zeit $t = 0$ die Temperatur $T(0) = 20~\text{°C}$.
 ### Lösung
 <!-- markdownlint-enable -->
 
-**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 0{,}5$):
+**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 0.5$):
 
 \begin{equation*}
-T_h(t) = A\,e^{-0{,}5\,t}.
+T_h(t) = A\,e^{-0.5\,t}.
 \end{equation*}
 
 **Partikuläre Lösung** (Ansatz für trigonometrische Störfunktion aus Abschnitt 8.3):
@@ -151,22 +150,22 @@ T_p = P\cos(t) + Q\sin(t)
 \dot{T}_p = -P\sin(t) + Q\cos(t).
 \end{equation*}
 
-Einsetzen in $\dot{T} + 0{,}5\,T = 10\sin(t)$:
+Einsetzen in $\dot{T} + 0.5\,T = 10\sin(t)$:
 
 \begin{align*}
-(-P\sin t + Q\cos t) + 0{,}5(P\cos t + Q\sin t) &= 10\sin t, \\
-(0{,}5Q - P)\sin t + (0{,}5P + Q)\cos t &= 10\sin t.
+(-P\sin t + Q\cos t) + 0.5(P\cos t + Q\sin t) &= 10\sin t, \\
+(0.5Q - P)\sin t + (0.5P + Q)\cos t &= 10\sin t.
 \end{align*}
 
 **Koeffizientenvergleich:**
 
 \begin{align*}
-\sin(t)\text{-Koeffizient:} &\quad 0{,}5\,Q - P = 10, \\
-\cos(t)\text{-Koeffizient:} &\quad 0{,}5\,P + Q = 0
+\sin(t)\text{-Koeffizient:} &\quad 0.5\,Q - P = 10, \\
+\cos(t)\text{-Koeffizient:} &\quad 0.5\,P + Q = 0
   \quad \Rightarrow \quad P = -2Q.
 \end{align*}
 
-Einsetzen in die erste Gleichung: $0{,}5\,Q + 2Q = 2{,}5\,Q = 10$, also $Q = 4$
+Einsetzen in die erste Gleichung: $0.5\,Q + 2Q = 2.5\,Q = 10$, also $Q = 4$
 und $P = -8$. Die partikuläre Lösung lautet:
 
 \begin{equation*}
@@ -176,7 +175,7 @@ T_p(t) = -8\cos(t) + 4\sin(t)~\text{°C}.
 **Allgemeine Lösung:**
 
 \begin{equation*}
-T(t) = A\,e^{-0{,}5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
+T(t) = A\,e^{-0.5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
 \end{equation*}
 
 **Anfangsbedingung** $T(0) = 20~\text{°C}$:
@@ -189,16 +188,16 @@ A\,e^{0} - 8\cos(0) + 4\sin(0) = A - 8 = 20
 Die spezielle Lösung:
 
 \begin{equation*}
-T(t) = 28\,e^{-0{,}5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
+T(t) = 28\,e^{-0.5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
 \end{equation*}
 
-**Verifikation:** Mit $\dot{T} = -14\,e^{-0{,}5\,t} + 8\sin(t) + 4\cos(t)$:
+**Verifikation:** Mit $\dot{T} = -14\,e^{-0.5\,t} + 8\sin(t) + 4\cos(t)$:
 
 \begin{align*}
 \dot{T} + 0{,}5\,T
-  &= \bigl(-14\,e^{-0{,}5\,t} + 8\sin t + 4\cos t\bigr) +
-     0{,}5\bigl(28\,e^{-0{,}5\,t} - 8\cos t + 4\sin t\bigr) \\
-  &= (-14 + 14)\,e^{-0{,}5\,t} + (8 + 2)\sin t + (4 - 4)\cos t \\
+  &= \bigl(-14\,e^{-0.5\,t} + 8\sin t + 4\cos t\bigr) +
+     0.5\bigl(28\,e^{-0.5\,t} - 8\cos t + 4\sin t\bigr) \\
+  &= (-14 + 14)\,e^{-0.5\,t} + (8 + 2)\sin t + (4 - 4)\cos t \\
   &= 10\sin(t). \quad \checkmark
 \end{align*}
 
@@ -207,12 +206,12 @@ T(t) = 28\,e^{-0{,}5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
 <!-- markdownlint-enable -->
 
 Auch hier gliedert sich die Lösung in zwei Anteile. Der transiente Anteil
-$28\,e^{-0{,}5\,t}$ klingt mit der Zeitkonstante $1/\alpha = 2~\text{s}$ ab:
+$28\,e^{-0.5\,t}$ klingt mit der Zeitkonstante $1/\alpha = 2~\text{s}$ ab:
 Nach etwa zehn Sekunden ist er praktisch null. Übrig bleibt der stationäre
 Anteil $T_p(t) = -8\cos(t) + 4\sin(t)$, eine dauerhaft anhaltende Schwingung mit
 der Kreisfrequenz $\omega = 1~\text{s}^{-1}$ der Wärmequelle. Die Amplitude des
 eingeschwungenen Zustands beträgt $\sqrt{(-8)^2 + 4^2} = 4\sqrt{5} \approx
-8{,}9~\text{K}$ und ist damit kleiner als der Wert $\beta/\omega = 10~\text{K}$,
+8.9~\text{K}$ und ist damit kleiner als der Wert $\beta/\omega = 10~\text{K}$,
 den ein einfacher Amplitudenvergleich mit der Störfunktion $\beta\sin(\omega t)$
 nahelegen würde: Die Trägheit der Komponente dämpft die Temperaturschwankung ab.
 
