@@ -10,7 +10,7 @@ die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
 Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
 Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
 bisher nicht explizit benannt haben: **Linearität**. Die
-Fallschirmspringer-Gleichung $\dot{v} + kv = 9{,}81~\text{m\,s}^{-2}$ aus
+Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
 Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
 Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
 weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
@@ -40,7 +40,7 @@ Abschnitt 6.1 aufgestellt haben:
 \dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
 \end{equation*}
 
-Die gesuchte Funktion $v(t)$ und ihre Ableitung $\dot{v}$ haben beide genau
+Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
 Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
 nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
 meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
