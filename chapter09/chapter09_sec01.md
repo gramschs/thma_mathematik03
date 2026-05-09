@@ -80,10 +80,10 @@ Funktion $A(x)$ und machen den Ansatz:
 y_p(x) = \frac{A(x)}{x}.
 \end{equation*}
 
-Wenn wir $A(x)$ so wählen, dass $y_p$ die inhomogene Gleichung erfüllt, haben wir die
-partikuläre Lösung gefunden. Die freie Funktion $A(x)$ übernimmt damit die Rolle, die
-in 8.3 der Ansatzkoeffizient spielte — aber jetzt ohne Einschränkung auf bestimmte
-Typen der Störfunktion.
+Wenn wir $A(x)$ so wählen, dass $y_p$ die inhomogene Gleichung erfüllt, haben
+wir die partikuläre Lösung gefunden. Die freie Funktion $A(x)$ übernimmt damit
+die Rolle, die in 8.3 der Ansatzkoeffizient spielte, aber jetzt ohne
+Einschränkung auf bestimmte Typen der Störfunktion.
 
 ## Das Verfahren Schritt für Schritt
 
@@ -187,6 +187,30 @@ y_{\text{allgemein}}
 \end{equation*}
 
 Das stimmt exakt mit dem schrittweise hergeleiteten Ergebnis überein.
+
+<!-- markdownlint-disable -->
+```{dropdown} Video "Inhomogene lin. DGL 1. Ordnung" von Prof. Hielscher (TH Mannheim)
+<iframe width="815" height="517" src="https://www.youtube.com/embed/k3AZSl7wfy4?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Spezielle Lösung der inhomogenen linearen DGL 1. Ordnung" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+<!-- markdownlint-enable -->
+
+```{dropdown} Video "Differentialgleichung inhomogen lösen" von Mathematrick
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AWdLkNZJZ70"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+```
+
+```{dropdown} Video "Variation der Konstanten" von Sciencebarbie
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DD8blQLaHDM"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+```
 
 ## Zusammenfassung und Ausblick
 

@@ -154,6 +154,15 @@ allgemeinere Werkzeug und greift immer, kostet aber ein Integral mehr. In der
 Praxis lohnt es sich, zuerst zu prüfen, ob der Resonanzfall vorliegt, bevor man
 zum Ansatz greift.
 
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lin. DGL 1. Ordnung mit konstanten Koeffizienten" von Prof. Hielscher (TH Mannheim)
+<iframe width="815" height="517" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung mit konstanten
+Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+<!-- markdownlint-enable -->
+
 ## Zusammenfassung und Ausblick
 
 Für lineare ODEs mit konstanten Koeffizienten $y' + ay = g(x)$ vereinfacht sich
