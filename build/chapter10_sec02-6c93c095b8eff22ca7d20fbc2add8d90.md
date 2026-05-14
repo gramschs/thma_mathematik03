@@ -1,0 +1,185 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# Wann spannen zwei Lösungen den gesamten Lösungsraum auf?
+
+In Abschnitt 10.1 haben wir die Schwingungsgleichung der Wuppertaler
+Schwebebahn aufgestellt und als Vorschau angekündigt, dass die allgemeine
+Lösung die Form $y_h = C_1 y_1 + C_2 y_2$ hat. Aber stimmt das wirklich für
+jedes beliebige Paar von Lösungen $y_1$ und $y_2$? *Könnte man auch zwei andere
+Lösungen nehmen und würde man damit genauso alle möglichen Bewegungen des
+Fahrwagens beschreiben?* Die Antwort ist nein, und das Kriterium, das über
+Erfolg oder Scheitern entscheidet, kennen wir bereits: die Determinante.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie wissen, was **Fundamentallösungen** $y_1$ und $y_2$ einer homogenen
+  linearen ODE 2. Ordnung sind, und was ein **Fundamentalsystem** $\{y_1, y_2\}$
+  auszeichnet.
+* [ ] Sie können mit der **Wronski-Determinante**
+  \begin{equation*}
+  W(y_1, y_2) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
+  \end{pmatrix} = y_1 y_2' - y_2 y_1'
+  \end{equation*}
+  nachweisen, ob zwei Lösungen linear unabhängig sind und damit ein
+  Fundamentalsystem bilden.
+* [ ] Sie können aus einem Fundamentalsystem $\{y_1, y_2\}$ die **allgemeine
+  Lösung** $y_h(x) = C_1 y_1(x) + C_2 y_2(x)$ der homogenen ODE angeben.
+```
+
+## Warum reicht nicht jedes Lösungspaar?
+
+Wir betrachten die ungedämpfte Schwebebahn-Gleichung aus Abschnitt 10.1,
+
+\begin{equation*}
+\varphi'' + \omega_0^2\,\varphi = 0, \quad \omega_0 \approx 1.81~\text{rad\,s}^{-1}.
+\end{equation*}
+
+Neben $y_1(t) = \cos(\omega_0 t)$ ist auch $y_2(t) = 3\cos(\omega_0 t)$ eine
+Lösung, denn Einsetzen bestätigt $y_2'' + \omega_0^2 y_2 = -3\omega_0^2
+\cos(\omega_0 t) + 3\omega_0^2\cos(\omega_0 t) = 0$. Versuchen wir, die
+allgemeine Lösung als $C_1 y_1 + C_2 y_2$ zu schreiben:
+
+\begin{equation*}
+C_1\cos(\omega_0 t) + C_2 \cdot 3\cos(\omega_0 t)
+= \underbrace{(C_1 + 3C_2)}_{=:\,C}\cos(\omega_0 t).
+\end{equation*}
+
+Das Ergebnis enthält nur eine einzige freie Konstante $C$, nicht zwei. Egal
+welche Werte wir für $C_1$ und $C_2$ wählen, wir erzeugen ausschließlich
+Vielfache von $\cos(\omega_0 t)$. Die Anfangsbedingung $\varphi'(0) = v_0
+\neq 0$ lässt sich damit niemals erfüllen, denn jede Funktion dieser Form hat
+bei $t = 0$ die Ableitung null. Das Paar $\{\cos(\omega_0 t),\, 3\cos(\omega_0 t)\}$
+deckt also nicht den gesamten Lösungsraum ab.
+
+Das Problem liegt darin, dass $y_2 = 3 y_1$ ist: Die zweite Funktion ist ein
+konstantes Vielfaches der ersten. Ein solches Paar nennen wir **linear abhängig**.
+
+## Was bedeutet lineare Unabhängigkeit für Funktionen?
+
+Aus dem Kapitel über Matrizen und lineare Gleichungssysteme kennen wir den
+Begriff der linearen Unabhängigkeit für Vektoren. Für Funktionen gilt dieselbe
+Idee: Zwei Funktionen $y_1$ und $y_2$ sind **linear abhängig**, wenn eine von
+ihnen ein konstantes Vielfaches der anderen ist, also wenn $C_1 y_1 + C_2 y_2
+= 0$ für alle $x$ gilt, ohne dass beide Konstanten null sind. Umgekehrt gilt:
+
+```{admonition} Was ist ... lineare Unabhängigkeit zweier Funktionen?
+:class: note
+Zwei Funktionen $y_1$ und $y_2$ heißen **linear unabhängig**, wenn aus
+
+\begin{equation*}
+C_1\,y_1(x) + C_2\,y_2(x) = 0 \quad \text{für alle } x
+\end{equation*}
+
+zwingend $C_1 = 0$ und $C_2 = 0$ folgt. Existieren hingegen $C_1, C_2$, die
+nicht beide null sind und die obige Gleichung trotzdem erfüllen, so heißen
+$y_1$ und $y_2$ **linear abhängig**.
+```
+
+Für unser Gegenbeispiel gilt $(-3)\cdot\cos(\omega_0 t) + 1\cdot 3\cos(\omega_0 t)
+= 0$ mit $C_1 = -3 \neq 0$: linear abhängig. Für $y_1 = \cos(\omega_0 t)$ und
+$y_2 = \sin(\omega_0 t)$ lässt sich kein solches Konstantenpaar finden. Aber wie
+weisen wir das systematisch nach, ohne alle möglichen Konstanten durchzuprobieren?
+
+## Die Wronski-Determinante als Test
+
+Wenn $C_1 y_1(x) + C_2 y_2(x) = 0$ für alle $x$ gilt, dann gilt das auch nach
+Ableitung: $C_1 y_1'(x) + C_2 y_2'(x) = 0$. Wir haben also ein lineares
+Gleichungssystem in $C_1$ und $C_2$, das bei jedem festen $x_0$ ausgewertet
+werden kann:
+
+\begin{equation*}
+\begin{pmatrix} y_1(x_0) & y_2(x_0) \\ y_1'(x_0) & y_2'(x_0) \end{pmatrix}
+\begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Aus Kapitel 1 wissen wir: Dieses homogene Gleichungssystem hat genau dann nur
+die triviale Lösung $C_1 = C_2 = 0$, wenn die Determinante der
+Koeffizientenmatrix ungleich null ist. Diese Determinante trägt einen eigenen
+Namen.
+
+```{admonition} Was ist ... die Wronski-Determinante?
+:class: note
+Für zwei differenzierbare Funktionen $y_1$ und $y_2$ heißt
+
+\begin{equation*}
+W(y_1, y_2)(x) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
+\end{pmatrix} = y_1(x)\,y_2'(x) - y_2(x)\,y_1'(x)
+\end{equation*}
+
+die **Wronski-Determinante** von $y_1$ und $y_2$. Gilt $W(y_1, y_2)(x_0) \neq 0$
+für mindestens ein $x_0$ im Definitionsbereich, so sind $y_1$ und $y_2$ linear
+unabhängig.
+```
+
+Wir berechnen die Wronski-Determinante für das abhängige Paar. Mit
+$y_1 = \cos(\omega_0 t)$, $y_1' = -\omega_0\sin(\omega_0 t)$,
+$y_2 = 3\cos(\omega_0 t)$ und $y_2' = -3\omega_0\sin(\omega_0 t)$ ergibt sich:
+
+\begin{equation*}
+W = \cos(\omega_0 t)\cdot(-3\omega_0\sin(\omega_0 t))
+  - 3\cos(\omega_0 t)\cdot(-\omega_0\sin(\omega_0 t))
+  = -3\omega_0\cos\sin + 3\omega_0\cos\sin = 0.
+\end{equation*}
+
+Die Wronski-Determinante ist identisch null: linear abhängig, wie erwartet.
+
+## Das Fundamentalsystem der Schwebebahn
+
+Jetzt prüfen wir das Paar $\{y_1, y_2\} = \{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$.
+Mit $y_1' = -\omega_0\sin(\omega_0 t)$ und $y_2' = \omega_0\cos(\omega_0 t)$:
+
+\begin{align*}
+W(\cos(\omega_0 t),\, \sin(\omega_0 t))
+&= \cos(\omega_0 t)\cdot\omega_0\cos(\omega_0 t) -
+   \sin(\omega_0 t)\cdot\bigl(-\omega_0\sin(\omega_0 t)\bigr) \\
+&= \omega_0\cos^2(\omega_0 t) + \omega_0\sin^2(\omega_0 t) \\
+&= \omega_0\underbrace{\bigl(\cos^2(\omega_0 t) + \sin^2(\omega_0 t)\bigr)}_{=\,1}
+ = \omega_0 \approx 1.81~\text{rad\,s}^{-1} \neq 0.
+\end{align*}
+
+Die Wronski-Determinante ist für alle $t$ konstant und ungleich null. Die beiden
+Funktionen sind linear unabhängig und bilden damit ein Fundamentalsystem.
+
+```{admonition} Was ist ... ein Fundamentalsystem?
+:class: note
+Zwei Lösungen $y_1$ und $y_2$ der homogenen linearen ODE 2. Ordnung
+$y'' + ay' + by = 0$ heißen **Fundamentallösungen** und das Paar $\{y_1, y_2\}$
+heißt **Fundamentalsystem**, wenn $W(y_1, y_2)(x_0) \neq 0$ für mindestens ein
+$x_0$ gilt.
+
+Die **allgemeine Lösung** der homogenen ODE lautet dann
+
+\begin{equation*}
+y_h(x) = C_1\,y_1(x) + C_2\,y_2(x), \quad C_1, C_2 \in \mathbb{R},
+\end{equation*}
+
+und enthält alle Lösungen der homogenen ODE.
+```
+
+Damit ist die Aussage aus Abschnitt 10.1 vollständig begründet: Das Paar
+$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ bildet ein Fundamentalsystem der
+ungedämpften Schwebebahn-Gleichung, und $\varphi_h(t) = C_1\cos(\omega_0 t)
++ C_2\sin(\omega_0 t)$ ist ihre allgemeine Lösung. Die Konstanten $C_1 = 0.231$
+und $C_2 = 0$ aus Abschnitt 10.1 sind damit die eindeutige Antwort auf das
+gestellte Anfangswertproblem.
+
+## Zusammenfassung und Ausblick
+
+Nicht jedes Paar von Lösungen erzeugt die allgemeine Lösung der homogenen ODE
+2. Ordnung: Die beiden Funktionen müssen linear unabhängig sein. Die
+Wronski-Determinante liefert dafür ein einfaches algebraisches Kriterium, das
+auf dem Determinantentest für lineare Gleichungssysteme aus Kapitel 1 beruht.
+Für die ungedämpfte Schwebebahn-Gleichung haben wir bestätigt, dass
+$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ ein Fundamentalsystem bildet.
+
+Eine Frage bleibt offen: *Woher kommen die Fundamentallösungen?* Bisher haben
+wir sie geraten und nachträglich verifiziert. Abschnitt 10.3 zeigt, wie man sie
+für jede lineare ODE 2. Ordnung mit konstanten Koeffizienten systematisch
+herleitet, und zwar mit einem Exponentialansatz, der die ODE auf eine
+quadratische Gleichung reduziert.
