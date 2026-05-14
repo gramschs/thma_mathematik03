@@ -83,6 +83,7 @@ project:
        - file: chapter10/chapter10_sec01.md
        - file: chapter10/chapter10_sec02.md
        - file: chapter10/chapter10_sec03.md
+       - file: chapter10/chapter10_sec04.md
     - title: 11.  Lineare DGL 2. Ordnung - Schwingungen und Resonanz
       children:
        - file: chapter11/chapter11_sec01.md
