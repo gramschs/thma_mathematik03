@@ -225,6 +225,15 @@ drei Fälle: Bei kleinem $a$ schwingt der Wagen, beim kritischen Wert $a =
 2\omega_0$ liegt der aperiodische Grenzfall vor, und bei starker Dämpfung
 kriecht der Wagen ohne Überschwingen zurück.
 
+```{dropdown} Video "Homogene DGL 2. Ordnung (Teil 3)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/HbHhHP9domY"
+title="Wie löse ich eine homogene Differentialgleichung 2. Ordnung? | komplexe homogene Lösung | DGL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Hom. DGL 2. Ordnung" von Mathe ohne Magie
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/LN1WHesVpyc" title="Homogene lineare Differenzialgleichungen zweiter Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Die eulersche Formel überbrückt die Lücke zwischen komplexen Eigenwerten und

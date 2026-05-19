@@ -233,6 +233,20 @@ dabei überhaupt noch sichtbar schwingt oder direkt in die Ruhelage zurückgleit
 hängt vom Verhältnis von $a$ und $\omega_0$ ab. Genau diese Fallunterscheidung
 ist Thema der Abschnitte 10.3 und 10.4.
 
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lineare DGL 2. Ordnung (Teil 1)" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/7XrIDsaySJA?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 2. Ordnung mit konstanten
+Koeffizienten - Definition" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Lineare DGL 2. Ordnung (Teil 2)" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/4h2x8hwFmvs?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 2. Ordnung mit konstanten
+Koeffizienten - zum AWP und zur Lösungsstrategie" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+<!-- markdownlint-enable -->
+
 ## Zusammenfassung und Ausblick
 
 Aus dem physikalischen Modell der Wuppertaler Schwebebahn haben wir die

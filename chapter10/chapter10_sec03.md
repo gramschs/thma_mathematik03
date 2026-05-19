@@ -257,6 +257,30 @@ Der Wagen kehrt ohne Schwingung und dabei schnellstmöglich in die Ruhelage
 zurück. In der Regelungstechnik und im Fahrzeugbau ist die kritische Dämpfung
 daher ein häufiges Auslegungsziel.
 
+```{dropdown} Video "Allgemeine Lösung" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/ofiDXMH428k?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Allgemeine Lösung Teil 2" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/kAshQrZljU4?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösungen der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten - Teil 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Homogene Differentialgleichung 2. Ordnung (Teil 1)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/S-3obH19RDo" title="Wie löse
+ich eine homogene Differentialgleichung 2. Ordnung? | reelle  homogene Lösung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Homogene Differentialgleichung 2. Ordnung (Teil 2)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/d8DJ4UkQMnQ?list=PLjVetqThgyWUzbQ8KdoaCGLwT7F2LUIVA" title="Wie löse ich eine homogene Differentialgleichung 2.Ordnung? | doppelte homogene Lösung | DGL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Lineare DGL 2. Ordnung" von Mathe mit Nina
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/MZxec3G6AUI"
+title="Lineare DGL 2. Ordnung - homogene Lösung Fallunterscheidung - schnell und einfach erklärt" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Der Exponentialansatz $y = e^{\lambda x}$ reduziert die homogene ODE 2. Ordnung

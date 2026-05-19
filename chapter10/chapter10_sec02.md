@@ -169,6 +169,14 @@ C_2\sin(\omega_0 t)$ ist ihre allgemeine Lösung. Die Konstanten $C_1 = 0.231$
 und $C_2 = 0$ aus Abschnitt 10.1 sind damit die eindeutige Antwort auf das
 gestellte Anfangswertproblem.
 
+```{dropdown} Video "Allgemeine Eigenschaften der hom. lin. DGL 2. Ordnung" von Prof. Hielscher
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/w9iyXBIQRiA?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Eigenschaften der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Wronskideterminante" von Mathe ohne Magie
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/Uu7R8RYbe3U" title="Wronskideterminante" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Nicht jedes Paar von Lösungen erzeugt die allgemeine Lösung der homogenen ODE
