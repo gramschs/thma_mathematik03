@@ -89,6 +89,7 @@ project:
        - file: chapter11/chapter11_sec01.md
        - file: chapter11/chapter11_sec02.md
        - file: chapter11/chapter11_sec03.md
+       - file: chapter11/chapter11_sec04.md
 
 #    - title: DGL (Teil 1)
 #      children:
