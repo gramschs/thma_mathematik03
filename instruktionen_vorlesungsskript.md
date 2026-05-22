@@ -47,7 +47,7 @@ Einführung eines konkreten physikalischen oder technischen Szenarios,
 das das neue Konzept motiviert. Niemals mit einer Definition oder
 einer Formel beginnen.
 
-### Lernziele
+## Lernziele
 
 [Lernziele-Admonition, siehe unten]
 

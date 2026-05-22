@@ -8,7 +8,16 @@ authors:
 In Abschnitt 11.1 haben wir die partikuläre Lösung für eine Stoßkraft
 $F(t) = 10\,e^{-3t}~\text{N}$ bestimmt, die rasch abklang. Jetzt verändern wir
 das Szenario: Die Kraft klingt mit $F(t) = 10\,e^{-t}~\text{N}$ langsamer ab,
-mit genau derselben Zeitkonstante wie die natürliche Systemreaktion. Das führt
+mit genau derselben Zeitkonstante wie die natürliche Systemreaktion.
+
+```{figure} pics/chap11_sec02_fig01.svg
+---
+name: chap11_sec02_fig01
+---
+Vergleich der beiden Stoßkräfte aus den Abschnitten 11.1 und 11.2: schnell abklingende Kraft $F_1(t)=10e^{-3t}$ (blau) und langsamer abklingende Kraft $F_2(t)=10e^{-t}$ (rot). (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das führt
 auf einen Fall, in dem der Standardansatz aus Abschnitt 11.1 versagt und eine
 Modifikation nötig ist. Anschließend legen wir aus der vollständigen allgemeinen
 Lösung durch zwei Anfangsbedingungen alle freien Konstanten fest.
@@ -143,6 +152,17 @@ alles gegen null zieht. Ingenieurmäßig bedeutet das einen kurzzeitig
 verstärkten Ausschlag, der aber wegen der Dämpfung schließlich vollständig
 abklingt.
 
+```{figure} pics/chap11_sec02_fig02.svg
+---
+name: chap11_sec02_fig02
+---
+Verlauf der partikulären Lösung $y_p(t) = 5 t e^{-t}$ im Resonanzfall mit
+markiertem Maximum bei $t = 1$ und $y_p(1) = 5/e$. Der Faktor $t$ führt zunächst
+zu einem Anwachsen der Auslenkung, bevor der Exponentialterm $e^{-t}$ dominiert
+und die Antwort wieder gegen null abklingen lässt. (Quelle: eigene Abbildung;
+Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
 ```{admonition} Hinweis: doppelter Eigenwert im Resonanzfall
 :class: note
 Wenn $\alpha$ mit einem doppelten Eigenwert $\lambda$ übereinstimmt (also
@@ -150,6 +170,13 @@ $D = 0$ in der charakteristischen Gleichung aus Abschnitt 10.3), scheitert
 auch der Ansatz $A\,t\,e^{\alpha t}$, weil $t\,e^{\lambda t}$ bereits im
 Fundamentalsystem liegt. In diesem Fall lautet der modifizierte Ansatz
 $y_p = A\,t^2\,e^{\alpha t}$.
+```
+
+```{figure} pics/chap11_sec02_fig03.svg
+---
+name: chap11_sec02_fig03
+---
+Vergleich der partikulären Lösungen im Nicht-Resonanzfall $y_p^{\text{NR}}(t) = \tfrac{5}{2}e^{-3t}$ (blau, Abschnitt 11.1) und im Resonanzfall $y_p^{\text{R}}(t) = 5 t e^{-t}$ (rot, Abschnitt 11.2). Im Resonanzfall wächst die Antwort zunächst an, bevor sie, wie auch im Nicht-Resonanzfall, durch das Exponential wieder gegen null abklingt. (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
 ## Wie bestimme ich $C_1$ und $C_2$ aus Anfangsbedingungen?
@@ -229,6 +256,17 @@ Für $y'(t) = (10 - 5t)\,e^{-t} - 10\,e^{-2t}$ gilt bei $t = 0$:
 y'(0) = 10 \cdot 1 - 10 \cdot 1 = 0. \quad \checkmark
 \end{equation*}
 
+```{figure} pics/chap11_sec02_fig04.svg
+---
+name: chap11_sec02_fig04
+---
+Überlagerung des homogenen (transienten) Anteils $y_h(t) = -5e^{-t} +
+5e^{-2t}$, des partikulären (erzwungenen) Anteils $y_p(t) = 5 t e^{-t}$ und
+der Gesamtlösung $y(t) = y_h(t) + y_p(t)$ für das Anfangswertproblem im
+Resonanzfall aus Abschnitt 11.2. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
+4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
 Physikalisch: Das Element startet in Ruhe. Die Kraft setzt sofort ein und
 erzeugt zunächst eine wachsende Auslenkung, die durch den Term $5t\,e^{-t}$
 im $y_p$-Anteil beschrieben wird. Dieser Anstieg ist das Kennzeichen des
@@ -236,6 +274,11 @@ Resonanzfalls: Das System spricht stärker an als im Normalfall, weil die
 äußere Kraft genau im Takt des langsamsten Eigenmodes wirkt. Letztlich klingt
 die Auslenkung wegen der Dämpfung vollständig ab. In der Technischen Mechanik
 nennt man dieses Verhalten die **erzwungene gedämpfte Antwort** des Systems.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec02_quiz.html)
+```
 
 ## Zusammenfassung und Ausblick
 

@@ -40,10 +40,21 @@ zur Zeit $t$ bezeichnen wir mit $y(t)$, gemessen in Metern und positiv in
 Bewegungsrichtung.
 
 Drei Kräfte wirken auf das Element: die Federkraft $F_F = -k\,y$, die
-Dämpferkraft $F_D = -d\,y'$ sowie eine mögliche äußere Kraft $F(t)$. Das
-negative Vorzeichen bei $F_F$ und $F_D$ zeigt an, dass beide Kräfte der
-Auslenkung und der Bewegung entgegenwirken. Das zweite Newtonsche Gesetz
-$m\,a = F_{\text{ges}}$ liefert mit $a = y''$:
+Dämpferkraft $F_D = -d\,y'$ sowie eine mögliche äußere Kraft $F(t)$.
+
+```{figure} pics/chap11_sec03_fig01.svg
+---
+name: chap11_sec03_fig01
+---
+Alle drei am Maschinenelement angreifenden Kräfte: Federkraft $F_F = -k\,y$
+(rot) und Dämpferkraft $F_D = -d\,y'$ (orange) wirken der Auslenkung entgegen,
+die äußere Kraft $F(t)$ (blau) treibt das System an.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das negative Vorzeichen bei $F_F$ und $F_D$ zeigt an, dass beide Kräfte der
+Auslenkung und der Bewegung entgegenwirken. Das zweite Newtonsche Gesetz $m\,a =
+F_{\text{ges}}$ liefert mit $a = y''$:
 
 \begin{equation*}
 m\,y''(t) = -k\,y(t) - d\,y'(t) + F(t).
@@ -76,6 +87,8 @@ Die Größe $\omega_0 = \sqrt{k/m}$ heißt **Eigenkreisfrequenz** des Systems.
 Sie hängt ausschließlich von den Systemparametern $k$ und $m$ ab, nicht von
 den Anfangsbedingungen oder der äußeren Kraft.
 ```
+
+[![Schwingungsplot](../logos/app_start_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_systemparameter.html)
 
 Dieselbe Gleichungsstruktur tritt überall in der Technik auf, wo ein System
 aus einer Gleichgewichtslage ausgelenkt wird und eine rücktreibende Kraft
@@ -198,11 +211,23 @@ y(t) = \hat{y}\,\cos(\omega_0\,t - \varphi),
 
 wobei die **Amplitude** $\hat{y} = \sqrt{C_1^2 + C_2^2}$ und die
 **Phasenverschiebung** $\varphi$ mit $\tan(\varphi) = C_2 / C_1$ aus den
-Anfangsbedingungen folgen. In unserem Fall gilt $\hat{y} = 0.005~\text{m}$
-und $\varphi = 0$, weil das Element aus der Ruhe losgelassen wurde. Ein
-Anfangsanstoß (zum Beispiel $y'(0) \neq 0$ bei $y(0) = 0$) würde $C_1 = 0$
-und $C_2 \neq 0$ ergeben, also eine reine Sinusschwingung mit Phasenverschiebung
-$\varphi = \pi/2$.
+Anfangsbedingungen folgen.
+
+```{figure} pics/chap11_sec03_fig02.svg
+---
+name: chap11_sec03_fig02
+---
+Geometrische Deutung der Amplituden-Phasen-Form: Amplitude $\hat{y} = \sqrt{C_1^2 + C_2^2}$
+(blau) ist der Betrag des Konstantenvektors $(C_1, C_2)$, die Phasenverschiebung
+$\varphi$ mit $\tan\varphi = C_2/C_1$ sein Winkel zur $C_1$-Achse; die Komponenten
+$C_1$ (rot) und $C_2$ (orange) entsprechen den Anfangsbedingungen $y(0)$ und $y'(0)/\omega_0$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+In unserem Fall gilt $\hat{y} = 0.005~\text{m}$ und $\varphi = 0$, weil das
+Element aus der Ruhe losgelassen wurde. Ein Anfangsanstoß (zum Beispiel $y'(0)
+\neq 0$ bei $y(0) = 0$) würde $C_1 = 0$ und $C_2 \neq 0$ ergeben, also eine
+reine Sinusschwingung mit Phasenverschiebung $\varphi = \pi/2$.
 
 ```{admonition} Merkregel: Amplitude und Schwingungsdauer
 :class: note
@@ -216,10 +241,14 @@ Für die Schwingungsgleichung $y'' + \omega_0^2\,y = 0$ gilt:
   Systemeigenschaft und ändert sich nicht, wenn man das System stärker auslenkt.
 ```
 
+[![Schwingungsplot](pics/chap11_sec03_schwingung_preview.png)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_schwingung.html)
+
 In der Maschinendynamik ist die Kreisfrequenz $\omega_0$ eine der wichtigsten
 Entwurfsgrößen: Liegt die Erregerfrequenz einer äußeren Kraft in der Nähe von
 $\omega_0$, so kann es zu Resonanz kommen. Was das konkret bedeutet und wie
 stark das System dann antwortet, untersucht Abschnitt 11.4.
+
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_quiz.html)
 
 ## Zusammenfassung und Ausblick
 

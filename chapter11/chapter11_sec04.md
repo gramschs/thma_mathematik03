@@ -19,23 +19,17 @@ Maschinenbau.
 :class: attention
 
 * [ ] Sie können die inhomogene Schwingungsgleichung
-
   $y'' + \omega_0^2\,y = (F_0/m)\,\sin(\Omega t)$ aufstellen und die
   partikuläre Lösung für $\Omega \neq \omega_0$ durch den Ansatz
   $y_p = A\,\sin(\Omega t)$ berechnen.
-
 * [ ] Sie kennen die **Resonanzamplitude**
-
   $\hat{y}_p = \frac{F_0/m}{|\omega_0^2 - \Omega^2|}$ und verstehen,
   warum sie für $\Omega \to \omega_0$ unbegrenzt wächst und nur für
   $\Omega \neq \omega_0$ sinnvoll definiert ist.
-
 * [ ] Sie erkennen den Resonanzfall $\Omega = \omega_0$ und können erklären,
-
   warum der modifizierte Ansatz eine mit $t$ linear wachsende Lösung liefert,
   die zur **Resonanzkatastrophe** führt.
 * [ ] Sie können die **kritische Drehzahl** als diejenige Betriebsdrehzahl
-
   beschreiben, bei der $\Omega = \omega_0$ gilt, und die Bedeutung dieser
   Größe für den Maschinenbau erläutern.
 ```
@@ -228,6 +222,11 @@ und Ingenieure müssen dann sicherstellen, dass die Anlage schnell genug durch
 den Resonanzbereich geführt wird, bevor die Schwingungsamplituden gefährliche
 Werte annehmen. In der Maschinenakustik, der Schwingungslehre und der
 Rotordynamik werden Sie diese Fragen systematisch vertiefen.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec04_quiz.html)
+```
 
 ## Zusammenfassung: Kapitel 11
 

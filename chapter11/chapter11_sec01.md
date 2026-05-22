@@ -27,19 +27,37 @@ auf eine äußere Kraft, die nach einem Stoß exponentiell abklingt?*
   **Einsetzen und Koeffizientenvergleich** bestimmen und das Ergebnis
   durch Einsetzen in die ODE verifizieren.
 * [ ] Sie können die **allgemeine Lösung**
-  $y_{\text{allgemein}} = y_h + y_p$ einer inhomogenen linearen ODE
-  2. Ordnung vollständig zusammensetzen.
+  $$y_{\text{allgemein}} = y_h + y_p$$
+  einer inhomogenen linearen ODE 2. Ordnung vollständig zusammensetzen.
 ```
 
 ## Warum „vom Typ der rechten Seite"?
 
 Ein Maschinenelement der Masse $m = 2~\text{kg}$ ist über eine Feder mit
 Steifigkeit $k = 4~\text{N/m}$ und einen Dämpfer mit Dämpfungskonstante
-$d = 6~\text{N\,s/m}$ am Maschinengestell befestigt. Nach einem kurzen Stoß,
-etwa durch ein auftreffendes Werkzeug, wirkt auf das Element eine Kraft, die
-exponentiell abklingt: $F(t) = 10\,e^{-3t}~\text{N}$. Das ist ein typisches
-Szenario in der Strukturdynamik: Der Impuls ist kurz und intensiv, klingt aber
-rasch ab, während das System noch lange weiterschwingt.
+$d = 6~\text{N\,s/m}$ am Maschinengestell befestigt.
+
+```{figure} pics/chap11_masse_feder_daempfungssytem.svg
+---
+name: chap11_masse_feder_daempfungssytem
+---
+Feder-Masse-Dämpfer-System
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Nach einem kurzen Stoß, etwa durch ein auftreffendes Werkzeug, wirkt auf das
+Element eine Kraft, die exponentiell abklingt: $F(t) = 10\,e^{-3t}~\text{N}$.
+
+```{figure} pics/chap11_sec01_fig02.svg
+---
+name: chap11_sec01_fig02
+---
+Exponentiell wirkende Kraft, z.B. durch Stoß
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das ist ein typisches Szenario in der Strukturdynamik: Der Impuls ist kurz und
+intensiv, klingt aber rasch ab, während das System noch lange weiterschwingt.
 
 Aus dem zweiten Newtonschen Gesetz $ma = F_{\text{ges}}$ folgt mit den drei
 wirkenden Kräften (Federkraft $-ky$, Dämpferkraft $-d\dot{y}$, äußere
@@ -80,6 +98,14 @@ Sinus und Kosinus, verlassen aber nie diese Funktionsklasse. In allen drei
 Fällen bleibt die Struktur bei der Differentiation erhalten. Das ist der Grund,
 warum der Ansatz funktioniert.
 
+```{figure} pics/chap11_sec01_fig03.svg
+---
+name: chap11_sec01_fig03
+---
+Darstellung eines Polynoms, einer Exponentialfunktion und einer Sinusfunktion (blau) sowie ihrer Ableitungen (rot); in allen drei Fällen bleibt die Funktionsklasse bei der Ableitung erhalten.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
 ```{admonition} Was ist ... ein Ansatz vom Typ der rechten Seite?
 :class: note
 Gegeben sei die inhomogene lineare ODE $y'' + ay' + by = g(x)$ mit
@@ -104,6 +130,14 @@ Wie wir $A$ konkret berechnen, zeigt der übernächste Abschnitt.
 In der Praxis treten drei Grundtypen von Störfunktionen auf, die zusammen fast
 alle technisch relevanten Fälle abdecken. Die folgende Tabelle gibt für jeden
 Typ den passenden Ansatz und ein Beispiel aus dem Maschinenbau.
+
+```{figure} pics/chap11_sec01_fig04.svg
+---
+name: chap11_sec01_fig04
+---
+Darstellung der drei Standardtypen von Störfunktionen im Ansatzverfahren: Polynom (links), exponentiell abklingende Funktion (Mitte) und sinusförmige Schwingung (rechts). 
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
 
 | Störfunktion $g(t)$ | Ansatz $y_p$ | Beispiel im Maschinenbau |
 | --- | --- | --- |
@@ -187,6 +221,16 @@ y_{\text{allgemein}}(t)
 \end{equation*}
 <!-- markdownlint-enable -->
 
+```{figure} pics/chap11_sec01_fig05.svg
+---
+name: chap11_sec01_fig05
+---
+Überlagerung des homogenen (transienten) Anteils $y_h(t)$, des partikulären
+(erzwungenen) Anteils $y_p(t)$ und der Gesamtlösung $y(t) = y_h(t) + y_p(t)$
+für das Feder-Masse-Dämpfer-System. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
+4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
 Der homogene Anteil $y_h$ beschreibt das freie Abklingverhalten des Systems
 aus beliebigen Anfangszuständen heraus. In der Strukturdynamik nennt man ihn
 den **transienten Anteil** der Lösung. Der partikuläre Anteil $y_p$ beschreibt
@@ -197,6 +241,11 @@ Anfangsbedingungen ist und allein durch die Störfunktion bestimmt wird. Die
 freien Konstanten $C_1$ und $C_2$ hängen von der Anfangsauslenkung und der
 Anfangsgeschwindigkeit des Maschinenelements ab und werden in Abschnitt 11.2
 aus konkreten Anfangsbedingungen berechnet.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec01_quiz.html)
+```
 
 ## Zusammenfassung und Ausblick
 
