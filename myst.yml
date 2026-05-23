@@ -90,29 +90,18 @@ project:
        - file: chapter11/chapter11_sec02.md
        - file: chapter11/chapter11_sec03.md
        - file: chapter11/chapter11_sec04.md
-
-#    - title: DGL (Teil 1)
-#      children:
-#        - file: chapter06/chapter06_sec01.md
-#        - file: chapter06/chapter06_sec02.md
-#        - file: chapter06/chapter06_sec03.md
-#        - file: chapter06/chapter06_sec04.md        
-#    - title: DGL (Teil 2)
-#      children:
-#        - file: chapter09/chapter09_sec01.md
-#        - file: chapter09/chapter09_sec02.md
-#        - file: chapter09/chapter09_sec03.md
-#        - file: chapter09/chapter09_sec04.md
-#        - file: chapter09/chapter09_sec05.md
-#        - file: chapter09/chapter09_sec06.md
-#    - title: Fourierreihen
-#      children:
-#        - file: chapter12/chapter12_sec01.md
-#        - file: chapter12/chapter12_sec02.md
-#        - file: chapter12/chapter12_sec03.md
-#        - file: chapter12/chapter12_sec04.md
-#        - file: chapter12/chapter12_sec05.md
- 
+    - title: 12. Fourierreihen I
+      children:
+       - file: chapter12/chapter12_sec01.md
+       - file: chapter12/chapter12_sec02.md
+       - file: chapter12/chapter12_sec03.md
+       - file: chapter12/chapter12_sec04.md
+    - title: 13. Fourierreihen II
+      children:
+       - file: chapter13/chapter13_sec01.md
+       - file: chapter13/chapter13_sec02.md
+       - file: chapter13/chapter13_sec03.md
+       - file: chapter13/chapter13_sec04.md
     
 site:
   template: book-theme

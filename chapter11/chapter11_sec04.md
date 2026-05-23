@@ -197,6 +197,13 @@ die Amplitude bereits $\tfrac{\sqrt{2}}{2} \cdot 10 \approx 7.1~\text{m}$, nach
 $t = 100~\text{s}$ über $70~\text{m}$. Ein reales Bauteil würde bei einem
 Bruchteil dieser Werte versagen.
 
+```{figure} pics/chap11_sec04_fig01.svg
+:name: fig-chap11-sec04-resonanzkatastrophe
+
+Zeitverlauf der vollständigen Lösung im Resonanzfall $\Omega = \omega_0 = \sqrt{2}\,\text{rad\,s}^{-1}$ mit den Hüllkurven $\pm\tfrac{\sqrt{2}}{2}\,t$, die das unbegrenzte lineare Amplitudenwachstum zeigen.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
 ```{admonition} Merkregel: Resonanz und kritische Drehzahl
 :class: note
 Die **kritische Drehzahl** $n_{\text{krit}}$ einer Welle oder eines Rotors ist
@@ -211,6 +218,13 @@ Im schwingungstechnischen Sinn spricht man genau in diesem Fall
 $\Omega = \omega_0$ von **Resonanz**. Im Maschinenbau wird die kritische
 Drehzahl entweder durch gezielte Dämpfung entschärft oder durch konstruktive
 Maßnahmen so gelegt, dass der Betriebsbereich sie weit verfehlt.
+```
+
+```{figure} pics/chap11_sec04_fig02.svg
+:name: fig-chap11-sec04-amplitudenfrequenzgang
+
+Amplitudenfrequenzgang der ungedämpften erzwungenen Schwingung: Die normierte Resonanzamplitude $\hat{y}_p\,k/F_0$ divergiert bei $\Omega = \omega_0$ und nähert sich für $\Omega \to 0$ dem statischen Wert $F_0/k$ an.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
 In der Ingenieurpraxis ist reiner Resonanzbetrieb ohne Dämpfung nie dauerhaft
