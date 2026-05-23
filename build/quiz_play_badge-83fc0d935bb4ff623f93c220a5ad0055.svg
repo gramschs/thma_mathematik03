@@ -1,0 +1,31 @@
+<svg width="220" height="48" viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hintergrund -->
+  <rect width="220" height="48" rx="8" fill="#005a94"/>
+
+  <!-- Play-Kreis -->
+  <circle cx="30" cy="24" r="14" fill="none" stroke="white" stroke-width="1.8"/>
+  <!-- Play-Dreieck -->
+  <polygon points="26,18 26,30 38,24" fill="white"/>
+
+  <!-- Trennlinie -->
+  <line x1="54" y1="10" x2="54" y2="38" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+
+  <!-- Text oben -->
+  <text x="138" y="18"
+        fill="rgba(255,255,255,0.7)"
+        font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="9.5"
+        font-weight="600"
+        letter-spacing="0.07em"
+        text-anchor="middle"
+        dominant-baseline="middle">LERNKONTROLLE</text>
+
+  <!-- Text unten -->
+  <text x="138" y="33"
+        fill="white"
+        font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="13.5"
+        font-weight="600"
+        text-anchor="middle"
+        dominant-baseline="middle">Quiz starten</text>
+</svg>

@@ -1,0 +1,297 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 11.2 Der Resonanzfall und das Anfangswertproblem
+
+In Abschnitt 11.1 haben wir die partikuläre Lösung für eine Stoßkraft
+$F(t) = 10\,e^{-3t}~\text{N}$ bestimmt, die rasch abklang. Jetzt verändern wir
+das Szenario: Die Kraft klingt mit $F(t) = 10\,e^{-t}~\text{N}$ langsamer ab,
+mit genau derselben Zeitkonstante wie die natürliche Systemreaktion.
+
+```{figure} pics/chap11_sec02_fig01.svg
+---
+name: chap11_sec02_fig01
+---
+Vergleich der beiden Stoßkräfte aus den Abschnitten 11.1 und 11.2: schnell abklingende Kraft $F_1(t)=10e^{-3t}$ (blau) und langsamer abklingende Kraft $F_2(t)=10e^{-t}$ (rot). (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das führt
+auf einen Fall, in dem der Standardansatz aus Abschnitt 11.1 versagt und eine
+Modifikation nötig ist. Anschließend legen wir aus der vollständigen allgemeinen
+Lösung durch zwei Anfangsbedingungen alle freien Konstanten fest.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie erkennen den **Resonanzfall** bei der inhomogenen linearen ODE
+  2. Ordnung: Der Standardansatz scheitert, wenn der Parameter $\alpha$ der
+  Störfunktion mit einem Eigenwert der homogenen ODE übereinstimmt.
+* [ ] Sie können den **modifizierten Ansatz** $y_p = A\,t\,e^{\alpha t}$
+  aufstellen, die Koeffizienten durch Einsetzen und Koeffizientenvergleich
+  bestimmen und das Ergebnis verifizieren.
+* [ ] Sie wissen, dass bei einem doppelten Eigenwert $\lambda$ der modifizierte
+  Ansatz $y_p = A\,t^2\,e^{\lambda t}$ zu verwenden ist.
+* [ ] Sie können aus der allgemeinen Lösung $y_{\text{allgemein}} = y_h + y_p$
+  durch Einsetzen zweier Anfangsbedingungen ein **lineares Gleichungssystem**
+  für $C_1$ und $C_2$ aufstellen und lösen.
+```
+
+## Wann schlägt der Standardansatz fehl?
+
+Unser Feder-Masse-Dämpfer-System aus Abschnitt 11.1 mit $m = 2~\text{kg}$,
+$k = 4~\text{N/m}$ und $d = 6~\text{N\,s/m}$ ist jetzt einer langsamer
+abklingenden Kraft ausgesetzt. Division der Bewegungsgleichung durch $m = 2$
+liefert:
+
+\begin{equation*}
+y'' + 3\,y' + 2\,y = 5\,e^{-t}.
+\end{equation*}
+
+Der Exponent $\alpha = -1$ der Störfunktion stimmt mit dem Eigenwert
+$\lambda_1 = -1$ aus Abschnitt 11.1 überein. Wir probieren den Standardansatz
+$y_p = A\,e^{-t}$ und setzen ihn in die ODE ein:
+
+\begin{align*}
+y_p(t)   &= A\,e^{-t}, \\
+y_p'(t)  &= -A\,e^{-t}, \\
+y_p''(t) &= A\,e^{-t}.
+\end{align*}
+
+\begin{equation*}
+y_p'' + 3\,y_p' + 2\,y_p
+= A\,e^{-t} - 3A\,e^{-t} + 2A\,e^{-t}
+= (1 - 3 + 2)\,A\,e^{-t}
+= 0.
+\end{equation*}
+
+Die linke Seite ergibt unabhängig von $A$ den Wert null. Der
+Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert $0 = 5$,
+also einen Widerspruch. *Warum versagt der Ansatz hier vollständig?*
+Der Grund: $e^{-t}$ ist wegen $\lambda_1 = -1$ selbst eine Lösung der
+homogenen ODE. Jede Lösung der homogenen ODE ergibt, eingesetzt in die linke
+Seite, per Definition null. Der Standardansatz ist damit zum Scheitern
+verurteilt, egal welchen Wert $A$ annimmt.
+
+```{admonition} Was ist ... der Resonanzfall bei der ODE 2. Ordnung?
+:class: note
+Der **Resonanzfall** tritt auf, wenn der Parameter $\alpha$ der Störfunktion
+$g(t) = c\,e^{\alpha t}$ mit einem der Eigenwerte $\lambda_1$ oder $\lambda_2$
+der zugehörigen homogenen ODE übereinstimmt. Der Standardansatz
+$y_p = A\,e^{\alpha t}$ ist dann keine geeignete partikuläre Lösung, weil er
+die homogene ODE erfüllt und beim Einsetzen identisch null ergibt.
+```
+
+In der Strukturdynamik entspricht dieser Fall dem Zustand, in dem die
+Zeitkonstante der äußeren Kraft ($\tau = 1~\text{s}$ bei $e^{-t}$) mit der
+Zeitkonstante des langsamsten Eigenmodes des Systems übereinstimmt
+($\tau_1 = 1/|\lambda_1| = 1~\text{s}$). Das System wird dauerhaft in seinem
+eigenen Abklingtakt angeregt, was zu einem vorübergehend verstärkten
+Ausschlag führt, bevor die Dämpfung übernimmt.
+
+## Wie retten wir den Ansatz im Resonanzfall?
+
+Die Lösung besteht darin, den Ansatz durch einen zusätzlichen Faktor $t$ zu
+erweitern:
+
+\begin{equation*}
+y_p(t) = A\,t\,e^{-t}.
+\end{equation*}
+
+Der Faktor $t$ stellt sicher, dass $y_p$ nicht mehr im Lösungsraum der
+homogenen ODE liegt: $t\,e^{-t}$ ist keine Lösung der homogenen ODE
+(das lässt sich durch Einsetzen sofort prüfen). Gleichzeitig bleibt die
+Struktur von $e^{-t}$ so weit erhalten, dass nach dem Einsetzen ein
+brauchbarer Koeffizientenvergleich entsteht.
+
+Wir berechnen die Ableitungen:
+
+\begin{align*}
+y_p(t)   &= A\,t\,e^{-t}, \\
+y_p'(t)  &= A\,e^{-t} - A\,t\,e^{-t} = A(1-t)\,e^{-t}, \\
+y_p''(t) &= -A\,e^{-t} - A(1-t)\,e^{-t} = A(t-2)\,e^{-t}.
+\end{align*}
+
+Einsetzen in die linke Seite der ODE ergibt:
+
+\begin{align*}
+y_p'' + 3\,y_p' + 2\,y_p
+&= A(t-2)\,e^{-t} + 3A(1-t)\,e^{-t} + 2At\,e^{-t} \\
+&= A\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t} \\
+&= A\bigl[t - 2 + 3 - 3t + 2t\bigr]\,e^{-t} \\
+&= A\,e^{-t}.
+\end{align*}
+
+Der Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert direkt:
+
+\begin{equation*}
+A = 5.
+\end{equation*}
+
+Die partikuläre Lösung im Resonanzfall lautet:
+
+\begin{equation*}
+y_p(t) = 5\,t\,e^{-t}.
+\end{equation*}
+
+Wir verifizieren durch Einsetzen in die ODE:
+
+\begin{equation*}
+y_p'' + 3\,y_p' + 2\,y_p
+= 5(t-2)\,e^{-t} + 15(1-t)\,e^{-t} + 10t\,e^{-t}
+= 5\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t}
+= 5\,e^{-t}. \quad \checkmark
+\end{equation*}
+
+Der Faktor $t$ im Ausdruck $5\,t\,e^{-t}$ ist das charakteristische Merkmal
+des Resonanzfalls: Die partikuläre Lösung wächst zunächst an, weil für kleine
+$t > 0$ der Faktor $t$ dominiert, bevor $e^{-t}$ die Oberhand gewinnt und
+alles gegen null zieht. Ingenieurmäßig bedeutet das einen kurzzeitig
+verstärkten Ausschlag, der aber wegen der Dämpfung schließlich vollständig
+abklingt.
+
+```{figure} pics/chap11_sec02_fig02.svg
+---
+name: chap11_sec02_fig02
+---
+Verlauf der partikulären Lösung $y_p(t) = 5 t e^{-t}$ im Resonanzfall mit
+markiertem Maximum bei $t = 1$ und $y_p(1) = 5/e$. Der Faktor $t$ führt zunächst
+zu einem Anwachsen der Auslenkung, bevor der Exponentialterm $e^{-t}$ dominiert
+und die Antwort wieder gegen null abklingen lässt. (Quelle: eigene Abbildung;
+Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+```{admonition} Hinweis: doppelter Eigenwert im Resonanzfall
+:class: note
+Wenn $\alpha$ mit einem doppelten Eigenwert $\lambda$ übereinstimmt (also
+$D = 0$ in der charakteristischen Gleichung aus Abschnitt 10.3), scheitert
+auch der Ansatz $A\,t\,e^{\alpha t}$, weil $t\,e^{\lambda t}$ bereits im
+Fundamentalsystem liegt. In diesem Fall lautet der modifizierte Ansatz
+$y_p = A\,t^2\,e^{\alpha t}$.
+```
+
+```{figure} pics/chap11_sec02_fig03.svg
+---
+name: chap11_sec02_fig03
+---
+Vergleich der partikulären Lösungen im Nicht-Resonanzfall $y_p^{\text{NR}}(t) = \tfrac{5}{2}e^{-3t}$ (blau, Abschnitt 11.1) und im Resonanzfall $y_p^{\text{R}}(t) = 5 t e^{-t}$ (rot, Abschnitt 11.2). Im Resonanzfall wächst die Antwort zunächst an, bevor sie, wie auch im Nicht-Resonanzfall, durch das Exponential wieder gegen null abklingt. (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+## Wie bestimme ich $C_1$ und $C_2$ aus Anfangsbedingungen?
+
+Die allgemeine Lösung der inhomogenen ODE ist jetzt vollständig:
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+y_{\text{allgemein}}(t)
+= \underbrace{C_1\,e^{-t} + C_2\,e^{-2t}}_{y_h} +
+  \underbrace{5\,t\,e^{-t}}_{y_p}.
+\end{equation*}
+<!-- markdownlint-enable -->
+
+Wir nehmen an, dass das Maschinenelement zum Zeitpunkt $t = 0$ in Ruhe war,
+also weder ausgelenkt noch in Bewegung:
+
+\begin{equation*}
+y(0) = 0, \qquad y'(0) = 0.
+\end{equation*}
+
+Einsetzen der ersten Anfangsbedingung liefert:
+
+\begin{equation*}
+C_1 + C_2 + 5 \cdot 0 \cdot 1
+= C_1 + C_2
+\stackrel{!}{=} 0.
+\end{equation*}
+
+Für die zweite Bedingung berechnen wir zunächst $y'(t)$:
+
+\begin{equation*}
+y'(t) = -C_1\,e^{-t} - 2\,C_2\,e^{-2t} + 5(1-t)\,e^{-t}.
+\end{equation*}
+
+Einsetzen von $t = 0$:
+
+\begin{equation*}
+-C_1 - 2\,C_2 + 5
+\stackrel{!}{=} 0.
+\end{equation*}
+
+Wir erhalten das lineare Gleichungssystem:
+
+\begin{align*}
+C_1 + C_2          &= 0, \\
+-C_1 - 2\,C_2 + 5 &= 0.
+\end{align*}
+
+Aus der ersten Gleichung folgt $C_1 = -C_2$. Einsetzen in die zweite
+Gleichung:
+
+\begin{equation*}
+C_2 - 2\,C_2 = -5
+\qquad \Rightarrow \qquad
+C_2 = 5,
+\quad
+C_1 = -5.
+\end{equation*}
+
+Die vollständige Lösung des Anfangswertproblems lautet:
+
+\begin{equation*}
+y(t) = -5\,e^{-t} + 5\,e^{-2t} + 5\,t\,e^{-t}
+     = 5(t-1)\,e^{-t} + 5\,e^{-2t}.
+\end{equation*}
+
+Wir verifizieren die Anfangsbedingungen. Bei $t = 0$:
+
+\begin{equation*}
+y(0) = 5(0-1)\cdot 1 + 5\cdot 1 = -5 + 5 = 0. \quad \checkmark
+\end{equation*}
+
+Für $y'(t) = (10 - 5t)\,e^{-t} - 10\,e^{-2t}$ gilt bei $t = 0$:
+
+\begin{equation*}
+y'(0) = 10 \cdot 1 - 10 \cdot 1 = 0. \quad \checkmark
+\end{equation*}
+
+```{figure} pics/chap11_sec02_fig04.svg
+---
+name: chap11_sec02_fig04
+---
+Überlagerung des homogenen (transienten) Anteils $y_h(t) = -5e^{-t} +
+5e^{-2t}$, des partikulären (erzwungenen) Anteils $y_p(t) = 5 t e^{-t}$ und
+der Gesamtlösung $y(t) = y_h(t) + y_p(t)$ für das Anfangswertproblem im
+Resonanzfall aus Abschnitt 11.2. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
+4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Physikalisch: Das Element startet in Ruhe. Die Kraft setzt sofort ein und
+erzeugt zunächst eine wachsende Auslenkung, die durch den Term $5t\,e^{-t}$
+im $y_p$-Anteil beschrieben wird. Dieser Anstieg ist das Kennzeichen des
+Resonanzfalls: Das System spricht stärker an als im Normalfall, weil die
+äußere Kraft genau im Takt des langsamsten Eigenmodes wirkt. Letztlich klingt
+die Auslenkung wegen der Dämpfung vollständig ab. In der Technischen Mechanik
+nennt man dieses Verhalten die **erzwungene gedämpfte Antwort** des Systems.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec02_quiz.html)
+```
+
+## Zusammenfassung und Ausblick
+
+Der Resonanzfall tritt auf, wenn der Parameter $\alpha$ der Störfunktion mit
+einem Eigenwert der homogenen ODE übereinstimmt. Der modifizierte Ansatz mit
+zusätzlichem Faktor $t$ liefert dann die partikuläre Lösung. Die freien
+Konstanten $C_1$ und $C_2$ ergeben sich anschließend aus einem linearen
+Gleichungssystem, das unmittelbar an die Methoden aus Kapitel 2 anknüpft.
+
+Bisher haben wir stets mit einer fertig aufgestellten ODE gearbeitet. In
+Abschnitt 11.3 gehen wir einen Schritt zurück und modellieren das
+Feder-Masse-Dämpfer-System aus dem Newtonschen Gesetz $ma = F$ heraus, um
+zu verstehen, wie die ODE überhaupt entsteht. Damit legen wir die Grundlage
+für die Behandlung beliebiger schwingfähiger Maschinensysteme, wie Sie sie
+in der Technischen Mechanik und in der Maschinenelementelehre antreffen
+werden.

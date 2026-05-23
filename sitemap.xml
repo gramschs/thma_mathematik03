@@ -163,4 +163,28 @@
   <url>
     <loc>http://localhost:3000/chapter11-sec04</loc>
   </url>
+  <url>
+    <loc>http://localhost:3000/chapter12-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter12-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter12-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter12-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter13-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter13-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter13-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter13-sec04</loc>
+  </url>
 </urlset>
