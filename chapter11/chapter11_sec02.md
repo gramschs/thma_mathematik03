@@ -280,6 +280,14 @@ nennt man dieses Verhalten die **erzwungene gedämpfte Antwort** des Systems.
 [![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec02_quiz.html)
 ```
 
+```{dropdown} Video "Resonanz" von Elektrotechnik leicht gemacht
+<iframe width="958" height="613" src="https://www.youtube.com/embed/bdjqPnpMF64"
+title="13. Resonanz bei inhomogener linearen DGL mit konstanten Koeffizienten erkennen"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Der Resonanzfall tritt auf, wenn der Parameter $\alpha$ der Störfunktion mit

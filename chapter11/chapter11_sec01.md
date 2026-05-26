@@ -247,6 +247,15 @@ aus konkreten Anfangsbedingungen berechnet.
 [![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec01_quiz.html)
 ```
 
+```{dropdown} Video "Spezielle Lösung inhom. lin. DGL 2. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613"
+src="https://www.youtube.com/embed/Vnv4itD5euc?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Spezielle Lösung der inhomogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
 ## Zusammenfassung und Ausblick
 
 Der Ansatz vom Typ der rechten Seite liefert $y_p$ für die drei Standardfälle
