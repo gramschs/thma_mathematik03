@@ -3,20 +3,20 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 12.3 Die Euler-Fourier-Formeln
+# 12.3 Die Fourierreihe und ihre Koeffizienten
 
 In Abschnitt 12.2 haben wir gesehen, dass sich ein reales Motorsignal als
 Überlagerung einer Grundschwingung und ihrer Oberschwingungen beschreiben lässt.
 Wir wussten dort aber noch nicht, mit welchen Amplituden die einzelnen Anteile
 auftreten. *Wie bestimmt man diese Amplituden systematisch, wenn man nur die
-Funktion selbst kennt?* Die Antwort geben die Euler-Fourier-Formeln, die das
-zentrale Rechenwerkzeug dieses Kapitels bilden.
+Funktion selbst kennt?* Die Antwort geben Formeln, die das zentrale
+Rechenwerkzeug dieses Kapitels bilden.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die **Euler-Fourier-Formeln** für die Koeffizienten $a_0$,
+* [ ] Sie können die Formeln für die Fourierkoeffizienten $a_0$,
   $a_n$ und $b_n$ korrekt aufschreiben und die Bedeutung jedes Terms erläutern.
 * [ ] Sie verstehen, dass die Fourierreihe eine periodische Funktion als
   Überlagerung von Sinus- und Kosinusschwingungen darstellt, und können
@@ -74,9 +74,10 @@ $\vec{e}_1 \cdot \vec{e}_1 = 1$.
 Nutzt man diese Orthogonalität aus und multipliziert beide Seiten des
 trigonometrischen Polynoms mit $\cos(n\,\omega_0\,t)$ beziehungsweise
 $\sin(n\,\omega_0\,t)$ und integriert dann über eine Periode, so fallen alle
-Terme bis auf einen heraus. Das Ergebnis sind die Euler-Fourier-Formeln.
+Terme bis auf einen heraus. Das Ergebnis sind die folgenden Formeln zur
+Berechnung der Fourierkoeffizienten.
 
-```{admonition} Was sind ... die Euler-Fourier-Formeln?
+```{admonition} Was sind ... die Fourierkoeffizienten?
 :class: note
 Sei $f$ eine periodische Funktion mit Periode $T$ und Kreisfrequenz
 $\omega_0 = 2\pi/T$. Die **Fourierkoeffizienten** von $f$ werden berechnet als
@@ -136,8 +137,7 @@ f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty}
 \bigl(a_n \cos(n\,\omega_0\,t) + b_n \sin(n\,\omega_0\,t)\bigr),
 \end{equation*}
 
-wobei die Koeffizienten $a_n$ und $b_n$ durch die Euler-Fourier-Formeln
-berechnet werden.
+mit den Fourierkoeffizienten $a_n$ und $b_n$.
 ```
 
 Die **Partialsumme** $S_N$ ist die Näherung, die man erhält, wenn man die
@@ -192,11 +192,11 @@ konvergiert die Fourierreihe an der Sprungstelle, nicht gegen $2$ oder $-1$.
 
 ## Zusammenfassung und Ausblick
 
-Die Euler-Fourier-Formeln liefern zu jeder hinreichend regulären periodischen
-Funktion eindeutig bestimmte Fourierkoeffizienten $a_n$ und $b_n$. Der
-Koeffizient $a_0$ ist der doppelte Mittelwert, die übrigen Koeffizienten messen
-den Anteil der jeweiligen Sinus- und Kosinusschwingung am Signal. Die
-Dirichlet-Bedingungen garantieren die Konvergenz in allen technisch relevanten
-Fällen. In Abschnitt 12.4 rechnen wir die Koeffizienten für ein konkretes
-Beispiel vollständig durch und stellen die zugehörige Fourierreihe in
+Die Formeln zur Berechnung der Fourierkoeffizienten liefern zu jeder hinreichend
+regulären periodischen Funktion eindeutig bestimmte Fourierkoeffizienten $a_n$
+und $b_n$. Der Koeffizient $a_0$ ist der doppelte Mittelwert, die übrigen
+Koeffizienten messen den Anteil der jeweiligen Sinus- und Kosinusschwingung am
+Signal. Die Dirichlet-Bedingungen garantieren die Konvergenz in allen technisch
+relevanten Fällen. In Abschnitt 12.4 rechnen wir die Koeffizienten für ein
+konkretes Beispiel vollständig durch und stellen die zugehörige Fourierreihe in
 geschlossener Form auf.

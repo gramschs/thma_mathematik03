@@ -227,6 +227,7 @@ Zur Kontrolle prüfen wir, ob $\tilde{g}$ tatsächlich periodisch ist:
 ```{figure} pics/chap12_sec01_fig02.svg
 ---
 name: chap12_sec01_fig02
+width: 100%
 ---
 Periodische Fortsetzung der Messkurve $g$ über mehrere Perioden. Die
 Grundperiode $[0, T)$ ist gelb hinterlegt. Die Auswertungsstellen

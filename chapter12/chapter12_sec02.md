@@ -108,7 +108,7 @@ Für die Kurbelwelle mit $f_0 = 25~\text{Hz}$ berechnen wir die ersten drei
 Oberschwingungen:
 
 | Ordnung $k$ | Bezeichnung | Frequenz $f_k$ | Kreisfrequenz $\omega_k$ | Technische Bedeutung |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | $1$ | Grundschwingung | $25~\text{Hz}$ | $50\pi~\text{rad\,s}^{-1}$ | Kurbelwellenumdrehung |
 | $2$ | 1. Oberschwingung | $50~\text{Hz}$ | $100\pi~\text{rad\,s}^{-1}$ | Zündfrequenz (4-Zylinder) |
 | $3$ | 2. Oberschwingung | $75~\text{Hz}$ | $150\pi~\text{rad\,s}^{-1}$ | Drehmomentwelligkeit |
@@ -155,6 +155,7 @@ Ausgangspunkt.
 ```{figure} pics/chap12_sec02_fig01.svg
 ---
 name: chap12_sec02_fig01
+width: 100%
 ---
 Überlagerung von Grundschwingung $3\,\sin(50\pi\,t)$ (blau) und erster
 Oberschwingung $0.8\,\sin(100\pi\,t)$ (rot) zum Summensignal $s(t)$ (grau,

@@ -5,12 +5,13 @@ authors:
 
 # 12.4 Fourierreihen berechnen: Beispiele
 
-In Abschnitt 12.3 haben wir die Euler-Fourier-Formeln kennengelernt und den
-Mittelwert $a_0$ für ein asymmetrisches Rechtecksignal berechnet. Jetzt führen
-wir die vollständige Rechnung durch: alle Koeffizienten $a_n$ und $b_n$, die
-Fourierreihe in geschlossener Summenform und eine Plausibilitätsprüfung. Als
-Beispiel dient eine symmetrische Rechteckschwingung, die im Maschinenbau als
-Modell für Taktsignale, Schaltventile oder digitale Steuerbefehle auftritt.
+In Abschnitt 12.3 haben wir die Formeln zur Bestimmung der Fourierkoeffizienten
+kennengelernt und den Mittelwert $a_0$ für ein asymmetrisches Rechtecksignal
+berechnet. Jetzt führen wir die vollständige Rechnung durch: alle Koeffizienten
+$a_n$ und $b_n$, die Fourierreihe in geschlossener Summenform und eine
+Plausibilitätsprüfung. Als Beispiel dient eine symmetrische Rechteckschwingung,
+die im Maschinenbau als Modell für Taktsignale, Schaltventile oder digitale
+Steuerbefehle auftritt.
 
 ## Lernziele
 
@@ -32,8 +33,8 @@ $T = 2\pi$ und der Kreisfrequenz $\omega_0 = 1$:
 
 \begin{equation*}
 f(t) = \begin{cases}
-\phantom{-}1, & -\pi \leq t < 0, \\
--1, & \phantom{-}0 \leq t < \pi.
+-1, & -\pi \leq t < 0, \\
+\phantom{-}1, & \phantom{-}0 \leq t < \pi.
 \end{cases}
 \end{equation*}
 
@@ -58,8 +59,7 @@ Sprungstellen gegen den Mittelwert $0$.
 
 ## Berechnung von $a_0$
 
-Wir starten mit dem Mittelwertkoeffizienten. Mit $T = 2\pi$ lautet die
-Euler-Fourier-Formel
+Wir starten mit dem Mittelwertkoeffizienten. Mit $T = 2\pi$ lautet die Formel
 
 \begin{equation*}
 a_0 = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt
@@ -69,12 +69,12 @@ a_0 = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt
 Wir teilen das Integral an der Sprungstelle $t = 0$ auf:
 
 \begin{align*}
-a_0 &= \frac{1}{\pi}\int_{-\pi}^{0} 1\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi} (-1)\,dt \\
-    &= \frac{1}{\pi}\Big[t\Big]_{-\pi}^{0}
-     + \frac{1}{\pi}\Big[-t\Big]_{0}^{\pi} \\
-    &= \frac{1}{\pi}(0 - (-\pi))
-     + \frac{1}{\pi}(-\pi - 0) = 1 - 1 = 0.
+a_0 &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\,dt \\
+    &= \frac{1}{\pi}\Big[-t\Big]_{-\pi}^{0}
+     + \frac{1}{\pi}\Big[t\Big]_{0}^{\pi} \\
+    &= \frac{1}{\pi}(0 - \pi)
+     + \frac{1}{\pi}(\pi - 0) = -1 + 1 = 0.
 \end{align*}
 
 Das Ergebnis ist plausibel: Die Funktion ist antisymmetrisch um die Zeitachse,
@@ -91,22 +91,22 @@ a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\cos(nt)\,dt.
 Wir teilen wieder an $t = 0$ auf:
 
 \begin{align*}
-a_n &= \frac{1}{\pi}\int_{-\pi}^{0} 1\cdot\cos(nt)\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi} (-1)\cdot\cos(nt)\,dt \\
-    &= \frac{1}{\pi}\left[\frac{\sin(nt)}{n}\right]_{-\pi}^{0}
-     - \frac{1}{\pi}\left[\frac{\sin(nt)}{n}\right]_{0}^{\pi}.
+a_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\cos(nt)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\cos(nt)\,dt \\
+    &= \frac{1}{\pi}\left[-\frac{\sin(nt)}{n}\right]_{-\pi}^{0}
+     + \frac{1}{\pi}\left[\frac{\sin(nt)}{n}\right]_{0}^{\pi}.
 \end{align*}
 
-Da $n$ eine natürliche Zahl ist, gilt $\sin(n\cdot 0) = \sin(0) = 0$ und
-$\sin(\pm n\pi) = 0$ für alle $n \in \mathbb{N}$. Damit verschwinden beide
-Ausdrücke in eckigen Klammern vollständig, und es folgt
+Da $n$ eine natürliche Zahl ist, gilt $\sin(0) = 0$ und $\sin(\pm n\pi) = 0$
+für alle $n \in \mathbb{N}$. Damit verschwinden beide Ausdrücke in eckigen
+Klammern vollständig, und es folgt
 
 \begin{equation*}
 a_n = 0 \quad \text{für alle } n \geq 0.
 \end{equation*}
 
-Die Fourierreihe enthält also gar keine Kosinusterme. *Ist das Zufall, oder
-steckt eine tiefere Ursache dahinter?* Wir bemerken, dass $f$ antisymmetrisch
+Die Fourierreihe enthält also gar keine Kosinusterme. _Ist das Zufall, oder
+steckt eine tiefere Ursache dahinter?_ Wir bemerken, dass $f$ antisymmetrisch
 ist: $f(-t) = -f(t)$. Eine solche Funktion heißt ungerade. Die Kosinusfunktion
 ist dagegen gerade: $\cos(-nt) = \cos(nt)$. Das Produkt einer ungeraden und
 einer geraden Funktion ist wieder ungerade, und das Integral einer ungeraden
@@ -125,32 +125,32 @@ b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\sin(nt)\,dt.
 Wir teilen erneut an $t = 0$ auf:
 
 \begin{align*}
-b_n &= \frac{1}{\pi}\int_{-\pi}^{0} 1\cdot\sin(nt)\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi}(-1)\cdot\sin(nt)\,dt \\
-    &= \frac{1}{\pi}\left[-\frac{\cos(nt)}{n}\right]_{-\pi}^{0}
-     - \frac{1}{\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi} \\
-    &= \frac{1}{n\pi}\Big[-\cos(nt)\Big]_{-\pi}^{0}
-     + \frac{1}{n\pi}\Big[\cos(nt)\Big]_{0}^{\pi}.
+b_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\sin(nt)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\sin(nt)\,dt \\
+    &= \frac{1}{\pi}\left[\frac{\cos(nt)}{n}\right]_{-\pi}^{0}
+     + \frac{1}{\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi} \\
+    &= \frac{1}{n\pi}\Big[\cos(nt)\Big]_{-\pi}^{0}
+     - \frac{1}{n\pi}\Big[\cos(nt)\Big]_{0}^{\pi}.
 \end{align*}
 
 Wir setzen die Grenzen ein. Mit $\cos(0) = 1$ und $\cos(-n\pi) = \cos(n\pi)$
 (Kosinusfunktion ist gerade) ergibt sich:
 
 \begin{align*}
-b_n &= \frac{1}{n\pi}\bigl(-\cos(0) + \cos(-n\pi)\bigr)
-     + \frac{1}{n\pi}\bigl(\cos(n\pi) - \cos(0)\bigr) \\
-    &= \frac{1}{n\pi}\bigl(-1 + \cos(n\pi)\bigr)
-     + \frac{1}{n\pi}\bigl(\cos(n\pi) - 1\bigr) \\
-    &= \frac{2}{n\pi}\bigl(\cos(n\pi) - 1\bigr).
+b_n &= \frac{1}{n\pi}\bigl(\cos(0) - \cos(-n\pi)\bigr)
+     - \frac{1}{n\pi}\bigl(\cos(n\pi) - \cos(0)\bigr) \\
+    &= \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr)
+     + \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr) \\
+    &= \frac{2}{n\pi}\bigl(1 - (-1)^n\bigr).
 \end{align*}
 
-Jetzt werten wir $\cos(n\pi)$ aus. Für gerades $n$ gilt $\cos(n\pi) = +1$,
-für ungerades $n$ gilt $\cos(n\pi) = -1$. Damit ergibt sich:
+Jetzt werten wir $(-1)^n$ aus. Für gerades $n$ gilt $(-1)^n = +1$,
+für ungerades $n$ gilt $(-1)^n = -1$. Damit ergibt sich:
 
 \begin{equation*}
 b_n = \begin{cases}
 0, & n \text{ gerade}, \\[4pt]
-\dfrac{-4}{n\pi}, & n \text{ ungerade}.
+\dfrac{4}{n\pi}, & n \text{ ungerade}.
 \end{cases}
 \end{equation*}
 
@@ -161,62 +161,62 @@ $a_n = 0$ und alle $b_n$ mit geradem $n$ verschwinden, bleiben nur die ungeraden
 Terme übrig:
 
 \begin{equation*}
-f(t) = -\frac{4}{\pi}\sin(t) - \frac{4}{3\pi}\sin(3t)
-      - \frac{4}{5\pi}\sin(5t) - \ldots
+f(t) = \frac{4}{\pi}\sin(t) + \frac{4}{3\pi}\sin(3t)
+      + \frac{4}{5\pi}\sin(5t) + \ldots
 \end{equation*}
 
 Um eine kompakte Summenformel zu erhalten, schreiben wir die ungeraden Zahlen
 als $2k-1$ mit $k \in \mathbb{N}$:
 
 \begin{equation*}
-f(t) = -\frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)t\bigr)}{2k-1}.
+f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)t\bigr)}{2k-1}.
 \end{equation*}
 
-```{admonition} Merkregel: Fourierreihe der symmetrischen Rechteckschwingung
+```{admonition} Was ist ... die Fourierreihe der symmetrischen Rechteckschwingung?
 :class: note
 Die symmetrische Rechteckschwingung
 
 \begin{equation*}
-f(t) = \begin{cases} \phantom{-}1, & -\pi \leq t < 0, \\ -1, & 0 \leq t < \pi \end{cases}
+f(t) = \begin{cases} -1, & -\pi \leq t < 0, \\ \phantom{-}1, & 0 \leq t < \pi \end{cases}
 \end{equation*}
 
 hat die Fourierreihe
 
 \begin{equation*}
-f(t) = -\frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)\,t\bigr)}{2k-1}.
+f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)\,t\bigr)}{2k-1}.
 \end{equation*}
 
 Nur ungerade Oberschwingungen treten auf. Die Amplituden $4/((2k-1)\pi)$ klingen
 mit wachsendem $k$ wie $1/k$ ab.
-\end{admonition}
+```
 
 ## Plausibilitätsprüfung der Partialsummen
 
 Wir prüfen die Formel, indem wir die Partialsumme $S_1$ an einer konkreten
-Stelle auswerten. Für $t = \pi/2$ gilt $f(\pi/2) = -1$ (wir befinden uns im
-zweiten Teilintervall $[0, \pi)$).
+Stelle auswerten. Für $t = \pi/2$ gilt $f(\pi/2) = +1$ (wir befinden uns im
+Teilintervall $[0, \pi)$).
 
-Die erste Partialsumme ist $S_1(t) = -\frac{4}{\pi}\sin(t)$. An der Stelle
+Die erste Partialsumme ist $S_1(t) = \frac{4}{\pi}\sin(t)$. An der Stelle
 $t = \pi/2$:
 
 \begin{equation*}
-S_1\!\left(\frac{\pi}{2}\right) = -\frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right)
-= -\frac{4}{\pi} \approx -1.27.
+S_1\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right)
+= \frac{4}{\pi} \approx 1.27.
 \end{equation*}
 
 Mit nur einem Term weicht die Approximation noch um etwa $27\,\%$ ab. Wir
 ergänzen den zweiten nichtverschwindenden Term ($k=2$, also $n=3$):
 
 \begin{equation*}
-S_3\!\left(\frac{\pi}{2}\right) = -\frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right)
-- \frac{4}{3\pi}\sin\!\left(\frac{3\pi}{2}\right)
-= -\frac{4}{\pi} + \frac{4}{3\pi}
-= -\frac{8}{3\pi} \approx -0.85.
+S_3\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right) +
+\frac{4}{3\pi}\sin\!\left(\frac{3\pi}{2}\right)
+= \frac{4}{\pi} - \frac{4}{3\pi}
+= \frac{8}{3\pi} \approx 0.85.
 \end{equation*}
 
-Mit drei Termen liegt die Partialsumme bei $-0.85$ statt $-1$, die Abweichung
+Mit drei Termen liegt die Partialsumme bei $0.85$ statt $+1$, die Abweichung
 beträgt jetzt noch $15\,\%$. Jeder weitere Term verbessert die Annäherung, und
-für $N \to \infty$ konvergiert die Summe gegen den exakten Wert $-1$.
+für $N \to \infty$ konvergiert die Summe gegen den exakten Wert $+1$.
 
 ```{figure} pics/chap12_sec04_fig02.svg
 ---
@@ -237,7 +237,7 @@ und als **Gibbssches Phänomen** bekannt ist.
 ## Zusammenfassung und Ausblick
 
 Die vollständige Rechnung für die Rechteckschwingung hat gezeigt, wie die
-Euler-Fourier-Formeln systematisch angewendet werden: Integrationsintervall
+Fourierkoeffizienten systematisch berechnet werden: Integrationsintervall
 aufteilen, Stammfunktionen bestimmen, Grenzen einsetzen, Fallunterscheidung
 nach geraden und ungeraden $n$, Ergebnis in kompakter Summenform angeben. Die
 Plausibilitätsprüfung bestätigt die Rechnung numerisch.

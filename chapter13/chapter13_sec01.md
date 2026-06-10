@@ -192,12 +192,14 @@ a_n &= \frac{4}{T}\int_{0}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt
 Wir integrieren durch Teile mit $u = -t + \pi$ und $v' = \cos(nt)$, also
 $u' = -1$ und $v = \sin(nt)/n$:
 
+<!-- markdownlint-disable -->
 \begin{align*}
 a_n &= \frac{2}{\pi}\left(
-\left[(-t + \pi)\,\frac{\sin(nt)}{n}\right]_{0}^{\pi}
-+ \int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
+\left[(-t + \pi)\,\frac{\sin(nt)}{n}\right]_{0}^{\pi} +
+\int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
 \right).
 \end{align*}
+<!-- markdownlint-enable -->
 
 Der erste Term verschwindet: An der Stelle $t = \pi$ gilt $-\pi + \pi = 0$, an
 der Stelle $t = 0$ gilt $\sin(0) = 0$. Es bleibt:
