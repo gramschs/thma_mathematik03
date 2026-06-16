@@ -3,206 +3,231 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.3 Energieinhalt und Klirrfaktor
+# 13.3 Die komplexe Fourierreihe
 
-In Abschnitt 13.2 haben wir gesehen, dass die Fourierreihe an Sprungstellen
-nicht gleichmäßig konvergiert und das Gibbssche Phänomen unvermeidlich ist.
-Jetzt stellen wir eine andere Frage: Nicht wie gut die Partialsumme die
-Funktion annähert, sondern wie viel Energie in den einzelnen Oberschwingungen
-einer periodischen Lagerkraft steckt. In Kapitel 11 haben wir gelernt, dass
-eine Oberschwingung, deren Frequenz mit der Eigenfrequenz des Lagers
-übereinstimmt, Resonanz auslösen kann. *Aber welche Oberschwingung ist der
-gefährlichste Kandidat, und wie groß ist ihr Energieanteil?* Die Antwort
-liefern das Parsevalsche Theorem und der Klirrfaktor.
+In Abschnitt 13.2 haben wir gesehen, dass die Fourierkoeffizienten der
+Lagerkraft wie $1/n$ abklingen und damit auch hohe Frequenzen noch spürbar
+beitragen. In der Schwingungsdiagnose stellt man genau diese Information
+grafisch dar: Ein FFT-Analysator zeigt für eine gemessene Lagerkraft ein
+Spektrum, in dem über jeder Frequenz ein einziger Amplitudenwert steht.
+Unsere reelle Fourierreihe liefert dagegen pro Frequenz zwei Zahlen, nämlich
+$a_n$ und $b_n$. *Lässt sich die Reihe so umschreiben, dass jede Frequenz nur
+noch einen einzigen Koeffizienten trägt?* Die Antwort liefert die eulersche
+Formel, die uns in Abschnitt 10.4 bereits geholfen hat, komplexe Eigenwerte
+in reelle Schwingungslösungen zu übersetzen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können das **Parsevalsche Theorem** anwenden, um den mittleren
-  quadratischen Energieinhalt eines periodischen Signals aus seinen
-  Fourierkoeffizienten zu berechnen.
-* [ ] Sie kennen den Begriff des **Klirrfaktors** und können ihn aus den
-  Fourierkoeffizienten eines Signals berechnen.
-* [ ] Sie verstehen, was ein kleiner bzw. großer Klirrfaktor über die
-  Signalqualität in einer technischen Anwendung aussagt.
+* [ ] Sie kennen die **komplexe Fourierreihe** mit den Koeffizienten $c_n$
+  und können beide Formeln (Reihe und Koeffizienten) angeben.
+* [ ] Sie können die komplexen Fourierkoeffizienten $c_n$ aus den reellen
+  Koeffizienten $a_n$ und $b_n$ umrechnen und umgekehrt.
+* [ ] Sie können das **Amplitudenspektrum** eines periodischen Signals aus
+  den $c_n$ berechnen und technisch interpretieren.
+* [ ] Sie verstehen, wie die eulersche Formel die reelle und die komplexe
+  Darstellung der Fourierreihe miteinander verbindet.
 ```
 
-## Was meinen wir mit dem Energieinhalt einer periodischen Kraft?
+## Wie kommt die komplexe Exponentialfunktion in die Fourierreihe?
 
-In der Schwingungslehre ist nicht die Spitzenkraft allein entscheidend, sondern
-ihr mittlerer Effekt über eine gesamte Periode. Ein kurzer, scharfer Kraftstoß
-und eine dauerhafte, moderate Schwingkraft können dieselbe Spitzenkraft haben,
-aber völlig unterschiedliche Auswirkungen auf ein Bauteil. Das physikalisch
-relevante Maß ist das zeitliche Mittel des Kraftquadrats, der sogenannte
-**Effektivwert**.
-
-Als Modell verwenden wir die periodische Lagerkraft aus Abschnitt 12.4, die wir
-als symmetrische Rechteckschwingung mit Periode $T = 2\pi$ beschrieben haben:
+Wir erinnern uns an Abschnitt 10.4: Die eulersche Formel
 
 \begin{equation*}
-f(t) = \begin{cases}
-\phantom{-}1, & -\pi \leq t < 0, \\
--1, & \phantom{-}0 \leq t < \pi.
-\end{cases}
+e^{i\varphi} = \cos\varphi + i\,\sin\varphi
 \end{equation*}
 
-```{admonition} Was ist ... der Energieinhalt eines periodischen Signals?
+verbindet die komplexe Exponentialfunktion mit Kosinus und Sinus. Dort haben
+wir sie benutzt, um aus komplexen Eigenwerten reelle Schwingungslösungen zu
+gewinnen. Jetzt lesen wir sie in der Gegenrichtung: Wir lösen nach Kosinus und
+Sinus auf. Schreiben wir die Formel einmal für $\varphi$ und einmal für
+$-\varphi$ auf und addieren beziehungsweise subtrahieren beide Gleichungen,
+so erhalten wir
+
+\begin{equation*}
+\cos\varphi = \frac{e^{i\varphi} + e^{-i\varphi}}{2}
+\qquad \text{und} \qquad
+\sin\varphi = \frac{e^{i\varphi} - e^{-i\varphi}}{2i}.
+\end{equation*}
+
+Jede reelle Schwingung ist also eine Überlagerung zweier komplexer
+Exponentialfunktionen mit den Frequenzen $+\varphi$ und $-\varphi$. Genau das
+setzen wir jetzt in einen Summanden der reellen Fourierreihe aus Abschnitt
+12.3 ein:
+
+\begin{align*}
+a_n\cos(n\omega_0 t) + b_n\sin(n\omega_0 t)
+&= \frac{a_n}{2}\bigl(e^{in\omega_0 t} + e^{-in\omega_0 t}\bigr) +
+   \frac{b_n}{2i}\bigl(e^{in\omega_0 t} - e^{-in\omega_0 t}\bigr) \\
+&= \frac{a_n - i\,b_n}{2}\,e^{in\omega_0 t} +
+   \frac{a_n + i\,b_n}{2}\,e^{-in\omega_0 t}.
+\end{align*}
+
+Dabei haben wir $1/i = -i$ benutzt. Jeder reelle Summand zerfällt also in
+zwei komplexe Exponentialterme, einen mit positiver Frequenz $n\omega_0$ und
+einen mit negativer Frequenz $-n\omega_0$. Vor jedem Exponentialterm steht
+nur noch eine einzige komplexe Zahl. Diese Zahlen bekommen einen Namen: Wir
+setzen $c_n = (a_n - i\,b_n)/2$ und $c_{-n} = (a_n + i\,b_n)/2$, und für den
+Mittelwert $c_0 = a_0/2$. Lassen wir den Summationsindex damit von $-\infty$
+bis $+\infty$ laufen, entsteht eine bemerkenswert kompakte Darstellung.
+
+```{admonition} Was ist ... die komplexe Fourierreihe?
 :class: note
-Der **Energieinhalt** (mittlere quadratische Energie) eines periodischen
-Signals $f$ mit Periode $T$ ist
+Die **komplexe Fourierreihe** einer periodischen Funktion $f$ mit Periode $T$
+und Kreisfrequenz $\omega_0 = 2\pi/T$ ist
 
 \begin{equation*}
-E = \frac{1}{T}\int_{-T/2}^{T/2} f(t)^2\,dt.
+f(t) = \sum_{n=-\infty}^{\infty} c_n\,e^{i n \omega_0 t},
+\qquad
+c_n = \frac{1}{T}\int_{-T/2}^{T/2} f(t)\,e^{-i n \omega_0 t}\,dt.
 \end{equation*}
 
-In der Elektrotechnik entspricht das dem Quadrat des Effektivwerts einer
-Spannung oder eines Stroms. In der Schwingungslehre entspricht es dem
-quadratischen Mittelwert einer Schwingkraft oder Beschleunigung.
+Die **komplexen Fourierkoeffizienten** $c_n$ sind im Allgemeinen komplexe
+Zahlen. Sie tragen Amplituden- und Phaseninformation der $n$-ten Schwingung
+zugleich. Für eine reellwertige Funktion gilt stets $c_{-n} = \overline{c_n}$.
 ```
 
-Für die Rechteck-Lagerkraft ist die Rechnung einfach: Da $f(t)^2 = 1$ für alle
-$t$, gilt
+Statt zwei reeller Integralformeln für $a_n$ und $b_n$ gibt es nur noch eine
+einzige Integralformel, und statt zweier Koeffizienten pro Frequenz nur noch
+einen. Der Preis dafür ist, dass auch negative Indizes $n$ auftreten. Die
+zugehörigen negativen Frequenzen sind kein physikalisches Mysterium, sondern
+reine Buchhaltung: Erst das Paar aus $c_n\,e^{in\omega_0 t}$ und
+$c_{-n}\,e^{-in\omega_0 t}$ ergibt zusammen eine reelle Schwingung, so wie
+oben Kosinus und Sinus aus zwei Exponentialtermen zusammengesetzt waren.
 
-\begin{equation*}
-E = \frac{1}{T}\int_{-T/2}^{T/2} 1\,dt = 1.
-\end{equation*}
+Für das Umrechnen zwischen beiden Darstellungen halten wir die Formeln fest,
+die wir gerade hergeleitet haben:
 
-Diesen Wert $E = 1$ werden wir gleich als Kontrollgröße nutzen.
-
-## Das Parsevalsche Theorem: Energie aus den Fourierkoeffizienten
-
-Für ein gemessenes Lagerkraftsignal mit vielen Oberschwingungen ist das direkte
-Integral oft unpraktisch. *Lässt sich $E$ auch direkt aus den
-Fourierkoeffizienten ablesen?* Das Parsevalsche Theorem gibt eine elegante
-positive Antwort.
-
-```{admonition} Was ist ... das Parsevalsche Theorem?
+```{admonition} Wie wird zwischen reeller und komplexer Darstellung umgerechnet?
 :class: note
-Kann $f$ in eine Fourierreihe mit Koeffizienten $a_n$ und $b_n$ entwickelt
-werden, so gilt:
+Für $n \geq 1$ gilt
 
 \begin{equation*}
-E = \frac{1}{T}\int_{-T/2}^{T/2} f(t)^2\,dt
-= \frac{a_0^2}{4} + \frac{1}{2}\sum_{n=1}^{\infty}
-\bigl(a_n^2 + b_n^2\bigr).
+c_0 = \frac{a_0}{2}, \qquad
+c_n = \frac{a_n - i\,b_n}{2}, \qquad
+c_{-n} = \frac{a_n + i\,b_n}{2},
 \end{equation*}
 
-Jeder Term $\frac{1}{2}(a_n^2 + b_n^2)$ ist der **Energiebeitrag der
-$n$-ten Oberschwingung**. Der Term $a_0^2/4$ ist der Energiebeitrag des
-Gleichanteils.
+und in der Gegenrichtung
+
+\begin{equation*}
+a_n = c_n + c_{-n}, \qquad
+b_n = i\,\bigl(c_n - c_{-n}\bigr).
+\end{equation*}
+
+Die Amplitude der $n$-ten Harmonischen ist
+$\hat{A}_n = \sqrt{a_n^2 + b_n^2} = 2\,|c_n|$.
 ```
 
-Das Theorem sagt: Die Gesamtenergie verteilt sich auf alle Oberschwingungen,
-und die Energiebeiträge addieren sich ohne Wechselwirkung. Das ist ein direktes
-Abbild der Orthogonalität der Sinus- und Kosinusfunktionen aus Abschnitt 12.3.
+## Welche komplexen Koeffizienten hat die Lagerkraft?
 
-Wir wenden das Theorem auf die Rechteck-Lagerkraft an. Aus Abschnitt 12.4
-kennen wir die Fourierkoeffizienten: $a_0 = 0$, $a_n = 0$ für alle $n \geq 1$,
-und
+Wir wenden die Umrechnungsformeln auf unser Leitbeispiel an, die
+Rechteck-Lagerkraft aus Abschnitt 12.4. Dort haben wir berechnet: $a_0 = 0$,
+$a_n = 0$ für alle $n \geq 1$, und
 
 \begin{equation*}
 b_n = \begin{cases}
 0, & n \text{ gerade}, \\[4pt]
-\dfrac{-4}{n\pi}, & n \text{ ungerade}.
+\dfrac{4}{n\pi}, & n \text{ ungerade}.
 \end{cases}
 \end{equation*}
 
-Die Parsevalsche Summe lautet damit
+Damit ist $c_0 = 0$, und für gerades $n$ verschwinden alle $c_n$. Für
+ungerades $n \geq 1$ liefert die Umrechnung
+
+\begin{equation*}
+c_n = \frac{0 - i\,\frac{4}{n\pi}}{2} = -\frac{2\,i}{n\pi},
+\qquad
+c_{-n} = +\frac{2\,i}{n\pi}.
+\end{equation*}
+
+Die Koeffizienten sind rein imaginär. Das ist kein Zufall, sondern die
+komplexe Übersetzung der Symmetrieregel aus Abschnitt 13.1: Bei einer
+ungeraden Funktion verschwinden alle $a_n$, also verschwinden die Realteile
+aller $c_n$. Außerdem prüfen wir: $c_{-n} = \overline{c_n}$ ist erfüllt, wie
+es für eine reellwertige Funktion sein muss. $\checkmark$
+
+**Verifikation durch Rückrechnung.** Wir setzen das Koeffizientenpaar für
+$n = \pm 1$ wieder in die komplexe Reihe ein und prüfen, ob die
+Grundschwingung aus Abschnitt 12.4 herauskommt:
 
 \begin{align*}
-E &= \frac{1}{2}\sum_{\substack{n=1 \\ n \text{ ungerade}}}^{\infty} b_n^2
-= \frac{1}{2}\sum_{k=1}^{\infty}\left(\frac{4}{(2k-1)\pi}\right)^2
-= \frac{8}{\pi^2}\sum_{k=1}^{\infty}\frac{1}{(2k-1)^2}.
+c_1\,e^{it} + c_{-1}\,e^{-it}
+&= -\frac{2i}{\pi}\,e^{it} + \frac{2i}{\pi}\,e^{-it}
+= -\frac{2i}{\pi}\bigl(e^{it} - e^{-it}\bigr) \\
+&= -\frac{2i}{\pi}\cdot 2i\,\sin(t)
+= \frac{4}{\pi}\,\sin(t).
 \end{align*}
 
-Da wir wissen, dass $E = 1$ gelten muss, folgt daraus
+Das ist exakt der Term $b_1\sin(t)$ mit $b_1 = 4/\pi$ aus Abschnitt 12.4.
+$\checkmark$ Die komplexe Darstellung enthält also dieselbe Information wie
+die reelle, nur anders verpackt.
 
-\begin{equation*}
-\sum_{k=1}^{\infty}\frac{1}{(2k-1)^2}
-= 1 + \frac{1}{9} + \frac{1}{25} + \ldots = \frac{\pi^2}{8}. \quad \checkmark
-\end{equation*}
+## Was zeigt das Amplitudenspektrum?
 
-Das ist ein bekanntes Ergebnis der Analysis. Das Parsevalsche Theorem liefert
-es hier als Nebenprodukt einer ingenieurmäßigen Rechnung.
+Jetzt ernten wir den eigentlichen Gewinn der komplexen Darstellung. Der
+Betrag $|c_n|$ ist eine einzige reelle Zahl pro Frequenz, und genau diese
+Zahlen trägt ein Spektrum auf.
 
-Physikalisch lesen wir aus der Summe ab, wie die Energie auf die
-Oberschwingungen verteilt ist. Die Grundschwingung ($k = 1$) trägt
-$\frac{8}{\pi^2} \approx 0.811$ zur Gesamtenergie bei, also etwa $81\,\%$. Die
-erste Oberschwingung ($k = 2$, also $n = 3$) trägt $\frac{8}{9\pi^2} \approx
-0.090$ bei, knapp $9\,\%$. Die höheren Oberschwingungen teilen sich die
-verbleibenden $10\,\%$.
-
-## Was ist der Klirrfaktor?
-
-Die Grundschwingung der Lagerkraft ist der gewünschte, konstruktiv unvermeidbare
-Anteil. Die Oberschwingungen sind der störende Rest: Sie können Resonanzen
-anregen, die das Lager belasten, und erzeugen akustische Emissionen. *Wie groß
-ist dieser unerwünschte Anteil insgesamt, bezogen auf die Gesamtenergie?*
-
-```{admonition} Was ist ... der Klirrfaktor?
+```{admonition} Was ist ... das Amplitudenspektrum?
 :class: note
-Der **Klirrfaktor** $k$ eines periodischen Signals ist definiert als
-
-\begin{equation*}
-k = \sqrt{\frac{E_{\text{Ober}}}{E_{\text{gesamt}}}},
-\end{equation*}
-
-wobei $E_{\text{gesamt}}$ die gesamte mittlere quadratische Energie und
-$E_{\text{Ober}}$ die Energie aller Oberschwingungen ohne Grundschwingung und
-ohne Gleichanteil ist:
-
-\begin{equation*}
-E_{\text{Ober}} = E_{\text{gesamt}} - \frac{a_0^2}{4}
-- \frac{1}{2}\bigl(a_1^2 + b_1^2\bigr).
-\end{equation*}
-
-Ein Klirrfaktor nahe $0$ bedeutet ein nahezu sinusförmiges Signal. Ein
-Klirrfaktor nahe $1$ bedeutet, dass die Oberschwingungen die Gesamtenergie
-dominieren.
+Das **Amplitudenspektrum** eines periodischen Signals ist die Darstellung der
+Beträge $|c_n|$ über den Frequenzen $n\,\omega_0$ mit
+$n \in \mathbb{Z}$. Es zeigt auf einen Blick, welche Frequenzen im Signal
+enthalten sind und wie stark sie beitragen. Die physikalische Amplitude der
+$n$-ten Harmonischen ist $\hat{A}_n = 2\,|c_n|$, weil sich ihr Beitrag auf die
+beiden Spektrallinien bei $+n\omega_0$ und $-n\omega_0$ verteilt.
 ```
 
-Für die Rechteck-Lagerkraft berechnen wir zunächst die Energie der
-Grundschwingung. Mit $a_1 = 0$ und $b_1 = -4/\pi$ gilt
+Für die Lagerkraft $F(t) = F_0 \cdot f(t)$ mit der Grundfrequenz
+$f_0 = 25~\text{Hz}$ aus Abschnitt 12.2 ergibt sich: Spektrallinien existieren
+nur bei den ungeraden Vielfachen $\pm 25~\text{Hz}$, $\pm 75~\text{Hz}$,
+$\pm 125~\text{Hz}$ und so weiter, mit den Beträgen
 
 \begin{equation*}
-E_{\text{Grund}} = \frac{1}{2}\,b_1^2 = \frac{1}{2}\cdot\frac{16}{\pi^2}
-= \frac{8}{\pi^2} \approx 0.811.
+|c_n| = \frac{2}{|n|\,\pi}\,F_0, \qquad n \text{ ungerade}.
 \end{equation*}
 
-Die Oberschwingungsenergie ist
+Die Grundschwingung bei $25~\text{Hz}$ hat die physikalische Amplitude
+$\hat{A}_1 = 2\,|c_1| = \frac{4}{\pi}\,F_0 \approx 1.27\,F_0$. Die
+dritte Harmonische bei $75~\text{Hz}$ bringt es auf
+$\hat{A}_3 = \frac{4}{3\pi}\,F_0 \approx 0.42\,F_0$, also exakt ein Drittel
+der Grundschwingungsamplitude. Das langsame $1/n$-Abklingen aus Abschnitt
+13.2 wird im Spektrum unmittelbar sichtbar.
 
-\begin{equation*}
-E_{\text{Ober}} = E_{\text{gesamt}} - E_{\text{Grund}}
-= 1 - \frac{8}{\pi^2} \approx 0.189.
-\end{equation*}
+%```{figure} pics/chap13_sec03_fig01.svg
+%---
+%name: chap13_sec03_fig01
+%---
+%Zweiseitiges Amplitudenspektrum $|c_n|$ der Rechteck-Lagerkraft: Spektrallinien
+%nur bei ungeraden Vielfachen der Grundfrequenz $f_0 = 25~\text{Hz}$, symmetrisch
+%zu positiven und negativen Frequenzen.
+%(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+%```
 
-Der Klirrfaktor beträgt damit
-
-\begin{equation*}
-k = \sqrt{\frac{E_{\text{Ober}}}{E_{\text{gesamt}}}}
-= \sqrt{1 - \frac{8}{\pi^2}}
-\approx \sqrt{0.189} \approx 0.435.
-\end{equation*}
-
-Etwa $43\,\%$ der Signalamplitude entfallen also auf Oberschwingungen. Das
-ist ein hoher Wert, der erklärt, warum eine reale Kurbelwelle mit einem
-rechteckförmigen Kraftprofil in der Praxis durch aufwendige Lagergestaltung
-und Dämpfungsmaßnahmen entschärft wird. Ein Motor mit einem möglichst
-sinusförmigen Drehmomentprofil hat einen deutlich kleineren Klirrfaktor und
-damit weniger unerwünschte Oberschwingungsanregungen. In Abschnitt 13.4
-werden wir sehen, welche dieser Oberschwingungen besonders gefährlich ist,
-nämlich diejenige, deren Frequenz der Eigenfrequenz des Systems am nächsten
-liegt.
+In der Maschinendiagnose ist genau diese Darstellung das Standardwerkzeug:
+Wälzlagerschäden, Unwuchten oder Zahneingriffsfehler verraten sich durch
+charakteristische Linien im gemessenen Spektrum, und die Ordnungsanalyse
+rotierender Maschinen trägt die Amplituden direkt über den Vielfachen der
+Drehfrequenz auf. Auch die FFT-Algorithmen, die solche Messgeräte intern
+verwenden, rechnen ausnahmslos mit der komplexen Darstellung, weil sie
+algebraisch einfacher ist als das Hantieren mit getrennten Sinus- und
+Kosinusanteilen. In der Lehrveranstaltung Regelungstechnik werden Sie der
+komplexen Exponentialfunktion in Gestalt des Frequenzgangs $G(i\omega)$
+wiederbegegnen.
 
 ## Zusammenfassung und Ausblick
 
-Das Parsevalsche Theorem verbindet den Zeitbereich (Integral von $f^2$) mit
-dem Frequenzbereich (Summe der quadratischen Fourierkoeffizienten): Die
-Energie verteilt sich additiv auf alle Oberschwingungen. Der Klirrfaktor
-fasst den Oberschwingungsanteil in einer einzigen Kennzahl zusammen und ist
-in der Antriebstechnik und Messtechnik ein gängiges Qualitätsmaß. In
-Abschnitt 13.4 schließen wir den Bogen zu Kapitel 11: Wir nutzen die
-Fourierzerlegung der Erregerkraft, um die erzwungene Schwingung eines
-Feder-Masse-Systems unter periodischer Erregung komponentenweise zu lösen
-und die resonanzgefährdende Oberschwingung zu identifizieren.
+Die eulersche Formel verwandelt die reelle Fourierreihe in eine kompakte
+komplexe Form: ein Koeffizient $c_n$ pro Frequenz, eine einzige
+Integralformel, und der Betrag $|c_n|$ liefert direkt das Amplitudenspektrum.
+Für die Rechteck-Lagerkraft besteht das Spektrum aus Linien bei den ungeraden
+Vielfachen der Grundfrequenz, deren Höhen wie $1/n$ abfallen.
+
+Im Spektrum der Lagerkraft steht damit unübersehbar eine Linie bei
+$75~\text{Hz}$ mit immerhin einem Drittel der Grundschwingungsamplitude.
+*Was passiert, wenn genau bei dieser Frequenz die Eigenfrequenz des
+Pleuellagers liegt?* In Abschnitt 13.4 schlagen wir den Bogen zurück zu den
+erzwungenen Schwingungen aus Kapitel 11 und beantworten diese Frage
+rechnerisch.

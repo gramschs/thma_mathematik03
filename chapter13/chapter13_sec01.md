@@ -5,14 +5,19 @@ authors:
 
 # 13.1 Symmetrie nutzen: Kosinus- und Sinusreihen
 
-In Abschnitt 12.4 haben wir die Fourierkoeffizienten der Rechteckschwingung
-vollständig berechnet und dabei festgestellt, dass alle Kosinuskoeffizienten
-$a_n$ verschwinden. Der Grund war nicht Zufall, sondern Symmetrie: Die
-Rechteckschwingung ist antisymmetrisch zur Zeitachse, und das Integral des
-Produkts aus einer solchen Funktion mit einer Kosinusfunktion über ein
-symmetrisches Intervall ist stets null. Jetzt machen wir diese Beobachtung zur
-Methode. *Können wir vor der Rechnung erkennen, welche Koeffizienten
-verschwinden werden, und so den Integrationsaufwand halbieren?*
+Wir kehren zu unserer Kurbelwelle aus den Abschnitten 12.1 und 12.2 zurück und
+geben dem Leitbeispiel dieses Kapitels seine physikalische Gestalt: Die Kraft
+auf das Pleuellager wechselt idealisiert mit jeder halben Umdrehung ihr
+Vorzeichen, von Zug auf Druck und zurück. Mit der Kraftamplitude $F_0$ und der
+auf $T = 2\pi$ normierten Periode lautet unser Modell $F(t) = F_0 \cdot f(t)$,
+wobei $f$ genau die symmetrische Rechteckschwingung aus Abschnitt 12.4 ist.
+Bei deren Fourieranalyse hatten wir festgestellt, dass alle
+Kosinuskoeffizienten $a_n$ verschwinden. Der Grund war nicht Zufall, sondern
+Symmetrie: Die Rechteckschwingung ist punktsymmetrisch zum Ursprung, und das
+Integral des Produkts aus einer solchen Funktion mit einer Kosinusfunktion
+über ein symmetrisches Intervall ist stets null. Jetzt machen wir diese
+Beobachtung zur Methode. *Können wir vor der Rechnung erkennen, welche
+Koeffizienten verschwinden werden, und so den Integrationsaufwand halbieren?*
 
 ## Lernziele
 
@@ -58,9 +63,9 @@ sind punktsymmetrisch zum Ursprung.
 Im Maschinenbau begegnen uns beide Typen regelmäßig. Ein symmetrisches
 Nockenprofil, das in beide Drehrichtungen gleich wirkt, liefert eine gerade
 Funktion. Ein Steuersignal, das in der positiven Halbperiode genauso aussieht
-wie in der negativen, aber mit umgekehrtem Vorzeichen, ist ungerade. Die
-Dreiecksschwingung aus Abschnitt 12.1 ist gerade, die Rechteckschwingung aus
-Abschnitt 12.4 ist ungerade.
+wie in der negativen, aber mit umgekehrtem Vorzeichen, ist ungerade. Unsere
+Rechteck-Lagerkraft aus Abschnitt 12.4 ist ungerade, denn sie verbringt die
+negative Halbperiode bei $-1$ und die positive bei $+1$.
 
 Für die Praxis ist die folgende Merkregel hilfreich. Das Produkt zweier
 Funktionen erbt die Symmetrie nach denselben Regeln wie das Produkt von
@@ -138,14 +143,17 @@ b_n = \frac{4}{T}\int_{0}^{T/2} f(t)\,\sin(n\,\omega_0\,t)\,dt,
 \end{equation*}
 ```
 
-**Verifikation am Beispiel aus Abschnitt 12.4.** Die Rechteckschwingung
-$f(-t) = -f(t)$ ist ungerade. Die Symmetrieregel sagt: alle $a_n = 0$. In
-Abschnitt 12.4 haben wir das durch explizite Integration bestätigt. $\checkmark$
+**Verifikation am Leitbeispiel.** Die Rechteck-Lagerkraft aus Abschnitt 12.4
+erfüllt $f(-t) = -f(t)$, sie ist ungerade. Die Symmetrieregel sagt: alle
+$a_n = 0$, und die Reihe ist eine reine Sinusreihe. In Abschnitt 12.4 haben
+wir genau das durch explizite Integration bestätigt. $\checkmark$
 
 ## Fourierreihe der Dreiecksschwingung
 
-Als Anwendung berechnen wir die Fourierreihe der Dreiecksschwingung mit
-Periode $T = 2\pi$:
+Als Anwendung berechnen wir die Fourierreihe einer Funktion, die uns im
+Ventiltrieb desselben Motors begegnet: Der Hub eines symmetrischen Nockens
+steigt über eine halbe Periode linear an und fällt anschließend linear ab.
+Mathematisch ist das die Dreiecksschwingung mit Periode $T = 2\pi$:
 
 \begin{equation*}
 f(t) = \begin{cases}
@@ -229,7 +237,7 @@ f(t) = \frac{\pi}{2} + \frac{4}{\pi}\sum_{k=1}^{\infty}
 \end{equation*}
 
 Die Amplituden klingen jetzt wie $1/n^2$ ab, also deutlich schneller als bei
-der Rechteckschwingung, wo sie nur wie $1/n$ abnahmen. Das liegt daran, dass
+der Rechteck-Lagerkraft, wo sie nur wie $1/n$ abnahmen. Das liegt daran, dass
 die Dreiecksschwingung keine Sprungstellen hat, sondern nur Knickstellen.
 
 **Plausibilitätsprüfung.** Wir werten $S_1$ an der Stelle $t = 0$ aus. Dort
@@ -249,7 +257,7 @@ S_3(0) = \frac{\pi}{2} + \frac{4}{\pi} + \frac{4}{9\pi}
 \end{equation*}
 
 Die Abweichung ist auf $5\,\%$ gesunken. Die Partialsummen konvergieren sichtbar
-schneller als bei der Rechteckschwingung, was die schnellere $1/n^2$-Abnahme
+schneller als bei der Rechteck-Lagerkraft, was die schnellere $1/n^2$-Abnahme
 der Koeffizienten widerspiegelt.
 
 ```{figure} pics/chap13_sec01_fig02.svg
@@ -261,11 +269,14 @@ Die Annäherung ist gleichmäßig und ohne Überschwingen.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-An den Knickstellen bei $t = \pm\pi$ sieht man ein leichtes Überschwingen der
-Partialsummen. Es ist schwächer als bei der Rechteckschwingung aus Abschnitt
-12.4 und nimmt mit steigendem $N$ tatsächlich ab. Ob und wie stark dieses
-Verhalten von der Art der Unstetigkeit abhängt, werden wir in Abschnitt 13.2
-klären.
+An den Knickstellen bei $t = \pm\pi$ runden die Partialsummen die scharfe Spitze
+sichtbar ab, schwingen dabei aber nicht über den Wertebereich der Funktion
+hinaus. Das ist ein bemerkenswerter Unterschied zur Rechteck-Lagerkraft aus
+Abschnitt 12.4, deren Partialsummen an den Sprungstellen deutlich überschossen.
+*Liegt das daran, dass die Dreiecksschwingung stetig ist?* Genau dieser Frage
+gehen wir in Abschnitt 13.2 nach, wo wir das Gibbssche Phänomen kennenlernen,
+das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
+verschwindet.
 
 ## Zusammenfassung und Ausblick
 
@@ -274,7 +285,7 @@ entfallen alle $b_n$, bei ungeraden alle $a_n$, und das Integrationsintervall
 halbiert sich auf $[0, T/2]$. Der Rechenaufwand sinkt auf die Hälfte. Das
 Beispiel der Dreiecksschwingung hat außerdem gezeigt, dass die Koeffizienten
 bei Funktionen ohne Sprungstellen schneller abklingen als bei der
-Rechteckschwingung. In Abschnitt 13.2 untersuchen wir dieses
-Konvergenzverhalten genauer und lernen das Gibbssche Phänomen kennen, das an
-echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
+Rechteck-Lagerkraft unserer Kurbelwelle. In Abschnitt 13.2 untersuchen wir
+dieses Konvergenzverhalten genauer und lernen das Gibbssche Phänomen kennen,
+das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
 verschwindet.
