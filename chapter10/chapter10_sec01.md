@@ -188,10 +188,10 @@ $\varphi'' + \omega_0^2\,\varphi = 0$ lautet sie
 
 \begin{equation*}
 \varphi_h(t) = C_1\cos(\omega_0 t) + C_2\sin(\omega_0 t),
-\quad \omega_0 \approx 1.81~\text{rad\,s}^{-1}.
+\quad \omega_0 \approx 1.81~\text{rad\,s}^{-1},
 \end{equation*}
 
-Wir prüfen das durch Einsetzen. Zweimaliges Ableiten ergibt
+mit $C_1, C_2\in\mathbb{R}$. Wir prüfen das durch Einsetzen. Zweimaliges Ableiten ergibt
 $\varphi_h'' = -\omega_0^2 C_1\cos(\omega_0 t) - \omega_0^2 C_2\sin(\omega_0 t)
 = -\omega_0^2\,\varphi_h$, also
 

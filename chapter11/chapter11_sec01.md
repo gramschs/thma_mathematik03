@@ -78,18 +78,18 @@ Die charakteristische Gleichung $\lambda^2 + 3\lambda + 2 = 0$ hat die
 Eigenwerte $\lambda_1 = -1$ und $\lambda_2 = -2$, also
 
 \begin{equation*}
-y_h(t) = C_1\,e^{-t} + C_2\,e^{-2t}.
+y_h(t) = C_1\,e^{-t} + C_2\,e^{-2t}
 \end{equation*}
 
-Was noch fehlt, ist $y_p$. *Welche Funktion können wir ansetzen, sodass nach
-dem Einsetzen auf der linken Seite genau $5\,e^{-3t}$ herauskommt?* Die
-entscheidende Beobachtung ist diese: Leiten wir $e^{-3t}$ ab, erhalten wir
-$-3\,e^{-3t}$. Leiten wir nochmals ab, erhalten wir $9\,e^{-3t}$. In jedem
-Fall bleibt die Funktionsstruktur $e^{-3t}$ erhalten, nur der Vorfaktor
-ändert sich. Wenn wir also $y_p = A\,e^{-3t}$ ansetzen und in die ODE
-einsetzen, entstehen auf der linken Seite ausschließlich Terme vom Typ
-$e^{-3t}$. Wir können den Koeffizienten $A$ dann so wählen, dass die rechte
-Seite genau getroffen wird.
+mit $C_1, C_2\in\mathbb{R}$. Was noch fehlt, ist $y_p$. *Welche Funktion können
+wir ansetzen, sodass nach dem Einsetzen auf der linken Seite genau $5\,e^{-3t}$
+herauskommt?* Die entscheidende Beobachtung ist diese: Leiten wir $e^{-3t}$ ab,
+erhalten wir $-3\,e^{-3t}$. Leiten wir nochmals ab, erhalten wir $9\,e^{-3t}$.
+In jedem Fall bleibt die Funktionsstruktur $e^{-3t}$ erhalten, nur der Vorfaktor
+ändert sich. Wenn wir also $y_p = A\,e^{-3t}$ ansetzen und in die ODE einsetzen,
+entstehen auf der linken Seite ausschließlich Terme vom Typ $e^{-3t}$. Wir
+können den Koeffizienten $A$ dann so wählen, dass die rechte Seite genau
+getroffen wird.
 
 Dasselbe Prinzip gilt für Polynome und für trigonometrische Funktionen.
 Die Ableitung eines Polynoms vom Grad $n$ ist wieder ein Polynom, und die
