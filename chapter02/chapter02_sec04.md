@@ -1,4 +1,4 @@
-# Lineare Gleichungssysteme mit Matrizenrechnung lösen
+# 2.4 Lineare Gleichungssysteme mit Matrizenrechnung lösen
 
 In diesem Kapitel lernen wir, wie lineare Gleichungssysteme durch die Anwendung
 von Matrizen und deren Inversen gelöst werden können.

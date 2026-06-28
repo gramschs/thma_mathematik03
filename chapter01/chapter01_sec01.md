@@ -1,4 +1,9 @@
-# Was ist eine Matrix?
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 1.1 Was ist eine Matrix?
 
 In diesem Kapitel werden wir zunächst den Begriff **Matrix** und die
 verschiedenen Bestandteile einer Matrix kennenlernen.
@@ -44,27 +49,27 @@ Spalte (Spieler 3) einen Strich.
 
 | | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
-| Spieler 1 | | | \| |
-| Spieler 2 | | | |
-| Spieler 3 | | | |
+| **Spieler 1** | | | \| |
+| **Spieler 2** | | | |
+| **Spieler 3** | | | |
 
 Spielt dann Spieler 3 den Ball an Spieler 2 weiter, machen wir in der dritten
 Zeile und der zweiten Spalte einen Strich.
 
 | | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
-| Spieler 1 | | | \| |
-| Spieler 2 | | | |
-| Spieler 3 | | \| | |
+| **Spieler 1** | | | \| |
+| **Spieler 2** | | | |
+| **Spieler 3** | | \| | |
 
 Am Ende zählen wir die Striche bzw. die Anzahl der Pässe und erhalten
 beispielsweise folgende Tabelle:
 
 | | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
-| Spieler 1 | 0 | 1 | 3 |
-| Spieler 2 | 2 | 0 | 0 |
-| Spieler 3 | 1 | 2 | 0 |
+| **Spieler 1** | 0 | 1 | 3 |
+| **Spieler 2** | 2 | 0 | 0 |
+| **Spieler 3** | 1 | 2 | 0 |
 
 In der Mathematik schreibt man solche Tabellen etwas kürzer, indem die
 Beschriftungen der Zeilen und Spalten sowie Einheiten weggelassen werden. Die
@@ -237,11 +242,11 @@ folgenden Beispiel:
 
 | | Januar | Februar | März |
 | --- | --- | --- | --- |
-| BAFöG | 956.00 € | 956.00 € | 956.00 € |
-| Miete | -530.00 € | -530.00 € | -530.00 € |
-| Fitnessstudio | -24.99 € | -24.99 € | -24.99 € |
-| Essen | -108.74 € | -90.56 € | -110.50 € |
-| Netflix | -12.99 € | -12.99 € | -17.99 € |
+| **BAFöG** | 956.00 € | 956.00 € | 956.00 € |
+| **Miete** | -530.00 € | -530.00 € | -530.00 € |
+| **Fitnessstudio** | -24.99 € | -24.99 € | -24.99 € |
+| **Essen** | -108.74 € | -90.56 € | -110.50 € |
+| **Netflix** | -12.99 € | -12.99 € | -17.99 € |
 
 Die Tabelle als Matrix formuliert ergibt eine $5\times 3$-Matrix
 

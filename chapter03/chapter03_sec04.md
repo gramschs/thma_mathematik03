@@ -1,262 +1,298 @@
-# Bild und Rang einer Matrix
+# 3.4 Anwendungen von Determinanten
 
-Wir haben im vorigen Kapitel den Kern einer Matrix kennengelernt: die Menge der
-Eingabevektoren, die auf den Nullvektor abgebildet werden. Nun stellen wir die
-umgekehrte Frage: Welche Vektoren können überhaupt als Ergebnis einer linearen
-Abbildung auftreten? Diese Frage führt zum Begriff des Bildes einer Matrix und
-zur damit eng verwandten Größe des Rangs. Beide Konzepte sind in der Praxis
-unverzichtbar: Das Bild bestimmt, ob ein Kräftegleichgewicht existiert, ob ein
-Reglerauftrag erfüllbar ist und ob ein FEM-System eine Lösung hat.
+Die Determinante ist nicht nur eine rechnerische Eigenschaft quadratischer
+Matrizen, sondern liefert auch wichtige Informationen über die Struktur von
+Gleichungssystemen und Vektoren. In diesem Kapitel nutzen wir die Determinante,
+um lineare Abhängigkeit zu untersuchen, die Lösbarkeit linearer
+Gleichungssysteme zu beurteilen und den Zusammenhang mit dem Spatprodukt und
+dem Vektorprodukt herzustellen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie kennen die Definition des **Bildes** einer Matrix und können es geometrisch
-  interpretieren.
-* Sie wissen, dass das Bild einer Matrix durch die **Spalten der Matrix**
-  aufgespannt wird.
-* Sie kennen die Definition des **Rangs** einer Matrix als Dimension des Bildes.
-* Sie können den Rang einer Matrix bestimmen, indem Sie die Anzahl der linear
-  unabhängigen Spalten zählen.
-* Sie können überprüfen, ob ein gegebener Vektor im Bild einer Matrix liegt,
-  und dieses Ergebnis mit der Lösbarkeit eines linearen Gleichungssystems
-  verknüpfen.
+* [ ] Sie können mit Hilfe der **Determinante** entscheiden, ob drei Vektoren
+  $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ **linear abhängig** sind
+  beziehungsweise in einer gemeinsamen Ebene liegen:
+  \begin{equation*}
+  \vec{a}, \vec{b}, \vec{c} \text{ linear abhängig}
+  \quad \Longleftrightarrow \quad
+  \det\!\left(\vec{a}\ \vec{b}\ \vec{c}\right)^T = 0.
+  \end{equation*}
+* [ ] Sie können mit Hilfe der Determinante der Koeffizientenmatrix $\mathbf{A}$
+  vorhersagen, ob ein **lineares Gleichungssystem** $\mathbf{A}\vec{x} =
+  \vec{b}$ eine **eindeutige Lösung** besitzt:
+  \begin{equation*}
+  \mathbf{A}\vec{x} = \vec{b} \text{ hat eine eindeutige Lösung}
+  \quad \Longleftrightarrow \quad \det(\mathbf{A}) \neq 0.
+  \end{equation*}
+* [ ] Sie kennen den Zusammenhang zwischen der Determinante und dem
+  **Spatprodukt** sowie zwischen der Determinante und dem **Vektorprodukt**.
 ```
 
-## Motivation: Welche Vektoren sind erreichbar?
+## Volumen-Elemente
 
-Wir betrachten erneut die Projektionsmatrix auf die $xy$-Ebene:
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
-\end{equation*}
-
-Welche Vektoren $\vec{w}$ können als Ergebnis $\vec{w} = \mathbf{A} \cdot \vec{v}$
-auftreten? Für einen beliebigen Eingabevektor $\vec{v} = \begin{pmatrix} x \\ y \\ z
-\end{pmatrix}$ ergibt die Abbildung:
+In der Finite-Elemente-Methode (FEM) wird ein Bauteil in viele
+kleine Volumenelemente zerlegt. Jedes dieser Elemente wird durch drei
+Kantenvektoren beschrieben, die von einem gemeinsamen Eckpunkt ausgehen. Wir
+betrachten ein konkretes Beispiel mit den drei Kantenvektoren
 
 \begin{equation*}
-\mathbf{A} \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}.
+\vec{a} = \begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix}, \quad
+\vec{b} = \begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix}, \quad
+\vec{c} = \begin{pmatrix} 1 \\ 1 \\ 4 \end{pmatrix}.
 \end{equation*}
 
-Das Ergebnis hat immer eine dritte Komponente gleich null. Ein Vektor wie
-$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ kann niemals als Ergebnis auftreten.
-Die Menge aller erreichbaren Ausgabevektoren ist genau die $xy$-Ebene. In der
-Messtechnik bedeutet das: Eine Kamera, die dreidimensionale Objekte projiziert, kann
-nicht alle Punkte im Raum als Bildpunkte erzeugen, sondern nur Punkte in ihrer
-Bildebene. Diese Menge heißt das **Bild** der Matrix.
+```{figure} pics/fig01_parallelepiped.svg
+---
+class: responsive-figure-50
+name: fig01_parallelepiped.svg
+---
+Das von den Kantenvektoren $\vec{a}$, $\vec{b}$ und $\vec{c}$ aufgespannte
+Parallelepiped als finites Volumenelement. Die gestrichelten Kanten liegen dem
+Betrachter abgewandt.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
 
-## Definition des Bildes
+Diese drei Vektoren spannen ein schiefes **Parallelepiped** auf, also einen
+räumlichen Körper, dessen sechs Seiten aus je zwei parallelen Parallelogrammen
+bestehen. In der FEM entspricht ein solches Volumenelement etwa einem
+hexaedrischen Element. Die Frage, ob die drei Kantenvektoren überhaupt einen
+echten dreidimensionalen Körper aufspannen oder zufällig in einer gemeinsamen
+Ebene liegen, werden wir mit der Determinante beantworten. Dieses Beispiel
+begleitet uns durch das gesamte Kapitel.
 
-```{admonition} Was ist ... das Bild einer Matrix?
+## Determinante und lineare Abhängigkeit
+
+Drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ können entweder einen
+dreidimensionalen Körper aufspannen oder sie liegen sämtlich in einer
+gemeinsamen Ebene. Im letzteren Fall sagen wir, die Vektoren sind **linear
+abhängig**. Eine präzise Definition der linearen Abhängigkeit haben wir in
+Mathematik 1 kennengelernt. Für drei Vektoren im $\mathbb{R}^3$ gibt uns die
+Determinante eine einfache Entscheidungsregel: Wir schreiben die drei Vektoren
+als Zeilen (oder Spalten) in eine $3\times 3$-Matrix und berechnen ihre
+Determinante.
+
+```{admonition} Wann sind drei Vektoren linear abhängig?
 :class: note
-Sei $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ eine lineare Abbildung mit der
-Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Das **Bild** von $\mathbf{A}$,
-geschrieben $\text{Bild}(\mathbf{A})$, ist die Menge aller Vektoren
-$\vec{w} \in \mathbb{R}^m$, die als Ergebnis der Abbildung auftreten können:
+Drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ sind genau dann
+**linear abhängig**, wenn
 
 \begin{equation*}
-\text{Bild}(\mathbf{A}) = \{ \vec{w} \in \mathbb{R}^m \mid \vec{w} = \mathbf{A} \cdot \vec{v}
-\text{ für ein } \vec{v} \in \mathbb{R}^n \}.
+\det\begin{pmatrix}
+a_1 & a_2 & a_3 \\
+b_1 & b_2 & b_3 \\
+c_1 & c_2 & c_3
+\end{pmatrix} = 0.
 \end{equation*}
+
+Ist die Determinante ungleich Null, sind die drei Vektoren **linear unabhängig**
+und spannen den gesamten $\mathbb{R}^3$ auf.
 ```
 
-## Das Bild als Spaltenraum
-
-Das Bild einer Matrix lässt sich besonders einfach berechnen, wenn man die
-Matrix-Vektor-Multiplikation als Linearkombination der Spalten der Matrix schreibt.
-Für eine $m \times n$-Matrix $\mathbf{A} = (\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n)$
-mit den Spaltenvektoren $\vec{a}_j$ gilt:
+Wir überprüfen dies für unsere Kantenvektoren. Die Matrix aus den drei
+Zeilenvektoren lautet
 
 \begin{equation*}
-\mathbf{A} \cdot \vec{v}
-= v_1 \cdot \vec{a}_1 + v_2 \cdot \vec{a}_2 + \cdots + v_n \cdot \vec{a}_n.
+\mathbf{M} =
+\begin{pmatrix}
+2 & 0 & 0 \\
+0 & 3 & 0 \\
+1 & 1 & 4
+\end{pmatrix}.
 \end{equation*}
 
-Das Ergebnis ist immer eine Linearkombination der Spalten von $\mathbf{A}$. Das
-Bild ist damit genau die Menge aller Linearkombinationen der Spalten, der
-sogenannte **Spaltenraum** der Matrix. Das Bild wird durch die Spalten der
-Matrix aufgespannt. Dies wird mathematisch abgekürzt als
+Da $\mathbf{M}$ eine untere Dreiecksmatrix ist, können wir die Determinante
+direkt als Produkt der Diagonalelemente ablesen:
 
 \begin{equation*}
-\langle a_1, a_2, \ldots, a_n \rangle.
+\det(\mathbf{M}) = 2 \cdot 3 \cdot 4 = 24 \neq 0.
 \end{equation*}
 
-Diese Interpretation ist in der FEM direkt erkennbar: Die Spalten der globalen
-Steifigkeitsmatrix $\mathbf{K}$ sind die Kräftevektoren, die entstehen, wenn man
-jeweils genau einen Freiheitsgrad um eine Einheit auslenkt. Das Bild von $\mathbf{K}$
-ist die Menge aller möglichen inneren Kräftezustände der Struktur.
+Die drei Kantenvektoren sind also linear unabhängig und spannen tatsächlich
+einen dreidimensionalen Körper auf. Das Volumenelement ist nicht entartet. Ein
+entartetes Element, bei dem die Determinante Null wäre, würde in einer
+FEM-Simulation zu numerischen Problemen führen, weil das Element kein Volumen
+hat und Steifigkeitsmatrizen nicht mehr invertierbar wären.
 
-```{dropdown} Video "Bild einer Matrix berechnen" von Loay
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/FD03SOlmnvM"
-title="BILD einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+## Determinante und Lösbarkeit linearer Gleichungssysteme
 
-## Definition und Berechnung des Rangs
+Im vorigen Kapitel haben wir lineare Gleichungssysteme der Form
+$\mathbf{A}\vec{x} = \vec{b}$ mit Hilfe der inversen Matrix gelöst. Dabei war
+die Bedingung $\det(\mathbf{A}) \neq 0$ notwendig, um die Inverse überhaupt
+berechnen zu können. Dieser Zusammenhang ist kein Zufall.
 
-Die Dimension des Bildes, also die Anzahl der linear unabhängigen Spalten der Matrix,
-heißt **Rang** der Matrix:
-
-```{admonition} Was ist ... der Rang einer Matrix?
+```{admonition} Determinante und eindeutige Lösbarkeit
 :class: note
-Der **Rang** einer Matrix $\mathbf{A}$, geschrieben $\text{Rang}(\mathbf{A})$, ist
-die Dimension des Bildes von $\mathbf{A}$:
+Ein lineares Gleichungssystem $\mathbf{A}\vec{x} = \vec{b}$ mit einer
+quadratischen Koeffizientenmatrix $\mathbf{A}$ besitzt genau dann eine
+**eindeutige Lösung**, wenn
 
 \begin{equation*}
-\text{Rang}(\mathbf{A}) = \dim(\text{Bild}(\mathbf{A})).
+\det(\mathbf{A}) \neq 0.
 \end{equation*}
 
-Der Rang entspricht der maximalen Anzahl linear unabhängiger Spalten (und
-gleichwertig: Zeilen) der Matrix. Für eine $m\times n$-Matrix gilt stets
-$\text{Rang}(\mathbf{A}) \leq \min(m, n)$.
+Ist $\det(\mathbf{A}) = 0$, so hat das Gleichungssystem entweder keine Lösung
+oder unendlich viele Lösungen.
 ```
 
-Um das Bild und den Rang zu bestimmen, sucht man die maximal linear unabhängigen
-Spalten der Matrix. Diese spannen dann das Bild auf.
+In unserem Beispiel betrachten wir die Gleichgewichtsbedingung eines finiten
+Elements. Jeder Knotenfreiheitsgrad des Elements gehorcht einer Gleichung der
+Form $\mathbf{A}\vec{x} = \vec{b}$, wobei $\mathbf{A}$ die lokale
+Steifigkeitsmatrix, $\vec{x}$ der Vektor der unbekannten Knotenverschiebungen
+und $\vec{b}$ der Vektor der äußeren Knotenlasten ist. Als vereinfachtes Modell
+nehmen wir an, dass die Steifigkeitsmatrix unseres Elements gerade durch die
+Matrix $\mathbf{M}$ von oben gegeben ist. Da wir $\det(\mathbf{M}) = 24 \neq 0$
+bereits berechnet haben, wissen wir sofort, dass das Gleichungssystem für jede
+rechte Seite $\vec{b}$ eine eindeutige Lösung besitzt. Das heißt, das Element
+reagiert auf jede Belastung mit einer eindeutig bestimmten Verschiebung.
 
-## Beispiele
-
-**Beispiel 1:** Für die Diagonalmatrix
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
-\end{equation*}
-
-sind beide Spalten $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und $\begin{pmatrix} 0
-\\ -1 \end{pmatrix}$ linear unabhängig. Das Bild ist:
-
-\begin{equation*}
-\text{Bild}(\mathbf{A}) = \left\{ x_1 \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix} +
-x_2 \cdot \begin{pmatrix} 0 \\ -1 \end{pmatrix} \,\Big|\, x_1, x_2 \in \mathbb{R}\right\}.
-\end{equation*}
-
-Alternativ schreiben wir:
+Zur Veranschaulichung lösen wir das Gleichungssystem
 
 \begin{equation*}
-\text{Bild}(\mathbf{A}) =
-\left\langle \begin{pmatrix} 1 \\ 0 \end{pmatrix},
-\begin{pmatrix} 0 \\ -1 \end{pmatrix} \right\rangle.
+\mathbf{M}\vec{x} =
+\begin{pmatrix}
+2 & 0 & 0 \\
+0 & 3 & 0 \\
+1 & 1 & 4
+\end{pmatrix}
+\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} =
+\begin{pmatrix} 4 \\ 6 \\ 9 \end{pmatrix}.
 \end{equation*}
 
-Da die zwei Spalten den $\mathbb{R}^2$ aufspannen, ist $\text{Rang}(\mathbf{A}) = 2$.
-Die Abbildung ist surjektiv: Jeder Vektor im $\mathbb{R}^2$ ist erreichbar.
+Da $\mathbf{M}$ eine untere Dreiecksmatrix ist, können wir das Gleichungssystem
+durch einfaches Vorwärtseinsetzen lösen. Aus der ersten Gleichung folgt
+$x_1 = 2$, aus der zweiten $x_2 = 2$. Einsetzen in die dritte Gleichung liefert
+$1\cdot 2 + 1\cdot 2 + 4\cdot x_3 = 9$, also $x_3 = \frac{5}{4}$.
 
-**Beispiel 2:** Für die Projektionsmatrix
+## Spatprodukt
+
+Das Volumen des Parallelepipeds, das von drei Vektoren $\vec{a}$, $\vec{b}$ und
+$\vec{c}$ aufgespannt wird, lässt sich direkt mit der Determinante berechnen. In
+der Vektorrechnung wird dieser Zusammenhang durch das **Spatprodukt** beschrieben.
+
+```{admonition} Was ist ... das Spatprodukt?
+:class: note
+Das **Spatprodukt** der drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$
+ist definiert als
 
 \begin{equation*}
-\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}
+[\vec{a}, \vec{b}, \vec{c}] =
+\det\begin{pmatrix}
+a_1 & a_2 & a_3 \\
+b_1 & b_2 & b_3 \\
+c_1 & c_2 & c_3
+\end{pmatrix}.
 \end{equation*}
 
-hat die mittlere Spalte nur Nullen und trägt damit nichts zum Bild bei. Die beiden
-übrigen Spalten $\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und
-$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ sind linear unabhängig. Das Bild ist:
+Der Betrag des Spatprodukts gibt das **Volumen** des von den drei Vektoren
+aufgespannten Parallelepipeds an:
 
 \begin{equation*}
-\text{Bild}(\mathbf{C}) = \left\{x_1 \cdot \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} +
-x_2 \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \,\Bigg |\, x_1, x_2 \in \mathbb{R}\right\}.
+V = \left| [\vec{a}, \vec{b}, \vec{c}] \right|.
 \end{equation*}
-
-Alternativ schreiben wir:
-
-\begin{equation*}
-\text{Bild}(\mathbf{C}) =
-\left\langle \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
-\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \right\rangle.
-\end{equation*}
-
-Das ist die $xz$-Ebene innerhalb des $\mathbb{R}^3$. Es gilt $\text{Rang}(\mathbf{C}) = 2$.
-
-**Beispiel 3:** Für die Matrix
-
-\begin{equation*}
-\mathbf{D} = \begin{pmatrix} 1 & 2 & 2 \\ 1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}
-\end{equation*}
-
-ist die dritte Spalte ein Vielfaches der ersten:
-\begin{equation*}
-\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2 \cdot
-\begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}.
-\end{equation*}
-Sie trägt keine neue Richtung zum Bild bei. Die ersten beiden Spalten sind linear
-unabhängig. Das Bild ist:
-
-\begin{equation*}
-\text{Bild}(\mathbf{D}) = \left\{s \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix} +
-t \cdot \begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \,\Bigg |\, s, t \in \mathbb{R}\right\},
-\end{equation*}
-
-oder kurz
-
-\begin{equation*}
-\text{Bild}(\mathbf{D}) =
-\langle \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix},
-\begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \rangle.
-\end{equation*}
-
-und $\text{Rang}(\mathbf{D}) = 2$.
-
-```{dropdown} Video "Rang einer Matrix bestimmen" von MathePeter
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/4SYRA4Ff3RM"
-title="Rang einer Matrix bestimmen | Beispiel (3x4)-Matrix mit Parameter" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Rang einer Matrix" von Mathematische Methoden
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/KQ0Wi9W5YIs"
-title="0159 Rang einer Matrix Definition und Beispiele" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Für unser Volumenelement berechnen wir das Volumen direkt aus der bereits
+bekannten Determinante:
+
+\begin{equation*}
+V = \left| \det(\mathbf{M}) \right| = |24| = 24.
+\end{equation*}
+
+Das Parallelepiped, das von den drei Kantenvektoren $\vec{a}$, $\vec{b}$ und
+$\vec{c}$ aufgespannt wird, hat also das Volumen $24$. Dieses Ergebnis ist in
+der FEM von großer praktischer Bedeutung: Das Volumen eines Elements geht
+direkt in die Berechnung der Steifigkeitsmatrix ein. Elemente mit sehr kleinem
+Volumen (also einer Determinante nahe Null) gelten als numerisch problematisch
+und sollten bei der Vernetzung eines Bauteils vermieden werden.
+
+## Vektorprodukt
+
+Das Spatprodukt verknüpft die Determinante mit dem Volumen eines
+Parallelepipeds. Für Flächen im Raum gibt es eine eng verwandte Operation, das
+**Vektorprodukt** (auch **Kreuzprodukt** genannt). Das Vektorprodukt zweier
+Vektoren liefert einen neuen Vektor, der senkrecht auf beiden ursprünglichen
+Vektoren steht, und sein Betrag gibt den Flächeninhalt des von den beiden
+Vektoren aufgespannten Parallelogramms an.
+
+```{admonition} Was ist ... das Vektorprodukt?
+:class: note
+Das **Vektorprodukt** (Kreuzprodukt) zweier Vektoren
+$\vec{a}, \vec{b} \in \mathbb{R}^3$ ist definiert als
+
+\begin{equation*}
+\vec{a} \times \vec{b} =
+\begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
+\times
+\begin{pmatrix} b_1 \\ b_2 \\ b_3 \end{pmatrix}
+=
+\begin{pmatrix}
+a_2 b_3 - a_3 b_2 \\
+a_3 b_1 - a_1 b_3 \\
+a_1 b_2 - a_2 b_1
+\end{pmatrix}.
+\end{equation*}
+
+Der Betrag $|\vec{a} \times \vec{b}|$ gibt den **Flächeninhalt** des von
+$\vec{a}$ und $\vec{b}$ aufgespannten Parallelogramms an. Der resultierende
+Vektor steht senkrecht auf der von $\vec{a}$ und $\vec{b}$ aufgespannten Ebene.
 ```
 
-## Wann liegt ein Vektor im Bild?
+Den Zusammenhang zur Determinante sehen wir, wenn wir die Komponentenformel des
+Vektorprodukts mit Hilfe der Entwicklung nach der ersten Zeile schreiben.
+Führen wir dazu einen formalen Hilfsvektor mit den Einheitsvektoren
+$\vec{e}_1$, $\vec{e}_2$, $\vec{e}_3$ ein, so ergibt sich
 
-In der Praxis stellt man häufig die Frage: Liegt ein gegebener Vektor $\vec{b}$ im
-Bild der Matrix $\mathbf{A}$? Diese Frage ist gleichbedeutend damit, ob das lineare
-Gleichungssystem $\mathbf{A} \cdot \vec{x} = \vec{b}$ lösbar ist.
+\begin{equation*}
+\vec{a} \times \vec{b} =
+\det\begin{pmatrix}
+\vec{e}_1 & \vec{e}_2 & \vec{e}_3 \\
+a_1 & a_2 & a_3 \\
+b_1 & b_2 & b_3
+\end{pmatrix}.
+\end{equation*}
 
-In der **Strukturmechanik** lautet diese Frage: Kann die gegebene äußere Last
-$\vec{b}$ durch die inneren Kräfte der Struktur aufgenommen werden? Nur wenn $\vec{b}$
-im Bild der Steifigkeitsmatrix liegt, existiert ein Gleichgewichtszustand.
+Diese Schreibweise ist eine praktische Merkhilfe, kein eigenständiger
+Determinantenausdruck, da die erste Zeile Vektoren und keine Skalare enthält.
+Das Vektorprodukt hat unmittelbare Bedeutung im Maschinenbau: In der
+Kontinuumsmechanik und der FEM wird die Normale auf einer Elementfläche durch
+das Kreuzprodukt zweier Kantenvektoren berechnet, um Flächenlasten korrekt in
+Knotenlasten umzurechnen.
 
-In der **Regelungstechnik** entspricht diese Frage der Steuerbarkeit: Kann ein
-dynamisches System durch eine geeignete Eingabe in jeden gewünschten Zustand
-überführt werden? Wenn das Bild der Eingangsmatrix den gesamten Zustandsraum
-aufspannt, also der Rang maximal ist, dann ist das System vollständig steuerbar.
+Als Beispiel berechnen wir das Vektorprodukt der ersten beiden Kantenvektoren
+unseres Volumenelements:
 
-In der **FEM** ist die Frage, ob $\vec{b}$ im Bild von $\mathbf{K}$ liegt,
-gleichbedeutend damit, ob die Lastsituation für die gegebene Struktur lösbar ist.
-Wenn die Steifigkeitsmatrix einen nichttrivialen Kern hat (weil die Lagerung
-fehlt), dann ist nicht jeder Lastvektor $\vec{b}$ im Bild, und das System hat
-keine Lösung.
+\begin{equation*}
+\vec{a} \times \vec{b} =
+\begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix}
+\times
+\begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix} =
+\begin{pmatrix}
+0 \cdot 0 - 0 \cdot 3 \\
+0 \cdot 0 - 2 \cdot 0 \\
+2 \cdot 3 - 0 \cdot 0
+\end{pmatrix} =
+\begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}.
+\end{equation*}
 
-Als konkretes Zahlenbeispiel: Im Falle der Projektionsmatrix
-$\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$
-liegt der Vektor $\vec{b} = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$ nicht im
-Bild, weil das Bild nur Vektoren mit einer mittleren Komponente von null enthält.
-Das Gleichungssystem $\mathbf{C} \cdot \vec{x} = \vec{b}$ ist daher unlösbar.
-
-```{dropdown} Video "Rang einer Matrix - Invertierbarkeit" von Mathematische Methoden
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/_XchLKH6E4U"
-title="0161 Rang einer Matrix Invertierbarkeit" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown}  Video "Rang einer Matrix - Lösbarkeit LGS" von Mathematische Methoden
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/UNDha90yrT0"
-title="0162 Rang einer Matrix Lösbarkeit von LGS" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+Das Ergebnis zeigt: Der Normalenvektor der von $\vec{a}$ und $\vec{b}$
+aufgespannten Grundfläche zeigt in $z$-Richtung, was geometrisch einleuchtet,
+da $\vec{a}$ und $\vec{b}$ in der $xy$-Ebene liegen. Der Betrag
+$|\vec{a}\times\vec{b}| = 6$ gibt den Flächeninhalt der Grundfläche an.
+Schließlich können wir das Volumen des Parallelepipeds auch als
+$V = |\vec{a}\times\vec{b}| \cdot h$ interpretieren, wobei $h$ die Höhe in
+Richtung des dritten Kantenvektors $\vec{c}$ ist.
 
 ## Zusammenfassung und Ausblick
 
-Das Bild einer Matrix ist die Menge aller Vektoren, die als Ergebnis der linearen
-Abbildung auftreten können. Es wird durch die Spalten der Matrix aufgespannt, und der
-Rang gibt die Anzahl der linear unabhängigen Spalten an. Ein Vektor $\vec{b}$ liegt
-genau dann im Bild, wenn das lineare Gleichungssystem $\mathbf{A} \cdot \vec{x} =
-\vec{b}$ lösbar ist. Diese Verknüpfung ist der Schlüssel zur Lösbarkeitsanalyse in
-der FEM, der Strukturmechanik und der Regelungstechnik. Im nächsten Kapitel stellen
-wir den Zusammenhang zwischen der Dimension des Kerns und der Dimension des Bildes
-durch die Dimensionsformel her.
+In diesem Kapitel haben wir die Determinante über das reine Rechenwerkzeug
+hinaus als strukturelles Hilfsmittel kennengelernt. Sie entscheidet, ob
+Vektoren linear abhängig sind, ob ein Gleichungssystem eine eindeutige Lösung
+besitzt und sie steht im Kern des Spatprodukts sowie des Vektorprodukts.
+Besonders im Maschinenbau, etwa bei der Qualitätsprüfung von FEM-Netzen oder
+bei der Berechnung von Flächennormalen in der Strukturmechanik, sind diese
+Zusammenhänge unverzichtbar. Im nächsten Kapitel vertiefen wir den Begriff der
+linearen Abhängigkeit und führen die Konzepte Rang, Kern und Bild einer Matrix
+ein, die die Lösbarkeit linearer Gleichungssysteme noch allgemeiner beschreiben
+und in der Regelungstechnik sowie der Robotik eine zentrale Rolle spielen.

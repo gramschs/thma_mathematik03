@@ -1,4 +1,4 @@
-# Transponierte und symmetrische Matrizen
+# 2.1 Transponierte und symmetrische Matrizen
 
 Die Nullmatrix, Diagonalmatrix und die Einheitsmatrix haben wir bereits
 kennengelernt. Nun lernen wir weitere besondere Matrizen kennen, die

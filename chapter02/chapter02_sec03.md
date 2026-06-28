@@ -1,4 +1,4 @@
-# Rechenregeln inverse Matrizen
+# 2.3 Rechenregeln inverse Matrizen
 
 Was eine inverse Matrix ist und wie sie berechnet wird, haben wir im letzten
 Kapitel gelernt. In diesem Kapitel werden wir uns damit beschäftigen,

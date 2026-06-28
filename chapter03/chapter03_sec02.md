@@ -1,252 +1,216 @@
-# Definition und Eigenschaften linearer Abbildungen
+---
+authors:
+  - name: "Simone Gramsch"
+---
 
-In den vorigen Kapiteln haben wir zahlreiche Beispiele linearer Abbildungen
-kennengelernt: Streckungen, Spiegelungen, Projektionen und Scherungen. All diese
-Transformationen werden durch eine Matrix-Vektor-Multiplikation beschrieben. In
-diesem Kapitel definieren wir den Begriff der linearen Abbildung formal und lernen
-die zwei Eigenschaften kennen, die jede lineare Abbildung erfüllt. Diese Eigenschaften
-sind die mathematische Grundlage des Superpositionsprinzips, das in der gesamten
-Ingenieurtechnik eine zentrale Rolle spielt.
+# 3.2 Laplacescher Entwicklungssatz
+
+Im letzten Kapitel haben wir mit der Regel von Sarrus gelernt, wie wir die
+Determinante einer $3\times 3$-Matrix berechnen. Die Regel ist anschaulich und
+lässt sich gut merken. *Aber was tun wir, wenn die Matrix größer ist?* Die
+Sarrus-Regel gilt ausschließlich für $3\times 3$-Matrizen und lässt sich nicht
+auf höhere Dimensionen übertragen. Wir brauchen also ein allgemeineres Verfahren,
+das für jede quadratische Matrix funktioniert.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie kennen die formale **Definition einer linearen Abbildung**
-  $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$.
-* Sie kennen die beiden charakteristischen Eigenschaften einer linearen Abbildung:
-    * **Homogenität**: $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$,
-    * **Additivität**: $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$.
-* Sie können überprüfen, ob eine gegebene Abbildung linear ist, indem Sie
-  Homogenität und Additivität nachweisen.
-* Sie verstehen den Zusammenhang zwischen Linearität und dem technisch wichtigen
-  **Superpositionsprinzip**.
-* Sie wissen, dass nicht jede geometrisch einfach wirkende Abbildung linear ist,
-  und können Gegenbeispiele angeben.
+* [ ] Sie wissen, warum die Regel von Sarrus auf Matrizen der Dimension $n > 3$
+  nicht anwendbar ist.
+* [ ] Sie können zu einem Element $a_{ij}$ die zugehörige **Untermatrix**
+  $\mathbf{A}_{ij}$ bestimmen.
+* [ ] Sie können die Determinante einer $n\times n$-Matrix mit dem
+  **Laplaceschen Entwicklungssatz** nach einer beliebigen Zeile oder Spalte
+  berechnen.
+* [ ] Sie wählen die Entwicklungszeile oder -spalte strategisch aus, um den
+  Rechenaufwand zu minimieren.
 ```
 
-## Formale Definition
+## Warum reicht die Sarrus-Regel nicht aus?
 
-Nachdem wir viele Beispiele gesehen haben, ist es an der Zeit, den Begriff der
-linearen Abbildung präzise zu formulieren. Durch die Multiplikation einer festen
-Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ mit einem Vektor $\vec{v} \in
-\mathbb{R}^n$ entsteht ein neuer Vektor $\vec{w} \in \mathbb{R}^m$. Diese Zuordnung
-ist eine Funktion und heißt **lineare Abbildung**:
+Die Determinante einer $n\times n$-Matrix ist als Summe über alle $n!$
+Permutationen der Spaltenindizes definiert. Für $n = 3$ sind das $3! = 6$ Terme,
+und die Sarrus-Regel liefert genau diese 6 Diagonalprodukte. Das ist kein
+allgemeines Prinzip, sondern ein glücklicher Spezialfall: Nur bei $n = 3$
+stimmt die Anzahl der Diagonalen mit der Anzahl der Determinantenterme überein.
+Für $n = 4$ hingegen hat die Determinante $4! = 24$ Terme. Ein
+Diagonalverfahren kann das nicht abbilden.
+
+Die Grundidee des **Laplaceschen Entwicklungssatzes** ist stattdessen folgende:
+Wir zerlegen das $n\times n$-Problem rekursiv in mehrere
+$(n-1)\times(n-1)$-Probleme. Eine $4\times 4$-Determinante wird so auf
+$3\times 3$-Determinanten zurückgeführt, die wir mit Sarrus lösen können.
+
+## Was ist eine Untermatrix?
+
+Bevor wir die Formel aufschreiben, führen wir einen neuen Begriff ein. Die
+**Untermatrix** $\mathbf{A}_{ij}$ entsteht, indem wir aus der Matrix
+$\mathbf{A}$ die $i$-te Zeile und die $j$-te Spalte vollständig streichen. Das
+Ergebnis hat eine Zeile und eine Spalte weniger als die ursprüngliche Matrix.
+
+Als Beispiel betrachten wir die $4\times 4$-Matrix
 
 \begin{equation*}
-F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
-\vec{v} \mapsto \vec{w} = \mathbf{A} \cdot \vec{v}.
+\mathbf{A} = \begin{pmatrix}
+1 & 2 & 0 & 3 \\
+4 & 5 & 1 & 0 \\
+0 & 3 & 2 & 1 \\
+2 & 0 & 4 & 1
+\end{pmatrix}.
 \end{equation*}
 
-Die Angabe $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ beschreibt den
-**Definitionsbereich** $\mathbb{R}^n$ (alle möglichen Eingaben) und den
-**Wertebereich** $\mathbb{R}^m$ (alle möglichen Ausgaben). Der Pfeil $\vec{v}
-\mapsto \vec{w}$ zeigt, wie ein konkreter Eingabevektor $\vec{v}$ auf den
-Ausgabevektor $\vec{w}$ abgebildet wird.
+Die Untermatrix $\mathbf{A}_{12}$ ergibt sich, indem wir die erste Zeile und die
+zweite Spalte streichen:
 
-```{admonition} Was ist ... eine lineare Abbildung?
+\begin{equation*}
+\mathbf{A}_{12} = \begin{pmatrix}
+4 & 1 & 0 \\
+0 & 2 & 1 \\
+2 & 4 & 1
+\end{pmatrix}.
+\end{equation*}
+
+```{admonition} Was ist ... eine Untermatrix?
 :class: note
-Durch Multiplikation einer festen Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$
-wird jedem Vektor $\vec{v} \in \mathbb{R}^n$ eindeutig ein Vektor
-$\vec{w} \in \mathbb{R}^m$ zugeordnet. Diese Funktion
-
-\begin{equation*}
-F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
-F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}
-\end{equation*}
-
-heißt **lineare Abbildung**.
+Die **Untermatrix** $\mathbf{A}_{ij}$ einer $n\times n$-Matrix $\mathbf{A}$
+entsteht durch Streichen der $i$-ten Zeile und der $j$-ten Spalte. Sie hat die
+Dimension $(n-1)\times(n-1)$.
 ```
 
-## Homogenität
+## Wie lautet der Laplacesche Entwicklungssatz?
 
-Die erste fundamentale Eigenschaft einer linearen Abbildung ist die
-**Homogenität**. Sie besagt, dass es gleichgültig ist, ob man einen Vektor erst
-skaliert und dann abbildet, oder erst abbildet und dann skaliert. Das Ergebnis ist
-in beiden Fällen dasselbe:
+Wir entwickeln die Determinante nach der $i$-ten Zeile:
 
 \begin{equation*}
-F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})
-\quad \text{für alle } \vec{v} \in \mathbb{R}^n \text{ und alle } \alpha \in \mathbb{R}.
+\det(\mathbf{A}) = \sum_{j=1}^{n} (-1)^{i+j}\cdot a_{ij}\cdot\det(\mathbf{A}_{ij}).
 \end{equation*}
 
-Geometrisch bedeutet das: Wird ein Vektor vor der Abbildung um den Faktor $\alpha$
-gestreckt oder gestaucht, so ist das Ergebnis dasselbe wie das $\alpha$-fache des
-Bildvektors. Im Maschinenbau steckt dahinter ein wichtiges physikalisches Prinzip:
-Verdoppelt man beispielsweise die Kraft an einem elastischen Bauteil, so verdoppelt
-sich auch die Verformung, solange das Materialverhalten linear ist. Das Hookesche
-Gesetz $F = k \cdot x$ ist genau die Homogenität der linearen Abbildung, die die
-Kraft auf die Verformung abbildet.
+Jedes Element $a_{ij}$ der gewählten Zeile wird mit der Determinante seiner
+Untermatrix multipliziert. Das Vorzeichen $(-1)^{i+j}$ wechselt schachbrettartig
+zwischen $+$ und $-$. Für eine $4\times 4$-Matrix sieht dieses Muster so aus:
 
-Diese Eigenschaft folgt direkt aus den Rechengesetzen der Matrizenmultiplikation.
-Für eine allgemeine $2\times 2$-Matrix überprüfen wir dies konkret:
+<!-- markdownlint-disable -->
+\begin{equation*}
+\begin{pmatrix}
++ & - & + & - \\
+- & + & - & + \\
++ & - & + & - \\
+- & + & - & +
+\end{pmatrix}.
+\end{equation*}
+<!-- markdownlint-enable -->
 
+Analog entwickeln wir nach der $j$-ten Spalte:
+
+\begin{equation*}
+\det(\mathbf{A}) = \sum_{i=1}^{n} (-1)^{i+j}\cdot a_{ij}\cdot\det(\mathbf{A}_{ij}).
+\end{equation*}
+
+Das Ergebnis ist in beiden Fällen dasselbe. Wir dürfen also frei wählen,
+nach welcher Zeile oder Spalte wir entwickeln.
+
+```{dropdown} Video "Determinante - Laplace Entwicklungssatz" von Mathematrick
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3cG0HWdmHLI?si=UT5KjVo88k9dNPoj"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Wie wählen wir die Entwicklungszeile geschickt?
+
+*Welche Zeile oder Spalte wählen wir am besten?* Wir suchen diejenige mit den
+meisten Nullen. Jede Null setzt einen ganzen Summanden auf Null und spart uns
+eine vollständige $3\times 3$-Rechnung. In unserer Matrix enthält die erste
+Zeile an Position $a_{13} = 0$ eine Null. Wir entwickeln daher nach der ersten
+Zeile.
+
+Mit dem Vorzeichenmuster $+, -, +, -$ ergibt sich:
+
+<!-- markdownlint-disable -->
 \begin{align*}
-F_{\mathbf{A}}(\alpha \cdot \vec{v})
-&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
-\cdot \begin{pmatrix} \alpha v_x \\ \alpha v_y \end{pmatrix}
-= \begin{pmatrix} a_{11} \alpha v_x + a_{12} \alpha v_y \\ a_{21} \alpha v_x + a_{22} \alpha v_y \end{pmatrix} \\
-&= \alpha \begin{pmatrix} a_{11} v_x + a_{12} v_y \\ a_{21} v_x + a_{22} v_y \end{pmatrix}
-= \alpha \cdot \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
-\cdot \begin{pmatrix} v_x \\ v_y \end{pmatrix}
-= \alpha \cdot F_{\mathbf{A}}(\vec{v}).
+\det(\mathbf{A})
+&= (+1)\cdot 1 \cdot\det(\mathbf{A}_{11}) +
+(-1)\cdot 2 \cdot\det(\mathbf{A}_{12}) +
+(+1)\cdot 0 \cdot\det(\mathbf{A}_{13}) +
+(-1)\cdot 3 \cdot\det(\mathbf{A}_{14}).
 \end{align*}
+<!-- markdownlint-enable -->
 
-Dieses Ergebnis gilt für beliebige $m \times n$-Matrizen, da die Skalarmultiplikation
-elementweise definiert ist.
+Da $a_{13} = 0$ ist, fällt der dritte Summand sofort weg. Wir benötigen nur
+drei Untermatrizen:
 
-Eine wichtige Konsequenz der Homogenität ist, dass lineare Abbildungen den Nullvektor
-auf den Nullvektor abbilden. Setzt man $\alpha = 0$, so ergibt sich:
-
+<!-- markdownlint-disable -->
 \begin{equation*}
-F_{\mathbf{A}}(\vec{0}) = F_{\mathbf{A}}(0 \cdot \vec{v}) = 0 \cdot F_{\mathbf{A}}(\vec{v}) = \vec{0}.
+\mathbf{A}_{11} = \begin{pmatrix}
+5 & 1 & 0 \\
+3 & 2 & 1 \\
+0 & 4 & 1
+\end{pmatrix}, \quad
+\mathbf{A}_{12} = \begin{pmatrix}
+4 & 1 & 0 \\
+0 & 2 & 1 \\
+2 & 4 & 1
+\end{pmatrix}, \quad
+\mathbf{A}_{14} = \begin{pmatrix}
+4 & 5 & 1 \\
+0 & 3 & 2 \\
+2 & 0 & 4
+\end{pmatrix}.
 \end{equation*}
+<!-- markdownlint-enable -->
 
-Diese Eigenschaft ist ein nützliches Kriterium: Eine Abbildung, die den Nullvektor
-nicht auf den Nullvektor abbildet, kann nicht linear sein.
+Wir berechnen die drei $3\times 3$-Determinanten mit der Sarrus-Regel:
 
-## Additivität
-
-Die zweite fundamentale Eigenschaft ist die **Additivität**. Sie besagt, dass es
-gleichgültig ist, ob man zwei Vektoren erst addiert und dann abbildet, oder erst
-jeden Vektor einzeln abbildet und dann die Bilder addiert:
-
-\begin{equation*}
-F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)
-\quad \text{für alle } \vec{v}_1, \vec{v}_2 \in \mathbb{R}^n.
-\end{equation*}
-
-Geometrisch bedeutet das: Die Abbildung der Summe zweier Vektoren liefert dieselbe
-Summe wie die Abbildung der einzelnen Vektoren. In der Strukturmechanik steckt dahinter
-das Prinzip der Lastfallüberlagerung: Wirken auf ein Bauteil gleichzeitig zwei Lasten
-$\vec{F}_1$ und $\vec{F}_2$, so ist die resultierende Verformung gleich der Summe der
-Verformungen, die jede Last einzeln erzeugt hätte. Das erlaubt es, in der FEM komplexe
-Lastsituationen durch Überlagerung einfacher Einzellastfälle zu berechnen.
-
-Auch diese Eigenschaft folgt aus den Rechengesetzen der Matrizenmultiplikation.
-Wir überprüfen sie für eine allgemeine $2\times 2$-Matrix mit den Vektoren
-$\vec{v}_1 = \begin{pmatrix} v_{1x} \\ v_{1y} \end{pmatrix}$ und
-$\vec{v}_2 = \begin{pmatrix} v_{2x} \\ v_{2y} \end{pmatrix}$:
-
+<!-- markdownlint-disable -->
 \begin{align*}
-F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2)
-&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
-\cdot \begin{pmatrix} v_{1x} + v_{2x} \\ v_{1y} + v_{2y} \end{pmatrix} \\
-&= \begin{pmatrix} a_{11}(v_{1x} + v_{2x}) + a_{12}(v_{1y} + v_{2y}) \\
-                   a_{21}(v_{1x} + v_{2x}) + a_{22}(v_{1y} + v_{2y}) \end{pmatrix} \\ +
-&= \begin{pmatrix} a_{11}v_{1x} + a_{12}v_{1y} \\ a_{21}v_{1x} + a_{22}v_{1y} \end{pmatrix}
-\begin{pmatrix} a_{11}v_{2x} + a_{12}v_{2y} \\ a_{21}v_{2x} + a_{22}v_{2y} \end{pmatrix} \\
-&= F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2).
+\det(\mathbf{A}_{11})
+&= 5\cdot 2\cdot 1 + 1\cdot 1\cdot 0 + 0\cdot 3\cdot 4 -
+ \left(0\cdot 2\cdot 0 + 4\cdot 1\cdot 5 + 1\cdot 3\cdot 1\right)
+= 10 - 23 = -13,\\
+\det(\mathbf{A}_{12})
+&= 4\cdot 2\cdot 1 + 1\cdot 1\cdot 2 + 0\cdot 0\cdot 4 -
+ \left(2\cdot 2\cdot 0 + 4\cdot 1\cdot 4 + 1\cdot 0\cdot 1\right)
+= 10 - 16 = -6,\\
+\det(\mathbf{A}_{14})
+&= 4\cdot 3\cdot 4 + 5\cdot 2\cdot 2 + 1\cdot 0\cdot 0 -
+ \left(2\cdot 3\cdot 1 + 0\cdot 2\cdot 4 + 4\cdot 0\cdot 5\right)
+= 68 - 6 = 62.
 \end{align*}
+<!-- markdownlint-enable -->
 
-```{dropdown} Video "Matrizen als Abbildungen - Teil 1" von Prof. Hielscher
-<iframe width="878" height="725"
-src="https://www.youtube.com/embed/VUeOx_gXEoU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Matrizen als Abbildungen - Teil 1" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown} Video "Matrizen als Abbildungen - Teil 2" von Prof. Hielscher
-<iframe width="878" height="725"
-src="https://www.youtube.com/embed/6RldoWw6L_8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Matrizen als Abbildungen - Teil 2" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown} Video "Matrizen als Abbildungen - Teil 3" von Prof. Hielscher
-<iframe width="878" height="725"
-src="https://www.youtube.com/embed/QPhELH1Gupg?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Matrizen als Abbildung - Teil 3" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-## Superpositionsprinzip
-
-Homogenität und Additivität lassen sich zu einer einzigen Aussage zusammenfassen,
-die in der Ingenieurtechnik als **Superpositionsprinzip** bekannt ist:
+Einsetzen in den Entwicklungssatz liefert:
 
 \begin{equation*}
-F_{\mathbf{A}}(\alpha_1 \vec{v}_1 + \alpha_2 \vec{v}_2)
-= \alpha_1 \cdot F_{\mathbf{A}}(\vec{v}_1) + \alpha_2 \cdot F_{\mathbf{A}}(\vec{v}_2).
+\det(\mathbf{A})
+= 1\cdot(-13) - 2\cdot(-6) + 0 - 3\cdot 62
+= -13 + 12 - 186 = -187.
 \end{equation*}
 
-Das Superpositionsprinzip besagt, dass die Abbildung einer Linearkombination von
-Vektoren gleich der entsprechenden Linearkombination der Bildvektoren ist.
+Als Probe entwickeln wir nach der dritten Zeile, die ebenfalls eine Null enthält
+($a_{31} = 0$), und erhalten erneut $\det(\mathbf{A}) = -187$. Das bestätigt,
+dass das Ergebnis unabhängig von der Wahl der Entwicklungszeile ist.
 
-Dieses Prinzip ist das mathematische Fundament einer Vielzahl von Berechnungsmethoden
-im Maschinenbau:
+```{admonition} Übung: Berechnung von Determinanten
+:class: tip
+Gehen Sie auf die Internetseite
 
-In der **Festigkeitslehre** erlaubt das Superpositionsprinzip, die Biegespannung und
-die Normalkraft getrennt zu berechnen und anschließend zu überlagern, solange das
-Material im linear-elastischen Bereich bleibt. Das Hookesche Gesetz garantiert dabei
-die Linearität.
+> [https://matex.mint-kolleg.kit.edu/MATeX/browse.php](https://matex.mint-kolleg.kit.edu/MATeX/browse.php)
 
-In der **Finite-Elemente-Methode** wird das globale Gleichungssystem $\mathbf{K}
-\vec{u} = \vec{f}$ aus den Elementsteifigkeitsmatrizen zusammengesetzt. Die
-Linearität der Abbildung $\vec{f} \mapsto \vec{u}$ erlaubt es, mehrere Lastfälle mit
-einer einzigen Faktorisierung der Steifigkeitsmatrix $\mathbf{K}$ zu lösen.
+und wählen Sie dort `02 LA: Determinantenberechnung` aus. Wählen Sie dann `Mit
+zufälligen Parametern starten` aus. Fangen Sie bei Stufe 1 an. Wenn Sie dreimal
+hintereinander eine Aufgabe korrekt gelöst haben, gehen Sie zu Stufe 2 weiter.
+Sobald Sie auf Stufe 2 dreimal hintereinander eine Aufgabe gelöst haben, gehen
+Sie weiter zu Stufe 3.
 
-In der **Regelungstechnik** beschreiben lineare Zustandsraummodelle das Verhalten
-dynamischer Systeme. Die Linearität ermöglicht den Einsatz von Methoden wie der
-Laplace-Transformation und der Bode-Diagramm-Analyse.
-
-In der **Schwingungsanalyse** erlaubt das Superpositionsprinzip, die Eigenformen
-eines Systems unabhängig voneinander zu berechnen und zur Gesamtantwort zu überlagern.
-Auf diese Grundlage werden wir im Kapitel über Eigenwerte und Eigenvektoren genauer
-eingehen.
-
-## Welche Abbildungen sind nicht linear?
-
-Nicht jede geometrisch einfach wirkende Abbildung ist linear. Ein wichtiges
-Gegenbeispiel ist die **Translation**: Jeder Punkt wird um einen festen Vektor
-$\vec{t}$ verschoben:
-
-\begin{equation*}
-f(\vec{v}) = \vec{v} + \vec{t}, \quad \vec{t} \neq \vec{0}.
-\end{equation*}
-
-Diese Abbildung ist nicht linear, weil sie den Nullvektor nicht auf den Nullvektor
-abbildet: $f(\vec{0}) = \vec{t} \neq \vec{0}$. Damit ist bereits die Homogenität
-verletzt. Im Maschinenbau bedeutet das: Die Verschiebung eines Körpers im Raum um
-einen konstanten Betrag ist keine lineare Operation. Deshalb werden in der Robotik und
-in der Computergrafik sogenannte homogene Koordinaten eingesetzt, die es ermöglichen,
-auch Translationen als Matrixmultiplikation darzustellen.
-
-Ein weiteres Gegenbeispiel aus der Technik sind nichtlineare Materialgesetze: Die
-Spannungs-Dehnungs-Beziehung von Gummi oder von Stahl im plastischen Bereich ist
-nicht linear. Für solche Materialien gilt das Superpositionsprinzip nicht, was die
-Berechnung erheblich aufwändiger macht.
-
-```{admonition} Lineare Abbildung: Homogenität und Additivität
-:class: note
-Eine Abbildung $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ mit
-$F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ ist linear, weil sie folgende
-zwei Eigenschaften erfüllt:
-
-**Homogenität:** $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$
-
-**Additivität:** $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$
-
-Diese beiden Eigenschaften gelten für alle $\vec{v}, \vec{v}_1, \vec{v}_2 \in
-\mathbb{R}^n$ und alle $\alpha \in \mathbb{R}$. Zusammen bilden sie das
-**Superpositionsprinzip**, das in der Festigkeitslehre, der FEM und der
-Regelungstechnik grundlegend ist.
-
-Eine notwendige Bedingung für Linearität ist, dass der Nullvektor auf den
-Nullvektor abgebildet wird: $F_{\mathbf{A}}(\vec{0}) = \vec{0}$.
+Hinweis: Die Frage nach der Invertierbarkeit können Sie vorerst ignorieren.
 ```
 
 ## Zusammenfassung und Ausblick
 
-Eine lineare Abbildung $F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ erfüllt
-die Homogenität und die Additivität. Beide Eigenschaften folgen direkt aus den
-Rechengesetzen der Matrizenmultiplikation und spiegeln das technisch wichtige
-Superpositionsprinzip wider: In linearen Systemen dürfen Teilwirkungen getrennt
-berechnet und anschließend überlagert werden. Nicht-lineare Abbildungen wie
-Translationen oder nichtlineare Materialgesetze erfüllen diese Eigenschaft nicht.
-In den nächsten Kapiteln werden wir zwei wichtige Konzepte kennenlernen, die
-beschreiben, welche Vektoren durch eine lineare Abbildung auf den Nullvektor
-abgebildet werden (Kern) und welche Vektoren als Ergebnis auftreten können (Bild).
+Mit dem Laplaceschen Entwicklungssatz können wir Determinanten beliebig großer
+quadratischer Matrizen berechnen, indem wir das Problem schrittweise auf kleinere
+Untermatrizen reduzieren. Den Rechenaufwand halten wir gering, indem wir immer
+nach der Zeile oder Spalte mit den meisten Nullen entwickeln. Im nächsten Kapitel
+lernen wir Rechenregeln kennen, die es erlauben, gezielt Nullen in eine Matrix
+einzufügen, und die Determinantenberechnung damit erheblich beschleunigen.

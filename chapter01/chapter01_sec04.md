@@ -1,230 +1,321 @@
-# Skalarmultiplikation
+---
+authors:
+  - name: Simone Gramsch
+---
 
-Anstatt eine Matrix mehrfach zu sich selbst zu addieren, können wir dies durch
-die Multiplikation mit einem Skalar vereinfachen. In diesem Kapitel betrachten
-wir daher die Skalarmultiplikation und die dazugehörigen Rechenregeln.
+# 1.4 Matrizenmultiplikation
+
+Nachdem wir in den vorangegangenen Kapiteln die Addition von Matrizen und die
+Multiplikation einer Matrix mit einem Skalar behandelt haben, wenden wir uns nun
+der Matrizenmultiplikation zu. Im Gegensatz zu den zuvor genannten Operationen
+erfolgt die Matrizenmultiplikation *nicht elementweise*.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie sind in der Lage, eine Matrix mit einem Skalar multiplizieren, also eine
-  **Skalarmultiplikation** durchführen.
-* [ ] Sie beherrschen die Rechenregeln für die Addition von Matrizen und für die
-  Skalarmultiplikation, insbesondere
-  * das **Kommutativgesetz**: 
-    \begin{equation*}\mathbf{A}+\mathbf{B} = \mathbf{B}+\mathbf{A}\end{equation*},
-  * das **Assoziativgesetz**: 
-    \begin{equation*}(\mathbf{A}+\mathbf{B})+\mathbf{C} = \mathbf{A} +
-      (\mathbf{B}+\mathbf{C}),\end{equation*} 
-  * und das **Distributivgesetz** für die Skalarmultiplikation: 
-    \begin{align*}
-    (s+t)\cdot\mathbf{A} &= s\cdot\mathbf{A}+t\cdot\mathbf{A}\\
-    s\cdot(\mathbf{A}+\mathbf{B}) &= s\cdot\mathbf{A} + s\cdot\mathbf{B}\\
-    \end{align*}
+* [ ] Sie können zwei Matrizen miteinander multiplizieren.
+* [ ] Sie wissen, dass die Matrixmultiplikation *nicht kommutativ* ist, d.h. dass im 
+  Allgemeinen 
+  \begin{equation*}
+  \mathbf{A}\cdot\mathbf{B} \textcolor{red}{\neq} \mathbf{B}\cdot\mathbf{A}
+  \end{equation*}
+  gilt.
+* [ ] Sie können die Rechenregeln der Matrizenmultiplikation anwenden, insbesondere
+  * Assoziativgesetz und
+  * Distributivgesetz.
 ```
 
-## Skalar mal Matrix
+## Matrix mal Matrix
 
-Wir greifen erneut das Beispiel auf, bei dem Fußballspieler sich gegenseitig
-Pässe zuspielen und die Pässe mitprotokolliert werden, damit die
-Spielerleistungen statistisch ausgewertet werden können.  Diesmal betrachten wir
-jedoch die Pässe während des Trainings. Im Training werden die Spieler in
-Vierergruppen aufgeteilt, und jeder Spieler soll jedem anderen fünfmal den Ball
-zuspielen. Die aufgezeichneten Pässe sind in der folgenden Matrix kodiert:
+Anders als man vielleicht erwarten würde, erfolgt die Matrizenmultiplikation
+nicht elementweise. Daher müssen die Matrizen auch nicht die gleiche Dimension
+haben. Stattdessen muss die Anzahl der Spalten der ersten Matrix mit der Anzahl
+der Zeilen der zweiten Matrix übereinstimmen. Das Ergebnis ist dann eine Matrix
+mit der Zeilenanzahl der ersten und der Spaltenanzahl der zweiten Matrix. Sie
+wird **Produktmatrix** genannt. Hat die erste Matrix $\mathbf{A}$ fünf Zeilen
+und drei Spalten und die zweite Matrix $\mathbf{B}$ drei Zeilen und vier
+Spalten, dann hat die Produktmatrix $\mathbf{C}$ fünf Zeilen und vier Spalten.
+Dieses Prinzip wird in der folgenden Skizze verdeutlicht.
 
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-0 & 5 & 5 & 5 \\
-5 & 0 & 5 & 5 \\
-5 & 4 & 0 & 5 \\
-5 & 5 & 5 & 0 \\
-\end{pmatrix}.
-\end{equation*}
-
-Zur Erinnerung: Eine 5 in der ersten Zeile und in der zweiten Spalte (also
-$a_{12} = 5$) bedeutet, dass der 1. Spieler dem 2. Spieler fünfmal den Ball
-zugespielt hat. Es fällt jedoch auf, dass die Übung nicht korrekt ausgeführt
-wurde, da der 3. Spieler den 2. Spieler nur viermal angespielt hat ($a_{32}=4$),
-während der 2. Spieler den 3. Spieler wie gefordert fünfmal angespielt hat
-($a_{23}=5$).
-
-Nun soll diese Übung zwei weitere Male korrekt wiederholt werden. Diesmal
-verläuft die Übung fehlerfrei, und die neue Matrix zeigt die korrekten Pässe des
-zweiten und dritten Durchgangs:
-
-\begin{equation*}
-\mathbf{B} = \begin{pmatrix}
-0 & 5 & 5 & 5 \\
-5 & 0 & 5 & 5 \\
-5 & 5 & 0 & 5 \\
-5 & 5 & 5 & 0 \\
-\end{pmatrix}.
-\end{equation*}
-
-Nach Abschluss der drei Übungen sollen alle Pässe insgesamt summiert werden. Wir
-könnten jedes Element einzeln addieren, indem wir die Anzahl der Pässe für jede
-Übung zusammenzählen:
-
-\begin{equation*}
-\mathbf{A} + \mathbf{B} + \mathbf{B} =
-\begin{pmatrix}
-0+0+0 & 5+5+5 & 5+5+5 & 5+5+5 \\
-5+5+5 & 0+5+5 & 5+5+5 & 5+5+5 \\
-5+5+5 & 4+5+5 & 0+5+5 & 5+5+5 \\
-5+5+5 & 5+5+5 & 5+5+5 & 0+5+5 \\
-\end{pmatrix}.
-\end{equation*}
-
-Da die zweite und dritte Übung identisch abliefen, können wir die Pässe der
-zweiten und dritten Übung auch direkt verdoppeln:
-
-\begin{equation*}
-\mathbf{B} + \mathbf{B} = 2\cdot\mathbf{B} =
-\begin{pmatrix}
-2\cdot 0 & 2\cdot 5 & 2\cdot 5 & 2\cdot 5 \\
-2\cdot 5 & 2\cdot 0 & 2\cdot 5 & 2\cdot 5 \\
-2\cdot 5 & 2\cdot 5 & 2\cdot 0 & 2\cdot 5 \\
-2\cdot 5 & 2\cdot 5 & 2\cdot 5 & 2\cdot 0 \\
-\end{pmatrix}=
-\begin{pmatrix}
-0 & 10 & 10 & 10 \\
-10 & 0 & 10 & 10 \\
-10 & 10 & 0 & 10 \\
-10 & 10 & 10 & 0 \\
-\end{pmatrix}.
-\end{equation*}
-
-Allgemein wird bei einer Skalarmultiplikation eine Matrix mit einer reellen Zahl
-(Skalar) multipliziert, indem jedes Element der Matrix mit dem Skalar
-multipliziert wird.
-
-```{admonition} Was ist ... die Skalarmultiplikation?
-:class: note
-Bei der Skalarmultiplikation wird ein Skalar mit einer Matrix multipliziert,
-indem jedes Element der Matrix mit diesem Skalar multipliziert wird.
+```{figure} pics/matrix_multiplication_qtl1.svg
+---
+width: 50%
+name: matrix_multiplication
+---
+Anforderungen an Spaltenanzahl der ersten Matrix und Zeilenanzahl der zweiten Matrix
+(Quelle: Quartl [Wikimedia Commons](https://de.wikipedia.org/wiki/Datei:Matrix_multiplication_qtl1.svg),
+Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/))
 ```
 
-Ein weiteres Beispiel für eine Skalarmultiplikation ist die folgende Rechnung,
-bei der jedes Element der Matrix mit dem Bruch $1/2$ multipliziert wird:
+Nun kennen wir die Bedingungen, unter denen zwei Matrizen multipliziert werden
+dürfen, und wissen, welche Dimension die Produktmatrix hat. Aber wie wird die
+Matrizenmultiplikation tatsächlich durchgeführt? Dazu betrachten wir ein
+Beispiel. Gegeben seien die beiden Matrizen:
 
 \begin{equation*}
-\frac{1}{2}\cdot\begin{pmatrix} 2 & 7 \\ -10 & \frac{3}{5} \end{pmatrix} =
-\begin{pmatrix} 1 & 3.5 \\ -5 & \frac{3}{10} \end{pmatrix}.
+\mathbf{A} =
+\begin{pmatrix}
+1 & 0  \\
+2 & -1 \\
+3 & 3  \\
+4 & 1  \\
+\end{pmatrix} \; \text{ und } \;
+\mathbf{B} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+ 2 & 3 & 5 \\
+\end{pmatrix}.
 \end{equation*}
 
-Das folgende Video veranschaulicht ein weiteres Beispiel zur Skalarmultiplikation.
+Zunächst überprüfen wir, ob wir die beiden Matrizen multiplizieren dürfen. Da
+die Spaltenanzahl der ersten Matrix $\mathbf{A}$ zwei und die Zeilenanzahl der
+zweiten Matrix $\mathbf{B}$ ebenfalls zwei ist, dürfen wir das Matrixprodukt
+berechnen. Die Produktmatrix wird die Dimension $4\times 3$ haben und die
+folgende Form annehmen:
 
-```{dropdown} Video "Skalarmultiplikation" von Mathematische Methoden
-<iframe width="560" height="315" src="https://www.youtube.com/embed/1fIxfjWammQ"
+\begin{equation*}
+\mathbf{C} =
+\begin{pmatrix}
+c_{11} & c_{12} & c_{13} \\
+c_{21} & c_{22} & c_{23} \\
+c_{31} & c_{32} & c_{33} \\
+c_{41} & c_{42} & c_{43} \\
+\end{pmatrix}.
+\end{equation*}
+
+Um das Element in der ersten Zeile und ersten Spalte, also $c_{11}$, zu
+berechnen, nehmen wir die erste Zeile von $\mathbf{A}$ und die erste Spalte von
+$\mathbf{B}$ und bilden das *Skalarprodukt* dieser beiden Vektoren:
+
+\begin{equation*}
+c_{11} =
+\begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} -1 \\ 2 \end{pmatrix} =
+1\cdot(-1)+0\cdot 2 = -1.
+\end{equation*}
+
+Dann berechnen wir das Element $c_{12}$, indem wir die erste Zeile von
+$\mathbf{A}$ mit der zweiten Spalte von $\mathbf{B}$ elementweise multiplizieren
+und aufaddieren:
+
+\begin{equation*}
+c_{12} =
+\begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 3 \end{pmatrix} =
+1\cdot 0 + 0\cdot 3 = 0.
+\end{equation*}
+
+Das Element $c_{13}$ berechnen wir analog aus dem Skalarprodukt der ersten Zeile
+von $\mathbf{A}$ mit der dritten Spalte von $\mathbf{B}$:
+
+\begin{equation*}
+c_{13} =
+\begin{pmatrix} 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} 2 \\ 5 \end{pmatrix} =
+1\cdot 2 + 0\cdot 5 = 2.
+\end{equation*}
+
+Damit haben wir die ersten drei Elemente der Produktmatrix $\mathbf{C}$
+berechnet:
+
+\begin{equation*}
+\mathbf{C} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+c_{21} & c_{22} & c_{23} \\
+c_{31} & c_{32} & c_{33} \\
+c_{41} & c_{42} & c_{43} \\
+\end{pmatrix}.
+\end{equation*}
+
+Um die zweite Zeile der Produktmatrix zu berechnen, berechnen wir das
+Skalarprodukt der zweiten Zeile von $\mathbf{A}$ mit der ersten, zweiten und
+dritten Spalte von $\mathbf{B}$:
+
+\begin{align*}
+c_{21} &=
+\begin{pmatrix} 2 & -1 \end{pmatrix} \cdot \begin{pmatrix} -1 \\ 2 \end{pmatrix} =
+2\cdot (-1) + (-1)\cdot 2 = -4, \\
+c_{22} &=
+\begin{pmatrix} 2 & -1 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 3 \end{pmatrix} =
+2\cdot 0 + (-1)\cdot 3 = -3, \\
+c_{23} &=
+\begin{pmatrix} 2 & -1 \end{pmatrix} \cdot \begin{pmatrix} 2 \\ 5 \end{pmatrix} =
+2\cdot 2 + (-1)\cdot 5 = -1. \\
+\end{align*}
+
+Damit haben wir die Hälfte der Elemente von $\mathbf{C}$ berechnet:
+
+\begin{equation*}
+\mathbf{C} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+-4 & -3 & -1 \\
+c_{31} & c_{32} & c_{33} \\
+c_{41} & c_{42} & c_{43} \\
+\end{pmatrix}.
+\end{equation*}
+
+Für die dritte Zeile von $\mathbf{C}$ berechnen wir die Skalarprodukte der
+dritten Zeile von $\mathbf{A}$ mit der ersten, zweiten und dritten Spalte von
+$\mathbf{B}$. Und zuletzt berechnen wir noch die vierte Zeile von $\mathbf{C}$
+auf die gleiche Weise. Insgesamt erhalten wir
+
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
+\begin{pmatrix}
+1 & 0  \\
+2 & -1 \\
+3 & 3  \\
+4 & 1  \\
+\end{pmatrix} \cdot
+\begin{pmatrix}
+-1 & 0 & 2 \\
+ 2 & 3 & 5 \\
+\end{pmatrix} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+-4 & -3 & -1 \\
+ 3 & 9 & 21 \\
+-2 & 3 & 13 \\
+\end{pmatrix}.
+\end{equation*}
+
+Um den Überblick bei der Matrizenmultiplikation zu behalten, kann das sogenannte
+**Falk-Schema** genutzt werden. Es hilft, die einzelnen Skalarprodukte
+übersichtlich zu organisieren und ist besonders in der Zwischenrechnung
+nützlich. Wichtig ist jedoch, dass das endgültige Ergebnis, die Produktmatrix,
+separat notiert wird und nicht nur die Zahlen im Falk-Schema stehen bleiben.
+
+```{dropdown} Video "Matrizenmultiplikation (Teil 1)" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/69WvslZmW0s"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
-## Rechengesetze für die Addition und Skalarmultiplikation von Matrizen
-
-Bei der Berechnung der Summe der Pässe aus den drei Übungen haben wir intuitiv
-genutzt, dass die zweite und dritte Übung identisch abgelaufen sind, und uns
-daher zunächst mit der Berechnung von zwei gleichen Matrizen befasst. Für die
-vollständige Summe fehlt jedoch noch die Addition der Pässe aus der ersten
-Übung:
-
-\begin{equation*}
-2\cdot\mathbf{B} + \mathbf{A} =
-\begin{pmatrix}
-0 & 10 & 10 & 10 \\
-10 & 0 & 10 & 10 \\
-10 & 10 & 0 & 10 \\
-10 & 10 & 10 & 0 \\
-\end{pmatrix} +
-\begin{pmatrix}
-0 & 5 & 5 & 5 \\
-5 & 0 & 5 & 5 \\
-5 & 4 & 0 & 5 \\
-5 & 5 & 5 & 0 \\
-\end{pmatrix} =
-\begin{pmatrix}
-0 & 15 & 15 & 15 \\
-15 & 0 & 15 & 15 \\
-15 & 14 & 0 & 15 \\
-15 & 15 & 15 & 0 \\
-\end{pmatrix}.
-\end{equation*}
-
-Ist diese Vorgehensweise überhaupt erlaubt? Gilt also
-
-\begin{equation*}
-2\cdot\mathbf{B} + \mathbf{A} \overset{?}{=} \mathbf{A} + \mathbf{B} + \mathbf{B} \,?
-\end{equation*}
-
-Ja, denn sowohl die Addition als auch die Skalarmultiplikation werden
-*elementweise* mit reellen Zahlen durchgeführt. Für reelle Zahlen gelten das
-Kommutativgesetz, das besagt, dass die Reihenfolge der Summanden keine Rolle
-spielt, sowie das Assoziativgesetz, das sicherstellt, dass die Reihenfolge der
-Gruppierungen bei der Addition ebenfalls irrelevant ist.
-
-Da die Vektoraddition elementweise ausgeführt wird, überträgt sich das
-Kommutativgesetz der reellen Zahlen auf Matrizen. Das bedeutet, dass die
-Addition zweier Matrizen unabhängig von der Reihenfolge der Matrizen ist, wie
-die folgende allgemeine Rechnung zeigt:
-
-\begin{equation*}
-\mathbf{A} + \mathbf{B} =
-\begin{pmatrix}
-a_{11} + b_{11} & a_{12} + b_{12} & \ldots & a_{1n} + b_{1n} \\
-a_{21} + b_{21} & a_{22} + b_{22} & \ldots & a_{2n} + b_{2n} \\
-\vdots & \vdots &        & \vdots \\
-a_{m1} + b_{m2} & a_{m2} + b_{m2} & \ldots & a_{mn} + b_{mn}
-\end{pmatrix} +
-\begin{pmatrix}
-b_{11} + a_{11} & b_{12} + a_{12} & \ldots & b_{1n} + a_{1n} \\
-b_{21} + a_{21} & b_{22} + a_{22} & \ldots & b_{2n} + a_{2n} \\
-\vdots & \vdots &        & \vdots \\
-b_{m1} + a_{m1} & b_{m2} + a_{m2} & \ldots & b_{mn} + a_{mn}
-\end{pmatrix} =
-\mathbf{B} + \mathbf{A}.
-\end{equation*}
-
-Auf dieselbe Weise kann auch das Assoziativgesetz angewendet werden: Es spielt
-keine Rolle, ob man zuerst zwei Matrizen addiert und dann die dritte dazu nimmt
-oder ob man zuerst eine Summe bildet und anschließend die verbleibenden Matrizen
-addiert. Dies erlaubt es uns, die Berechnung zu vereinfachen, indem wir z. B.
-direkt die Addition durch eine Skalarmultiplikation ersetzen. Anstatt
-$(\mathbf{A} + \mathbf{B}) + \mathbf{B}$ zu berechnen ist es erlaubt $\mathbf{A} +
-(\mathbf{B} + \mathbf{B}) = \mathbf{A} + 2\mathbf{B}$ zu verwenden.
-
-Ebenso überträgt sich das Distributivgesetz von reellen Zahlen auf die Addition von Matrizen und die Skalarmultiplikation. Dabei gibt es zwei Möglichkeiten:
-
-1. Ein Skalar wird mit der Summe zweier Matrizen multipliziert. Das entspricht
-   der Verteilung des Skalars auf beide Matrizen, sodass jede Matrix einzeln mit
-   dem Skalar multipliziert wird, also
-
-   $$s\cdot\left(\mathbf{A} + \mathbf{B} \right) = s\cdot\mathbf{A} +
-   s\cdot\mathbf{B}.$$
-
-2. Zwei Skalare werden addiert und die resultierende Summe wird mit einer Matrix
-   multipliziert. Dies entspricht der Multiplikation der Matrix mit jedem Skalar
-   einzeln und der anschließenden Addition der Ergebnisse, also
-
-   $$(s + t) \cdot \mathbf{A} = s\cdot\mathbf{A} + t\cdot\mathbf{A}.$$
-
-```{dropdown} Video "Rechenregeln Matrizen (Teil 1)" von Mathematische Methoden
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_9vYtSLNLNI"
+```{dropdown} Video "Matrizenmultiplikation (Teil 2)" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tdHmtlEgtPg"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Rechenregeln Matrizen (Teil 2)" von Mathematische Methoden
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cpVJV6j0O4U"
+```{dropdown} Video "Matrix-Multiplikation" von Mathematrick
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uIykRXQhQtE"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+## Rechenregeln für die Matrizenmultiplikation
+
+Bei der Vektoraddition und der Skalarmultiplikation haben sich die Rechenregeln
+aus der Addition und Multiplikation reeller Zahlen direkt auf die entsprechenden
+Matrizenoperationen übertragen, da diese elementweise ausgeführt werden. Das ist
+bei der Matrizenmultiplikation nicht der Fall, weshalb das Kommutativgesetz
+nicht gilt. Es gibt zwar Ausnahmen, in denen $\mathbf{A}\cdot\mathbf{B} =
+\mathbf{B}\cdot\mathbf{A}$ gilt, doch in den meisten Fällen ist das nicht so.
+
+Im obigen Beispiel haben wir berechnet:
+
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
+\begin{pmatrix}
+1 & 0  \\
+2 & -1 \\
+3 & 3  \\
+4 & 1  \\
+\end{pmatrix} \cdot
+\begin{pmatrix}
+-1 & 0 & 2 \\
+ 2 & 3 & 5 \\
+\end{pmatrix} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+-4 & -3 & -1 \\
+ 3 & 9 & 21 \\
+-2 & 3 & 13 \\
+\end{pmatrix}.
+\end{equation*}
+
+Wenn wir jedoch $\mathbf{B}\cdot\mathbf{A}$ berechnen wollen, also
+
+\begin{equation*}
+\mathbf{B}\cdot\mathbf{A} =
+\begin{pmatrix}
+-1 & 0 & 2 \\
+ 2 & 3 & 5 \\
+\end{pmatrix} \cdot
+\begin{pmatrix}
+1 & 0  \\
+2 & -1 \\
+3 & 3  \\
+4 & 1  \\
+\end{pmatrix},
+\end{equation*}
+
+wäre das gar nicht möglich, da die Anzahl der Spalten der ersten Matrix drei und
+die Anzahl der Zeilen der zweiten Matrix vier ist. Selbst wenn die Dimensionen
+der beiden Matrizen passen würden, gilt das Kommutativgesetz meist nicht, wie
+das folgende Beispiel zeigt. Es gilt:
+
+\begin{equation*}
+\mathbf{A}\cdot\mathbf{B} =
+\begin{pmatrix} 1 & 2 \\ 3 & 4 \\ \end{pmatrix} \cdot
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \\ \end{pmatrix} =
+\begin{pmatrix} 2 & 1 \\ 4 & 3 \\ \end{pmatrix},
+\end{equation*}
+
+doch für $\mathbf{B}\cdot\mathbf{A}$ erhalten wir:
+
+\begin{equation*}
+\mathbf{B}\cdot\mathbf{A} =
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \\ \end{pmatrix} \cdot
+\begin{pmatrix} 1 & 2 \\ 3 & 4 \\ \end{pmatrix} =
+\begin{pmatrix} 3 & 4 \\ 1 & 2 \\ \end{pmatrix}.
+\end{equation*}
+
+Glücklicherweise gelten für die Matrizenmultiplikation das Assoziativgesetz
+
+\begin{equation*}
+(\mathbf{A}\cdot\mathbf{B})\cdot\mathbf{C} = \mathbf{A}\cdot(\mathbf{B}\cdot\mathbf{C})
+\end{equation*}
+
+und das Distributivgesetz
+
+\begin{align*}
+\mathbf{A}\cdot(\mathbf{B}+\mathbf{C}) &= \mathbf{A}\cdot\mathbf{B} + \mathbf{A}\cdot\mathbf{C} \\
+(\mathbf{A}+\mathbf{B})\cdot\mathbf{C} &= \mathbf{A}\cdot\mathbf{C} + \mathbf{B}\cdot\mathbf{C},
+\end{align*}
+
+die uns das Rechnen mit Matrizen häufig erleichtern.
+
+Diese Regeln sind besonders nützlich, wenn es darum geht, komplexere
+Matrizenprodukte zu berechnen. In den folgenden Videos wird auf die Rechenregeln
+für Matrizen ausführlich eingegangen.
+
+```{dropdown} Video "Rechenregeln Matrizen (Teil 3)" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4XwlwmIDsPo" 
+itle="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Rechenregeln Matrizen (Teil 4)" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ELENZnzZVgI"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Rechenregeln Matrizen (Teil 5)" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4-E-gSlQu9A"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir die Skalarmultiplikation kennengelernt, bei der
-jeder Eintrag einer Matrix mit einem Skalar multipliziert wird. Die
-Rechengesetze der reellen Zahlen, wie das Kommutativ-, Assoziativ- und
-Distributivgesetz, lassen sich auf die Vektoraddition und die
-Skalarmultiplikation übertragen. Im nächsten Kapitel werden wir die
-Multiplikation zweier Matrizen erlernen.
+In diesem Kapitel haben wir uns mit der Matrizenmultiplikation beschäftigt und
+die dazugehörigen Rechenregeln kennengelernt. Wir haben verstanden, dass die
+Matrizenmultiplikation nicht elementweise erfolgt und das Kommutativgesetz in
+der Regel nicht gilt. Dafür gelten jedoch das Assoziativ- und das
+Distributivgesetz, die uns helfen, komplexere Berechnungen zu vereinfachen.
+
+Damit sind die grundlegenden Rechenoperationen für Matrizen abgeschlossen. Im
+nächsten Kapitel wenden wir uns besonderen Matrizenarten zu, wie z. B.
+transponierten Matrizen, Dreiecksmatrizen und symmetrischen Matrizen.

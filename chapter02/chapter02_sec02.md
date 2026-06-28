@@ -1,4 +1,4 @@
-# Inverse Matrizen
+# 2.2 Inverse Matrizen
 
 Bisher haben wir die Addition, Subtraktion und Multiplikation von Matrizen
 kennengelernt. Gibt es eine Division? Ein Division wie wir sie von den reellen

@@ -1,226 +1,218 @@
-# Kern einer Matrix
+# 3.3 Eigenschaften von Determinanten
 
-Wir wissen nun, was eine lineare Abbildung ist und welche Eigenschaften sie erfüllt.
-Als nächstes stellen wir die Frage: Welche Eingabevektoren werden durch eine gegebene
-Abbildung auf den Nullvektor abgebildet? Die Antwort auf diese Frage führt zum Begriff
-des Kerns einer Matrix. Im Maschinenbau taucht der Kern an überraschend vielen Stellen
-auf: Er bestimmt, wie viele Freiheitsgrade ein Mechanismus hat, ob eine Struktur
-statisch bestimmt ist, und ob ein lineares Gleichungssystem eindeutig lösbar ist.
+Die Determinante ist eine Eigenschaft von quadratischen Matrizen, aber sie
+selbst hat auch wiederum Eigenschaften und Besonderheiten, die wir hier
+notieren. Diese Eigenschaften helfen uns vor allem, die Berechnung von
+Determinanten zu vereinfachen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie kennen die Definition des **Kerns** einer Matrix und können ihn geometrisch
-  interpretieren.
-* Sie können den Kern einer Matrix berechnen, indem Sie das homogene lineare
-  Gleichungssystem $\mathbf{A} \cdot \vec{v} = \vec{0}$ lösen.
-* Sie kennen die **Dimension des Kerns** und können diese aus den Lösungen des
-  Gleichungssystems ablesen.
-* Sie wissen, dass der Kern immer mindestens den Nullvektor enthält, und können
-  beurteilen, ob der Kern nur den Nullvektor enthält oder weitere Vektoren umfasst.
+* [ ] Sie kennen die in diesem Kapitel aufgelisteten Eigenschaften von
+  Determinanten und können die Rechenregeln anwenden.
 ```
 
-## Motivation: Welche Vektoren verschwinden?
+## Determinante Null
 
-Wir betrachten die Projektion auf die $xy$-Ebene, die wir im vorigen Kapitel bereits
-kennengelernt haben:
+* Hat die Matrix eine Zeile oder eine Spalte, die komplett aus Nullen besteht,
+  dann ist die Determinante Null.
+  
+  Beispiel:
+  \begin{align*}
+  \mathbf{A} &= \begin{pmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 4 & 5 & 6 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{A}) &\overset{\text{Sarrus}}{=} 1\cdot 0\cdot 6 + 2\cdot 0 \cdot 4 + 3\cdot 0\cdot 5 -
+  \left(4\cdot 0\cdot 3 + 5\cdot 0\cdot 1 + 6\cdot 0\cdot 2\right)\\
+  & = 0\\
+  \end{align*}
 
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
-\end{equation*}
+* Sind zwei Zeilen der Matrix gleich, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{B} = \begin{pmatrix} 2 & 3 \\ 2 & 3 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{B}) = 2 \cdot 3 - 2 \cdot 3 = 0
+  \end{equation*}
 
-Diese Matrix modelliert beispielsweise eine industrielle Kamera, die ein
-dreidimensionales Objekt auf eine zweidimensionale Ebene projiziert. Dabei gehen
-alle Informationen über die Tiefe ($z$-Koordinate) verloren. Welche Vektoren
-$\vec{v} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ werden durch diese Abbildung
-auf den Nullvektor abgebildet? Wir berechnen:
+* Sind zwei Spalten der Matrix gleich, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{align*}
+  \mathbf{C} &= \begin{pmatrix} 1 & 1 & 5 \\ 2 & 2 & 6 \\ 3 & 3 & 7 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{C}) &= 1\cdot 2\cdot 7 + 1\cdot 6\cdot 3 + 5\cdot 2\cdot 3 -
+  \left(3\cdot 2\cdot 5 + 3\cdot 6\cdot 1 + 7\cdot 2\cdot 1\right)\\
+  &= 14 + 18 + 30 -(30 + 18 + 14) = 0\\
+  \end{align*}
 
-\begin{equation*}
-\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}
-\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}
-= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.
-\end{equation*}
+* Gibt es in der Matrix eine Zeile, die ein Vielfaches einer anderen Zeile ist,
+  ist die Determinante Null.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{D} = \begin{pmatrix} 1 & 2 \\ 3 & 6 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{D}) = 1 \cdot 6 - 3 \cdot 2 = 0
+  \end{equation*}
+  (Die zweite Zeile ist das Dreifache der ersten Zeile.)
 
-Das liefert die Bedingungen $x = 0$ und $y = 0$, während $z$ beliebig sein kann.
-Die Menge aller Vektoren, die auf $\vec{0}$ abgebildet werden, ist also die
-$z$-Achse:
+* Gibt es in der Matrix eine Spalte, die ein Vielfaches einer anderen Spalte
+  ist, ist die Determinante Null.
+  
+  Beispiel:
+  \begin{align*}
+  \mathbf{E} &= \begin{pmatrix} 2 & 4 & 1 \\ 3 & 6 & 5 \\ 1 & 2 & 7 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{E}) &= 2\cdot 6\cdot 7 + 4\cdot 5\cdot 1+1\cdot 3\cdot 2 -
+  \left(1\cdot 6\cdot 1 + 2\cdot 5\cdot 2 + 7\cdot 3\cdot 4\right)\\
+  &= 84 + 20 + 6 - (6 + 20 + 84) = 0\\
+  \end{align*}
+  (Die zweite Spalte ist das Doppelte der ersten Spalte.)
 
-\begin{equation*}
-\left\{ \begin{pmatrix} 0 \\ 0 \\ z \end{pmatrix} \,\middle|\, z \in \mathbb{R} \right\}
-= t \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \quad t \in \mathbb{R}.
-\end{equation*}
+## Determinante Dreiecks- oder Diagonalmatrizen
 
-Geometrisch bedeutet das: Alle Punkte, die direkt senkrecht über dem Ursprung
-der $xy$-Ebene liegen, werden auf den Ursprung projiziert. Die Information über ihre
-Höhe geht bei der Projektion vollständig verloren. Diese Menge heißt der
-**Kern** der Matrix.
+* Die Determinante der Einheitsmatrix ist Eins.
+  
+  Beispiel:
+  \begin{align*}
+  \mathbf{I} &= \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{I}) &= 1\cdot 1\cdot 1 + 0\cdot 0\cdot 0 + 0\cdot 0\cdot 0 -
+  0\cdot 1\cdot0 + 0\cdot 0\cdot 1 + 1\cdot 0\cdot 0)\\
+  &= 1.
+  \end{align*}
 
-## Definition des Kerns
+* Die Determinante einer Diagonalmatrix ist das Produkt der Elemente in der
+  Diagonalen.
+  
+  Beispiel:
+  \begin{align*}
+  \mathbf{F} &= \begin{pmatrix} 2 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 4 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{F}) &= 2 \cdot (-3) \cdot 4 + 0\cdot 0\cdot 0  + 0\cdot 0\cdot 0 -
+  \left(0\cdot (-3)\cdot 0 + 0\cdot 0\cdot 2 + 4\cdot 0\cdot 0\right)\\
+  &= 2\cdot (-3)\cdot 4 = -24.
+  \end{align*}
 
-```{admonition} Was ist ... der Kern einer Matrix?
-:class: note
-Sei $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ eine lineare Abbildung mit der
-Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Der **Kern** von $\mathbf{A}$,
-geschrieben $\text{Kern}(\mathbf{A})$, ist die Menge aller Vektoren
-$\vec{v} \in \mathbb{R}^n$, die durch die Abbildung auf den Nullvektor abgebildet
-werden:
+* Die Determinante einer unteren oder oberen Dreiecksmatrix ist das Produkt der
+  Elemente in der Diagonalen.
+  
+  Beispiel (obere Dreiecksmatrix):
+  \begin{align*}
+  \mathbf{G} &= \begin{pmatrix} 3 & 1 & 2 \\ 0 & 2 & 5 \\ 0 & 0 & -1 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{G}) &= 3 \cdot 2 \cdot (-1) + 1\cdot 5\cdot 0 + 2\cdot 0\cdot 0 -
+  \left( 0\cdot 2\cdot 2 + 0\cdot 5\cdot 3 + (-1)\cdot 0\cdot 1\right)\\
+  &= 3\cdot 2 \cdot (-1) = -6.
+  \end{align*}
+  
+  Beispiel (untere Dreiecksmatrix):
+  \begin{align*}
+  \mathbf{H} &= \begin{pmatrix} 2 & 0 & 0 \\ 4 & 3 & 0 \\ 1 & 5 & -2 \end{pmatrix}\\
+  \Rightarrow \det(\mathbf{H}) &= 2 \cdot 3 \cdot (-2) + 0\cdot 0\cdot 1 + 0\cdot 4\cdot 5-
+  \left(1\cdot 3\cdot 0 + 5\cdot 0\cdot 2 + (-2)\cdot 4\cdot 0 \right)\\
+  &=2\cdot 3\cdot (-2) = -12.
+  \end{align*}
 
-\begin{equation*}
-\text{Kern}(\mathbf{A}) = \{ \vec{v} \in \mathbb{R}^n \mid \mathbf{A} \cdot \vec{v} = \vec{0} \}.
-\end{equation*}
+## Rechenregeln
 
-Der Kern enthält immer mindestens den Nullvektor, da $\mathbf{A} \cdot \vec{0} =
-\vec{0}$ für jede Matrix gilt.
+Die folgenden Rechenregeln für Determinanten gelten für quadratische Matrizen,
+d.h. $\mathbf{A}\in\mathbb{R}^{n\times n}$ und $\mathbf{B}\in\mathbb{R}^{n\times
+n}$.
+
+* Die Determinante der transponierten Matrix ist gleich der Determinanten der
+  ursprünglichen Matrix. Es gilt also:
+  \begin{equation*} \det(\mathbf{A}^{T}) = \det(\mathbf{A}). \end{equation*}
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}^{T} = \begin{pmatrix} 1 & 3 \\ 2 & 4 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = 1 \cdot 4 - 3 \cdot 2 = -2, \quad
+  \det(\mathbf{A}^{T}) = 1 \cdot 4 - 2 \cdot 3 = -2
+  \end{equation*}
+
+* Die Determinante eines Produkts von quadratischen Matrizen ist gleich dem
+  Produkt der Determinanten der einzelnen Matrizen. Es gilt also:
+  \begin{equation*}
+  \det(\mathbf{A}\cdot\mathbf{B}) = \det(\mathbf{A})\cdot\det(\mathbf{B}).
+  \end{equation*}
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}, \quad
+  \mathbf{B} = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = 6, \quad \det(\mathbf{B}) = 1
+  \end{equation*}
+  \begin{equation*}
+  \mathbf{A}\cdot\mathbf{B} = \begin{pmatrix} 2 & 4 \\ 0 & 3 \end{pmatrix}
+  \quad \Rightarrow \quad \det(\mathbf{A}\cdot\mathbf{B}) = 6 = 6 \cdot 1
+  \end{equation*}
+
+* Multipliziert man *eine* Zeile (oder *eine* Spalte) der Matrix mit einem Skalar,
+  so wird auch die Determinante mit diesem Skalar multipliziert. Multipliziert
+  man die gesamte Matrix mit diesem Skalar $s$, dann erhalten wir
+  \begin{equation*} \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}), \quad
+  s\in\mathbb{R}. \end{equation*}
+  
+  Beispiel (eine Zeile multiplizieren, hier die erste):
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 2 & 4 \\ 3 & 4 \end{pmatrix}
+  \end{equation*}
+  \begin{align*}
+  &\det(\mathbf{A}) = 1\cdot 4 - 3\cdot 2 = -2, \\
+  &\det(\mathbf{A}') = 2 \cdot 4 - 4 \cdot 3 = -4 = 2 \cdot (-2) = 2\cdot\det(\mathbf{A})\\
+  \end{align*}
+  
+  Beispiel (gesamte Matrix multiplizieren):
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  3\cdot\mathbf{A} = \begin{pmatrix} 3 & 6 \\ 9 & 12 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(3\cdot\mathbf{A}) = 3 \cdot 12 - 6 \cdot 9 = -18 = 3^{2} \cdot (-2) = 9 \cdot \det(\mathbf{A})
+  \end{equation*}
+
+* Vertauscht man zwei Zeilen (oder zwei Spalten), dann wechselt das Vorzeichen
+  der Determinante.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 3 & 4 \\ 1 & 2 \end{pmatrix}
+  \end{equation*}
+  \begin{equation*}
+  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 3 \cdot 2 - 4 \cdot 1 = 2 = -\det(\mathbf{A})
+  \end{equation*}
+
+* Addiert man das Vielfache einer Zeile zu einer anderen Zeile, dann ändert sich
+  die Determinante nicht. Das gilt sinngemäß auch für Spalten. Das kann man
+  ausnutzen, um die Determinante einer Matrix beispielsweise mit dem
+  Gauß-Algorithmus zu berechnen oder viele Nullen in der Matrix zu erzeugen.
+  
+  Beispiel:
+  \begin{equation*}
+  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+  \mathbf{A}' = \begin{pmatrix} 1 & 2 \\ 0 & -2 \end{pmatrix}
+  \end{equation*}
+  (Die zweite Zeile wurde ersetzt durch: Zeile 2 - 3·Zeile 1)
+  \begin{equation*}
+  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 1 \cdot (-2) - 2 \cdot 0 = -2
+  \end{equation*}
+
+Diese und weitere Rechenregeln werden auch in dem folgenden Video erläutert.
+
+```{dropdown} Video "Rechenregeln für Determinanten" von MathePeter
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jDerrYHsLcY?si=NQI8V8OeTT034bKN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-
-Die Dimension des Kerns, also die Anzahl der linear unabhängigen Vektoren im Kern,
-wird **Defekt** der Matrix genannt und mit $\dim(\text{Kern}(\mathbf{A}))$
-bezeichnet.
-
-## Berechnung des Kerns
-
-Der Kern wird berechnet, indem man das **homogene lineare Gleichungssystem**
-
-\begin{equation*}
-\mathbf{A} \cdot \vec{v} = \vec{0}
-\end{equation*}
-
-löst. Dieses System hat immer mindestens die triviale Lösung $\vec{v} = \vec{0}$.
-Wenn es weitere Lösungen gibt, bilden diese zusammen mit dem Nullvektor den Kern.
-
-**Beispiel 1:** Wir berechnen den Kern der Matrix
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}.
-\end{equation*}
-
-Das homogene Gleichungssystem lautet:
-
-\begin{equation*}
-\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
-\cdot \begin{pmatrix} v_1 \\ v_2 \end{pmatrix}
-= \begin{pmatrix} v_1 \\ -v_2 \end{pmatrix}
-= \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
-\end{equation*}
-
-Daraus folgt $v_1 = 0$ und $v_2 = 0$. Der Kern enthält nur den Nullvektor:
-
-\begin{equation*}
-\text{Kern}(\mathbf{A}) = \left\{ \begin{pmatrix} 0 \\ 0 \end{pmatrix} \right\}, \quad
-\dim(\text{Kern}(\mathbf{A})) = 0.
-\end{equation*}
-
-Ein Kern, der nur den Nullvektor enthält, bedeutet, dass die Abbildung injektiv ist:
-Verschiedene Eingabevektoren werden auf verschiedene Ausgabevektoren abgebildet. In
-der Strukturmechanik entspricht das einer statisch bestimmten Lagerung: Die
-Steifigkeitsmatrix hat einen trivialen Kern, das System hat eine eindeutige Lösung.
-
-**Beispiel 2:** Wir berechnen den Kern der Matrix
-
-\begin{equation*}
-\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}.
-\end{equation*}
-
-Das homogene Gleichungssystem lautet:
-
-\begin{equation*}
-\begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}
-\cdot \begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix}
-= \begin{pmatrix} v_1 \\ 0 \\ v_3 \end{pmatrix}
-= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.
-\end{equation*}
-
-Aus der ersten und dritten Gleichung folgt $v_1 = 0$ und $v_3 = 0$. Die zweite
-Gleichung ist immer erfüllt, unabhängig von $v_2$. Daher kann $v_2$ beliebig gewählt
-werden:
-
-\begin{equation*}
-\text{Kern}(\mathbf{C}) = \left\{ t \cdot \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
-\;\middle|\; t \in \mathbb{R} \right\}, \quad \dim(\text{Kern}(\mathbf{C})) = 1.
-\end{equation*}
-
-Das ist geometrisch die $y$-Achse. In einem FEM-Modell ohne ausreichende Lagerung
-entsprechen solche nichtrivalen Kern-Vektoren **Starrkörpermoden**: Bewegungen des
-gesamten Netzes, die keine Verformungsenergie erzeugen. Bevor ein FEM-Solver rechnen
-kann, müssen alle Starrkörpermoden durch Randbedingungen unterdrückt werden, also der
-Kern der Steifigkeitsmatrix auf den Nullvektor reduziert werden.
-
-**Beispiel 3:** Wir berechnen den Kern der Matrix
-
-\begin{equation*}
-\mathbf{D} = \begin{pmatrix} 1 & 2 & 2 \\ 1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}.
-\end{equation*}
-
-Das homogene Gleichungssystem $\mathbf{D} \cdot \vec{v} = \vec{0}$ lautet:
-
-\begin{align*}
-v_1 + 2v_2 + 2v_3 &= 0 \\
-v_1 - v_2 + 2v_3  &= 0 \\
-0                   &= 0 \\
-v_2                 &= 0.
-\end{align*}
-
-Aus der vierten Gleichung folgt direkt $v_2 = 0$. Einsetzen in die erste Gleichung
-liefert $v_1 + 2v_3 = 0$, also $v_1 = -2v_3$. Die Variable $v_3$ kann beliebig
-gewählt werden. Wir setzen $v_3 = t$ mit $t \in \mathbb{R}$ und erhalten:
-
-\begin{equation*}
-\vec{v} = \begin{pmatrix} -2t \\ 0 \\ t \end{pmatrix}
-= t \cdot \begin{pmatrix} -2 \\ 0 \\ 1 \end{pmatrix}, \quad t \in \mathbb{R}.
-\end{equation*}
-
-Der Kern ist:
-
-\begin{equation*}
-\text{Kern}(\mathbf{D}) = \left\{ t \cdot \begin{pmatrix} -2 \\ 0 \\ 1 \end{pmatrix}
-\;\middle|\; t \in \mathbb{R} \right\}, \quad \dim(\text{Kern}(\mathbf{D})) = 1.
-\end{equation*}
-
-```{dropdown} Video "Kern einer Matrix berechnen" von Loay
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/td9t2WohViw"
-title="KERN einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown} Video "Wie man den Kern einer Matrix berechnet" von BrainPi
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/HrBjQXd1MB8"
-title="Wie man den Kern einer Matrix berechnet" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-## Geometrische Bedeutung und Anwendungen
-
-Der Kern einer Matrix lässt sich geometrisch als derjenige Teil des Eingaberaums
-interpretieren, der durch die Abbildung auf den Ursprung kollabiert. Alle Vektoren im
-Kern werden auf den Nullvektor abgebildet, sie gehen bei der Transformation vollständig
-verloren.
-
-Im Maschinenbau hat der Kern folgende Bedeutungen:
-
-**Kinematik von Mechanismen:** Die Bewegungsmöglichkeiten eines Gelenkmechanismus
-entsprechen dem Kern der sogenannten Jacobi-Matrix des Mechanismus. Ein
-eindimensionaler Kern bedeutet genau einen kinematischen Freiheitsgrad, was bei
-einem Scharniergelenk der Fall ist. Ein mehrdimensionaler Kern entspricht mehreren
-unabhängigen Bewegungsmöglichkeiten.
-
-**Statische Bestimmtheit:** Bei der Analyse von Fachwerken und Rahmenkonstruktionen
-wird untersucht, ob die Gleichgewichtsbedingungen eine eindeutige Lösung für die
-Stabkräfte liefern. Eine eindeutige Lösung existiert genau dann, wenn der Kern der
-Gleichgewichtsmatrix trivial ist. Ist der Kern nichttrivial, so ist die Struktur
-statisch unbestimmt oder kinematisch beweglich.
-
-**FEM und Starrkörpermoden:** Wie oben beschrieben, entsprechen die Vektoren im Kern
-der Steifigkeitsmatrix den Starrkörpermoden des nicht gelagerten Systems. Diese müssen
-vor der Berechnung durch Randbedingungen beseitigt werden.
 
 ## Zusammenfassung und Ausblick
 
-Der Kern einer Matrix $\mathbf{A}$ ist die Menge aller Vektoren $\vec{v}$, für die
-$\mathbf{A} \cdot \vec{v} = \vec{0}$ gilt. Er wird durch Lösung des homogenen
-linearen Gleichungssystems berechnet und enthält immer mindestens den Nullvektor. Im
-Maschinenbau beschreibt der Kern Freiheitsgrade von Mechanismen, Starrkörpermoden in
-der FEM und die statische Bestimmtheit von Tragwerken. Im nächsten Kapitel lernen wir
-das komplementäre Konzept kennen: das Bild einer Matrix, das beschreibt, welche
-Vektoren überhaupt als Ergebnis der Abbildung auftreten können.
+Die Rechenregeln für Determinanten vereinfachen die Berechnung erheblich:
+Nullzeilen, gleiche oder proportionale Zeilen lassen die Determinante sofort
+auf Null fallen, ohne dass man rechnen muss; Dreiecks- und Diagonalmatrizen
+erlauben eine direkte Ablesung als Produkt der Diagonalelemente. Diese
+Eigenschaften deuten bereits an, dass die Determinante mehr ist als ein reines
+Rechenwerkzeug. Im nächsten Kapitel sehen wir, was eine Determinante von Null
+über die Struktur einer Matrix aussagt: Sie entscheidet über die lineare
+Abhängigkeit von Vektoren, über die eindeutige Lösbarkeit linearer
+Gleichungssysteme und steht im Kern des Spatprodukts sowie des Vektorprodukts.

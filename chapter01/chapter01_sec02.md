@@ -1,4 +1,9 @@
-# Besondere Matrizen
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 1.2 Besondere Matrizen
 
 Einige Matrizen haben eine besondere Struktur oder spezielle Zahlenwerte und
 werden so häufig in Rechnungen gebraucht, dass besondere Bezeichnungen für diese
@@ -29,9 +34,9 @@ gefüllt.
 
 | | Spieler 1 | Spieler 2 | Spieler 3 |
 | --- | --- | --- | --- |
-| Spieler 1 | 0 | 0 | 0 |
-| Spieler 2 | 0 | 0 | 0 |
-| Spieler 3 | 0 | 0 | 0 |
+| **Spieler 1** | 0 | 0 | 0 |
+| **Spieler 2** | 0 | 0 | 0 |
+| **Spieler 3** | 0 | 0 | 0 |
 
 In Kurzschreibweise sieht die dazugehörige Matrix zu Beginn des Basketballspiels
 also folgendermaßen aus:
