@@ -3,303 +3,191 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 11.2 Der Resonanzfall und das Anfangswertproblem
+# 11.2 Wann spannen zwei Lösungen den gesamten Lösungsraum auf?
 
-In Abschnitt 11.1 haben wir die partikuläre Lösung für eine Stoßkraft
-$F(t) = 10\,e^{-3t}~\text{N}$ bestimmt, die rasch abklang. Jetzt verändern wir
-das Szenario: Die Kraft klingt mit $F(t) = 10\,e^{-t}~\text{N}$ langsamer ab,
-mit genau derselben Zeitkonstante wie die natürliche Systemreaktion.
-
-```{figure} pics/chap11_sec02_fig01.svg
----
-name: chap11_sec02_fig01
----
-Vergleich der beiden Stoßkräfte aus den Abschnitten 11.1 und 11.2: schnell abklingende Kraft $F_1(t)=10e^{-3t}$ (blau) und langsamer abklingende Kraft $F_2(t)=10e^{-t}$ (rot). (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Das führt
-auf einen Fall, in dem der Standardansatz aus Abschnitt 11.1 versagt und eine
-Modifikation nötig ist. Anschließend legen wir aus der vollständigen allgemeinen
-Lösung durch zwei Anfangsbedingungen alle freien Konstanten fest.
+In Abschnitt 10.1 haben wir die Schwingungsgleichung der Wuppertaler
+Schwebebahn aufgestellt und als Vorschau angekündigt, dass die allgemeine
+Lösung die Form $y_h = C_1 y_1 + C_2 y_2$ hat. Aber stimmt das wirklich für
+jedes beliebige Paar von Lösungen $y_1$ und $y_2$? *Könnte man auch zwei andere
+Lösungen nehmen und würde man damit genauso alle möglichen Bewegungen des
+Fahrwagens beschreiben?* Die Antwort ist nein, und das Kriterium, das über
+Erfolg oder Scheitern entscheidet, kennen wir bereits: die Determinante.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie erkennen den **Resonanzfall** bei der inhomogenen linearen ODE
-  2. Ordnung: Der Standardansatz scheitert, wenn der Parameter $\alpha$ der
-  Störfunktion mit einem Eigenwert der homogenen ODE übereinstimmt.
-* [ ] Sie können den **modifizierten Ansatz** $y_p = A\,t\,e^{\alpha t}$
-  aufstellen, die Koeffizienten durch Einsetzen und Koeffizientenvergleich
-  bestimmen und das Ergebnis verifizieren.
-* [ ] Sie wissen, dass bei einem doppelten Eigenwert $\lambda$ der modifizierte
-  Ansatz $y_p = A\,t^2\,e^{\lambda t}$ zu verwenden ist.
-* [ ] Sie können aus der allgemeinen Lösung $y_{\text{allgemein}} = y_h + y_p$
-  durch Einsetzen zweier Anfangsbedingungen ein **lineares Gleichungssystem**
-  für $C_1$ und $C_2$ aufstellen und lösen.
+* [ ] Sie wissen, was **Fundamentallösungen** $y_1$ und $y_2$ einer homogenen
+  linearen ODE 2. Ordnung sind, und was ein **Fundamentalsystem** $\{y_1, y_2\}$
+  auszeichnet.
+* [ ] Sie können mit der **Wronski-Determinante**
+  \begin{equation*}
+  W(y_1, y_2) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
+  \end{pmatrix} = y_1 y_2' - y_2 y_1'
+  \end{equation*}
+  nachweisen, ob zwei Lösungen linear unabhängig sind und damit ein
+  Fundamentalsystem bilden.
+* [ ] Sie können aus einem Fundamentalsystem $\{y_1, y_2\}$ die **allgemeine
+  Lösung** $y_h(x) = C_1 y_1(x) + C_2 y_2(x)$ der homogenen ODE angeben.
 ```
 
-## Wann schlägt der Standardansatz fehl?
+## Warum reicht nicht jedes Lösungspaar?
 
-Unser Feder-Masse-Dämpfer-System aus Abschnitt 11.1 mit $m = 2~\text{kg}$,
-$k = 4~\text{N/m}$ und $d = 6~\text{N\,s/m}$ ist jetzt einer langsamer
-abklingenden Kraft ausgesetzt. Division der Bewegungsgleichung durch $m = 2$
-liefert:
+Wir betrachten die ungedämpfte Schwebebahn-Gleichung aus Abschnitt 10.1,
 
 \begin{equation*}
-y'' + 3\,y' + 2\,y = 5\,e^{-t}.
+\varphi'' + \omega_0^2\,\varphi = 0, \quad \omega_0 \approx 1.81~\text{rad\,s}^{-1}.
 \end{equation*}
 
-Der Exponent $\alpha = -1$ der Störfunktion stimmt mit dem Eigenwert
-$\lambda_1 = -1$ aus Abschnitt 11.1 überein. Wir probieren den Standardansatz
-$y_p = A\,e^{-t}$ und setzen ihn in die ODE ein:
-
-\begin{align*}
-y_p(t)   &= A\,e^{-t}, \\
-y_p'(t)  &= -A\,e^{-t}, \\
-y_p''(t) &= A\,e^{-t}.
-\end{align*}
+Neben $y_1(t) = \cos(\omega_0 t)$ ist auch $y_2(t) = 3\cos(\omega_0 t)$ eine
+Lösung, denn Einsetzen bestätigt $y_2'' + \omega_0^2 y_2 = -3\omega_0^2
+\cos(\omega_0 t) + 3\omega_0^2\cos(\omega_0 t) = 0$. Versuchen wir, die
+allgemeine Lösung als $C_1 y_1 + C_2 y_2$ zu schreiben:
 
 \begin{equation*}
-y_p'' + 3\,y_p' + 2\,y_p
-= A\,e^{-t} - 3A\,e^{-t} + 2A\,e^{-t}
-= (1 - 3 + 2)\,A\,e^{-t}
-= 0.
+C_1\cos(\omega_0 t) + C_2 \cdot 3\cos(\omega_0 t)
+= \underbrace{(C_1 + 3C_2)}_{=:\,C}\cos(\omega_0 t).
 \end{equation*}
 
-Die linke Seite ergibt unabhängig von $A$ den Wert null. Der
-Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert $0 = 5$,
-also einen Widerspruch. *Warum versagt der Ansatz hier vollständig?*
-Der Grund: $e^{-t}$ ist wegen $\lambda_1 = -1$ selbst eine Lösung der
-homogenen ODE. Jede Lösung der homogenen ODE ergibt, eingesetzt in die linke
-Seite, per Definition null. Der Standardansatz ist damit zum Scheitern
-verurteilt, egal welchen Wert $A$ annimmt.
+Das Ergebnis enthält nur eine einzige freie Konstante $C$, nicht zwei. Egal
+welche Werte wir für $C_1$ und $C_2$ wählen, wir erzeugen ausschließlich
+Vielfache von $\cos(\omega_0 t)$. Die Anfangsbedingung $\varphi'(0) = v_0
+\neq 0$ lässt sich damit niemals erfüllen, denn jede Funktion dieser Form hat
+bei $t = 0$ die Ableitung null. Das Paar $\{\cos(\omega_0 t),\, 3\cos(\omega_0 t)\}$
+deckt also nicht den gesamten Lösungsraum ab.
 
-```{admonition} Was ist ... der Resonanzfall bei der ODE 2. Ordnung?
+Das Problem liegt darin, dass $y_2 = 3 y_1$ ist: Die zweite Funktion ist ein
+konstantes Vielfaches der ersten. Ein solches Paar nennen wir **linear abhängig**.
+
+## Was bedeutet lineare Unabhängigkeit für Funktionen?
+
+Aus dem Kapitel über Matrizen und lineare Gleichungssysteme kennen wir den
+Begriff der linearen Unabhängigkeit für Vektoren. Für Funktionen gilt dieselbe
+Idee: Zwei Funktionen $y_1$ und $y_2$ sind **linear abhängig**, wenn eine von
+ihnen ein konstantes Vielfaches der anderen ist, also wenn $C_1 y_1 + C_2 y_2
+= 0$ für alle $x$ gilt, ohne dass beide Konstanten null sind. Umgekehrt gilt:
+
+```{admonition} Was ist ... lineare Unabhängigkeit zweier Funktionen?
 :class: note
-Der **Resonanzfall** tritt auf, wenn der Parameter $\alpha$ der Störfunktion
-$g(t) = c\,e^{\alpha t}$ mit einem der Eigenwerte $\lambda_1$ oder $\lambda_2$
-der zugehörigen homogenen ODE übereinstimmt. Der Standardansatz
-$y_p = A\,e^{\alpha t}$ ist dann keine geeignete partikuläre Lösung, weil er
-die homogene ODE erfüllt und beim Einsetzen identisch null ergibt.
+Zwei Funktionen $y_1$ und $y_2$ heißen **linear unabhängig**, wenn aus
+
+\begin{equation*}
+C_1\,y_1(x) + C_2\,y_2(x) = 0 \quad \text{für alle } x
+\end{equation*}
+
+zwingend $C_1 = 0$ und $C_2 = 0$ folgt. Existieren hingegen $C_1, C_2$, die
+nicht beide null sind und die obige Gleichung trotzdem erfüllen, so heißen
+$y_1$ und $y_2$ **linear abhängig**.
 ```
 
-In der Strukturdynamik entspricht dieser Fall dem Zustand, in dem die
-Zeitkonstante der äußeren Kraft ($\tau = 1~\text{s}$ bei $e^{-t}$) mit der
-Zeitkonstante des langsamsten Eigenmodes des Systems übereinstimmt
-($\tau_1 = 1/|\lambda_1| = 1~\text{s}$). Das System wird dauerhaft in seinem
-eigenen Abklingtakt angeregt, was zu einem vorübergehend verstärkten
-Ausschlag führt, bevor die Dämpfung übernimmt.
+Für unser Gegenbeispiel gilt $(-3)\cdot\cos(\omega_0 t) + 1\cdot 3\cos(\omega_0 t)
+= 0$ mit $C_1 = -3 \neq 0$: linear abhängig. Für $y_1 = \cos(\omega_0 t)$ und
+$y_2 = \sin(\omega_0 t)$ lässt sich kein solches Konstantenpaar finden. Aber wie
+weisen wir das systematisch nach, ohne alle möglichen Konstanten durchzuprobieren?
 
-## Wie retten wir den Ansatz im Resonanzfall?
+## Die Wronski-Determinante als Test
 
-Die Lösung besteht darin, den Ansatz durch einen zusätzlichen Faktor $t$ zu
-erweitern:
-
-\begin{equation*}
-y_p(t) = A\,t\,e^{-t}.
-\end{equation*}
-
-Der Faktor $t$ stellt sicher, dass $y_p$ nicht mehr im Lösungsraum der
-homogenen ODE liegt: $t\,e^{-t}$ ist keine Lösung der homogenen ODE
-(das lässt sich durch Einsetzen sofort prüfen). Gleichzeitig bleibt die
-Struktur von $e^{-t}$ so weit erhalten, dass nach dem Einsetzen ein
-brauchbarer Koeffizientenvergleich entsteht.
-
-Wir berechnen die Ableitungen:
-
-\begin{align*}
-y_p(t)   &= A\,t\,e^{-t}, \\
-y_p'(t)  &= A\,e^{-t} - A\,t\,e^{-t} = A(1-t)\,e^{-t}, \\
-y_p''(t) &= -A\,e^{-t} - A(1-t)\,e^{-t} = A(t-2)\,e^{-t}.
-\end{align*}
-
-Einsetzen in die linke Seite der ODE ergibt:
-
-\begin{align*}
-y_p'' + 3\,y_p' + 2\,y_p
-&= A(t-2)\,e^{-t} + 3A(1-t)\,e^{-t} + 2At\,e^{-t} \\
-&= A\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t} \\
-&= A\bigl[t - 2 + 3 - 3t + 2t\bigr]\,e^{-t} \\
-&= A\,e^{-t}.
-\end{align*}
-
-Der Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert direkt:
+Wenn $C_1 y_1(x) + C_2 y_2(x) = 0$ für alle $x$ gilt, dann gilt das auch nach
+Ableitung: $C_1 y_1'(x) + C_2 y_2'(x) = 0$. Wir haben also ein lineares
+Gleichungssystem in $C_1$ und $C_2$, das bei jedem festen $x_0$ ausgewertet
+werden kann:
 
 \begin{equation*}
-A = 5.
+\begin{pmatrix} y_1(x_0) & y_2(x_0) \\ y_1'(x_0) & y_2'(x_0) \end{pmatrix}
+\begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
 \end{equation*}
 
-Die partikuläre Lösung im Resonanzfall lautet:
+Aus Kapitel 1 wissen wir: Dieses homogene Gleichungssystem hat genau dann nur
+die triviale Lösung $C_1 = C_2 = 0$, wenn die Determinante der
+Koeffizientenmatrix ungleich null ist. Diese Determinante trägt einen eigenen
+Namen.
 
-\begin{equation*}
-y_p(t) = 5\,t\,e^{-t}.
-\end{equation*}
-
-Wir verifizieren durch Einsetzen in die ODE:
-
-\begin{equation*}
-y_p'' + 3\,y_p' + 2\,y_p
-= 5(t-2)\,e^{-t} + 15(1-t)\,e^{-t} + 10t\,e^{-t}
-= 5\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t}
-= 5\,e^{-t}. \quad \checkmark
-\end{equation*}
-
-Der Faktor $t$ im Ausdruck $5\,t\,e^{-t}$ ist das charakteristische Merkmal
-des Resonanzfalls: Die partikuläre Lösung wächst zunächst an, weil für kleine
-$t > 0$ der Faktor $t$ dominiert, bevor $e^{-t}$ die Oberhand gewinnt und
-alles gegen null zieht. Ingenieurmäßig bedeutet das einen kurzzeitig
-verstärkten Ausschlag, der aber wegen der Dämpfung schließlich vollständig
-abklingt.
-
-```{figure} pics/chap11_sec02_fig02.svg
----
-name: chap11_sec02_fig02
----
-Verlauf der partikulären Lösung $y_p(t) = 5 t e^{-t}$ im Resonanzfall mit
-markiertem Maximum bei $t = 1$ und $y_p(1) = 5/e$. Der Faktor $t$ führt zunächst
-zu einem Anwachsen der Auslenkung, bevor der Exponentialterm $e^{-t}$ dominiert
-und die Antwort wieder gegen null abklingen lässt. (Quelle: eigene Abbildung;
-Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-```{admonition} Hinweis: doppelter Eigenwert im Resonanzfall
+```{admonition} Was ist ... die Wronski-Determinante?
 :class: note
-Wenn $\alpha$ mit einem doppelten Eigenwert $\lambda$ übereinstimmt (also
-$D = 0$ in der charakteristischen Gleichung aus Abschnitt 10.3), scheitert
-auch der Ansatz $A\,t\,e^{\alpha t}$, weil $t\,e^{\lambda t}$ bereits im
-Fundamentalsystem liegt. In diesem Fall lautet der modifizierte Ansatz
-$y_p = A\,t^2\,e^{\alpha t}$.
+Für zwei differenzierbare Funktionen $y_1$ und $y_2$ heißt
+
+\begin{equation*}
+W(y_1, y_2)(x) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
+\end{pmatrix} = y_1(x)\,y_2'(x) - y_2(x)\,y_1'(x)
+\end{equation*}
+
+die **Wronski-Determinante** von $y_1$ und $y_2$. Gilt $W(y_1, y_2)(x_0) \neq 0$
+für mindestens ein $x_0$ im Definitionsbereich, so sind $y_1$ und $y_2$ linear
+unabhängig.
 ```
 
-```{figure} pics/chap11_sec02_fig03.svg
----
-name: chap11_sec02_fig03
----
-Vergleich der partikulären Lösungen im Nicht-Resonanzfall $y_p^{\text{NR}}(t) = \tfrac{5}{2}e^{-3t}$ (blau, Abschnitt 11.1) und im Resonanzfall $y_p^{\text{R}}(t) = 5 t e^{-t}$ (rot, Abschnitt 11.2). Im Resonanzfall wächst die Antwort zunächst an, bevor sie, wie auch im Nicht-Resonanzfall, durch das Exponential wieder gegen null abklingt. (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-## Wie bestimme ich $C_1$ und $C_2$ aus Anfangsbedingungen?
-
-Die allgemeine Lösung der inhomogenen ODE ist jetzt vollständig:
-
-<!-- markdownlint-disable -->
-\begin{equation*}
-y_{\text{allgemein}}(t)
-= \underbrace{C_1\,e^{-t} + C_2\,e^{-2t}}_{y_h} +
-  \underbrace{5\,t\,e^{-t}}_{y_p}.
-\end{equation*}
-<!-- markdownlint-enable -->
-
-Wir nehmen an, dass das Maschinenelement zum Zeitpunkt $t = 0$ in Ruhe war,
-also weder ausgelenkt noch in Bewegung:
+Wir berechnen die Wronski-Determinante für das abhängige Paar. Mit
+$y_1 = \cos(\omega_0 t)$, $y_1' = -\omega_0\sin(\omega_0 t)$,
+$y_2 = 3\cos(\omega_0 t)$ und $y_2' = -3\omega_0\sin(\omega_0 t)$ ergibt sich:
 
 \begin{equation*}
-y(0) = 0, \qquad y'(0) = 0.
+W = \cos(\omega_0 t)\cdot(-3\omega_0\sin(\omega_0 t)) -
+  3\cos(\omega_0 t)\cdot(-\omega_0\sin(\omega_0 t))
+  = -3\omega_0\cos\sin + 3\omega_0\cos\sin = 0.
 \end{equation*}
 
-Einsetzen der ersten Anfangsbedingung liefert:
+Die Wronski-Determinante ist identisch null: linear abhängig, wie erwartet.
 
-\begin{equation*}
-C_1 + C_2 + 5 \cdot 0 \cdot 1
-= C_1 + C_2
-\stackrel{!}{=} 0.
-\end{equation*}
+## Das Fundamentalsystem der Schwebebahn
 
-Für die zweite Bedingung berechnen wir zunächst $y'(t)$:
-
-\begin{equation*}
-y'(t) = -C_1\,e^{-t} - 2\,C_2\,e^{-2t} + 5(1-t)\,e^{-t}.
-\end{equation*}
-
-Einsetzen von $t = 0$:
-
-\begin{equation*}
--C_1 - 2\,C_2 + 5
-\stackrel{!}{=} 0.
-\end{equation*}
-
-Wir erhalten das lineare Gleichungssystem:
+Jetzt prüfen wir das Paar $\{y_1, y_2\} = \{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$.
+Mit $y_1' = -\omega_0\sin(\omega_0 t)$ und $y_2' = \omega_0\cos(\omega_0 t)$:
 
 \begin{align*}
-C_1 + C_2          &= 0, \\
--C_1 - 2\,C_2 + 5 &= 0.
+W(\cos(\omega_0 t),\, \sin(\omega_0 t))
+&= \cos(\omega_0 t)\cdot\omega_0\cos(\omega_0 t) -
+   \sin(\omega_0 t)\cdot\bigl(-\omega_0\sin(\omega_0 t)\bigr) \\
+&= \omega_0\cos^2(\omega_0 t) + \omega_0\sin^2(\omega_0 t) \\
+&= \omega_0\underbrace{\bigl(\cos^2(\omega_0 t) + \sin^2(\omega_0 t)\bigr)}_{=\,1}
+ = \omega_0 \approx 1.81~\text{rad\,s}^{-1} \neq 0.
 \end{align*}
 
-Aus der ersten Gleichung folgt $C_1 = -C_2$. Einsetzen in die zweite
-Gleichung:
+Die Wronski-Determinante ist für alle $t$ konstant und ungleich null. Die beiden
+Funktionen sind linear unabhängig und bilden damit ein Fundamentalsystem.
+
+```{admonition} Was ist ... ein Fundamentalsystem?
+:class: note
+Zwei Lösungen $y_1$ und $y_2$ der homogenen linearen ODE 2. Ordnung
+$y'' + ay' + by = 0$ heißen **Fundamentallösungen** und das Paar $\{y_1, y_2\}$
+heißt **Fundamentalsystem**, wenn $W(y_1, y_2)(x_0) \neq 0$ für mindestens ein
+$x_0$ gilt.
+
+Die **allgemeine Lösung** der homogenen ODE lautet dann
 
 \begin{equation*}
-C_2 - 2\,C_2 = -5
-\qquad \Rightarrow \qquad
-C_2 = 5,
-\quad
-C_1 = -5.
+y_h(x) = C_1\,y_1(x) + C_2\,y_2(x), \quad C_1, C_2 \in \mathbb{R},
 \end{equation*}
 
-Die vollständige Lösung des Anfangswertproblems lautet:
-
-\begin{equation*}
-y(t) = -5\,e^{-t} + 5\,e^{-2t} + 5\,t\,e^{-t}
-     = 5(t-1)\,e^{-t} + 5\,e^{-2t}.
-\end{equation*}
-
-Wir verifizieren die Anfangsbedingungen. Bei $t = 0$:
-
-\begin{equation*}
-y(0) = 5(0-1)\cdot 1 + 5\cdot 1 = -5 + 5 = 0. \quad \checkmark
-\end{equation*}
-
-Für $y'(t) = (10 - 5t)\,e^{-t} - 10\,e^{-2t}$ gilt bei $t = 0$:
-
-\begin{equation*}
-y'(0) = 10 \cdot 1 - 10 \cdot 1 = 0. \quad \checkmark
-\end{equation*}
-
-```{figure} pics/chap11_sec02_fig04.svg
----
-name: chap11_sec02_fig04
----
-Überlagerung des homogenen (transienten) Anteils $y_h(t) = -5e^{-t} +
-5e^{-2t}$, des partikulären (erzwungenen) Anteils $y_p(t) = 5 t e^{-t}$ und
-der Gesamtlösung $y(t) = y_h(t) + y_p(t)$ für das Anfangswertproblem im
-Resonanzfall aus Abschnitt 11.2. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
-4.0](https://creativecommons.org/licenses/by-sa/4.0))
+und enthält alle Lösungen der homogenen ODE.
 ```
 
-Physikalisch: Das Element startet in Ruhe. Die Kraft setzt sofort ein und
-erzeugt zunächst eine wachsende Auslenkung, die durch den Term $5t\,e^{-t}$
-im $y_p$-Anteil beschrieben wird. Dieser Anstieg ist das Kennzeichen des
-Resonanzfalls: Das System spricht stärker an als im Normalfall, weil die
-äußere Kraft genau im Takt des langsamsten Eigenmodes wirkt. Letztlich klingt
-die Auslenkung wegen der Dämpfung vollständig ab. In der Technischen Mechanik
-nennt man dieses Verhalten die **erzwungene gedämpfte Antwort** des Systems.
+Damit ist die Aussage aus Abschnitt 10.1 vollständig begründet: Das Paar
+$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ bildet ein Fundamentalsystem der
+ungedämpften Schwebebahn-Gleichung, und $\varphi_h(t) = C_1\cos(\omega_0 t) +
+C_2\sin(\omega_0 t)$ ist ihre allgemeine Lösung. Die Konstanten $C_1 = 0.231$
+und $C_2 = 0$ aus Abschnitt 10.1 sind damit die eindeutige Antwort auf das
+gestellte Anfangswertproblem.
 
-```{admonition} Lernkontrolle
-:class: tip
-[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec02_quiz.html)
+```{dropdown} Video "Allgemeine Eigenschaften der hom. lin. DGL 2. Ordnung" von Prof. Hielscher
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/w9iyXBIQRiA?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Eigenschaften der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Resonanz" von Elektrotechnik leicht gemacht
-<iframe width="958" height="613" src="https://www.youtube.com/embed/bdjqPnpMF64"
-title="13. Resonanz bei inhomogener linearen DGL mit konstanten Koeffizienten erkennen"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
+```{dropdown} Video "Wronskideterminante" von Mathe ohne Magie
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/Uu7R8RYbe3U" title="Wronskideterminante" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Der Resonanzfall tritt auf, wenn der Parameter $\alpha$ der Störfunktion mit
-einem Eigenwert der homogenen ODE übereinstimmt. Der modifizierte Ansatz mit
-zusätzlichem Faktor $t$ liefert dann die partikuläre Lösung. Die freien
-Konstanten $C_1$ und $C_2$ ergeben sich anschließend aus einem linearen
-Gleichungssystem, das unmittelbar an die Methoden aus Kapitel 2 anknüpft.
+Nicht jedes Paar von Lösungen erzeugt die allgemeine Lösung der homogenen ODE
+2. Ordnung: Die beiden Funktionen müssen linear unabhängig sein. Die
+Wronski-Determinante liefert dafür ein einfaches algebraisches Kriterium, das
+auf dem Determinantentest für lineare Gleichungssysteme aus Kapitel 1 beruht.
+Für die ungedämpfte Schwebebahn-Gleichung haben wir bestätigt, dass
+$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ ein Fundamentalsystem bildet.
 
-Bisher haben wir stets mit einer fertig aufgestellten ODE gearbeitet. In
-Abschnitt 11.3 gehen wir einen Schritt zurück und modellieren das
-Feder-Masse-Dämpfer-System aus dem Newtonschen Gesetz $ma = F$ heraus, um
-zu verstehen, wie die ODE überhaupt entsteht. Damit legen wir die Grundlage
-für die Behandlung beliebiger schwingfähiger Maschinensysteme, wie Sie sie
-in der Technischen Mechanik und in der Maschinenelementelehre antreffen
-werden.
+Eine Frage bleibt offen: *Woher kommen die Fundamentallösungen?* Bisher haben
+wir sie geraten und nachträglich verifiziert. Abschnitt 10.3 zeigt, wie man sie
+für jede lineare ODE 2. Ordnung mit konstanten Koeffizienten systematisch
+herleitet, und zwar mit einem Exponentialansatz, der die ODE auf eine
+quadratische Gleichung reduziert.

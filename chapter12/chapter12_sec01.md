@@ -3,250 +3,273 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 12.1 Periodische Funktionen und periodische Fortsetzung
+# 12.1 Die partikuläre Lösung: Ansatz vom Typ der rechten Seite
 
-In Abschnitt 11.4 haben wir gesehen, dass eine rotierende Unwucht eine
-periodische Kraft erzeugt und das System bei Resonanz zum Verhängnis werden
-kann. Dort haben wir diese Kraft einfach als $F(t) = F_0\,\sin(\Omega t)$
-angesetzt. Jetzt treten wir einen Schritt zurück und fragen: *Was macht eine
-Funktion überhaupt periodisch, und wie beschreiben wir solche Funktionen
-präzise?* Als Leitbeispiel dient uns eine Kurbelwelle, die mit
-$n = 1500~\text{min}^{-1}$ dreht und dabei eine periodische Kraft auf ein
-Pleuellager ausübt. Dieses Szenario begleitet uns durch den gesamten Abschnitt.
+In Kapitel 10 haben wir gelernt, wie man die allgemeine Lösung der homogenen
+ODE 2. Ordnung vollständig bestimmt. Was noch fehlt, ist die partikuläre Lösung
+$y_p$ der inhomogenen Gleichung $y'' + ay' + by = g(x)$: Erst sie macht die
+Gesamtlösung vollständig. Wir betrachten dazu ein Feder-Masse-Dämpfer-System,
+das in der Strukturdynamik und im Maschinenbau zu den wichtigsten Modellen
+überhaupt gehört, und fragen: *Wie reagiert ein gedämpftes Maschinenelement
+auf eine äußere Kraft, die nach einem Stoß exponentiell abklingt?*
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können erklären, was eine **periodische Funktion** ist, und die
-  definierende Eigenschaft $f(t + T) = f(t)$ anwenden.
-* [ ] Sie kennen die Begriffe **Periode** $T$, **Kreisfrequenz**
-  $\omega_0 = 2\pi/T$ und **Amplitude** und können alle drei Größen aus
-  einer gegebenen Schwingung ablesen oder berechnen.
-* [ ] Sie können eine auf einem Intervall definierte Funktion **periodisch
-  fortsetzen** und den Funktionswert an einer beliebigen Stelle der
-  Fortsetzung ablesen.
+* [ ] Sie verstehen, warum ein **Ansatz vom Typ der rechten Seite** funktioniert:
+  Ableitungen von Polynomen, Exponentialfunktionen und trigonometrischen
+  Funktionen bleiben strukturgleich.
+* [ ] Sie kennen die **Ansatztabelle** für die drei Standardfälle (Polynom,
+  Exponential, sin/cos) und können den passenden Ansatz zur gegebenen
+  Störfunktion $g(t)$ ablesen.
+* [ ] Sie können die unbekannten Koeffizienten eines Ansatzes durch
+  **Einsetzen und Koeffizientenvergleich** bestimmen und das Ergebnis
+  durch Einsetzen in die ODE verifizieren.
+* [ ] Sie können die **allgemeine Lösung**
+  $$y_{\text{allgemein}} = y_h + y_p$$
+  einer inhomogenen linearen ODE 2. Ordnung vollständig zusammensetzen.
 ```
 
-## Was macht eine Funktion periodisch?
+## Warum „vom Typ der rechten Seite"?
 
-Wir beobachten die Kurbelwelle: Nach jeder vollständigen Umdrehung befindet
-sich der Kolben wieder in derselben Position, die Kraft auf das Lager hat
-wieder denselben Wert. Was auch immer in einer Umdrehung passiert, es
-wiederholt sich in der nächsten exakt genauso. Dieses Muster kennen wir aus
-dem Alltag: Der Stundenzeiger einer Uhr zeigt nach zwölf Stunden wieder auf
-dieselbe Position, eine Melodie kehrt nach einer bestimmten Anzahl von Takten
-zum Anfang zurück.
+Ein Maschinenelement der Masse $m = 2~\text{kg}$ ist über eine Feder mit
+Steifigkeit $k = 4~\text{N/m}$ und einen Dämpfer mit Dämpfungskonstante
+$d = 6~\text{N\,s/m}$ am Maschinengestell befestigt.
 
-Das entscheidende Merkmal ist der feste Abstand, nach dem sich die
-Funktionswerte wiederholen. Wir nennen diesen Abstand die **Periode** und
-bezeichnen sie mit $T$.
-
-```{admonition} Was ist ... eine periodische Funktion?
-:class: note
-Eine Funktion $f$ heißt **periodisch** mit der **Periode** $T > 0$, wenn für
-alle $t$ gilt:
-
-\begin{equation*}
-f(t + T) = f(t).
-\end{equation*}
-
-Der kleinste solche Wert $T$ heißt **Grundperiode** oder einfach die Periode
-von $f$.
-```
-
-Wenden wir das auf die Kurbelwelle an. Die Drehzahl $n = 1500~\text{min}^{-1}$
-bedeutet, dass die Welle in einer Minute $1500$ vollständige Umdrehungen
-ausführt. Die Zeit für eine einzige Umdrehung ist damit
-
-\begin{equation*}
-T = \frac{1}{n} = \frac{1}{1500~\text{min}^{-1}} = \frac{1}{25~\text{s}^{-1}}
-= 0.04~\text{s} = 40~\text{ms}.
-\end{equation*}
-
-Die Kraft auf das Lager hat also die Periode $T = 40~\text{ms}$. Das heißt
-konkret: Wenn wir den Kraftverlauf bei $t = 0$ kennen, dann ist der Kraftwert
-bei $t = 40~\text{ms}$ identisch, bei $t = 80~\text{ms}$ wieder identisch, und
-so weiter. Wir prüfen die Definitionsbedingung: $f(t + 0.04~\text{s}) = f(t)$
-für alle $t$. Jede Kurve, die den Kolbenhub korrekt modelliert, muss diese
-Gleichung erfüllen.
-
-## Wie liest man Kreisfrequenz und Amplitude ab?
-
-Die Periode $T$ ist eine natürliche Kenngröße, wenn wir an der Zeit denken.
-In der Schwingungslehre und der Regelungstechnik arbeitet man jedoch häufig
-lieber mit der **Kreisfrequenz** $\omega_0$, weil sie direkt in den Argumenten
-von Sinus- und Kosinusfunktionen auftaucht. Wir erinnern uns an Kapitel 11:
-Dort erschien $\omega_0 = \sqrt{k/m}$ als Eigenfrequenz des Feder-Masse-Systems.
-*Wie hängt diese Größe mit der Periode zusammen?*
-
-Eine Sinusfunktion der Form $\sin(\omega_0 t)$ durchläuft genau dann einen
-vollständigen Schwingungszyklus, wenn das Argument $\omega_0 t$ den Wert $2\pi$
-erreicht. Das geschieht zum Zeitpunkt $t = T$, also wenn $\omega_0 \cdot T =
-2\pi$ gilt. Auflösen nach $\omega_0$ liefert die Formel.
-
-```{admonition} Was sind ... Kreisfrequenz und Amplitude?
-:class: note
-Für eine periodische Schwingung mit Periode $T$ ist die **Kreisfrequenz**
-
-\begin{equation*}
-\omega_0 = \frac{2\pi}{T}.
-\end{equation*}
-
-Die **Amplitude** $\hat{f}$ ist der maximale Betrag, den die Funktion annimmt:
-
-\begin{equation*}
-\hat{f} = \max_{t} |f(t)|.
-\end{equation*}
-
-Die Einheit der Kreisfrequenz ist $\text{rad}\,\text{s}^{-1}$, also Radiant
-pro Sekunde.
-```
-
-Für unsere Kurbelwelle mit $T = 40~\text{ms} = 0.04~\text{s}$ ergibt sich
-
-\begin{equation*}
-\omega_0 = \frac{2\pi}{0.04~\text{s}} = 50\pi~\text{rad\,s}^{-1}
-\approx 157.1~\text{rad\,s}^{-1}.
-\end{equation*}
-
-Modellieren wir den Kolbenhub vereinfacht als $f(t) = 3\,\sin(\omega_0 t)$ mit
-der Hubhöhe in Zentimetern, dann beträgt die Amplitude $\hat{f} = 3~\text{cm}$.
-Der maximale Ausschlag des Kolbens aus der Mittellage beträgt also $3~\text{cm}$
-nach oben und $3~\text{cm}$ nach unten.
-
-Zur Kontrolle setzen wir $\omega_0 = 50\pi~\text{rad\,s}^{-1}$ und $T =
-0.04~\text{s}$ in die Definitionsbedingung ein:
-
-\begin{equation*}
-f(t + T) = 3\,\sin\!\bigl(50\pi\,(t + 0.04)\bigr)
-= 3\,\sin(50\pi\,t + 2\pi)
-= 3\,\sin(50\pi\,t)
-= f(t). \quad \checkmark
-\end{equation*}
-
-Der Term $2\pi$ im Argument verschiebt die Sinusfunktion um genau einen vollen
-Umlauf, der Funktionswert bleibt unverändert.
-
-```{figure} pics/chap12_sec01_fig01.svg
+```{figure} pics/chap11_masse_feder_daempfungssytem.svg
 ---
-name: chap12_sec01_fig01
+name: chap11_masse_feder_daempfungssytem
 ---
-Kolbenhub $f(t) = 3\,\sin(50\pi\,t)$ über zwei Perioden. Die Periode
-$T = 40~\text{ms}$ und die Amplitude $\hat{f} = 3~\text{cm}$ sind
-eingezeichnet.
+Feder-Masse-Dämpfer-System
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-## Wie setzt man eine Funktion periodisch fort?
+Nach einem kurzen Stoß, etwa durch ein auftreffendes Werkzeug, wirkt auf das
+Element eine Kraft, die exponentiell abklingt: $F(t) = 10\,e^{-3t}~\text{N}$.
 
-In der Messtechnik und der Signalverarbeitung nehmen wir ein Signal oft nur
-über ein einziges Zeitfenster auf, beispielsweise genau eine Umdrehung der
-Kurbelwelle, also das Intervall $[0,\, T]$. Das Messgerät liefert uns eine
-Funktion $g$, die nur auf diesem Intervall definiert ist. *Was tun wir, wenn
-wir den Signalwert zu einem Zeitpunkt außerhalb des Messfensters benötigen?*
-
-Die Antwort liegt auf der Hand: Wir verlängern die Funktion, indem wir das
-Muster aus $[0, T]$ immer wieder nach rechts und nach links aneinanderhängen.
-Das nennt man die **periodische Fortsetzung** von $g$.
-
-```{admonition} Was ist ... die periodische Fortsetzung?
-:class: note
-Sei $g$ eine Funktion, die auf dem Intervall $[0, T)$ definiert ist. Die
-**periodische Fortsetzung** von $g$ mit der Periode $T$ ist die Funktion
-$\tilde{g}$, die für jedes $t \in \mathbb{R}$ durch
-
-\begin{equation*}
-\tilde{g}(t) = g(t - k \cdot T)
-\end{equation*}
-
-definiert wird, wobei $k \in \mathbb{Z}$ die eindeutig bestimmte ganze Zahl
-ist, für die $t - k \cdot T \in [0, T)$ gilt.
+```{figure} pics/chap11_sec01_fig02.svg
+---
+name: chap11_sec01_fig02
+---
+Exponentiell wirkende Kraft, z.B. durch Stoß
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-Die Berechnung des richtigen $k$ funktioniert so: Wir suchen dasjenige
-ganzzahlige Vielfache von $T$, das wir von $t$ subtrahieren müssen, damit das
-Ergebnis im Grundintervall $[0, T)$ landet. Das entspricht der ganzzahligen
-Division von $t$ durch $T$, also
+Das ist ein typisches Szenario in der Strukturdynamik: Der Impuls ist kurz und
+intensiv, klingt aber rasch ab, während das System noch lange weiterschwingt.
+
+Aus dem zweiten Newtonschen Gesetz $ma = F_{\text{ges}}$ folgt mit den drei
+wirkenden Kräften (Federkraft $-ky$, Dämpferkraft $-d\dot{y}$, äußere
+Stoßkraft $F(t)$):
 
 \begin{equation*}
-k = \left\lfloor \frac{t}{T} \right\rfloor,
+m\,y'' + d\,y' + k\,y = F(t).
 \end{equation*}
 
-wobei $\lfloor \cdot \rfloor$ die Abrundungsfunktion bezeichnet.
-
-Konkret: Angenommen, die Messkurve des Kolbenhubs ist auf $[0, 40~\text{ms})$
-durch
+Division durch $m = 2$ liefert die Standardform:
 
 \begin{equation*}
-g(t) = 3\,\sin\!\left(\frac{2\pi}{T}\,t\right) + 0.5\,\sin\!\left(\frac{4\pi}{T}\,t\right),
-\quad t \in [0,\, 40~\text{ms}),
+y'' + 3\,y' + 2\,y = 5\,e^{-3t}.
 \end{equation*}
 
-gegeben. Wir berechnen jetzt den Wert der periodischen Fortsetzung an zwei
-Stellen außerhalb des Messfensters.
-
-**Stelle $t_1 = 95~\text{ms}$:** Wir dividieren $95~\text{ms}$ durch
-$T = 40~\text{ms}$:
+Aus Abschnitt 10.3 kennen wir bereits die homogene Lösung dieser Gleichung.
+Die charakteristische Gleichung $\lambda^2 + 3\lambda + 2 = 0$ hat die
+Eigenwerte $\lambda_1 = -1$ und $\lambda_2 = -2$, also
 
 \begin{equation*}
-\frac{t_1}{T} = \frac{95}{40} = 2.375
-\qquad \Rightarrow \qquad
-k = \lfloor 2.375 \rfloor = 2.
+y_h(t) = C_1\,e^{-t} + C_2\,e^{-2t}
 \end{equation*}
 
-Der reduzierte Zeitpunkt ist $t_1 - 2 \cdot T = 95~\text{ms} - 80~\text{ms}
-= 15~\text{ms}$. Dieser Wert liegt in $[0, 40~\text{ms})$, also gilt
+mit $C_1, C_2\in\mathbb{R}$. Was noch fehlt, ist $y_p$. *Welche Funktion können
+wir ansetzen, sodass nach dem Einsetzen auf der linken Seite genau $5\,e^{-3t}$
+herauskommt?* Die entscheidende Beobachtung ist diese: Leiten wir $e^{-3t}$ ab,
+erhalten wir $-3\,e^{-3t}$. Leiten wir nochmals ab, erhalten wir $9\,e^{-3t}$.
+In jedem Fall bleibt die Funktionsstruktur $e^{-3t}$ erhalten, nur der Vorfaktor
+ändert sich. Wenn wir also $y_p = A\,e^{-3t}$ ansetzen und in die ODE einsetzen,
+entstehen auf der linken Seite ausschließlich Terme vom Typ $e^{-3t}$. Wir
+können den Koeffizienten $A$ dann so wählen, dass die rechte Seite genau
+getroffen wird.
 
-\begin{equation*}
-\tilde{g}(95~\text{ms}) = g(15~\text{ms}).
-\end{equation*}
+Dasselbe Prinzip gilt für Polynome und für trigonometrische Funktionen.
+Die Ableitung eines Polynoms vom Grad $n$ ist wieder ein Polynom, und die
+Ableitungen von $\sin(\omega t)$ und $\cos(\omega t)$ wechseln zwar zwischen
+Sinus und Kosinus, verlassen aber nie diese Funktionsklasse. In allen drei
+Fällen bleibt die Struktur bei der Differentiation erhalten. Das ist der Grund,
+warum der Ansatz funktioniert.
 
-**Stelle $t_2 = -15~\text{ms}$:** Hier liegt $t_2$ links vom Messfenster:
-
-\begin{equation*}
-\frac{t_2}{T} = \frac{-15}{40} = -0.375
-\qquad \Rightarrow \qquad
-k = \lfloor -0.375 \rfloor = -1.
-\end{equation*}
-
-Der reduzierte Zeitpunkt ist $t_2 - (-1) \cdot T = -15~\text{ms} +
-40~\text{ms} = 25~\text{ms}$. Dieser Wert liegt in $[0, 40~\text{ms})$, also
-
-\begin{equation*}
-\tilde{g}(-15~\text{ms}) = g(25~\text{ms}).
-\end{equation*}
-
-Zur Kontrolle prüfen wir, ob $\tilde{g}$ tatsächlich periodisch ist:
-
-\begin{equation*}
-\tilde{g}(t_2 + T) = \tilde{g}(-15~\text{ms} + 40~\text{ms})
-= \tilde{g}(25~\text{ms}) = g(25~\text{ms}) = \tilde{g}(t_2). \quad \checkmark
-\end{equation*}
-
-```{figure} pics/chap12_sec01_fig02.svg
+```{figure} pics/chap11_sec01_fig03.svg
 ---
-name: chap12_sec01_fig02
-width: 100%
+name: chap11_sec01_fig03
 ---
-Periodische Fortsetzung der Messkurve $g$ über mehrere Perioden. Die
-Grundperiode $[0, T)$ ist gelb hinterlegt. Die Auswertungsstellen
-$t_1 = 95~\text{ms}$ und $t_2 = -15~\text{ms}$ sind markiert und auf ihre
-reduzierten Zeitpunkte im Grundintervall zurückgeführt.
+Darstellung eines Polynoms, einer Exponentialfunktion und einer Sinusfunktion (blau) sowie ihrer Ableitungen (rot); in allen drei Fällen bleibt die Funktionsklasse bei der Ableitung erhalten.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+```{admonition} Was ist ... ein Ansatz vom Typ der rechten Seite?
+:class: note
+Gegeben sei die inhomogene lineare ODE $y'' + ay' + by = g(x)$ mit
+konstanten Koeffizienten $a, b \in \mathbb{R}$. Ein **Ansatz vom Typ der
+rechten Seite** ist eine Funktion $y_p$, die dieselbe Funktionsstruktur wie
+die Störfunktion $g(x)$ besitzt, jedoch mit zunächst unbekannten
+Koeffizienten. Die Koeffizienten werden durch Einsetzen in die ODE und
+anschließenden Koeffizientenvergleich bestimmt.
+```
+
+Für unser Feder-Masse-Dämpfer-System mit $g(t) = 5\,e^{-3t}$ lautet der
+Ansatz demnach:
+
+\begin{equation*}
+y_p(t) = A\,e^{-3t}, \quad A \in \mathbb{R} \text{ zunächst unbekannt.}
+\end{equation*}
+
+Wie wir $A$ konkret berechnen, zeigt der übernächste Abschnitt.
+
+## Welchen Ansatz wähle ich für welche Störfunktion?
+
+In der Praxis treten drei Grundtypen von Störfunktionen auf, die zusammen fast
+alle technisch relevanten Fälle abdecken. Die folgende Tabelle gibt für jeden
+Typ den passenden Ansatz und ein Beispiel aus dem Maschinenbau.
+
+```{figure} pics/chap11_sec01_fig04.svg
+---
+name: chap11_sec01_fig04
+---
+Darstellung der drei Standardtypen von Störfunktionen im Ansatzverfahren: Polynom (links), exponentiell abklingende Funktion (Mitte) und sinusförmige Schwingung (rechts). 
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+| Störfunktion $g(t)$ | Ansatz $y_p$ | Beispiel im Maschinenbau |
+| --- | --- | --- |
+| Polynom $p_n(t)$ vom Grad $n$ | Polynom vom Grad $n$ mit unbekannten Koeffizienten | linear ansteigende Drucklast auf ein Strukturbauteil |
+| $e^{\alpha t}$ | $A\,e^{\alpha t}$ | exponentiell abklingende Stoßkraft |
+| $\sin(\omega t)$ oder $\cos(\omega t)$ | $A\sin(\omega t) + B\cos(\omega t)$ | periodische Unwuchtkraft in einer rotierenden Welle |
+
+Beim Polynomansatz ist zu beachten, dass der Ansatz stets alle Terme bis zum
+Grad $n$ enthalten muss, auch wenn einzelne Terme in $g(t)$ fehlen. Warum das
+nötig ist, zeigt sich beim Einsetzen: Die Ableitungen eines Polynoms vom Grad
+$n$ erzeugen Terme aller niedrigeren Grade, und ohne diese Flexibilität kann
+der Koeffizientenvergleich nicht aufgehen.
+
+*Was passiert, wenn der gewählte Ansatz $y_p$ zufällig schon eine Lösung der
+homogenen ODE ist?* Dann verschwindet er beim Einsetzen auf der linken Seite
+vollständig, und wir erhalten $0 = g(t)$. Das ist widersprüchlich und bedeutet,
+dass der Standardansatz scheitert. Dieser Fall tritt genau dann auf, wenn der
+Parameter $\alpha$ der Störfunktion $e^{\alpha t}$ mit einem der Eigenwerte
+der charakteristischen Gleichung übereinstimmt. Er heißt **Resonanzfall** und
+erfordert eine Modifikation des Ansatzes, die Abschnitt 11.2 genau untersucht.
+
+Für unser laufendes Beispiel gilt: Die Eigenwerte sind $\lambda_1 = -1$ und
+$\lambda_2 = -2$. Der Exponent der Störfunktion ist $\alpha = -3$. Da
+$-3 \neq -1$ und $-3 \neq -2$, liegt kein Resonanzfall vor. Wir dürfen also
+direkt mit dem Standardansatz $y_p = A\,e^{-3t}$ rechnen.
+
+## Wie bestimme ich die unbekannten Koeffizienten?
+
+Wir setzen den Ansatz $y_p(t) = A\,e^{-3t}$ in die ODE
+$y'' + 3y' + 2y = 5\,e^{-3t}$ ein. Dazu berechnen wir zunächst die
+Ableitungen:
+
+\begin{align*}
+y_p(t)   &= A\,e^{-3t}, \\
+y_p'(t)  &= -3A\,e^{-3t}, \\
+y_p''(t) &= 9A\,e^{-3t}.
+\end{align*}
+
+Einsetzen in die linke Seite der ODE liefert:
+
+\begin{align*}
+y_p'' + 3\,y_p' + 2\,y_p
+&= 9A\,e^{-3t} + 3\cdot(-3A)\,e^{-3t} + 2A\,e^{-3t} \\
+&= (9A - 9A + 2A)\,e^{-3t} \\
+&= 2A\,e^{-3t}.
+\end{align*}
+
+Damit die ODE erfüllt ist, muss dieser Ausdruck gleich der rechten Seite
+$5\,e^{-3t}$ sein. Der **Koeffizientenvergleich** ergibt:
+
+\begin{equation*}
+2A\,e^{-3t} \stackrel{!}{=} 5\,e^{-3t}
+\qquad \Rightarrow \qquad
+2A = 5
+\qquad \Rightarrow \qquad
+A = \frac{5}{2}.
+\end{equation*}
+
+Die partikuläre Lösung lautet damit:
+
+\begin{equation*}
+y_p(t) = \frac{5}{2}\,e^{-3t}.
+\end{equation*}
+
+Wir verifizieren das Ergebnis durch direktes Einsetzen in die ODE:
+
+\begin{equation*}
+y_p'' + 3\,y_p' + 2\,y_p
+= \frac{5}{2}\bigl(9 - 9 + 2\bigr)\,e^{-3t}
+= \frac{5}{2} \cdot 2\,e^{-3t}
+= 5\,e^{-3t}. \quad \checkmark
+\end{equation*}
+
+Die allgemeine Lösung der inhomogenen ODE ist nun vollständig:
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+y_{\text{allgemein}}(t)
+= \underbrace{C_1\,e^{-t} + C_2\,e^{-2t}}_{y_h} +
+  \underbrace{\frac{5}{2}\,e^{-3t}}_{y_p}.
+\end{equation*}
+<!-- markdownlint-enable -->
+
+```{figure} pics/chap11_sec01_fig05.svg
+---
+name: chap11_sec01_fig05
+---
+Überlagerung des homogenen (transienten) Anteils $y_h(t)$, des partikulären
+(erzwungenen) Anteils $y_p(t)$ und der Gesamtlösung $y(t) = y_h(t) + y_p(t)$
+für das Feder-Masse-Dämpfer-System. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
+4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Der homogene Anteil $y_h$ beschreibt das freie Abklingverhalten des Systems
+aus beliebigen Anfangszuständen heraus. In der Strukturdynamik nennt man ihn
+den **transienten Anteil** der Lösung. Der partikuläre Anteil $y_p$ beschreibt
+den vom Stoß erzwungenen Beitrag: Er klingt ebenfalls exponentiell ab, und zwar
+mit dem Abfall $e^{-3t}$, der von der äußeren Kraft vorgegeben ist. Dieser
+Teil heißt **erzwungener Anteil**, weil er unabhängig von den
+Anfangsbedingungen ist und allein durch die Störfunktion bestimmt wird. Die
+freien Konstanten $C_1$ und $C_2$ hängen von der Anfangsauslenkung und der
+Anfangsgeschwindigkeit des Maschinenelements ab und werden in Abschnitt 11.2
+aus konkreten Anfangsbedingungen berechnet.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec01_quiz.html)
+```
+
+```{dropdown} Video "Spezielle Lösung inhom. lin. DGL 2. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613"
+src="https://www.youtube.com/embed/Vnv4itD5euc?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Spezielle Lösung der inhomogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-In diesem Abschnitt haben wir die drei grundlegenden Kenngrößen einer
-periodischen Funktion kennengelernt: die Periode $T$, die Kreisfrequenz
-$\omega_0 = 2\pi/T$ und die Amplitude $\hat{f}$. Außerdem haben wir gesehen,
-wie man eine auf einem Intervall gemessene Funktion durch periodische
-Fortsetzung auf die gesamte Zeitachse ausdehnt. Das Kurbelwellen-Beispiel hat
-dabei gezeigt, dass sich alle drei Größen direkt aus technischen Angaben wie
-der Drehzahl ablesen lassen.
+Der Ansatz vom Typ der rechten Seite liefert $y_p$ für die drei Standardfälle
+(Polynom, Exponential, sin/cos) auf systematische Weise: Man setzt eine
+Funktion derselben Struktur wie $g(t)$ an, bestimmt die unbekannten
+Koeffizienten durch Einsetzen und Koeffizientenvergleich und verifiziert das
+Ergebnis. Zusammen mit der homogenen Lösung aus Kapitel 10 ist die allgemeine
+Lösung der inhomogenen ODE damit vollständig.
 
-Reale Signale wie der Kolbenhub einer Kurbelwelle sind selten eine reine
-Sinusfunktion. In Abschnitt 12.2 werden wir sehen, dass sich solche Signale
-aus mehreren Schwingungen unterschiedlicher Frequenz zusammensetzen, und wir
-lernen die Begriffe Grundschwingung und Oberschwingung kennen.
+Zwei Fragen bleiben noch offen. Erstens: Was tun, wenn der Exponent $\alpha$
+der Störfunktion mit einem Eigenwert der homogenen ODE übereinstimmt und der
+Standardansatz scheitert? Zweitens: Wie legen wir aus der allgemeinen Lösung
+durch konkrete Anfangsbedingungen die Konstanten $C_1$ und $C_2$ fest? Beide
+Fragen beantwortet Abschnitt 11.2. In der Technischen Mechanik ist genau das
+die Standardaufgabe bei jedem Schwingungsproblem mit äußerer Anregung: Die
+Bewegung eines Bauteils wird aus vorgegebener Anfangslage und
+Anfangsgeschwindigkeit vollständig vorhergesagt.

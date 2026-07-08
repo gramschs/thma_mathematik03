@@ -3,191 +3,177 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 10.2 Wann spannen zwei Lösungen den gesamten Lösungsraum auf?
+# 9.2 Konstante Koeffizienten und der Resonanzfall
 
-In Abschnitt 10.1 haben wir die Schwingungsgleichung der Wuppertaler
-Schwebebahn aufgestellt und als Vorschau angekündigt, dass die allgemeine
-Lösung die Form $y_h = C_1 y_1 + C_2 y_2$ hat. Aber stimmt das wirklich für
-jedes beliebige Paar von Lösungen $y_1$ und $y_2$? *Könnte man auch zwei andere
-Lösungen nehmen und würde man damit genauso alle möglichen Bewegungen des
-Fahrwagens beschreiben?* Die Antwort ist nein, und das Kriterium, das über
-Erfolg oder Scheitern entscheidet, kennen wir bereits: die Determinante.
+In Abschnitt 9.1 haben wir die Variation der Konstanten als universelles Lösungsverfahren
+für lineare ODEs 1. Ordnung kennengelernt. Es funktioniert für beliebige Koeffizienten
+$f(x)$ und beliebige Störfunktionen $g(x)$. Für den häufig auftretenden Sonderfall
+konstanter Koeffizienten vereinfacht sich die allgemeine Formel zu einer kompakten
+Schreibweise, die wir hier ableiten. Im Anschluss untersuchen wir den **Resonanzfall**:
+Wenn die Störfunktion $g(x) = \alpha\,e^{bx}$ dieselbe Exponentialform wie $y_h$ hat,
+also $b = -a$, schlägt der Standardansatz aus Abschnitt 8.3 fehl. Die Variation der
+Konstanten behandelt diesen Fall automatisch korrekt und liefert den modifizierten Ansatz
+$y_p = C\,x\,e^{bx}$, ohne dass wir ihn separat erraten müssen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was **Fundamentallösungen** $y_1$ und $y_2$ einer homogenen
-  linearen ODE 2. Ordnung sind, und was ein **Fundamentalsystem** $\{y_1, y_2\}$
-  auszeichnet.
-* [ ] Sie können mit der **Wronski-Determinante**
+* [ ] Sie können die **Kompaktformel** für die lineare inhomogene ODE 1. Ordnung mit
+  konstanten Koeffizienten $y' + ay = g(x)$
   \begin{equation*}
-  W(y_1, y_2) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
-  \end{pmatrix} = y_1 y_2' - y_2 y_1'
+  y_{\text{allgemein}}(x) = A\cdot e^{-ax}
+    + \left[\int g(x)\,e^{ax}\,dx \right] e^{-ax}
   \end{equation*}
-  nachweisen, ob zwei Lösungen linear unabhängig sind und damit ein
-  Fundamentalsystem bilden.
-* [ ] Sie können aus einem Fundamentalsystem $\{y_1, y_2\}$ die **allgemeine
-  Lösung** $y_h(x) = C_1 y_1(x) + C_2 y_2(x)$ der homogenen ODE angeben.
+  anwenden und ihre Herleitung aus dem allgemeinen Verfahren nachvollziehen.
+* [ ] Sie können erklären, warum der Ansatz $y_p = Ce^{bx}$ im **Resonanzfall** $b = -a$
+  versagt, und wissen, dass die Variation der Konstanten in diesem Fall automatisch den
+  modifizierten Ansatz $y_p = Cx\,e^{bx}$ liefert.
+* [ ] Sie können für eine gegebene lineare inhomogene ODE 1. Ordnung mit konstanten
+  Koeffizienten entscheiden, ob der **Ansatz vom Typ der rechten Seite** (Kapitel 8)
+  oder die **Variation der Konstanten** das effizientere Lösungsverfahren ist.
 ```
 
-## Warum reicht nicht jedes Lösungspaar?
+## Die Kompaktformel für konstante Koeffizienten
 
-Wir betrachten die ungedämpfte Schwebebahn-Gleichung aus Abschnitt 10.1,
+Ist der Koeffizient konstant, also $f(x) = a$ mit $a \in \mathbb{R}$, vereinfacht sich
+die allgemeine Formel aus Abschnitt 9.1 erheblich. Das Integral des Koeffizienten ist
+$\int a\,dx = ax$, also $e^{\int f\,dx} = e^{ax}$ und $e^{-\int f\,dx} = e^{-ax}$.
+Einsetzen in die Formel aus Abschnitt 9.1:
 
-\begin{equation*}
-\varphi'' + \omega_0^2\,\varphi = 0, \quad \omega_0 \approx 1.81~\text{rad\,s}^{-1}.
-\end{equation*}
-
-Neben $y_1(t) = \cos(\omega_0 t)$ ist auch $y_2(t) = 3\cos(\omega_0 t)$ eine
-Lösung, denn Einsetzen bestätigt $y_2'' + \omega_0^2 y_2 = -3\omega_0^2
-\cos(\omega_0 t) + 3\omega_0^2\cos(\omega_0 t) = 0$. Versuchen wir, die
-allgemeine Lösung als $C_1 y_1 + C_2 y_2$ zu schreiben:
-
-\begin{equation*}
-C_1\cos(\omega_0 t) + C_2 \cdot 3\cos(\omega_0 t)
-= \underbrace{(C_1 + 3C_2)}_{=:\,C}\cos(\omega_0 t).
-\end{equation*}
-
-Das Ergebnis enthält nur eine einzige freie Konstante $C$, nicht zwei. Egal
-welche Werte wir für $C_1$ und $C_2$ wählen, wir erzeugen ausschließlich
-Vielfache von $\cos(\omega_0 t)$. Die Anfangsbedingung $\varphi'(0) = v_0
-\neq 0$ lässt sich damit niemals erfüllen, denn jede Funktion dieser Form hat
-bei $t = 0$ die Ableitung null. Das Paar $\{\cos(\omega_0 t),\, 3\cos(\omega_0 t)\}$
-deckt also nicht den gesamten Lösungsraum ab.
-
-Das Problem liegt darin, dass $y_2 = 3 y_1$ ist: Die zweite Funktion ist ein
-konstantes Vielfaches der ersten. Ein solches Paar nennen wir **linear abhängig**.
-
-## Was bedeutet lineare Unabhängigkeit für Funktionen?
-
-Aus dem Kapitel über Matrizen und lineare Gleichungssysteme kennen wir den
-Begriff der linearen Unabhängigkeit für Vektoren. Für Funktionen gilt dieselbe
-Idee: Zwei Funktionen $y_1$ und $y_2$ sind **linear abhängig**, wenn eine von
-ihnen ein konstantes Vielfaches der anderen ist, also wenn $C_1 y_1 + C_2 y_2
-= 0$ für alle $x$ gilt, ohne dass beide Konstanten null sind. Umgekehrt gilt:
-
-```{admonition} Was ist ... lineare Unabhängigkeit zweier Funktionen?
+```{admonition} Was ist ... die Kompaktformel für konstante Koeffizienten?
 :class: note
-Zwei Funktionen $y_1$ und $y_2$ heißen **linear unabhängig**, wenn aus
+Für die lineare ODE 1. Ordnung mit konstantem Koeffizienten $y' + ay = g(x)$
+lautet die allgemeine Lösung:
 
 \begin{equation*}
-C_1\,y_1(x) + C_2\,y_2(x) = 0 \quad \text{für alle } x
+y_{\text{allgemein}}(x)
+  = \underbrace{A\,e^{-ax}}_{y_h}
+  + \underbrace{\left[\int g(x)\,e^{ax}\,dx\right] e^{-ax}}_{y_p},
+  \quad A \in \mathbb{R}.
 \end{equation*}
 
-zwingend $C_1 = 0$ und $C_2 = 0$ folgt. Existieren hingegen $C_1, C_2$, die
-nicht beide null sind und die obige Gleichung trotzdem erfüllen, so heißen
-$y_1$ und $y_2$ **linear abhängig**.
+Sie ist ein Sonderfall der allgemeinen Formel aus Abschnitt 9.1 mit $f(x) = a$.
 ```
 
-Für unser Gegenbeispiel gilt $(-3)\cdot\cos(\omega_0 t) + 1\cdot 3\cos(\omega_0 t)
-= 0$ mit $C_1 = -3 \neq 0$: linear abhängig. Für $y_1 = \cos(\omega_0 t)$ und
-$y_2 = \sin(\omega_0 t)$ lässt sich kein solches Konstantenpaar finden. Aber wie
-weisen wir das systematisch nach, ohne alle möglichen Konstanten durchzuprobieren?
+Der einzige verbleibende Schritt ist die Berechnung des Integrals $\int g(x)\,e^{ax}\,dx$.
+In den meisten Fällen der Ingenieurpraxis ist dieses Integral elementar. Ein Sonderfall
+verdient jedoch besondere Aufmerksamkeit: der Resonanzfall.
 
-## Die Wronski-Determinante als Test
+## Was ist der Resonanzfall, und warum versagt der Standardansatz?
 
-Wenn $C_1 y_1(x) + C_2 y_2(x) = 0$ für alle $x$ gilt, dann gilt das auch nach
-Ableitung: $C_1 y_1'(x) + C_2 y_2'(x) = 0$. Wir haben also ein lineares
-Gleichungssystem in $C_1$ und $C_2$, das bei jedem festen $x_0$ ausgewertet
-werden kann:
+Wir betrachten die ODE:
 
 \begin{equation*}
-\begin{pmatrix} y_1(x_0) & y_2(x_0) \\ y_1'(x_0) & y_2'(x_0) \end{pmatrix}
-\begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
-= \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
+y' + 2y = 3\,e^{-2x}.
 \end{equation*}
 
-Aus Kapitel 1 wissen wir: Dieses homogene Gleichungssystem hat genau dann nur
-die triviale Lösung $C_1 = C_2 = 0$, wenn die Determinante der
-Koeffizientenmatrix ungleich null ist. Diese Determinante trägt einen eigenen
-Namen.
-
-```{admonition} Was ist ... die Wronski-Determinante?
-:class: note
-Für zwei differenzierbare Funktionen $y_1$ und $y_2$ heißt
+Die homogene Lösung ist $y_h = A\,e^{-2x}$. Die Störfunktion $g(x) = 3\,e^{-2x}$ ist
+eine Exponentialfunktion mit dem Exponenten $b = -2$. Laut Ansatztabelle aus Abschnitt
+8.3 würden wir $y_p = C\,e^{-2x}$ versuchen. Wir leiten ab und setzen ein:
 
 \begin{equation*}
-W(y_1, y_2)(x) = \det \begin{pmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x)
-\end{pmatrix} = y_1(x)\,y_2'(x) - y_2(x)\,y_1'(x)
+y_p' + 2\,y_p = -2C\,e^{-2x} + 2C\,e^{-2x} = 0 \neq 3\,e^{-2x}.
 \end{equation*}
 
-die **Wronski-Determinante** von $y_1$ und $y_2$. Gilt $W(y_1, y_2)(x_0) \neq 0$
-für mindestens ein $x_0$ im Definitionsbereich, so sind $y_1$ und $y_2$ linear
-unabhängig.
-```
+Der Ansatz ergibt null, unabhängig von $C$. *Warum?* Weil $C\,e^{-2x}$ bereits eine
+Lösung der homogenen Gleichung $y' + 2y = 0$ ist: Jede Lösung der homogenen Gleichung
+ergibt beim Einsetzen in die linke Seite zwingend null. Der Ansatz trägt also nichts zur
+rechten Seite bei, egal wie wir $C$ wählen.
 
-Wir berechnen die Wronski-Determinante für das abhängige Paar. Mit
-$y_1 = \cos(\omega_0 t)$, $y_1' = -\omega_0\sin(\omega_0 t)$,
-$y_2 = 3\cos(\omega_0 t)$ und $y_2' = -3\omega_0\sin(\omega_0 t)$ ergibt sich:
+Das ist der **Resonanzfall**: Er tritt auf, wenn der Exponent $b$ der Störfunktion
+$g(x) = \alpha\,e^{bx}$ mit dem Exponenten $-a$ der homogenen Lösung übereinstimmt,
+also wenn $b = -a$ gilt. Im vorliegenden Beispiel: $b = -2 = -a$. Der Standardansatz
+versagt, und wir müssen auf die Variation der Konstanten zurückgreifen.
+
+## Wie löst die Variation der Konstanten den Resonanzfall?
+
+Wir wenden die Kompaktformel mit $a = 2$ und $g(x) = 3\,e^{-2x}$ an. Das entscheidende
+Integral:
 
 \begin{equation*}
-W = \cos(\omega_0 t)\cdot(-3\omega_0\sin(\omega_0 t)) -
-  3\cos(\omega_0 t)\cdot(-\omega_0\sin(\omega_0 t))
-  = -3\omega_0\cos\sin + 3\omega_0\cos\sin = 0.
+\int g(x)\,e^{ax}\,dx = \int 3\,e^{-2x} \cdot e^{2x}\,dx = \int 3\,dx = 3x + C.
 \end{equation*}
 
-Die Wronski-Determinante ist identisch null: linear abhängig, wie erwartet.
+Die Exponentialfunktionen heben sich auf, und wir integrieren eine Konstante. Einsetzen
+in die Kompaktformel:
 
-## Das Fundamentalsystem der Schwebebahn
+<!-- markdownlint-disable -->
+\begin{equation*}
+y_{\text{allgemein}}(x)
+  = A\,e^{-2x} + (3x + C)\,e^{-2x}
+  = \underbrace{(A + C)\,e^{-2x}}_{=:\,\tilde{A}\,e^{-2x} = y_h}
+    + \underbrace{3x\,e^{-2x}}_{= y_p}.
+\end{equation*}
+<!-- markdownlint-enable -->
 
-Jetzt prüfen wir das Paar $\{y_1, y_2\} = \{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$.
-Mit $y_1' = -\omega_0\sin(\omega_0 t)$ und $y_2' = \omega_0\cos(\omega_0 t)$:
+Da $A$ und $C$ beide freie Konstanten sind, fassen wir sie in $\tilde{A} = A + C$
+zusammen. Die allgemeine Lösung lautet:
+
+\begin{equation*}
+y_{\text{allgemein}}(x) = \tilde{A}\,e^{-2x} + 3x\,e^{-2x}.
+\end{equation*}
+
+Die partikuläre Lösung ist $y_p = 3x\,e^{-2x}$. Das ist genau der modifizierte
+Ansatz $C\,x\,e^{bx}$ mit $C = 3$ und $b = -2$, den man im Resonanzfall separat
+erraten müsste. Die Variation der Konstanten liefert ihn automatisch, ohne dass
+wir die Modifikation vorab kennen müssen.
+
+**Verifikation.** Mit $y = (\tilde{A} + 3x)\,e^{-2x}$ und
+$y' = 3\,e^{-2x} - 2(\tilde{A} + 3x)\,e^{-2x} = (3 - 2\tilde{A} - 6x)\,e^{-2x}$:
 
 \begin{align*}
-W(\cos(\omega_0 t),\, \sin(\omega_0 t))
-&= \cos(\omega_0 t)\cdot\omega_0\cos(\omega_0 t) -
-   \sin(\omega_0 t)\cdot\bigl(-\omega_0\sin(\omega_0 t)\bigr) \\
-&= \omega_0\cos^2(\omega_0 t) + \omega_0\sin^2(\omega_0 t) \\
-&= \omega_0\underbrace{\bigl(\cos^2(\omega_0 t) + \sin^2(\omega_0 t)\bigr)}_{=\,1}
- = \omega_0 \approx 1.81~\text{rad\,s}^{-1} \neq 0.
+y' + 2y
+  &= (3 - 2\tilde{A} - 6x)\,e^{-2x} + 2(\tilde{A} + 3x)\,e^{-2x} \\
+  &= (3 - 2\tilde{A} - 6x + 2\tilde{A} + 6x)\,e^{-2x} \\
+  &= 3\,e^{-2x}. \quad \checkmark
 \end{align*}
 
-Die Wronski-Determinante ist für alle $t$ konstant und ungleich null. Die beiden
-Funktionen sind linear unabhängig und bilden damit ein Fundamentalsystem.
+In der Schwingungslehre, die Sie in Kapitel 11 kennenlernen werden, tritt der
+Resonanzfall bei ODEs 2. Ordnung in weit dramatischerer Form auf: Dort wächst
+die Amplitude der erzwungenen Schwingung unbegrenzt, wenn die Anregungsfrequenz
+mit der Eigenfrequenz des Systems übereinstimmt. Das Grundprinzip ist dasselbe
+wie hier, die physikalischen Folgen sind jedoch weitreichender.
 
-```{admonition} Was ist ... ein Fundamentalsystem?
-:class: note
-Zwei Lösungen $y_1$ und $y_2$ der homogenen linearen ODE 2. Ordnung
-$y'' + ay' + by = 0$ heißen **Fundamentallösungen** und das Paar $\{y_1, y_2\}$
-heißt **Fundamentalsystem**, wenn $W(y_1, y_2)(x_0) \neq 0$ für mindestens ein
-$x_0$ gilt.
+## Ansatz oder Variation der Konstanten? Eine Entscheidungshilfe
 
-Die **allgemeine Lösung** der homogenen ODE lautet dann
+Mit den Verfahren aus Kapitel 8 und Kapitel 9 stehen zwei Wege zur Verfügung. Die
+folgende Tabelle hilft bei der Wahl:
 
-\begin{equation*}
-y_h(x) = C_1\,y_1(x) + C_2\,y_2(x), \quad C_1, C_2 \in \mathbb{R},
-\end{equation*}
+<!-- markdownlint-disable -->
+| Situation | Empfohlenes Verfahren |
+| --- | --- |
+| Konstante Koeffizienten, $g(x)$ aus Ansatztabelle, kein Resonanzfall | Ansatz vom Typ der rechten Seite (Kap. 8) — schneller |
+| Konstante Koeffizienten, Resonanzfall ($b = -a$) | Variation der Konstanten — liefert $y_p = Cx\,e^{bx}$ automatisch |
+| Variable Koeffizienten, beliebige Störfunktion | Variation der Konstanten — einzige systematische Methode |
+<!-- markdownlint-enable -->
 
-und enthält alle Lösungen der homogenen ODE.
+Der Ansatz vom Typ der rechten Seite ist, wo er anwendbar ist, der schnellere
+Weg: Er erfordert weniger Rechenschritte. Die Variation der Konstanten ist das
+allgemeinere Werkzeug und greift immer, kostet aber ein Integral mehr. In der
+Praxis lohnt es sich, zuerst zu prüfen, ob der Resonanzfall vorliegt, bevor man
+zum Ansatz greift.
+
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lin. DGL 1. Ordnung mit konstanten Koeffizienten" von Prof. Hielscher (TH Mannheim)
+<iframe width="815" height="517" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung mit konstanten
+Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-
-Damit ist die Aussage aus Abschnitt 10.1 vollständig begründet: Das Paar
-$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ bildet ein Fundamentalsystem der
-ungedämpften Schwebebahn-Gleichung, und $\varphi_h(t) = C_1\cos(\omega_0 t) +
-C_2\sin(\omega_0 t)$ ist ihre allgemeine Lösung. Die Konstanten $C_1 = 0.231$
-und $C_2 = 0$ aus Abschnitt 10.1 sind damit die eindeutige Antwort auf das
-gestellte Anfangswertproblem.
-
-```{dropdown} Video "Allgemeine Eigenschaften der hom. lin. DGL 2. Ordnung" von Prof. Hielscher
-<iframe width="1106" height="702" src="https://www.youtube.com/embed/w9iyXBIQRiA?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Eigenschaften der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown} Video "Wronskideterminante" von Mathe ohne Magie
-<iframe width="1129" height="635" src="https://www.youtube.com/embed/Uu7R8RYbe3U" title="Wronskideterminante" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+<!-- markdownlint-enable -->
 
 ## Zusammenfassung und Ausblick
 
-Nicht jedes Paar von Lösungen erzeugt die allgemeine Lösung der homogenen ODE
-2. Ordnung: Die beiden Funktionen müssen linear unabhängig sein. Die
-Wronski-Determinante liefert dafür ein einfaches algebraisches Kriterium, das
-auf dem Determinantentest für lineare Gleichungssysteme aus Kapitel 1 beruht.
-Für die ungedämpfte Schwebebahn-Gleichung haben wir bestätigt, dass
-$\{\cos(\omega_0 t),\, \sin(\omega_0 t)\}$ ein Fundamentalsystem bildet.
+Für lineare ODEs mit konstanten Koeffizienten $y' + ay = g(x)$ vereinfacht sich
+die Variation der Konstanten zur Kompaktformel, die ein einziges Integral
+verlangt. Der Resonanzfall tritt auf, wenn $g(x) = \alpha\,e^{bx}$ mit $b = -a$:
+Der Standardansatz ergibt null, weil $e^{bx}$ bereits $y_h$ ist. Die Variation
+der Konstanten hebt die Exponentialfunktionen im Integral auf, integriert eine
+Konstante und liefert automatisch $y_p = C\,x\,e^{bx}$.
 
-Eine Frage bleibt offen: *Woher kommen die Fundamentallösungen?* Bisher haben
-wir sie geraten und nachträglich verifiziert. Abschnitt 10.3 zeigt, wie man sie
-für jede lineare ODE 2. Ordnung mit konstanten Koeffizienten systematisch
-herleitet, und zwar mit einem Exponentialansatz, der die ODE auf eine
-quadratische Gleichung reduziert.
+In Abschnitt 9.3 schließen wir den Block über ODEs 1. Ordnung ab. Wir fassen
+alle Lösungsverfahren der Kapitel 7 bis 9 in einer Übersicht zusammen und üben,
+anhand der ODE-Struktur das effizienteste Verfahren zu identifizieren. Das
+bereitet den Wechsel zu Kapitel 10 vor, wo mit linearen ODEs 2. Ordnung eine
+neue Komplexitätsstufe beginnt.

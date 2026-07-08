@@ -3,289 +3,250 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.1 Symmetrie nutzen: Kosinus- und Sinusreihen
+# 13.1 Periodische Funktionen und periodische Fortsetzung
 
-Wir kehren zu unserer Kurbelwelle aus den Abschnitten 12.1 und 12.2 zurück und
-geben dem Leitbeispiel dieses Kapitels seine physikalische Gestalt: Die Kraft
-auf das Pleuellager wechselt idealisiert mit jeder halben Umdrehung ihr
-Vorzeichen, von Zug auf Druck und zurück. Mit der Kraftamplitude $F_0$ und der
-auf $T = 2\pi$ normierten Periode lautet unser Modell $F(t) = F_0 \cdot f(t)$,
-wobei $f$ genau die symmetrische Rechteckschwingung aus Abschnitt 12.4 ist.
-Bei deren Fourieranalyse hatten wir festgestellt, dass alle
-Kosinuskoeffizienten $a_n$ verschwinden. Der Grund war nicht Zufall, sondern
-Symmetrie: Die Rechteckschwingung ist punktsymmetrisch zum Ursprung, und das
-Integral des Produkts aus einer solchen Funktion mit einer Kosinusfunktion
-über ein symmetrisches Intervall ist stets null. Jetzt machen wir diese
-Beobachtung zur Methode. *Können wir vor der Rechnung erkennen, welche
-Koeffizienten verschwinden werden, und so den Integrationsaufwand halbieren?*
+In Abschnitt 11.4 haben wir gesehen, dass eine rotierende Unwucht eine
+periodische Kraft erzeugt und das System bei Resonanz zum Verhängnis werden
+kann. Dort haben wir diese Kraft einfach als $F(t) = F_0\,\sin(\Omega t)$
+angesetzt. Jetzt treten wir einen Schritt zurück und fragen: *Was macht eine
+Funktion überhaupt periodisch, und wie beschreiben wir solche Funktionen
+präzise?* Als Leitbeispiel dient uns eine Kurbelwelle, die mit
+$n = 1500~\text{min}^{-1}$ dreht und dabei eine periodische Kraft auf ein
+Pleuellager ausübt. Dieses Szenario begleitet uns durch den gesamten Abschnitt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können erkennen, ob eine gegebene Funktion **gerade** oder
-  **ungerade** ist, und die Definition beider Begriffe angeben.
-* [ ] Sie wissen, dass bei einer geraden Funktion alle $b_n = 0$ und bei
-  einer ungeraden Funktion alle $a_n = 0$ gelten, und können dieses
-  Ergebnis begründen.
-* [ ] Sie können die Symmetrieeigenschaft einer Funktion gezielt nutzen, um
-  den Integrationsaufwand bei der Berechnung der Fourierkoeffizienten zu
-  reduzieren.
-* [ ] Sie können eine gegebene Funktion vor der Rechnung auf Symmetrie
-  prüfen und den Lösungsweg entsprechend anpassen.
+* [ ] Sie können erklären, was eine **periodische Funktion** ist, und die
+  definierende Eigenschaft $f(t + T) = f(t)$ anwenden.
+* [ ] Sie kennen die Begriffe **Periode** $T$, **Kreisfrequenz**
+  $\omega_0 = 2\pi/T$ und **Amplitude** und können alle drei Größen aus
+  einer gegebenen Schwingung ablesen oder berechnen.
+* [ ] Sie können eine auf einem Intervall definierte Funktion **periodisch
+  fortsetzen** und den Funktionswert an einer beliebigen Stelle der
+  Fortsetzung ablesen.
 ```
 
-## Was sind gerade und ungerade Funktionen?
+## Was macht eine Funktion periodisch?
 
-Wir kennen bereits zwei Paradebeispiele aus den Abschnitten 12.1 und 12.2: Die
-Kosinusfunktion hat einen symmetrischen Graphen bezüglich der $y$-Achse, die
-Sinusfunktion ist punktsymmetrisch zum Ursprung. Diese Eigenschaften haben
-eigene Namen.
+Wir beobachten die Kurbelwelle: Nach jeder vollständigen Umdrehung befindet
+sich der Kolben wieder in derselben Position, die Kraft auf das Lager hat
+wieder denselben Wert. Was auch immer in einer Umdrehung passiert, es
+wiederholt sich in der nächsten exakt genauso. Dieses Muster kennen wir aus
+dem Alltag: Der Stundenzeiger einer Uhr zeigt nach zwölf Stunden wieder auf
+dieselbe Position, eine Melodie kehrt nach einer bestimmten Anzahl von Takten
+zum Anfang zurück.
 
-```{admonition} Was sind ... gerade und ungerade Funktionen?
+Das entscheidende Merkmal ist der feste Abstand, nach dem sich die
+Funktionswerte wiederholen. Wir nennen diesen Abstand die **Periode** und
+bezeichnen sie mit $T$.
+
+```{admonition} Was ist ... eine periodische Funktion?
 :class: note
-Eine Funktion $f$ heißt **gerade**, wenn für alle $t$ gilt:
+Eine Funktion $f$ heißt **periodisch** mit der **Periode** $T > 0$, wenn für
+alle $t$ gilt:
 
 \begin{equation*}
-f(-t) = f(t).
+f(t + T) = f(t).
 \end{equation*}
 
-Eine Funktion $f$ heißt **ungerade**, wenn für alle $t$ gilt:
-
-\begin{equation*}
-f(-t) = -f(t).
-\end{equation*}
-
-Gerade Funktionen sind spiegelsymmetrisch zur $y$-Achse. Ungerade Funktionen
-sind punktsymmetrisch zum Ursprung.
+Der kleinste solche Wert $T$ heißt **Grundperiode** oder einfach die Periode
+von $f$.
 ```
 
-Im Maschinenbau begegnen uns beide Typen regelmäßig. Ein symmetrisches
-Nockenprofil, das in beide Drehrichtungen gleich wirkt, liefert eine gerade
-Funktion. Ein Steuersignal, das in der positiven Halbperiode genauso aussieht
-wie in der negativen, aber mit umgekehrtem Vorzeichen, ist ungerade. Unsere
-Rechteck-Lagerkraft aus Abschnitt 12.4 ist ungerade, denn sie verbringt die
-negative Halbperiode bei $-1$ und die positive bei $+1$.
+Wenden wir das auf die Kurbelwelle an. Die Drehzahl $n = 1500~\text{min}^{-1}$
+bedeutet, dass die Welle in einer Minute $1500$ vollständige Umdrehungen
+ausführt. Die Zeit für eine einzige Umdrehung ist damit
 
-Für die Praxis ist die folgende Merkregel hilfreich. Das Produkt zweier
-Funktionen erbt die Symmetrie nach denselben Regeln wie das Produkt von
-Vorzeichen:
+\begin{equation*}
+T = \frac{1}{n} = \frac{1}{1500~\text{min}^{-1}} = \frac{1}{25~\text{s}^{-1}}
+= 0.04~\text{s} = 40~\text{ms}.
+\end{equation*}
 
-```{admonition} Merkregel: Produkte gerader und ungerader Funktionen
+Die Kraft auf das Lager hat also die Periode $T = 40~\text{ms}$. Das heißt
+konkret: Wenn wir den Kraftverlauf bei $t = 0$ kennen, dann ist der Kraftwert
+bei $t = 40~\text{ms}$ identisch, bei $t = 80~\text{ms}$ wieder identisch, und
+so weiter. Wir prüfen die Definitionsbedingung: $f(t + 0.04~\text{s}) = f(t)$
+für alle $t$. Jede Kurve, die den Kolbenhub korrekt modelliert, muss diese
+Gleichung erfüllen.
+
+## Wie liest man Kreisfrequenz und Amplitude ab?
+
+Die Periode $T$ ist eine natürliche Kenngröße, wenn wir an der Zeit denken.
+In der Schwingungslehre und der Regelungstechnik arbeitet man jedoch häufig
+lieber mit der **Kreisfrequenz** $\omega_0$, weil sie direkt in den Argumenten
+von Sinus- und Kosinusfunktionen auftaucht. Wir erinnern uns an Kapitel 11:
+Dort erschien $\omega_0 = \sqrt{k/m}$ als Eigenfrequenz des Feder-Masse-Systems.
+*Wie hängt diese Größe mit der Periode zusammen?*
+
+Eine Sinusfunktion der Form $\sin(\omega_0 t)$ durchläuft genau dann einen
+vollständigen Schwingungszyklus, wenn das Argument $\omega_0 t$ den Wert $2\pi$
+erreicht. Das geschieht zum Zeitpunkt $t = T$, also wenn $\omega_0 \cdot T =
+2\pi$ gilt. Auflösen nach $\omega_0$ liefert die Formel.
+
+```{admonition} Was sind ... Kreisfrequenz und Amplitude?
 :class: note
-- gerade $\times$ gerade $=$ gerade
-- ungerade $\times$ ungerade $=$ gerade
-- gerade $\times$ ungerade $=$ ungerade
+Für eine periodische Schwingung mit Periode $T$ ist die **Kreisfrequenz**
 
-Das Integral einer **ungeraden** Funktion über ein symmetrisches Intervall
-$[-T/2,\, T/2]$ ist stets null.
+\begin{equation*}
+\omega_0 = \frac{2\pi}{T}.
+\end{equation*}
+
+Die **Amplitude** $\hat{f}$ ist der maximale Betrag, den die Funktion annimmt:
+
+\begin{equation*}
+\hat{f} = \max_{t} |f(t)|.
+\end{equation*}
+
+Die Einheit der Kreisfrequenz ist $\text{rad}\,\text{s}^{-1}$, also Radiant
+pro Sekunde.
 ```
 
-Diese letzte Eigenschaft ist der eigentliche Schlüssel: Wenn das Produkt
-$f(t)\cdot\cos(n\omega_0 t)$ oder $f(t)\cdot\sin(n\omega_0 t)$ eine ungerade
-Funktion ergibt, verschwindet das zugehörige Integral und damit der
-Fourierkoeffizient automatisch, ohne dass wir rechnen müssen.
-
-## Welche Fourierkoeffizienten verschwinden bei Symmetrie?
-
-Wir wenden die Merkregel auf die Euler-Fourier-Formeln an.
-
-Die Kosinusfunktion $\cos(n\omega_0 t)$ ist gerade. Ist $f$ ebenfalls
-**gerade**, so ist das Produkt $f(t)\cdot\cos(n\omega_0 t)$ gerade, und das
-Integral liefert einen von null verschiedenen Wert. Die Sinusfunktion
-$\sin(n\omega_0 t)$ ist ungerade. Das Produkt $f(t)\cdot\sin(n\omega_0 t)$ ist
-dann gerade $\times$ ungerade $=$ ungerade, das Integral über das symmetrische
-Intervall verschwindet. Damit gilt $b_n = 0$ für alle $n$.
-
-Außerdem können wir die Symmetrie ausnutzen, um das Integrationsintervall zu
-halbieren: Das Integral einer geraden Funktion über $[-T/2, T/2]$ ist doppelt
-so groß wie das Integral über $[0, T/2]$.
-
-```{admonition} Fourierreihe einer geraden Funktion
-:class: note
-Ist $f$ eine **gerade** periodische Funktion mit Periode $T$ und
-$\omega_0 = 2\pi/T$, so gilt $b_n = 0$ für alle $n \geq 1$. Die Fourierreihe
-ist eine reine **Kosinusreihe**:
+Für unsere Kurbelwelle mit $T = 40~\text{ms} = 0.04~\text{s}$ ergibt sich
 
 \begin{equation*}
-f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} a_n\,\cos(n\,\omega_0\,t),
+\omega_0 = \frac{2\pi}{0.04~\text{s}} = 50\pi~\text{rad\,s}^{-1}
+\approx 157.1~\text{rad\,s}^{-1}.
 \end{equation*}
 
-mit den vereinfachten Formeln
+Modellieren wir den Kolbenhub vereinfacht als $f(t) = 3\,\sin(\omega_0 t)$ mit
+der Hubhöhe in Zentimetern, dann beträgt die Amplitude $\hat{f} = 3~\text{cm}$.
+Der maximale Ausschlag des Kolbens aus der Mittellage beträgt also $3~\text{cm}$
+nach oben und $3~\text{cm}$ nach unten.
+
+Zur Kontrolle setzen wir $\omega_0 = 50\pi~\text{rad\,s}^{-1}$ und $T =
+0.04~\text{s}$ in die Definitionsbedingung ein:
 
 \begin{equation*}
-a_n = \frac{4}{T}\int_{0}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt,
-\quad n = 0, 1, 2, \ldots
-\end{equation*}
-```
-
-Für ungerade Funktionen läuft die Argumentation spiegelverkehrt. Die
-Kosinusfunktion ist gerade, das Produkt $f(t)\cdot\cos(n\omega_0 t)$ ist
-ungerade $\times$ gerade $=$ ungerade, das Integral verschwindet, also $a_n =
-0$. Das Produkt $f(t)\cdot\sin(n\omega_0 t)$ ist ungerade $\times$ ungerade
-$=$ gerade, das Integral liefert einen Beitrag.
-
-```{admonition} Fourierreihe einer ungeraden Funktion
-:class: note
-Ist $f$ eine **ungerade** periodische Funktion mit Periode $T$ und
-$\omega_0 = 2\pi/T$, so gilt $a_n = 0$ für alle $n \geq 0$. Die Fourierreihe
-ist eine reine **Sinusreihe**:
-
-\begin{equation*}
-f(t) = \sum_{n=1}^{\infty} b_n\,\sin(n\,\omega_0\,t),
+f(t + T) = 3\,\sin\!\bigl(50\pi\,(t + 0.04)\bigr)
+= 3\,\sin(50\pi\,t + 2\pi)
+= 3\,\sin(50\pi\,t)
+= f(t). \quad \checkmark
 \end{equation*}
 
-mit den vereinfachten Formeln
+Der Term $2\pi$ im Argument verschiebt die Sinusfunktion um genau einen vollen
+Umlauf, der Funktionswert bleibt unverändert.
 
-\begin{equation*}
-b_n = \frac{4}{T}\int_{0}^{T/2} f(t)\,\sin(n\,\omega_0\,t)\,dt,
-\quad n = 1, 2, \ldots
-\end{equation*}
-```
-
-**Verifikation am Leitbeispiel.** Die Rechteck-Lagerkraft aus Abschnitt 12.4
-erfüllt $f(-t) = -f(t)$, sie ist ungerade. Die Symmetrieregel sagt: alle
-$a_n = 0$, und die Reihe ist eine reine Sinusreihe. In Abschnitt 12.4 haben
-wir genau das durch explizite Integration bestätigt. $\checkmark$
-
-## Fourierreihe der Dreiecksschwingung
-
-Als Anwendung berechnen wir die Fourierreihe einer Funktion, die uns im
-Ventiltrieb desselben Motors begegnet: Der Hub eines symmetrischen Nockens
-steigt über eine halbe Periode linear an und fällt anschließend linear ab.
-Mathematisch ist das die Dreiecksschwingung mit Periode $T = 2\pi$:
-
-\begin{equation*}
-f(t) = \begin{cases}
-t + \pi, & -\pi \leq t < 0, \\
--t + \pi, & \phantom{-}0 \leq t < \pi.
-\end{cases}
-\end{equation*}
-
-Die Funktion oszilliert zwischen $0$ und $\pi$ und hat bei $t = 0$ ihr Maximum.
-*Ist sie gerade oder ungerade?* Wir prüfen: $f(-t) = -(-t) + \pi = t + \pi =
-f(t)$ für $t \in [0, \pi)$. Die Funktion ist **gerade**, wir dürfen also die
-vereinfachten Kosinusformeln verwenden.
-
-```{figure} pics/chap13_sec01_fig01.svg
+```{figure} pics/chap12_sec01_fig01.svg
 ---
-name: chap13_sec01_fig01
+name: chap12_sec01_fig01
 ---
-Dreiecksschwingung mit Periode $T = 2\pi$. Die Funktion ist gerade:
-ihr Graph ist spiegelsymmetrisch zur $y$-Achse.
+Kolbenhub $f(t) = 3\,\sin(50\pi\,t)$ über zwei Perioden. Die Periode
+$T = 40~\text{ms}$ und die Amplitude $\hat{f} = 3~\text{cm}$ sind
+eingezeichnet.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-**Berechnung von $a_0$.** Mit $T = 2\pi$ und der vereinfachten Formel gilt:
+## Wie setzt man eine Funktion periodisch fort?
 
-\begin{align*}
-a_0 &= \frac{4}{T}\int_{0}^{T/2} f(t)\,dt
-= \frac{2}{\pi}\int_{0}^{\pi} (-t + \pi)\,dt \\
-&= \frac{2}{\pi}\left[-\frac{t^2}{2} + \pi t\right]_{0}^{\pi}
-= \frac{2}{\pi}\left(-\frac{\pi^2}{2} + \pi^2\right)
-= \frac{2}{\pi}\cdot\frac{\pi^2}{2} = \pi.
-\end{align*}
+In der Messtechnik und der Signalverarbeitung nehmen wir ein Signal oft nur
+über ein einziges Zeitfenster auf, beispielsweise genau eine Umdrehung der
+Kurbelwelle, also das Intervall $[0,\, T]$. Das Messgerät liefert uns eine
+Funktion $g$, die nur auf diesem Intervall definiert ist. *Was tun wir, wenn
+wir den Signalwert zu einem Zeitpunkt außerhalb des Messfensters benötigen?*
 
-Der Mittelwert von $f$ beträgt $a_0/2 = \pi/2$. Das ist plausibel: Die
-Dreiecksschwingung läuft linear von $0$ auf $\pi$ und wieder zurück, ihr
-Mittelwert über eine Halbperiode ist tatsächlich $\pi/2$.
+Die Antwort liegt auf der Hand: Wir verlängern die Funktion, indem wir das
+Muster aus $[0, T]$ immer wieder nach rechts und nach links aneinanderhängen.
+Das nennt man die **periodische Fortsetzung** von $g$.
 
-**Berechnung von $a_n$ für $n \geq 1$.** Wir integrieren nur über $[0, \pi]$:
-
-\begin{align*}
-a_n &= \frac{4}{T}\int_{0}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt
-= \frac{2}{\pi}\int_{0}^{\pi} (-t + \pi)\,\cos(nt)\,dt.
-\end{align*}
-
-Wir integrieren durch Teile mit $u = -t + \pi$ und $v' = \cos(nt)$, also
-$u' = -1$ und $v = \sin(nt)/n$:
-
-<!-- markdownlint-disable -->
-\begin{align*}
-a_n &= \frac{2}{\pi}\left(
-\left[(-t + \pi)\,\frac{\sin(nt)}{n}\right]_{0}^{\pi} +
-\int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
-\right).
-\end{align*}
-<!-- markdownlint-enable -->
-
-Der erste Term verschwindet: An der Stelle $t = \pi$ gilt $-\pi + \pi = 0$, an
-der Stelle $t = 0$ gilt $\sin(0) = 0$. Es bleibt:
-
-\begin{align*}
-a_n &= \frac{2}{\pi}\int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
-= \frac{2}{n\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi}
-= \frac{2}{n^2\pi}\bigl(1 - \cos(n\pi)\bigr).
-\end{align*}
-
-Wir werten $\cos(n\pi)$ aus: Für gerades $n$ gilt $\cos(n\pi) = +1$, für
-ungerades $n$ gilt $\cos(n\pi) = -1$. Damit ergibt sich:
+```{admonition} Was ist ... die periodische Fortsetzung?
+:class: note
+Sei $g$ eine Funktion, die auf dem Intervall $[0, T)$ definiert ist. Die
+**periodische Fortsetzung** von $g$ mit der Periode $T$ ist die Funktion
+$\tilde{g}$, die für jedes $t \in \mathbb{R}$ durch
 
 \begin{equation*}
-a_n = \begin{cases}
-0, & n \text{ gerade}, \\[4pt]
-\dfrac{4}{n^2\pi}, & n \text{ ungerade}.
-\end{cases}
+\tilde{g}(t) = g(t - k \cdot T)
 \end{equation*}
 
-**Die Fourierreihe.** Da $b_n = 0$ (gerade Funktion) und $a_n = 0$ für gerades
-$n$, ergibt sich mit der Darstellung $n = 2k-1$ für ungerade Zahlen:
-
-\begin{equation*}
-f(t) = \frac{\pi}{2} + \frac{4}{\pi}\sum_{k=1}^{\infty}
-\frac{\cos\bigl((2k-1)\,t\bigr)}{(2k-1)^2}.
-\end{equation*}
-
-Die Amplituden klingen jetzt wie $1/n^2$ ab, also deutlich schneller als bei
-der Rechteck-Lagerkraft, wo sie nur wie $1/n$ abnahmen. Das liegt daran, dass
-die Dreiecksschwingung keine Sprungstellen hat, sondern nur Knickstellen.
-
-**Plausibilitätsprüfung.** Wir werten $S_1$ an der Stelle $t = 0$ aus. Dort
-hat $f$ ihr Maximum: $f(0) = \pi$. Die erste Partialsumme liefert:
-
-\begin{equation*}
-S_1(0) = \frac{\pi}{2} + \frac{4}{\pi}\cos(0) = \frac{\pi}{2} + \frac{4}{\pi}
-\approx 1.571 + 1.273 = 2.844.
-\end{equation*}
-
-Der exakte Wert ist $\pi \approx 3.142$. Die Abweichung beträgt etwa $9\,\%$.
-Mit dem zweiten nichtverschwindenden Term ($k=2$, also $n=3$):
-
-\begin{equation*}
-S_3(0) = \frac{\pi}{2} + \frac{4}{\pi} + \frac{4}{9\pi}
-\approx 1.571 + 1.273 + 0.141 = 2.985.
-\end{equation*}
-
-Die Abweichung ist auf $5\,\%$ gesunken. Die Partialsummen konvergieren sichtbar
-schneller als bei der Rechteck-Lagerkraft, was die schnellere $1/n^2$-Abnahme
-der Koeffizienten widerspiegelt.
-
-```{figure} pics/chap13_sec01_fig02.svg
----
-name: chap13_sec01_fig02
----
-Partialsummen $S_1$, $S_3$ und $S_7$ der Fourierreihe der Dreiecksschwingung.
-Die Annäherung ist gleichmäßig und ohne Überschwingen.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+definiert wird, wobei $k \in \mathbb{Z}$ die eindeutig bestimmte ganze Zahl
+ist, für die $t - k \cdot T \in [0, T)$ gilt.
 ```
 
-An den Knickstellen bei $t = \pm\pi$ runden die Partialsummen die scharfe Spitze
-sichtbar ab, schwingen dabei aber nicht über den Wertebereich der Funktion
-hinaus. Das ist ein bemerkenswerter Unterschied zur Rechteck-Lagerkraft aus
-Abschnitt 12.4, deren Partialsummen an den Sprungstellen deutlich überschossen.
-*Liegt das daran, dass die Dreiecksschwingung stetig ist?* Genau dieser Frage
-gehen wir in Abschnitt 13.2 nach, wo wir das Gibbssche Phänomen kennenlernen,
-das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
-verschwindet.
+Die Berechnung des richtigen $k$ funktioniert so: Wir suchen dasjenige
+ganzzahlige Vielfache von $T$, das wir von $t$ subtrahieren müssen, damit das
+Ergebnis im Grundintervall $[0, T)$ landet. Das entspricht der ganzzahligen
+Division von $t$ durch $T$, also
+
+\begin{equation*}
+k = \left\lfloor \frac{t}{T} \right\rfloor,
+\end{equation*}
+
+wobei $\lfloor \cdot \rfloor$ die Abrundungsfunktion bezeichnet.
+
+Konkret: Angenommen, die Messkurve des Kolbenhubs ist auf $[0, 40~\text{ms})$
+durch
+
+\begin{equation*}
+g(t) = 3\,\sin\!\left(\frac{2\pi}{T}\,t\right) + 0.5\,\sin\!\left(\frac{4\pi}{T}\,t\right),
+\quad t \in [0,\, 40~\text{ms}),
+\end{equation*}
+
+gegeben. Wir berechnen jetzt den Wert der periodischen Fortsetzung an zwei
+Stellen außerhalb des Messfensters.
+
+**Stelle $t_1 = 95~\text{ms}$:** Wir dividieren $95~\text{ms}$ durch
+$T = 40~\text{ms}$:
+
+\begin{equation*}
+\frac{t_1}{T} = \frac{95}{40} = 2.375
+\qquad \Rightarrow \qquad
+k = \lfloor 2.375 \rfloor = 2.
+\end{equation*}
+
+Der reduzierte Zeitpunkt ist $t_1 - 2 \cdot T = 95~\text{ms} - 80~\text{ms}
+= 15~\text{ms}$. Dieser Wert liegt in $[0, 40~\text{ms})$, also gilt
+
+\begin{equation*}
+\tilde{g}(95~\text{ms}) = g(15~\text{ms}).
+\end{equation*}
+
+**Stelle $t_2 = -15~\text{ms}$:** Hier liegt $t_2$ links vom Messfenster:
+
+\begin{equation*}
+\frac{t_2}{T} = \frac{-15}{40} = -0.375
+\qquad \Rightarrow \qquad
+k = \lfloor -0.375 \rfloor = -1.
+\end{equation*}
+
+Der reduzierte Zeitpunkt ist $t_2 - (-1) \cdot T = -15~\text{ms} +
+40~\text{ms} = 25~\text{ms}$. Dieser Wert liegt in $[0, 40~\text{ms})$, also
+
+\begin{equation*}
+\tilde{g}(-15~\text{ms}) = g(25~\text{ms}).
+\end{equation*}
+
+Zur Kontrolle prüfen wir, ob $\tilde{g}$ tatsächlich periodisch ist:
+
+\begin{equation*}
+\tilde{g}(t_2 + T) = \tilde{g}(-15~\text{ms} + 40~\text{ms})
+= \tilde{g}(25~\text{ms}) = g(25~\text{ms}) = \tilde{g}(t_2). \quad \checkmark
+\end{equation*}
+
+```{figure} pics/chap12_sec01_fig02.svg
+---
+name: chap12_sec01_fig02
+width: 100%
+---
+Periodische Fortsetzung der Messkurve $g$ über mehrere Perioden. Die
+Grundperiode $[0, T)$ ist gelb hinterlegt. Die Auswertungsstellen
+$t_1 = 95~\text{ms}$ und $t_2 = -15~\text{ms}$ sind markiert und auf ihre
+reduzierten Zeitpunkte im Grundintervall zurückgeführt.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
 
 ## Zusammenfassung und Ausblick
 
-Eine Symmetrieprüfung vor der Rechnung lohnt sich stets: Bei geraden Funktionen
-entfallen alle $b_n$, bei ungeraden alle $a_n$, und das Integrationsintervall
-halbiert sich auf $[0, T/2]$. Der Rechenaufwand sinkt auf die Hälfte. Das
-Beispiel der Dreiecksschwingung hat außerdem gezeigt, dass die Koeffizienten
-bei Funktionen ohne Sprungstellen schneller abklingen als bei der
-Rechteck-Lagerkraft unserer Kurbelwelle. In Abschnitt 13.2 untersuchen wir
-dieses Konvergenzverhalten genauer und lernen das Gibbssche Phänomen kennen,
-das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
-verschwindet.
+In diesem Abschnitt haben wir die drei grundlegenden Kenngrößen einer
+periodischen Funktion kennengelernt: die Periode $T$, die Kreisfrequenz
+$\omega_0 = 2\pi/T$ und die Amplitude $\hat{f}$. Außerdem haben wir gesehen,
+wie man eine auf einem Intervall gemessene Funktion durch periodische
+Fortsetzung auf die gesamte Zeitachse ausdehnt. Das Kurbelwellen-Beispiel hat
+dabei gezeigt, dass sich alle drei Größen direkt aus technischen Angaben wie
+der Drehzahl ablesen lassen.
+
+Reale Signale wie der Kolbenhub einer Kurbelwelle sind selten eine reine
+Sinusfunktion. In Abschnitt 12.2 werden wir sehen, dass sich solche Signale
+aus mehreren Schwingungen unterschiedlicher Frequenz zusammensetzen, und wir
+lernen die Begriffe Grundschwingung und Oberschwingung kennen.

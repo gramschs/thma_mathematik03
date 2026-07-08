@@ -1,221 +1,252 @@
-# Gram-Schmidt-Verfahren
+# 4.2 Definition und Eigenschaften linearer Abbildungen
 
-Im letzten Kapitel haben wir orthogonale Matrizen kennengelernt und gesehen,
-dass ihre Spalten paarweise orthonormal sind. In der Ingenieurpraxis arbeiten
-wir jedoch häufig mit Koordinatensystemen, die aus messtechnischen oder
-konstruktiven Gründen nicht von vornherein orthogonal sind. *Wie verwandeln
-wir ein beliebiges, linear unabhängiges Koordinatensystem in ein orthonormales?*
-Das Gram-Schmidt-Verfahren liefert genau diese Antwort.
+In den vorigen Kapiteln haben wir zahlreiche Beispiele linearer Abbildungen
+kennengelernt: Streckungen, Spiegelungen, Projektionen und Scherungen. All diese
+Transformationen werden durch eine Matrix-Vektor-Multiplikation beschrieben. In
+diesem Kapitel definieren wir den Begriff der linearen Abbildung formal und lernen
+die zwei Eigenschaften kennen, die jede lineare Abbildung erfüllt. Diese Eigenschaften
+sind die mathematische Grundlage des Superpositionsprinzips, das in der gesamten
+Ingenieurtechnik eine zentrale Rolle spielt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können das **Gram-Schmidt-Verfahren** auf eine Menge linear unabhängiger
-  Vektoren $\vec{v}_1, \ldots, \vec{v}_n$ anwenden, um daraus paarweise orthogonale
-  Vektoren $\vec{w}_1, \ldots, \vec{w}_n$ zu erzeugen, die denselben Vektorraum
-  aufspannen.
-* [ ] Sie können das Gram-Schmidt-Verfahren zur **Orthonormalisierung** verwenden,
-  indem Sie die orthogonalisierten Vektoren abschließend normieren.
-* [ ] Sie verstehen den Unterschied zwischen **Orthogonalisierung** (paarweise
-  senkrecht) und **Orthonormalisierung** (paarweise senkrecht und normiert).
+* Sie kennen die formale **Definition einer linearen Abbildung**
+  $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$.
+* Sie kennen die beiden charakteristischen Eigenschaften einer linearen Abbildung:
+    * **Homogenität**: $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$,
+    * **Additivität**: $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$.
+* Sie können überprüfen, ob eine gegebene Abbildung linear ist, indem Sie
+  Homogenität und Additivität nachweisen.
+* Sie verstehen den Zusammenhang zwischen Linearität und dem technisch wichtigen
+  **Superpositionsprinzip**.
+* Sie wissen, dass nicht jede geometrisch einfach wirkende Abbildung linear ist,
+  und können Gegenbeispiele angeben.
 ```
 
-## Warum brauchen wir orthonormale Basen?
+## Formale Definition
 
-In der Finite-Elemente-Methode und in der Strukturmechanik werden
-Verschiebungsfelder und Spannungszustände oft in lokalen Koordinatensystemen
-beschrieben, die sich von Element zu Element unterscheiden. Wenn diese lokalen
-Systeme orthonormal sind, vereinfachen sich die Steifigkeitsmatrizen erheblich:
-Transformationsmatrizen werden zu orthogonalen Matrizen, und die Inverse ist
-einfach die Transponierte. Das spart Rechenaufwand und vermeidet numerische
-Fehler.
-
-Stellen wir uns ein konkretes Beispiel vor. Ein Messsystem liefert uns drei
-Richtungsvektoren, die die Hauptrichtungen eines Bauteils beschreiben:
+Nachdem wir viele Beispiele gesehen haben, ist es an der Zeit, den Begriff der
+linearen Abbildung präzise zu formulieren. Durch die Multiplikation einer festen
+Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ mit einem Vektor $\vec{v} \in
+\mathbb{R}^n$ entsteht ein neuer Vektor $\vec{w} \in \mathbb{R}^m$. Diese Zuordnung
+ist eine Funktion und heißt **lineare Abbildung**:
 
 \begin{equation*}
-\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
-\vec{v}_2 = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}, \quad
-\vec{v}_3 = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}.
+F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
+\vec{v} \mapsto \vec{w} = \mathbf{A} \cdot \vec{v}.
 \end{equation*}
 
-Diese drei Vektoren sind linear unabhängig, wie wir mit der Determinante
-überprüfen können. Sie sind jedoch nicht orthogonal zueinander: das
-Skalarprodukt $\vec{v}_1 \cdot \vec{v}_2 = 1 \neq 0$ zeigt, dass zwischen
-den ersten beiden ein von Null verschiedener Winkel besteht. Das
-Gram-Schmidt-Verfahren wird uns erlauben, aus diesen drei Vektoren drei
-paarweise senkrechte Vektoren zu erzeugen, die denselben Raum aufspannen.
+Die Angabe $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ beschreibt den
+**Definitionsbereich** $\mathbb{R}^n$ (alle möglichen Eingaben) und den
+**Wertebereich** $\mathbb{R}^m$ (alle möglichen Ausgaben). Der Pfeil $\vec{v}
+\mapsto \vec{w}$ zeigt, wie ein konkreter Eingabevektor $\vec{v}$ auf den
+Ausgabevektor $\vec{w}$ abgebildet wird.
 
-## Was leistet das Gram-Schmidt-Verfahren?
-
-Der Grundgedanke ist einfach: Wir nehmen den ersten Vektor unverändert und
-bauen jeden weiteren Vektor so um, dass er zu allen vorherigen senkrecht
-steht. Dazu subtrahieren wir von jedem neuen Vektor alle seine Anteile in
-Richtung der bereits orthogonalisierten Vektoren. Was übrig bleibt, steht
-dann senkrecht auf allen bisherigen.
-
-Diesen Anteil in Richtung eines anderen Vektors nennen wir **Projektion**.
-Die Projektion von $\vec{v}$ auf einen Vektor $\vec{w}$ ist derjenige Anteil
-von $\vec{v}$, der in Richtung $\vec{w}$ zeigt:
-
-\begin{equation*}
-\text{proj}_{\vec{w}}(\vec{v}) =
-\frac{\vec{v} \cdot \vec{w}}{\vec{w} \cdot \vec{w}} \cdot \vec{w}.
-\end{equation*}
-
-Der Ausdruck $\frac{\vec{v} \cdot \vec{w}}{\vec{w} \cdot \vec{w}}$ ist ein
-Skalar, der angibt, wie viel von $\vec{v}$ in Richtung $\vec{w}$ steckt.
-Multipliziert mit $\vec{w}$ ergibt sich der Vektor, der abgezogen werden muss.
-
-```{dropdown} Video "Orthogonale Projektion (Vektoren)" von MathePeter
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/K6ZCP8cpCc8"
-title="Orthogonale Projektion (Vektoren) + Beispiele" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{admonition} Was ist ... das Gram-Schmidt-Verfahren?
+```{admonition} Was ist ... eine lineare Abbildung?
 :class: note
-Gegeben seien $n$ linear unabhängige Vektoren $\vec{v}_1, \ldots, \vec{v}_n$.
-Das **Gram-Schmidt-Verfahren** erzeugt daraus $n$ paarweise orthogonale
-Vektoren $\vec{w}_1, \ldots, \vec{w}_n$ nach der Vorschrift:
-
-\begin{align*}
-\vec{w}_1 &= \vec{v}_1, \\
-\vec{w}_k &= \vec{v}_k - \sum_{j=1}^{k-1}
-  \frac{\vec{v}_k \cdot \vec{w}_j}{\vec{w}_j \cdot \vec{w}_j} \cdot \vec{w}_j,
-  \quad k = 2, 3, \ldots, n.
-\end{align*}
-
-Werden die Vektoren abschließend auf die Länge Eins normiert, spricht man von
-**Orthonormalisierung**:
+Durch Multiplikation einer festen Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$
+wird jedem Vektor $\vec{v} \in \mathbb{R}^n$ eindeutig ein Vektor
+$\vec{w} \in \mathbb{R}^m$ zugeordnet. Diese Funktion
 
 \begin{equation*}
-\vec{e}_k = \frac{\vec{w}_k}{\|\vec{w}_k\|}.
+F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
+F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}
 \end{equation*}
+
+heißt **lineare Abbildung**.
 ```
 
-## Wie wenden wir das Verfahren konkret an?
+## Homogenität
 
-Wir wenden das Gram-Schmidt-Verfahren nun auf unser Beispiel an und berechnen
-Schritt für Schritt die drei orthogonalen Vektoren.
-
-**Schritt 1:** Der erste Vektor wird direkt übernommen:
-
-\begin{equation*}
-\vec{w}_1 = \vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}.
-\end{equation*}
-
-**Schritt 2:** Vom zweiten Vektor $\vec{v}_2$ subtrahieren wir seinen Anteil
-in Richtung $\vec{w}_1$. Dazu berechnen wir zunächst das Skalarprodukt und die
-Norm:
+Die erste fundamentale Eigenschaft einer linearen Abbildung ist die
+**Homogenität**. Sie besagt, dass es gleichgültig ist, ob man einen Vektor erst
+skaliert und dann abbildet, oder erst abbildet und dann skaliert. Das Ergebnis ist
+in beiden Fällen dasselbe:
 
 \begin{equation*}
-\vec{v}_2 \cdot \vec{w}_1 = 1 \cdot 1 + 0 \cdot 1 + 1 \cdot 0 = 1, \quad
-\vec{w}_1 \cdot \vec{w}_1 = 1 + 1 + 0 = 2.
+F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})
+\quad \text{für alle } \vec{v} \in \mathbb{R}^n \text{ und alle } \alpha \in \mathbb{R}.
 \end{equation*}
 
-Damit ergibt sich:
+Geometrisch bedeutet das: Wird ein Vektor vor der Abbildung um den Faktor $\alpha$
+gestreckt oder gestaucht, so ist das Ergebnis dasselbe wie das $\alpha$-fache des
+Bildvektors. Im Maschinenbau steckt dahinter ein wichtiges physikalisches Prinzip:
+Verdoppelt man beispielsweise die Kraft an einem elastischen Bauteil, so verdoppelt
+sich auch die Verformung, solange das Materialverhalten linear ist. Das Hookesche
+Gesetz $F = k \cdot x$ ist genau die Homogenität der linearen Abbildung, die die
+Kraft auf die Verformung abbildet.
 
-\begin{equation*}
-\vec{w}_2 = \vec{v}_2 - \frac{1}{2} \vec{w}_1 =
-\begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} -
-\frac{1}{2}\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} =
-\begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix}.
-\end{equation*}
-
-Wir überprüfen die Orthogonalität:
-$\vec{w}_1 \cdot \vec{w}_2 = 1 \cdot \frac{1}{2} + 1 \cdot (-\frac{1}{2}) + 0 \cdot 1 = 0$.
-Das Ergebnis stimmt.
-
-**Schritt 3:** Vom dritten Vektor $\vec{v}_3$ subtrahieren wir den Anteil in
-Richtung $\vec{w}_1$
-
-\begin{equation*}
-\vec{v}_3 \cdot \vec{w}_1 = 0 + 1 + 0 = 1, \quad
-\vec{w}_1 \cdot \vec{w}_1 = 1 + 1 + 0 = 2,
-\end{equation*}
-
-und den Anteil in Richtung $\vec{w}_2$:
-
-\begin{equation*}
-\vec{v}_3 \cdot \vec{w}_2 = 0 \cdot \tfrac{1}{2} + 1 \cdot (-\tfrac{1}{2}) + 1 \cdot 1
-= \tfrac{1}{2}, \quad
-\vec{w}_2 \cdot \vec{w}_2 = \tfrac{1}{4} + \tfrac{1}{4} + 1 = \tfrac{3}{2}.
-\end{equation*}
-
-Damit ergibt sich:
+Diese Eigenschaft folgt direkt aus den Rechengesetzen der Matrizenmultiplikation.
+Für eine allgemeine $2\times 2$-Matrix überprüfen wir dies konkret:
 
 \begin{align*}
-\vec{w}_3
-&= \vec{v}_3 - \frac{1}{2}\vec{w}_1 - \frac{\frac{1}{2}}{\frac{3}{2}}\vec{w}_2 \\
-&= \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} -
-\frac{1}{2}\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} -
-\frac{1}{3}\begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix} \\
-&= \begin{pmatrix} 0 - \frac{1}{2} - \frac{1}{6} \\ 1 - \frac{1}{2} + \frac{1}{6} \\ 1 - 0 - \frac{1}{3} \end{pmatrix}
-= \begin{pmatrix} -\frac{2}{3} \\ \frac{2}{3} \\ \frac{2}{3} \end{pmatrix}.
+F_{\mathbf{A}}(\alpha \cdot \vec{v})
+&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} \alpha v_x \\ \alpha v_y \end{pmatrix}
+= \begin{pmatrix} a_{11} \alpha v_x + a_{12} \alpha v_y \\ a_{21} \alpha v_x + a_{22} \alpha v_y \end{pmatrix} \\
+&= \alpha \begin{pmatrix} a_{11} v_x + a_{12} v_y \\ a_{21} v_x + a_{22} v_y \end{pmatrix}
+= \alpha \cdot \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} v_x \\ v_y \end{pmatrix}
+= \alpha \cdot F_{\mathbf{A}}(\vec{v}).
 \end{align*}
 
-Eine abschließende Probe zeigt: $\vec{w}_1 \cdot \vec{w}_3 = -\frac{2}{3} + \frac{2}{3} = 0$
-und $\vec{w}_2 \cdot \vec{w}_3 = \frac{1}{2} \cdot (-\frac{2}{3}) + (-\frac{1}{2}) \cdot \frac{2}{3} + 1 \cdot \frac{2}{3} = -\frac{1}{3} - \frac{1}{3} + \frac{2}{3} = 0$.
+Dieses Ergebnis gilt für beliebige $m \times n$-Matrizen, da die Skalarmultiplikation
+elementweise definiert ist.
 
-Alle drei Vektoren stehen paarweise senkrecht aufeinander.
+Eine wichtige Konsequenz der Homogenität ist, dass lineare Abbildungen den Nullvektor
+auf den Nullvektor abbilden. Setzt man $\alpha = 0$, so ergibt sich:
 
-## Wie normieren wir die orthogonalen Vektoren?
+\begin{equation*}
+F_{\mathbf{A}}(\vec{0}) = F_{\mathbf{A}}(0 \cdot \vec{v}) = 0 \cdot F_{\mathbf{A}}(\vec{v}) = \vec{0}.
+\end{equation*}
 
-Die Orthonormalisierung ist der letzte Schritt: Wir teilen jeden Vektor durch
-seine Länge. Das liefert die Einheitsvektoren
+Diese Eigenschaft ist ein nützliches Kriterium: Eine Abbildung, die den Nullvektor
+nicht auf den Nullvektor abbildet, kann nicht linear sein.
+
+## Additivität
+
+Die zweite fundamentale Eigenschaft ist die **Additivität**. Sie besagt, dass es
+gleichgültig ist, ob man zwei Vektoren erst addiert und dann abbildet, oder erst
+jeden Vektor einzeln abbildet und dann die Bilder addiert:
+
+\begin{equation*}
+F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)
+\quad \text{für alle } \vec{v}_1, \vec{v}_2 \in \mathbb{R}^n.
+\end{equation*}
+
+Geometrisch bedeutet das: Die Abbildung der Summe zweier Vektoren liefert dieselbe
+Summe wie die Abbildung der einzelnen Vektoren. In der Strukturmechanik steckt dahinter
+das Prinzip der Lastfallüberlagerung: Wirken auf ein Bauteil gleichzeitig zwei Lasten
+$\vec{F}_1$ und $\vec{F}_2$, so ist die resultierende Verformung gleich der Summe der
+Verformungen, die jede Last einzeln erzeugt hätte. Das erlaubt es, in der FEM komplexe
+Lastsituationen durch Überlagerung einfacher Einzellastfälle zu berechnen.
+
+Auch diese Eigenschaft folgt aus den Rechengesetzen der Matrizenmultiplikation.
+Wir überprüfen sie für eine allgemeine $2\times 2$-Matrix mit den Vektoren
+$\vec{v}_1 = \begin{pmatrix} v_{1x} \\ v_{1y} \end{pmatrix}$ und
+$\vec{v}_2 = \begin{pmatrix} v_{2x} \\ v_{2y} \end{pmatrix}$:
 
 \begin{align*}
-\vec{e}_1 &= \frac{\vec{w}_1}{\|\vec{w}_1\|} = \frac{1}{\sqrt{2}}
-\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \\
-\vec{e}_2 &= \frac{\vec{w}_2}{\|\vec{w}_2\|} = \frac{1}{\sqrt{3/2}}
-\begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix}
-= \frac{1}{\sqrt{6}}
-\begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}, \\
-\vec{e}_3 &= \frac{\vec{w}_3}{\|\vec{w}_3\|} = \frac{3}{2\sqrt{3}}
-\begin{pmatrix} -\frac{2}{3} \\ \frac{2}{3} \\ \frac{2}{3} \end{pmatrix}
-= \frac{1}{\sqrt{3}}
-\begin{pmatrix} -1 \\ 1 \\ 1 \end{pmatrix}.
+F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2)
+&= \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+\cdot \begin{pmatrix} v_{1x} + v_{2x} \\ v_{1y} + v_{2y} \end{pmatrix} \\
+&= \begin{pmatrix} a_{11}(v_{1x} + v_{2x}) + a_{12}(v_{1y} + v_{2y}) \\
+                   a_{21}(v_{1x} + v_{2x}) + a_{22}(v_{1y} + v_{2y}) \end{pmatrix} \\ +
+&= \begin{pmatrix} a_{11}v_{1x} + a_{12}v_{1y} \\ a_{21}v_{1x} + a_{22}v_{1y} \end{pmatrix}
+\begin{pmatrix} a_{11}v_{2x} + a_{12}v_{2y} \\ a_{21}v_{2x} + a_{22}v_{2y} \end{pmatrix} \\
+&= F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2).
 \end{align*}
 
-Diese drei Vektoren bilden eine orthonormale Basis des $\mathbb{R}^3$. Schreiben
-wir sie als Spalten in eine Matrix, erhalten wir eine orthogonale Matrix im
-Sinne von Kapitel 4.1. Das Gram-Schmidt-Verfahren ist damit ein konstruktives
-Werkzeug, um orthogonale Matrizen aus beliebigen linear unabhängigen Vektoren
-aufzubauen. In der Regelungstechnik und der Robotik wird genau dieser Schritt
-genutzt, um lokale Koordinatensysteme numerisch zu stabilisieren.
-
-*Und was passiert, wenn wir statt eines lokalen Koordinatensystems eines Bauteils
-die Schwingungsformen einer Struktur betrachten? Dann begegnen wir einem noch
-tieferen Zusammenhang zwischen orthogonalen Basen und Matrizen, den wir in den
-Kapiteln über Eigenwerte und Eigenvektoren aufdecken werden.*
-
-```{dropdown} Video "Gram Schmidt" von Mathematrick
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/oJkqxWrQM88"
-title="Gram Schmidt Verfahren Beispiel - Orthogonalisierungsverfahren mit 3 Vektoren"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Matrizen als Abbildungen - Teil 1" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/VUeOx_gXEoU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildungen - Teil 1" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Gram Schmidt" von MathePeter
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/l6pr1W3MQoE"
-title="Orthogonale Basis bestimmen (Gram Schmidt Orthogonalisierungsverfahren)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Matrizen als Abbildungen - Teil 2" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/6RldoWw6L_8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildungen - Teil 2" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrizen als Abbildungen - Teil 3" von Prof. Hielscher
+<iframe width="878" height="725"
+src="https://www.youtube.com/embed/QPhELH1Gupg?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Matrizen als Abbildung - Teil 3" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Superpositionsprinzip
+
+Homogenität und Additivität lassen sich zu einer einzigen Aussage zusammenfassen,
+die in der Ingenieurtechnik als **Superpositionsprinzip** bekannt ist:
+
+\begin{equation*}
+F_{\mathbf{A}}(\alpha_1 \vec{v}_1 + \alpha_2 \vec{v}_2)
+= \alpha_1 \cdot F_{\mathbf{A}}(\vec{v}_1) + \alpha_2 \cdot F_{\mathbf{A}}(\vec{v}_2).
+\end{equation*}
+
+Das Superpositionsprinzip besagt, dass die Abbildung einer Linearkombination von
+Vektoren gleich der entsprechenden Linearkombination der Bildvektoren ist.
+
+Dieses Prinzip ist das mathematische Fundament einer Vielzahl von Berechnungsmethoden
+im Maschinenbau:
+
+In der **Festigkeitslehre** erlaubt das Superpositionsprinzip, die Biegespannung und
+die Normalkraft getrennt zu berechnen und anschließend zu überlagern, solange das
+Material im linear-elastischen Bereich bleibt. Das Hookesche Gesetz garantiert dabei
+die Linearität.
+
+In der **Finite-Elemente-Methode** wird das globale Gleichungssystem $\mathbf{K}
+\vec{u} = \vec{f}$ aus den Elementsteifigkeitsmatrizen zusammengesetzt. Die
+Linearität der Abbildung $\vec{f} \mapsto \vec{u}$ erlaubt es, mehrere Lastfälle mit
+einer einzigen Faktorisierung der Steifigkeitsmatrix $\mathbf{K}$ zu lösen.
+
+In der **Regelungstechnik** beschreiben lineare Zustandsraummodelle das Verhalten
+dynamischer Systeme. Die Linearität ermöglicht den Einsatz von Methoden wie der
+Laplace-Transformation und der Bode-Diagramm-Analyse.
+
+In der **Schwingungsanalyse** erlaubt das Superpositionsprinzip, die Eigenformen
+eines Systems unabhängig voneinander zu berechnen und zur Gesamtantwort zu überlagern.
+Auf diese Grundlage werden wir im Kapitel über Eigenwerte und Eigenvektoren genauer
+eingehen.
+
+## Welche Abbildungen sind nicht linear?
+
+Nicht jede geometrisch einfach wirkende Abbildung ist linear. Ein wichtiges
+Gegenbeispiel ist die **Translation**: Jeder Punkt wird um einen festen Vektor
+$\vec{t}$ verschoben:
+
+\begin{equation*}
+f(\vec{v}) = \vec{v} + \vec{t}, \quad \vec{t} \neq \vec{0}.
+\end{equation*}
+
+Diese Abbildung ist nicht linear, weil sie den Nullvektor nicht auf den Nullvektor
+abbildet: $f(\vec{0}) = \vec{t} \neq \vec{0}$. Damit ist bereits die Homogenität
+verletzt. Im Maschinenbau bedeutet das: Die Verschiebung eines Körpers im Raum um
+einen konstanten Betrag ist keine lineare Operation. Deshalb werden in der Robotik und
+in der Computergrafik sogenannte homogene Koordinaten eingesetzt, die es ermöglichen,
+auch Translationen als Matrixmultiplikation darzustellen.
+
+Ein weiteres Gegenbeispiel aus der Technik sind nichtlineare Materialgesetze: Die
+Spannungs-Dehnungs-Beziehung von Gummi oder von Stahl im plastischen Bereich ist
+nicht linear. Für solche Materialien gilt das Superpositionsprinzip nicht, was die
+Berechnung erheblich aufwändiger macht.
+
+```{admonition} Lineare Abbildung: Homogenität und Additivität
+:class: note
+Eine Abbildung $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ mit
+$F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ ist linear, weil sie folgende
+zwei Eigenschaften erfüllt:
+
+**Homogenität:** $F_{\mathbf{A}}(\alpha \cdot \vec{v}) = \alpha \cdot F_{\mathbf{A}}(\vec{v})$
+
+**Additivität:** $F_{\mathbf{A}}(\vec{v}_1 + \vec{v}_2) = F_{\mathbf{A}}(\vec{v}_1) + F_{\mathbf{A}}(\vec{v}_2)$
+
+Diese beiden Eigenschaften gelten für alle $\vec{v}, \vec{v}_1, \vec{v}_2 \in
+\mathbb{R}^n$ und alle $\alpha \in \mathbb{R}$. Zusammen bilden sie das
+**Superpositionsprinzip**, das in der Festigkeitslehre, der FEM und der
+Regelungstechnik grundlegend ist.
+
+Eine notwendige Bedingung für Linearität ist, dass der Nullvektor auf den
+Nullvektor abgebildet wird: $F_{\mathbf{A}}(\vec{0}) = \vec{0}$.
 ```
 
 ## Zusammenfassung und Ausblick
 
-Das Gram-Schmidt-Verfahren wandelt ein linear unabhängiges Vektorensystem
-schrittweise in ein orthogonales oder orthonormales um. Der Kernschritt ist die
-Projektion: Von jedem neuen Vektor werden die bereits berechneten Richtungen
-abgezogen. Das Ergebnis ist eine orthonormale Basis, aus der sich eine
-orthogonale Matrix zusammensetzen lässt.
-
-Im nächsten Abschnitt werden wir eine besonders wichtige Klasse orthogonaler
-Matrizen genauer untersuchen: die Drehmatrizen. Sie beschreiben Rotationen in
-der Ebene und treten in der Kinematik von Roboterarmen und in der
-Koordinatentransformation von Messsystemen auf.
+Eine lineare Abbildung $F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v}$ erfüllt
+die Homogenität und die Additivität. Beide Eigenschaften folgen direkt aus den
+Rechengesetzen der Matrizenmultiplikation und spiegeln das technisch wichtige
+Superpositionsprinzip wider: In linearen Systemen dürfen Teilwirkungen getrennt
+berechnet und anschließend überlagert werden. Nicht-lineare Abbildungen wie
+Translationen oder nichtlineare Materialgesetze erfüllen diese Eigenschaft nicht.
+In den nächsten Kapiteln werden wir zwei wichtige Konzepte kennenlernen, die
+beschreiben, welche Vektoren durch eine lineare Abbildung auf den Nullvektor
+abgebildet werden (Kern) und welche Vektoren als Ergebnis auftreten können (Bild).

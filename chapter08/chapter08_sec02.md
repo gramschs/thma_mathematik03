@@ -3,202 +3,210 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 8.2 Die homogene Lösung: warum ein Exponentialansatz funktioniert
+# 8.2 Substitution: wenn die Trennung scheitert
 
-In Abschnitt 8.1 haben wir lineare ODEs nach drei Kriterien klassifiziert:
-linear oder nichtlinear, homogen oder inhomogen, konstante oder variable
-Koeffizienten. Jetzt lösen wir die einfachste dieser Klassen: die homogene
-lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Der Lösungsweg führt direkt über die
-Trennung der Variablen aus Abschnitt 7.1, die wir bereits für die
-Fallschirmspringer-Gleichung eingesetzt haben. Das Ergebnis ist stets eine
-Exponentialfunktion, und genau das erklärt rückblickend, warum ein
-Exponentialansatz für lineare ODEs mit konstanten Koeffizienten der natürliche
-erste Versuch ist. Dieses Prinzip bauen wir in Kapitel 10 für ODEs 2. Ordnung
-systematisch aus.
+In Abschnitt 7.1 haben wir gelernt, ODEs der Form $y' = f(x) \cdot g(y)$ durch Trennung
+der Variablen exakt zu lösen. Das Verfahren setzt jedoch voraus, dass sich die rechte Seite
+als Produkt zweier voneinander unabhängiger Faktoren schreiben lässt. Viele ODEs, die in
+der technischen Praxis auftreten, erfüllen diese Bedingung nicht: Der Ausdruck auf der
+rechten Seite hängt von $x$ und $y$ so verflochten ab, dass eine direkte Trennung nicht
+möglich ist. Ein einfaches Beispiel ist die ODE $y' = (x + y)^2 - 1$. Hier erscheinen
+$x$ und $y$ gemeinsam im Quadrat, und keine algebraische Umformung führt auf ein Produkt
+$f(x) \cdot g(y)$. Wenn aber der Ausdruck, von dem die rechte Seite abhängt, eine lineare
+Kombination von $x$ und $y$ ist, gibt es einen eleganten Ausweg: die **Substitution**.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die allgemeine Lösung $y_h$ der homogenen linearen DGL 1. Ordnung
-  $y' + f(x) \cdot y = 0$ mit Hilfe der Separation der Variablen herleiten.
-* [ ] Sie können die Formel
-  \begin{equation*}
-  y_h(x) = A \cdot e^{-\int f(x)\, dx}, \quad A \in \mathbb{R},
-  \end{equation*}
-  auf eine gegebene homogene lineare DGL 1. Ordnung anwenden.
-* [ ] Sie können den Sonderfall konstanter Koeffizienten $y' + ay = 0$ direkt lösen
-  und die Lösung $y_h(x) = A \cdot e^{-ax}$ angeben.
+* [ ] Sie erkennen eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$ und wissen,
+  dass eine direkte Separation im Allgemeinen nicht möglich ist.
+* [ ] Sie können die **Substitution** $u = ax + by + c$ durchführen, $y'$ durch $u'$
+  ausdrücken und die ODE in eine separierbare ODE in $u$ und $u'$ umformen.
+* [ ] Sie können die umgeformte ODE durch Separation der Variablen lösen und anschließend
+  durch **Resubstitution** $u = ax + by + c$ die Lösung in den ursprünglichen Variablen
+  angeben.
+* [ ] Sie beachten den Sonderfall $a + b \cdot f(u) = 0$ und können die zugehörige Lösung
+  gesondert bestimmen.
 ```
 
-## Was beschreibt die homogene Gleichung physikalisch?
+## Warum scheitert die direkte Trennung?
 
-Aus der Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ wird die
-zugehörige homogene ODE, indem wir die Störfunktion auf null setzen:
+Wir betrachten die ODE $y' = (x + y)^2 - 1$. Um zu prüfen, ob sie separierbar ist,
+versuchen wir, die rechte Seite als Produkt $f(x) \cdot g(y)$ zu schreiben. Das Ausmultiplizieren ergibt:
 
 \begin{equation*}
-\dot{v} + k\,v = 0.
+(x + y)^2 - 1 = x^2 + 2xy + y^2 - 1.
 \end{equation*}
 
-Physikalisch beschreibt das einen Körper, der sich ausschließlich durch
-Luftreibung verlangsamt, ohne dass eine äußere Kraft antreibt. *Was erwarten wir
-qualitativ?* Die Geschwindigkeit sollte monoton abnehmen und sich asymptotisch
-dem Ruhezustand $v = 0$ annähern. Das stimmt mit der trivialen Lösung $v = 0$
-überein, die in Abschnitt 8.1 für jede homogene lineare ODE festgestellt wurde.
+Hier treten $x^2$, $y^2$ und das gemischte Produkt $2xy$ auf. Es gibt keine Faktorisierung
+in einen reinen $x$-Faktor und einen reinen $y$-Faktor. Die direkte Separation schlägt
+fehl.
 
-Die rechte Seite der homogenen ODE lässt sich als $f(t) \cdot g(v) = 1 \cdot
-(-kv)$ schreiben. Die Gleichung ist also separierbar, und wir können das
-Verfahren aus Abschnitt 7.1 direkt anwenden.
+Was wir aber sehen: Die rechte Seite ist eine Funktion von $x + y$ allein, also von einer
+linearen Kombination beider Variablen. *Und wenn wir diese Kombination als neue Variable
+einführen?* Dann beschreibt die ODE in der neuen Variablen vielleicht etwas viel
+Einfacheres.
 
-## Wie leiten wir die homogene Lösung her?
+## Wie verwandelt die Substitution die ODE?
 
-Das Verfahren folgt den vier Schritten der Trennung der Variablen. Wir setzen $v
-\neq 0$ voraus und dividieren durch $v$:
+Wir benennen die Kombination $x + y$ als neue unbekannte Funktion $u(x)$:
+
+\begin{equation*}
+u = x + y \quad \Leftrightarrow \quad y = u - x.
+\end{equation*}
+
+Leiten wir beide Seiten nach $x$ ab, ergibt sich für die linke Seite $u'$ und für die
+rechte Seite $y' + 1$, also:
+
+\begin{equation*}
+u' = 1 + y' \quad \Leftrightarrow \quad y' = u' - 1.
+\end{equation*}
+
+Wir setzen in die ursprüngliche ODE ein. Die linke Seite $y'$ wird zu $u' - 1$, die rechte
+Seite $(x + y)^2 - 1$ wird zu $u^2 - 1$:
+
+\begin{equation*}
+u' - 1 = u^2 - 1 \quad \Rightarrow \quad u' = u^2.
+\end{equation*}
+
+Das ist eine separierbare ODE in $u$ und $x$, die wir mit dem Verfahren aus Abschnitt 7.1
+lösen können. Die Substitution hat ihre Schuldigkeit getan.
+
+```{admonition} Was ist ... die Substitutionsmethode für $y' = f(ax + by + c)$?
+:class: note
+Gegeben sei eine ODE der Form
+
+\begin{equation*}
+y' = f(ax + by + c)
+\end{equation*}
+
+mit Konstanten $a, b, c \in \mathbb{R}$ und $b \neq 0$. Die **Substitution**
+$u = ax + by + c$ führt auf
+
+\begin{equation*}
+u' = a + b \cdot y' = a + b \cdot f(u).
+\end{equation*}
+
+Diese ODE in $u$ und $x$ ist separierbar (sofern $a + b \cdot f(u) \neq 0$) und kann
+durch Trennung der Variablen gelöst werden. Nach der Lösung liefert die **Resubstitution**
+$u = ax + by + c$ die Lösung in den ursprünglichen Variablen $x$ und $y$.
+```
+
+Für unser Beispiel: $a = 1$, $b = 1$, $c = 0$ und $f(u) = u^2 - 1$. Die substituierte ODE
+lautet $u' = 1 + 1 \cdot (u^2 - 1) = u^2$, wie wir gerade berechnet haben.
+
+## Lösung durch Separation und Resubstitution
+
+Wir lösen $u' = u^2$ durch Trennung der Variablen, wobei wir zunächst $u \neq 0$
+voraussetzen.
 
 **Schritt 1: Trennen.**
 
 \begin{equation*}
-\frac{dv}{v} = -k\,dt.
+\frac{du}{u^2} = dx.
 \end{equation*}
 
-**Schritt 2 und 3: Integrieren und Stammfunktion einsetzen.**
+**Schritt 2 und 3: Integrieren und Stammfunktionen einsetzen.**
 
 \begin{equation*}
-\int \frac{dv}{v} = \int -k\,dt
-\quad \Rightarrow \quad
-\ln|v| = -kt + C_1, \quad C_1 \in \mathbb{R}.
+\int u^{-2}\,du = \int dx \quad \Rightarrow \quad -\frac{1}{u} = x + C, \quad C \in \mathbb{R}.
 \end{equation*}
 
-**Schritt 4: Auflösen.** Wir nehmen auf beiden Seiten die Exponentialfunktion
-und fassen alle Konstanten in $A \in \mathbb{R}$ zusammen:
+**Schritt 4: Nach $u$ auflösen.**
 
 \begin{equation*}
-v_h(t) = A\,e^{-kt}, \quad A \in \mathbb{R}.
+u = -\frac{1}{x + C}.
 \end{equation*}
 
-Das Vorzeichen von $v$ wird in $A$ absorbiert; für $A = 0$ entsteht die triviale
-Lösung $v = 0$, die damit automatisch enthalten ist.
-
-**Verifikation.** Einsetzen in $\dot{v} + kv = 0$:
+**Resubstitution.** Wir ersetzen $u$ durch $x + y$:
 
 \begin{equation*}
-\dot{v}_h + k\,v_h
-  = -Ak\,e^{-kt} + k \cdot A\,e^{-kt}
-  = 0. \quad \checkmark
+x + y = -\frac{1}{x + C}.
 \end{equation*}
 
-Das physikalische Bild bestätigt die Erwartung: Für $k = 0.2~\text{s}^{-1}$ und
-$A > 0$ klingt $v_h(t)$ exponentiell ab und strebt gegen null. Ohne antreibende
-Kraft kommt der Körper durch Reibung zur Ruhe. In der Regelungstechnik
-beschreibt genau diese Lösung das freie Einschwingen eines Systems nach dem
-Abschalten des Eingangssignals.
-
-## Die allgemeine Formel für beliebiges f(x)
-
-Das gerade durchgeführte Verfahren überträgt sich wörtlich auf die allgemeine
-homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Wir trennen die Variablen
-für $y \neq 0$:
+Auflösen nach $y$ ergibt die allgemeine Lösung in den ursprünglichen Variablen:
 
 \begin{equation*}
-\frac{dy}{y} = -f(x)\,dx.
+y(x) = -x - \frac{1}{x + C}, \quad C \in \mathbb{R}.
 \end{equation*}
 
-Integration beider Seiten und Auflösen nach $y$ liefert:
+**Verifikation.** Wir prüfen, ob diese Funktion die ODE $y' = (x + y)^2 - 1$ erfüllt.
 
+Ableitung der Lösung:
 \begin{equation*}
-\ln|y| = -\int f(x)\,dx + C_1
-\quad \Rightarrow \quad
-y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
+y'(x) = -1 + \frac{1}{(x + C)^2}.
 \end{equation*}
 
-```{admonition} Was ist ... die homogene Lösung einer linearen ODE 1. Ordnung?
-:class: note
-Die allgemeine Lösung der homogenen linearen ODE 1. Ordnung $y' + f(x)\,y = 0$
-lautet
-
-\begin{equation*}
-y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
-\end{equation*}
-
-Im Sonderfall konstanter Koeffizienten $f(x) = a = \mathrm{const}$ vereinfacht
-sich die Formel zu
-
-\begin{equation*}
-y_h(x) = A\,e^{-ax}.
-\end{equation*}
-
-Die Funktion $y_h$ heißt **homogene Lösung**. Sie enthält eine freie Konstante
-$A$ und bildet den ersten Baustein für die vollständige Lösung der inhomogenen
-Gleichung.
-```
-
-Für den Fallschirmspringer gilt $f(t) = k = 0.2~\text{s}^{-1}$, also $\int
-f(t)\,dt = kt$. Die Formel liefert unmittelbar $v_h(t) = A\,e^{-kt}$, wie wir es
-bereits durch explizite Rechnung hergeleitet haben.
-
-## Was passiert bei variablem f(x)? Ein überraschendes Ergebnis
-
-Die Stärke der Formel $y_h = A\,e^{-\int f(x)\,dx}$ zeigt sich erst bei
-variablen Koeffizienten. Wir betrachten als zweites Beispiel:
-
-\begin{equation*}
-y' + 2x\,y = 0.
-\end{equation*}
-
-Hier ist $f(x) = 2x$. Das Integral des Koeffizienten ist $\int 2x\,dx = x^2$,
-also:
-
-\begin{equation*}
-y_h(x) = A\,e^{-x^2}, \quad A \in \mathbb{R}.
-\end{equation*}
-
-*Was ist das für eine Funktion?* Es ist die Gaußsche Glockenkurve, eine der
-bedeutendsten Funktionen in Naturwissenschaft und Technik. In der Statistik
-beschreibt sie die Normalverteilung, in der Messtechnik die Verteilung
-zufälliger Fehler, in der Wärmeübertragung das Temperaturprofil eines
-Diffusionsvorgangs. Dass sie als Lösung einer so einfachen ODE erscheint, ist
-kein Zufall: Die Trennungsmethode hat die Gaußkurve nicht konstruiert, sondern
-zwingend aus der Gleichungsstruktur hergeleitet.
-
-**Verifikation.** Einsetzen in $y' + 2xy = 0$:
-
+Rechte Seite der ODE:
 \begin{align*}
-y_h'(x) + 2x\,y_h(x)
-  &= A\,(-2x)\,e^{-x^2} + 2x \cdot A\,e^{-x^2} \\
-  &= -2Ax\,e^{-x^2} + 2Ax\,e^{-x^2} = 0. \quad \checkmark
+(x + y)^2 - 1
+  &= \left(x - x - \frac{1}{x+C}\right)^2 - 1
+   = \frac{1}{(x+C)^2} - 1.
 \end{align*}
 
-```{dropdown} Video "Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" von Prof. Hielscher
-<iframe width="927" height="588" src="https://www.youtube.com/embed/GS8b6hQt4PU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen
-DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Linke und rechte Seite stimmen überein. Die Lösung ist verifiziert. $\checkmark$
+
+In der Regelungstechnik, die Sie in höheren Semestern kennenlernen, erscheinen ODEs dieser
+Struktur bei der Analyse nichtlinearer Regelkreise, deren Zustandsänderung von einer
+skalierten Linearkombination von Zustands- und Stellgröße abhängt. Das Substitutionsverfahren
+ist dort ein Standardwerkzeug zur Gewinnung analytischer Näherungslösungen.
+
+## Was ist der Sonderfall $a + b \cdot f(u) = 0$?
+
+Im Trennungsschritt haben wir durch $u^2$ dividiert und dabei $u \neq 0$ vorausgesetzt.
+*Was passiert, wenn $u = 0$ ist?* Dann ist $u' = u^2 = 0$: Die Funktion $u$ ist konstant
+gleich null. Das entspricht in den ursprünglichen Variablen der Bedingung
+$x + y = 0$, also $y = -x$.
+
+Allgemein: Wenn $a + b \cdot f(u) = 0$ für einen Wert $u = u_0$ gilt, dann ist
+$u \equiv u_0$ eine konstante Lösung der substituierten ODE. Die zugehörige Lösung in den
+Originalvariablen ergibt sich aus $ax + by + c = u_0$, aufgelöst nach $y$.
+
+Wir prüfen für unser Beispiel. Mit $y = -x$ gilt $y' = -1$. Einsetzen in die ODE:
+
+\begin{equation*}
+(x + (-x))^2 - 1 = 0 - 1 = -1 = y'. \quad \checkmark
+\end{equation*}
+
+Die Funktion $y = -x$ ist tatsächlich eine Lösung. Sie lässt sich aus der allgemeinen
+Lösung $y = -x - 1/(x+C)$ für kein endliches $C$ gewinnen: Im Grenzwert
+$|C| \to \infty$ verschwindet der Bruch zwar, aber $C = \infty$ ist keine zulässige
+reelle Konstante. Es handelt sich um eine **singuläre Lösung**, die separat neben der
+allgemeinen Lösung anzugeben ist.
+
+```{admonition} Was ist ... die vollständige Lösung im Substitutionsverfahren?
+:class: note
+Gegeben sei eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$. Die vollständige
+Lösung besteht aus:
+
+1. Der **allgemeinen Lösung**, erhalten durch Substitution, Separation und Resubstitution
+   (gilt für $a + b \cdot f(u) \neq 0$).
+2. Den **singulären Lösungen**, die aus den Nullstellen $u_0$ von $a + b \cdot f(u) = 0$
+   durch Resubstitution $ax + by + c = u_0$ folgen.
 ```
 
-```{dropdown} Video "Homogene lineare DGL 1. Ordnung" von ScienceBarbie
-<iframe width="927" height="521" src="https://www.youtube.com/embed/dOKdPjvEnuY"
-title="Gewöhnliche Differentialgleichungen: Homogene lineare DGL 1. Ordnung"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
+```{dropdown} Video "Trennung der Variable nach vorheriger Substitution" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/A0Cg4tRNrfI?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable nach vorheriger Substitution" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Differentialgleichung lösen durch Substitution" von Kochrezepte für Mathematik
+<iframe width="927" height="521" src="https://www.youtube.com/embed/oIjnic9GT3o"
+title="Differentialgleichung lösen durch Substitution - DGL" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$ ist stets separierbar.
-Die Trennung der Variablen aus Abschnitt 7.1 liefert die allgemeine homogene
-Lösung $y_h(x) = A\,e^{-\int f(x)\,dx}$, die für konstante Koeffizienten $f(x) =
-a$ zur vertrauten Form $y_h = A\,e^{-ax}$ wird. Das Ergebnis ist immer eine
-Exponentialfunktion oder entsteht aus ihr durch Integration des Koeffizienten.
-Genau darin liegt die Antwort auf die Titelfrage: Der Exponentialansatz
-funktioniert bei linearen ODEs mit konstanten Koeffizienten, weil er keine
-Vermutung, sondern eine erzwungene Konsequenz der Gleichungsstruktur ist.
+ODEs der Form $y' = f(ax + by + c)$ lassen sich nicht direkt trennen, weil $x$ und $y$
+gemeinsam im Argument der Funktion auftreten. Die Substitution $u = ax + by + c$ ersetzt
+dieses Argument durch eine neue Funktion und verwandelt die ODE in die separierbare Form
+$u' = a + b \cdot f(u)$, die wir mit dem Verfahren aus Abschnitt 7.1 lösen. Nach der
+Resubstitution erhalten wir die allgemeine Lösung in den Originalvariablen. Der Sonderfall
+$a + b \cdot f(u) = 0$ liefert singuläre Lösungen, die separat zu prüfen und anzugeben sind.
 
-Die homogene Lösung $y_h$ enthält eine freie Konstante $A$ und beschreibt damit
-allein noch keine eindeutige Bewegung. Sie ist aber der erste und entscheidende
-Baustein. In Abschnitt 8.3 ergänzen wir sie durch eine partikuläre Lösung $y_p$,
-die die Störfunktion $g(x)$ berücksichtigt. Für den Fallschirmspringer bedeutet
-das: $y_h = A\,e^{-kt}$ beschreibt das freie Abklingen, $y_p$ die durch die
-Schwerkraft erzwungene Grenzgeschwindigkeit. Zusammen ergibt sich die
-vollständige Lösung $v(t) = y_h + y_p$, die wir in Abschnitt 7.1 bereits
-hergeleitet haben.
+In Abschnitt 7.3 verlassen wir den methodischen Werkzeugkasten und kehren zur
+Ingenieurpraxis zurück. Wir wenden beide Verfahren dieses Kapitels auf konkrete technische
+Probleme an: den Fallschirmspringer aus Kapitel 6, dessen Lösung wir in Abschnitt 7.1
+erstmals hergeleitet haben, sowie zwei weitere Szenarien aus dem Maschinenbau, an denen
+deutlich wird, wie die Wahl des richtigen Lösungswegs vom Typ der ODE abhängt.

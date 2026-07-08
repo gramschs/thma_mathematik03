@@ -3,177 +3,202 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.2 Konstante Koeffizienten und der Resonanzfall
+# 9.2 Die homogene Lösung: warum ein Exponentialansatz funktioniert
 
-In Abschnitt 9.1 haben wir die Variation der Konstanten als universelles Lösungsverfahren
-für lineare ODEs 1. Ordnung kennengelernt. Es funktioniert für beliebige Koeffizienten
-$f(x)$ und beliebige Störfunktionen $g(x)$. Für den häufig auftretenden Sonderfall
-konstanter Koeffizienten vereinfacht sich die allgemeine Formel zu einer kompakten
-Schreibweise, die wir hier ableiten. Im Anschluss untersuchen wir den **Resonanzfall**:
-Wenn die Störfunktion $g(x) = \alpha\,e^{bx}$ dieselbe Exponentialform wie $y_h$ hat,
-also $b = -a$, schlägt der Standardansatz aus Abschnitt 8.3 fehl. Die Variation der
-Konstanten behandelt diesen Fall automatisch korrekt und liefert den modifizierten Ansatz
-$y_p = C\,x\,e^{bx}$, ohne dass wir ihn separat erraten müssen.
+In Abschnitt 8.1 haben wir lineare ODEs nach drei Kriterien klassifiziert:
+linear oder nichtlinear, homogen oder inhomogen, konstante oder variable
+Koeffizienten. Jetzt lösen wir die einfachste dieser Klassen: die homogene
+lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Der Lösungsweg führt direkt über die
+Trennung der Variablen aus Abschnitt 7.1, die wir bereits für die
+Fallschirmspringer-Gleichung eingesetzt haben. Das Ergebnis ist stets eine
+Exponentialfunktion, und genau das erklärt rückblickend, warum ein
+Exponentialansatz für lineare ODEs mit konstanten Koeffizienten der natürliche
+erste Versuch ist. Dieses Prinzip bauen wir in Kapitel 10 für ODEs 2. Ordnung
+systematisch aus.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die **Kompaktformel** für die lineare inhomogene ODE 1. Ordnung mit
-  konstanten Koeffizienten $y' + ay = g(x)$
+* [ ] Sie können die allgemeine Lösung $y_h$ der homogenen linearen DGL 1. Ordnung
+  $y' + f(x) \cdot y = 0$ mit Hilfe der Separation der Variablen herleiten.
+* [ ] Sie können die Formel
   \begin{equation*}
-  y_{\text{allgemein}}(x) = A\cdot e^{-ax}
-    + \left[\int g(x)\,e^{ax}\,dx \right] e^{-ax}
+  y_h(x) = A \cdot e^{-\int f(x)\, dx}, \quad A \in \mathbb{R},
   \end{equation*}
-  anwenden und ihre Herleitung aus dem allgemeinen Verfahren nachvollziehen.
-* [ ] Sie können erklären, warum der Ansatz $y_p = Ce^{bx}$ im **Resonanzfall** $b = -a$
-  versagt, und wissen, dass die Variation der Konstanten in diesem Fall automatisch den
-  modifizierten Ansatz $y_p = Cx\,e^{bx}$ liefert.
-* [ ] Sie können für eine gegebene lineare inhomogene ODE 1. Ordnung mit konstanten
-  Koeffizienten entscheiden, ob der **Ansatz vom Typ der rechten Seite** (Kapitel 8)
-  oder die **Variation der Konstanten** das effizientere Lösungsverfahren ist.
+  auf eine gegebene homogene lineare DGL 1. Ordnung anwenden.
+* [ ] Sie können den Sonderfall konstanter Koeffizienten $y' + ay = 0$ direkt lösen
+  und die Lösung $y_h(x) = A \cdot e^{-ax}$ angeben.
 ```
 
-## Die Kompaktformel für konstante Koeffizienten
+## Was beschreibt die homogene Gleichung physikalisch?
 
-Ist der Koeffizient konstant, also $f(x) = a$ mit $a \in \mathbb{R}$, vereinfacht sich
-die allgemeine Formel aus Abschnitt 9.1 erheblich. Das Integral des Koeffizienten ist
-$\int a\,dx = ax$, also $e^{\int f\,dx} = e^{ax}$ und $e^{-\int f\,dx} = e^{-ax}$.
-Einsetzen in die Formel aus Abschnitt 9.1:
+Aus der Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ wird die
+zugehörige homogene ODE, indem wir die Störfunktion auf null setzen:
 
-```{admonition} Was ist ... die Kompaktformel für konstante Koeffizienten?
+\begin{equation*}
+\dot{v} + k\,v = 0.
+\end{equation*}
+
+Physikalisch beschreibt das einen Körper, der sich ausschließlich durch
+Luftreibung verlangsamt, ohne dass eine äußere Kraft antreibt. *Was erwarten wir
+qualitativ?* Die Geschwindigkeit sollte monoton abnehmen und sich asymptotisch
+dem Ruhezustand $v = 0$ annähern. Das stimmt mit der trivialen Lösung $v = 0$
+überein, die in Abschnitt 8.1 für jede homogene lineare ODE festgestellt wurde.
+
+Die rechte Seite der homogenen ODE lässt sich als $f(t) \cdot g(v) = 1 \cdot
+(-kv)$ schreiben. Die Gleichung ist also separierbar, und wir können das
+Verfahren aus Abschnitt 7.1 direkt anwenden.
+
+## Wie leiten wir die homogene Lösung her?
+
+Das Verfahren folgt den vier Schritten der Trennung der Variablen. Wir setzen $v
+\neq 0$ voraus und dividieren durch $v$:
+
+**Schritt 1: Trennen.**
+
+\begin{equation*}
+\frac{dv}{v} = -k\,dt.
+\end{equation*}
+
+**Schritt 2 und 3: Integrieren und Stammfunktion einsetzen.**
+
+\begin{equation*}
+\int \frac{dv}{v} = \int -k\,dt
+\quad \Rightarrow \quad
+\ln|v| = -kt + C_1, \quad C_1 \in \mathbb{R}.
+\end{equation*}
+
+**Schritt 4: Auflösen.** Wir nehmen auf beiden Seiten die Exponentialfunktion
+und fassen alle Konstanten in $A \in \mathbb{R}$ zusammen:
+
+\begin{equation*}
+v_h(t) = A\,e^{-kt}, \quad A \in \mathbb{R}.
+\end{equation*}
+
+Das Vorzeichen von $v$ wird in $A$ absorbiert; für $A = 0$ entsteht die triviale
+Lösung $v = 0$, die damit automatisch enthalten ist.
+
+**Verifikation.** Einsetzen in $\dot{v} + kv = 0$:
+
+\begin{equation*}
+\dot{v}_h + k\,v_h
+  = -Ak\,e^{-kt} + k \cdot A\,e^{-kt}
+  = 0. \quad \checkmark
+\end{equation*}
+
+Das physikalische Bild bestätigt die Erwartung: Für $k = 0.2~\text{s}^{-1}$ und
+$A > 0$ klingt $v_h(t)$ exponentiell ab und strebt gegen null. Ohne antreibende
+Kraft kommt der Körper durch Reibung zur Ruhe. In der Regelungstechnik
+beschreibt genau diese Lösung das freie Einschwingen eines Systems nach dem
+Abschalten des Eingangssignals.
+
+## Die allgemeine Formel für beliebiges f(x)
+
+Das gerade durchgeführte Verfahren überträgt sich wörtlich auf die allgemeine
+homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Wir trennen die Variablen
+für $y \neq 0$:
+
+\begin{equation*}
+\frac{dy}{y} = -f(x)\,dx.
+\end{equation*}
+
+Integration beider Seiten und Auflösen nach $y$ liefert:
+
+\begin{equation*}
+\ln|y| = -\int f(x)\,dx + C_1
+\quad \Rightarrow \quad
+y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
+\end{equation*}
+
+```{admonition} Was ist ... die homogene Lösung einer linearen ODE 1. Ordnung?
 :class: note
-Für die lineare ODE 1. Ordnung mit konstantem Koeffizienten $y' + ay = g(x)$
-lautet die allgemeine Lösung:
+Die allgemeine Lösung der homogenen linearen ODE 1. Ordnung $y' + f(x)\,y = 0$
+lautet
 
 \begin{equation*}
-y_{\text{allgemein}}(x)
-  = \underbrace{A\,e^{-ax}}_{y_h}
-  + \underbrace{\left[\int g(x)\,e^{ax}\,dx\right] e^{-ax}}_{y_p},
-  \quad A \in \mathbb{R}.
+y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
 \end{equation*}
 
-Sie ist ein Sonderfall der allgemeinen Formel aus Abschnitt 9.1 mit $f(x) = a$.
+Im Sonderfall konstanter Koeffizienten $f(x) = a = \mathrm{const}$ vereinfacht
+sich die Formel zu
+
+\begin{equation*}
+y_h(x) = A\,e^{-ax}.
+\end{equation*}
+
+Die Funktion $y_h$ heißt **homogene Lösung**. Sie enthält eine freie Konstante
+$A$ und bildet den ersten Baustein für die vollständige Lösung der inhomogenen
+Gleichung.
 ```
 
-Der einzige verbleibende Schritt ist die Berechnung des Integrals $\int g(x)\,e^{ax}\,dx$.
-In den meisten Fällen der Ingenieurpraxis ist dieses Integral elementar. Ein Sonderfall
-verdient jedoch besondere Aufmerksamkeit: der Resonanzfall.
+Für den Fallschirmspringer gilt $f(t) = k = 0.2~\text{s}^{-1}$, also $\int
+f(t)\,dt = kt$. Die Formel liefert unmittelbar $v_h(t) = A\,e^{-kt}$, wie wir es
+bereits durch explizite Rechnung hergeleitet haben.
 
-## Was ist der Resonanzfall, und warum versagt der Standardansatz?
+## Was passiert bei variablem f(x)? Ein überraschendes Ergebnis
 
-Wir betrachten die ODE:
-
-\begin{equation*}
-y' + 2y = 3\,e^{-2x}.
-\end{equation*}
-
-Die homogene Lösung ist $y_h = A\,e^{-2x}$. Die Störfunktion $g(x) = 3\,e^{-2x}$ ist
-eine Exponentialfunktion mit dem Exponenten $b = -2$. Laut Ansatztabelle aus Abschnitt
-8.3 würden wir $y_p = C\,e^{-2x}$ versuchen. Wir leiten ab und setzen ein:
+Die Stärke der Formel $y_h = A\,e^{-\int f(x)\,dx}$ zeigt sich erst bei
+variablen Koeffizienten. Wir betrachten als zweites Beispiel:
 
 \begin{equation*}
-y_p' + 2\,y_p = -2C\,e^{-2x} + 2C\,e^{-2x} = 0 \neq 3\,e^{-2x}.
+y' + 2x\,y = 0.
 \end{equation*}
 
-Der Ansatz ergibt null, unabhängig von $C$. *Warum?* Weil $C\,e^{-2x}$ bereits eine
-Lösung der homogenen Gleichung $y' + 2y = 0$ ist: Jede Lösung der homogenen Gleichung
-ergibt beim Einsetzen in die linke Seite zwingend null. Der Ansatz trägt also nichts zur
-rechten Seite bei, egal wie wir $C$ wählen.
-
-Das ist der **Resonanzfall**: Er tritt auf, wenn der Exponent $b$ der Störfunktion
-$g(x) = \alpha\,e^{bx}$ mit dem Exponenten $-a$ der homogenen Lösung übereinstimmt,
-also wenn $b = -a$ gilt. Im vorliegenden Beispiel: $b = -2 = -a$. Der Standardansatz
-versagt, und wir müssen auf die Variation der Konstanten zurückgreifen.
-
-## Wie löst die Variation der Konstanten den Resonanzfall?
-
-Wir wenden die Kompaktformel mit $a = 2$ und $g(x) = 3\,e^{-2x}$ an. Das entscheidende
-Integral:
+Hier ist $f(x) = 2x$. Das Integral des Koeffizienten ist $\int 2x\,dx = x^2$,
+also:
 
 \begin{equation*}
-\int g(x)\,e^{ax}\,dx = \int 3\,e^{-2x} \cdot e^{2x}\,dx = \int 3\,dx = 3x + C.
+y_h(x) = A\,e^{-x^2}, \quad A \in \mathbb{R}.
 \end{equation*}
 
-Die Exponentialfunktionen heben sich auf, und wir integrieren eine Konstante. Einsetzen
-in die Kompaktformel:
+*Was ist das für eine Funktion?* Es ist die Gaußsche Glockenkurve, eine der
+bedeutendsten Funktionen in Naturwissenschaft und Technik. In der Statistik
+beschreibt sie die Normalverteilung, in der Messtechnik die Verteilung
+zufälliger Fehler, in der Wärmeübertragung das Temperaturprofil eines
+Diffusionsvorgangs. Dass sie als Lösung einer so einfachen ODE erscheint, ist
+kein Zufall: Die Trennungsmethode hat die Gaußkurve nicht konstruiert, sondern
+zwingend aus der Gleichungsstruktur hergeleitet.
 
-<!-- markdownlint-disable -->
-\begin{equation*}
-y_{\text{allgemein}}(x)
-  = A\,e^{-2x} + (3x + C)\,e^{-2x}
-  = \underbrace{(A + C)\,e^{-2x}}_{=:\,\tilde{A}\,e^{-2x} = y_h}
-    + \underbrace{3x\,e^{-2x}}_{= y_p}.
-\end{equation*}
-<!-- markdownlint-enable -->
-
-Da $A$ und $C$ beide freie Konstanten sind, fassen wir sie in $\tilde{A} = A + C$
-zusammen. Die allgemeine Lösung lautet:
-
-\begin{equation*}
-y_{\text{allgemein}}(x) = \tilde{A}\,e^{-2x} + 3x\,e^{-2x}.
-\end{equation*}
-
-Die partikuläre Lösung ist $y_p = 3x\,e^{-2x}$. Das ist genau der modifizierte
-Ansatz $C\,x\,e^{bx}$ mit $C = 3$ und $b = -2$, den man im Resonanzfall separat
-erraten müsste. Die Variation der Konstanten liefert ihn automatisch, ohne dass
-wir die Modifikation vorab kennen müssen.
-
-**Verifikation.** Mit $y = (\tilde{A} + 3x)\,e^{-2x}$ und
-$y' = 3\,e^{-2x} - 2(\tilde{A} + 3x)\,e^{-2x} = (3 - 2\tilde{A} - 6x)\,e^{-2x}$:
+**Verifikation.** Einsetzen in $y' + 2xy = 0$:
 
 \begin{align*}
-y' + 2y
-  &= (3 - 2\tilde{A} - 6x)\,e^{-2x} + 2(\tilde{A} + 3x)\,e^{-2x} \\
-  &= (3 - 2\tilde{A} - 6x + 2\tilde{A} + 6x)\,e^{-2x} \\
-  &= 3\,e^{-2x}. \quad \checkmark
+y_h'(x) + 2x\,y_h(x)
+  &= A\,(-2x)\,e^{-x^2} + 2x \cdot A\,e^{-x^2} \\
+  &= -2Ax\,e^{-x^2} + 2Ax\,e^{-x^2} = 0. \quad \checkmark
 \end{align*}
 
-In der Schwingungslehre, die Sie in Kapitel 11 kennenlernen werden, tritt der
-Resonanzfall bei ODEs 2. Ordnung in weit dramatischerer Form auf: Dort wächst
-die Amplitude der erzwungenen Schwingung unbegrenzt, wenn die Anregungsfrequenz
-mit der Eigenfrequenz des Systems übereinstimmt. Das Grundprinzip ist dasselbe
-wie hier, die physikalischen Folgen sind jedoch weitreichender.
-
-## Ansatz oder Variation der Konstanten? Eine Entscheidungshilfe
-
-Mit den Verfahren aus Kapitel 8 und Kapitel 9 stehen zwei Wege zur Verfügung. Die
-folgende Tabelle hilft bei der Wahl:
-
-<!-- markdownlint-disable -->
-| Situation | Empfohlenes Verfahren |
-| --- | --- |
-| Konstante Koeffizienten, $g(x)$ aus Ansatztabelle, kein Resonanzfall | Ansatz vom Typ der rechten Seite (Kap. 8) — schneller |
-| Konstante Koeffizienten, Resonanzfall ($b = -a$) | Variation der Konstanten — liefert $y_p = Cx\,e^{bx}$ automatisch |
-| Variable Koeffizienten, beliebige Störfunktion | Variation der Konstanten — einzige systematische Methode |
-<!-- markdownlint-enable -->
-
-Der Ansatz vom Typ der rechten Seite ist, wo er anwendbar ist, der schnellere
-Weg: Er erfordert weniger Rechenschritte. Die Variation der Konstanten ist das
-allgemeinere Werkzeug und greift immer, kostet aber ein Integral mehr. In der
-Praxis lohnt es sich, zuerst zu prüfen, ob der Resonanzfall vorliegt, bevor man
-zum Ansatz greift.
-
-<!-- markdownlint-disable -->
-```{dropdown} Video "Lin. DGL 1. Ordnung mit konstanten Koeffizienten" von Prof. Hielscher (TH Mannheim)
-<iframe width="815" height="517" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung mit konstanten
-Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+```{dropdown} Video "Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="927" height="588" src="https://www.youtube.com/embed/GS8b6hQt4PU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen
+DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
 encrypted-media; gyroscope; picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-<!-- markdownlint-enable -->
+
+```{dropdown} Video "Homogene lineare DGL 1. Ordnung" von ScienceBarbie
+<iframe width="927" height="521" src="https://www.youtube.com/embed/dOKdPjvEnuY"
+title="Gewöhnliche Differentialgleichungen: Homogene lineare DGL 1. Ordnung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
 
 ## Zusammenfassung und Ausblick
 
-Für lineare ODEs mit konstanten Koeffizienten $y' + ay = g(x)$ vereinfacht sich
-die Variation der Konstanten zur Kompaktformel, die ein einziges Integral
-verlangt. Der Resonanzfall tritt auf, wenn $g(x) = \alpha\,e^{bx}$ mit $b = -a$:
-Der Standardansatz ergibt null, weil $e^{bx}$ bereits $y_h$ ist. Die Variation
-der Konstanten hebt die Exponentialfunktionen im Integral auf, integriert eine
-Konstante und liefert automatisch $y_p = C\,x\,e^{bx}$.
+Die homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$ ist stets separierbar.
+Die Trennung der Variablen aus Abschnitt 7.1 liefert die allgemeine homogene
+Lösung $y_h(x) = A\,e^{-\int f(x)\,dx}$, die für konstante Koeffizienten $f(x) =
+a$ zur vertrauten Form $y_h = A\,e^{-ax}$ wird. Das Ergebnis ist immer eine
+Exponentialfunktion oder entsteht aus ihr durch Integration des Koeffizienten.
+Genau darin liegt die Antwort auf die Titelfrage: Der Exponentialansatz
+funktioniert bei linearen ODEs mit konstanten Koeffizienten, weil er keine
+Vermutung, sondern eine erzwungene Konsequenz der Gleichungsstruktur ist.
 
-In Abschnitt 9.3 schließen wir den Block über ODEs 1. Ordnung ab. Wir fassen
-alle Lösungsverfahren der Kapitel 7 bis 9 in einer Übersicht zusammen und üben,
-anhand der ODE-Struktur das effizienteste Verfahren zu identifizieren. Das
-bereitet den Wechsel zu Kapitel 10 vor, wo mit linearen ODEs 2. Ordnung eine
-neue Komplexitätsstufe beginnt.
+Die homogene Lösung $y_h$ enthält eine freie Konstante $A$ und beschreibt damit
+allein noch keine eindeutige Bewegung. Sie ist aber der erste und entscheidende
+Baustein. In Abschnitt 8.3 ergänzen wir sie durch eine partikuläre Lösung $y_p$,
+die die Störfunktion $g(x)$ berücksichtigt. Für den Fallschirmspringer bedeutet
+das: $y_h = A\,e^{-kt}$ beschreibt das freie Abklingen, $y_p$ die durch die
+Schwerkraft erzwungene Grenzgeschwindigkeit. Zusammen ergibt sich die
+vollständige Lösung $v(t) = y_h + y_p$, die wir in Abschnitt 7.1 bereits
+hergeleitet haben.

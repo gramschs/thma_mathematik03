@@ -1,249 +1,225 @@
 ---
 authors:
   - name: Simone Gramsch
+kernelspec:
+  name: python3
+  display_name: 'Python 3'
 ---
 
-# 7.3 Technische Anwendungen der Separation der Variablen
+# 7.3 Das Euler-Verfahren: eine Lösungskurve Schritt für Schritt verfolgen
 
-In den Abschnitten 7.1 und 7.2 haben wir zwei analytische Lösungsverfahren entwickelt:
-die Trennung der Variablen für ODEs der Form $y' = f(x) \cdot g(y)$ und die Substitution
-für ODEs der Form $y' = f(ax + by + c)$. Jetzt wenden wir beide Verfahren auf konkrete
-Ingenieurprobleme an. Der Schwerpunkt liegt dabei auf den Schritten, die in 7.1 und 7.2
-noch fehlten: eine physikalische Situation als ODE zu formulieren, den richtigen Lösungsweg
-zu erkennen und das mathematische Ergebnis physikalisch zu deuten.
+In Abschnitt 6.2 haben wir gesehen, wie man einer Lösungskurve im Richtungsfeld
+mit dem Auge folgt: Man beginnt am Startpunkt und bewegt sich immer in Richtung
+des dortigen Linienelementes. Das ist qualitativ überzeugend, aber für
+ingenieurmäßige Berechnungen nicht präzise genug. Jetzt machen wir aus dieser
+Idee einen Algorithmus. Das Euler-Verfahren ist das einfachste numerische
+Verfahren zur Lösung von ODEs und bildet die Grundlage für alle modernen
+Simulationswerkzeuge in der Strömungsmechanik, der Mehrkörperdynamik und der
+Regelungstechnik.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können zu einer physikalischen Problemstellung die zugehörige ODE aufstellen
-  und als separierbar identifizieren.
-* [ ] Sie können die **Euler-Eytelwein-Gleichung** $F' = \mu\,F$ durch Separation lösen,
-  das Ergebnis auf ein Riementrieb-Beispiel mit konkreten Zahlenwerten anwenden und
-  physikalisch interpretieren.
-* [ ] Sie können die **Torricellische Ausflussgleichung** $\dot{h} = -k\sqrt{h}$ durch
-  Separation lösen, die Entleerungszeit berechnen und das Ergebnis physikalisch deuten.
-* [ ] Sie können anhand der Struktur der rechten Seite einer ODE entscheiden, ob die
-  direkte Separation (Abschnitt 7.1) oder die Substitutionsmethode (Abschnitt 7.2)
-  anzuwenden ist.
+* [ ] Sie können die **Euler-Formel**
+  $v_{n+1} = v_n + h \cdot F(t_n, v_n)$ aus dem Differenzenquotienten
+  herleiten.
+* [ ] Sie können das **Euler-Verfahren** als nummerierten Algorithmus
+  formulieren und auf ein gegebenes AWP anwenden.
+* [ ] Sie können die entstehende **Punktfolge** $(t_n, v_n)$ tabellarisch
+  berechnen und als Polygonzug im Richtungsfeld interpretieren.
+* [ ] Sie kennen die **Schwächen des Euler-Verfahrens**: akkumulierender
+  Fehler und starke Abhängigkeit von der Schrittweite $h$.
 ```
 
-## Beispiel 1: Seilkraft am Riementrieb
+## Wie wird aus einem Linienelement ein Rechenschritt?
 
-An einem Riementrieb läuft ein Flachriemen über eine Scheibe mit dem
-Reibungskoeffizienten $\mu = 0.3$. Auf der Zugseite wirkt die große Kraft $F$, auf der
-Schlupfseite die kleine Haltekraft $F_0$. *Wie ändert sich die Riemenkraft entlang des
-Umschlingungsbogens, und wie groß ist der Kraftunterschied für eine Umschlingung von
-$180°$?*
-
-### Aufstellen der ODE
-
-Wir betrachten ein infinitesimales Bogenelement des Riemens am Umschlingungswinkel
-$\varphi$. Die Reibungskraft an diesem Element ist proportional zur lokalen Riemenkraft
-$F(\varphi)$ und zum Winkelinkrement $d\varphi$. Das Kräftegleichgewicht ergibt die
-**Euler-Eytelwein-Gleichung**:
+Im Richtungsfeld aus Abschnitt 6.2 haben wir gesehen: Am Punkt $(t_n, v_n)$
+hat die Lösungskurve die Steigung $F(t_n, v_n) = g - k v_n$. Die Idee des
+Euler-Verfahrens ist, diese Steigung für einen kleinen Zeitschritt der Länge
+$h$ als konstant anzunehmen und damit den nächsten Punkt der Kurve zu
+berechnen. Das entspricht dem Ersetzen der Ableitung durch einen
+Differenzenquotienten:
 
 \begin{equation*}
-\frac{dF}{d\varphi} = \mu\,F.
+\dot{v}(t_n) \approx \frac{v_{n+1} - v_n}{h}.
 \end{equation*}
 
-Die gesuchte Funktion ist $F(\varphi)$, die unabhängige Variable ist der
-Umschlingungswinkel $\varphi$. Die rechte Seite hat die Form $\mu \cdot F$, also
-$f(\varphi) \cdot g(F) = \mu \cdot F$. Die ODE ist separierbar.
-
-### Lösung durch Separation
-
-Wir wenden das Verfahren aus Abschnitt 7.1 an. Die Anfangsbedingung ist $F(0) =
-F_0$: die Riemenkraft an der Schlupfseite ($\varphi = 0$) ist bekannt.
-
-**Trennen:**
+Wir setzen $\dot{v}(t_n) = F(t_n, v_n)$ ein und lösen nach $v_{n+1}$ auf:
 
 \begin{equation*}
-\frac{dF}{F} = \mu\,d\varphi.
+v_{n+1} = v_n + h \cdot F(t_n, v_n).
 \end{equation*}
 
-**Integrieren und Stammfunktion einsetzen:**
+Das ist die **Euler-Formel**. Aus dem aktuellen Wert $v_n$ und der aktuellen
+Steigung berechnen wir den nächsten Wert $v_{n+1}$. Die entstehende
+Punktfolge $(t_0, v_0), (t_1, v_1), (t_2, v_2), \ldots$ bildet einen
+Polygonzug, der im Richtungsfeld ungefähr entlang der Linienelemente verläuft
+und die Lösungskurve annähert.
 
-\begin{equation*}
-\ln|F| = \mu\varphi + C_1 \quad \Rightarrow \quad F(\varphi) = C\,e^{\mu\varphi},
-\quad C > 0.
-\end{equation*}
+```{admonition} Was ist ... das Euler-Verfahren?
+:class: note
+Gegeben sei das AWP $\dot{y} = F(t, y)$, $y(t_0) = y_0$, und eine
+Schrittweite $h > 0$ sowie eine Endzeit $T$. Das **explizite Euler-Verfahren**
+läuft nach folgendem Algorithmus:
 
-**Anfangsbedingung einsetzen:** $F(0) = C\,e^{0} = C = F_0$. Die spezielle
-Lösung lautet:
+1. Setze $t_0 = t_\text{Start}$, $y_0 = y_\text{Start}$.
+2. Berechne die Steigung am aktuellen Punkt: $F(t_n, y_n)$.
+3. Berechne den nächsten Wert: $y_{n+1} = y_n + h \cdot F(t_n, y_n)$.
+4. Setze $t_{n+1} = t_n + h$.
+5. Wiederhole ab Schritt 2, solange $t_n \leq T$.
 
-\begin{equation*}
-F(\varphi) = F_0\,e^{\mu\varphi}.
-\end{equation*}
-
-**Verifikation:** $F'(\varphi) = F_0\,\mu\,e^{\mu\varphi} = \mu \cdot
-F(\varphi)$. $\checkmark$
-
-### Ergebnis und physikalische Interpretation
-
-Mit $\mu = 0.3$ und einer Umschlingung von $180°$, also $\varphi = \pi$:
-
-\begin{equation*}
-F(\pi) = F_0\,e^{0.3\pi} \approx F_0 \cdot 2.57.
-\end{equation*}
-
-Für eine Haltekraft von $F_0 = 200~\text{N}$ auf der Schlupfseite beträgt die Zugkraft
-auf der Gegenseite also rund $514~\text{N}$, mehr als das Doppelte. Der Faktor
-$e^{\mu\varphi}$ wächst exponentiell mit dem Umschlingungswinkel: Bei einer vollen
-Umrundung ($\varphi = 2\pi$) betrüge das Verhältnis bereits $e^{0.6\pi} \approx 6.6$.
-Dieses Prinzip nutzen Winden und Poller: Wenige Umschlingungen genügen, um sehr große
-Lasten mit kleiner Haltekraft zu sichern. In der Auslegung von Riemengetrieben und
-Seilzügen, die Sie in der Vorlesung Maschinenelemente vertiefen werden, ist das
-Euler-Eytelwein-Gesetz eine Grundformel.
-
-```{dropdown} Video "Seilreibung" von Studyflix
-<iframe width="927" height="521" src="https://www.youtube.com/embed/CP69S-F40Mk"
-title="Seilreibung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Jeder Schritt ersetzt die Kurve lokal durch ihre Tangente am Punkt $(t_n, y_n)$.
 ```
 
-## Beispiel 2: Entleerung eines Hydraulikbehälters
+Wir führen den Algorithmus für unser AWP $\dot{v} = g - kv$, $v(0) = 0$ mit
+der groben Schrittweite $h = 5~\text{s}$ von Hand durch. Die Schrittweite ist
+bewusst groß gewählt, damit der Fehler deutlich sichtbar wird.
 
-Ein zylindrischer Hydraulikbehälter mit konstantem Querschnitt hat zum Zeitpunkt $t = 0$
-einen Füllstand von $h_0 = 0.64~\text{m}$. Durch eine Bodenöffnung fließt Öl aus.
-Nach dem Torricellischen Ausflussgesetz ist die Ausflussgeschwindigkeit proportional zur
-Wurzel des aktuellen Füllstands. *Wann ist der Behälter leer, und wie verläuft der
-Füllstand dabei zeitlich?*
-
-<!-- markdownlint-disable -->
-### Aufstellen der ODE
-<!-- markdownlint-enable -->
-
-Die Volumenänderungsrate im Behälter entspricht dem abfließenden Volumenstrom.
-Mit dem Behälterquerschnitt $A$ und dem Ausflusskoeffizienten folgt nach
-Division durch $A$ die **Torricellische Ausflussgleichung**:
+**Schritt 0:** $t_0 = 0~\text{s}$, $v_0 = 0~\text{m\,s}^{-1}$.
 
 \begin{equation*}
-\dot{h} = -k\sqrt{h}, \quad k = 0.04~\text{m}^{1/2}\,\text{s}^{-1}.
+F(0,\; 0) = 9.81 - 0.2 \cdot 0 = 9.81~\text{m\,s}^{-2}.
 \end{equation*}
-
-Das negative Vorzeichen drückt aus, dass der Füllstand sinkt. Die rechte Seite
-hat die Form $f(t) \cdot g(h) = (-k) \cdot \sqrt{h}$, die ODE ist also
-separierbar.
-
-Bevor wir durch $\sqrt{h}$ dividieren, prüfen wir den **Sonderfall** $g(h) =
-\sqrt{h} = 0$, also $h = 0$: Ein leerer Behälter bleibt leer, $\dot{h} = 0$. Das
-ist die konstante Lösung $h(t) = 0$, physikalisch trivial, aber mathematisch
-vollständig.
-
-<!-- markdownlint-disable -->
-### Lösung durch Separation
-<!-- markdownlint-enable -->
-
-Die Anfangsbedingung ist $h(0) = h_0 = 0.64~\text{m}$. Wir setzen $h > 0$ voraus.
-
-**Trennen:**
 
 \begin{equation*}
-\frac{dh}{\sqrt{h}} = -k\,dt.
+v_1 = 0 + 5 \cdot 9.81 = 49.05~\text{m\,s}^{-1}.
 \end{equation*}
 
-**Integrieren und Stammfunktion einsetzen:**
+**Schritt 1:** $t_1 = 5~\text{s}$, $v_1 = 49.05~\text{m\,s}^{-1}$.
 
 \begin{equation*}
-\int h^{-1/2}\,dh = \int -k\,dt \quad \Rightarrow \quad 2\sqrt{h} = -kt + C_1.
+F(5,\; 49.05) = 9.81 - 0.2 \cdot 49.05 = 9.81 - 9.81 = 0~\text{m\,s}^{-2}.
 \end{equation*}
-
-**Anfangsbedingung einsetzen:** $2\sqrt{h_0} = C_1$, also:
 
 \begin{equation*}
-\sqrt{h(t)} = \sqrt{h_0} - \frac{k}{2}\,t.
+v_2 = 49.05 + 5 \cdot 0 = 49.05~\text{m\,s}^{-1}.
 \end{equation*}
 
-**Nach $h$ auflösen:** Quadrieren ergibt die spezielle Lösung:
+Das Verfahren bleibt ab dem zweiten Schritt exakt auf der Grenzgeschwindigkeit
+stehen. *Was ist passiert?* Die Schrittweite $h = 5~\text{s}$ ist so groß, dass
+der erste Schritt direkt von $v = 0$ auf $v = v_\infty$ springt, weit über
+die tatsächliche Kurve hinaus. Die Steigung am neuen Punkt ist exakt null,
+also verändert sich die Näherung danach nicht mehr.
 
-\begin{equation*}
-h(t) = \left(\sqrt{h_0} - \frac{k}{2}\,t\right)^2.
-\end{equation*}
+## Wie gut ist die Näherung, und was tun wir dagegen?
 
-Diese Formel gilt, solange $\sqrt{h_0} - \frac{k}{2}\,t \geq 0$ ist. Danach gilt
-$h(t) = 0$.
+Der Vergleich mit der exakten Lösung $v(t) = v_\infty(1 - e^{-kt})$ aus
+Abschnitt 6.1 zeigt das Ausmaß des Fehlers:
 
-**Verifikation:** Die Ableitung der Lösung ist:
+| $n$ | $t_n~\text{(s)}$ | $v_n$ Euler $\text{(m\,s}^{-1})$ | $v(t_n)$ exakt $\text{(m\,s}^{-1})$ | Fehler $\text{(m\,s}^{-1})$ |
+| --- | --- | --- | --- | --- |
+| 0 | 0 | 0 | 0 | 0 |
+| 1 | 5 | 49.05 | 31.01 | +18.04 |
+| 2 | 10 | 49.05 | 42.41 | +6.64 |
+| 3 | 15 | 49.05 | 46.61 | +2.44 |
 
-\begin{equation*}
-\dot{h}(t) = 2\!\left(\sqrt{h_0} - \frac{k}{2}\,t\right)\cdot\left(-\frac{k}{2}\right)
-           = -k\left(\sqrt{h_0} - \frac{k}{2}\,t\right).
-\end{equation*}
+Der Fehler im ersten Schritt beträgt über $18~\text{m\,s}^{-1}$, fast
+$65~\text{km\,h}^{-1}$. Der Grund liegt in der starken Krümmung der
+Lösungskurve nahe $t = 0$: Die Steigung ändert sich dort rasch, aber das
+Euler-Verfahren verwendet nur die Steigung am linken Rand des Intervalls und
+ignoriert diese Änderung vollständig. Der Fehler jedes Schritts schlägt sich
+dabei in den Ausgangswert des nächsten Schritts nieder, weshalb sich der
+Gesamtfehler über viele Schritte hinweg aufsummiert.
 
-Die rechte Seite der ODE ergibt:
+Das Mittel gegen diesen Fehler ist eine kleinere Schrittweite. Mit $h = 2~\text{s}$
+oder $h = 0.5~\text{s}$ nähert sich der Polygonzug der exakten Kurve deutlich
+besser an. Die Rechnung von Hand wird dabei schnell mühsam. Genau hier hilft
+der Computer.
 
-\begin{equation*}
--k\sqrt{h(t)} = -k\sqrt{\left(\sqrt{h_0} - \frac{k}{2}\,t\right)^2}
-              = -k\left(\sqrt{h_0} - \frac{k}{2}\,t\right). \quad \checkmark
-\end{equation*}
+Die folgenden zwei Code-Zellen sind **optional** und richten sich an
+Studierende mit Python-Vorkenntnissen sowie an alle, die einen Vorgeschmack auf
+die Vorlesung Angewandte Numerik bekommen möchten. Die erste Zelle implementiert
+den Euler-Algorithmus direkt nach obiger Schritt-für-Schritt-Beschreibung, die
+zweite erzeugt den interaktiven Vergleichsplot.
 
-<!-- markdownlint-disable -->
-### Ergebnis und physikalische Interpretation
-<!-- markdownlint-enable -->
+```{code-cell} python
+import numpy as np
 
-Mit $h_0 = 0.64~\text{m}$, also $\sqrt{h_0} = 0.8~\text{m}^{1/2}$, und
-$k = 0.04~\text{m}^{1/2}\,\text{s}^{-1}$:
+# Parameter des Modells
+g  = 9.81   # Erdbeschleunigung in m/s^2
+k  = 0.2    # Luftwiderstandskoeffizient in 1/s
+v0 = 0.0    # Anfangsgeschwindigkeit in m/s
+T  = 30.0   # Simulationsdauer in s
 
-\begin{equation*}
-h(t) = \bigl(0.8 - 0.02\,t\bigr)^2~\text{m}.
-\end{equation*}
+def euler(h):
+    """Euler-Verfahren für dv/dt = g - k*v mit Schrittweite h."""
+    t = np.arange(0.0, T + h, h)   # Schritt 1: Zeitgitter anlegen
+    v = np.zeros(len(t))           # Ergebnisarray initialisieren
+    v[0] = v0                      # Anfangsbedingung einsetzen
+    for n in range(len(t) - 1):
+        v[n+1] = v[n] + h * (g - k * v[n])   # Schritte 2-4: Euler-Formel
+    return t, v
 
-Der Behälter ist leer, wenn $\sqrt{h} = 0$, also wenn $0.8 -
-0.02\,t_{\text{leer}} = 0$:
+# Exakte Lösung zum Vergleich
+t_ex = np.linspace(0, T, 300)
+v_ex = (g / k) * (1 - np.exp(-k * t_ex))
 
-\begin{equation*}
-t_{\text{leer}} = \frac{2\sqrt{h_0}}{k} = \frac{2 \cdot 0.8}{0.04} = 40~\text{s}.
-\end{equation*}
-
-Das ist ein bemerkenswert konkretes Ergebnis: Der Behälter entleert sich in
-endlicher Zeit. Im Vergleich dazu würde ein Modell mit linearem Ausfluss
-($\dot{h} = -k\,h$) den Füllstand nur asymptotisch gegen null treiben, der
-Behälter wäre theoretisch nie leer. Die Nichtlinearität $\sqrt{h}$ liefert hier
-das physikalisch realistischere Bild. In der Hydraulik, die Sie in der
-Strömungslehre vertiefen werden, bildet das Torricellische Ausflussgesetz die
-Grundlage für die Dimensionierung von Ablaufventilen und
-Druckausgleichsbehältern.
-
-```{dropdown} Video (EN) "Torricelli's Law" von GekkoFactor-Calculus
-<iframe width="927" height="521" src="https://www.youtube.com/embed/SfXm22iQD2Y"
-title="Modelling with differential equations - Torricelli&#39;s Law" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+# Ergebnisse für drei Schrittweiten ausgeben
+for h in [5.0, 2.0, 0.5]:
+    t, v = euler(h)
+    print(f"h = {h} s:  v(5s) = {v[int(5/h)]:.2f} m/s  "
+          f"(exakt: {v_ex[int(5/T*300)]:.2f} m/s)")
 ```
 
-## Welche Methode für welche ODE?
+```{code-cell} python
+import plotly.express as px
+import pandas as pd
 
-Mit den Beispielen dieses Kapitels lässt sich eine einfache Entscheidungsregel formulieren.
-Der erste Blick gilt der Struktur der rechten Seite:
+# Daten für alle Kurven zusammenstellen
+rows = []
+for h in [5.0, 2.0, 0.5]:
+    t, v = euler(h)
+    for ti, vi in zip(t, v):
+        rows.append({'t': ti, 'v': vi, 'Kurve': f'Euler  h = {h} s'})
+for ti, vi in zip(t_ex, v_ex):
+    rows.append({'t': ti, 'v': vi, 'Kurve': 'Exakte Lösung'})
 
-<!-- markdownlint-disable -->
-| Struktur der rechten Seite | Methode | Abschnitt |
-| --- | --- | --- |
-| $y' = f(x) \cdot g(y)$ (Produkt aus reinem $x$-Anteil und reinem $y$-Anteil) | Trennung der Variablen | 7.1 |
-| $y' = f(ax + by + c)$ (Funktion einer Linearkombination) | Substitution $u = ax + by + c$ | 7.2 |
-<!-- markdownlint-enable -->
+# Interaktiver Plot
+fig = px.line(
+    pd.DataFrame(rows), x='t', y='v', color='Kurve',
+    labels={'t': 'Zeit t in s', 'v': 'Geschwindigkeit v in m/s'},
+)
+fig.add_hline(
+    y=g / k, line_dash='dash', line_color='gray',
+    annotation_text='Grenzgeschwindigkeit',
+    annotation_position='bottom right',
+)
+fig.show()
+```
 
-In der Praxis empfiehlt es sich, zuerst auf eine Produktstruktur zu prüfen.
-Gelingt die Faktorisierung nicht, ist zu fragen, ob die rechte Seite von einer
-Linearkombination $ax + by + c$ abhängt. Trifft keine der beiden Formen zu,
-führt weder Separation noch Substitution direkt zum Ziel. Für solche Fälle
-stellt Kapitel 8 die Lösungstheorie linearer ODEs 1. Ordnung bereit, die einen
-breiteren Bereich von Gleichungstypen abdeckt.
+*Was zeigt das Bild?* Mit $h = 5~\text{s}$ springt der Polygonzug sofort zur
+Grenzgeschwindigkeit und bleibt dort. Mit $h = 0.5~\text{s}$ ist die Näherung
+kaum noch vom exakten Verlauf zu unterscheiden. Die Schrittweite steuert also
+den Kompromiss zwischen Rechenaufwand und Genauigkeit.
+
+Das Euler-Verfahren ist das einfachste Mitglied einer ganzen Familie numerischer
+Verfahren. In der Ingenieurpraxis werden genauere Methoden wie das
+**Runge-Kutta-Verfahren 4. Ordnung** eingesetzt, das die Steigung nicht nur am
+linken Rand, sondern an mehreren Stellen innerhalb des Intervalls auswertet.
+Python, MATLAB und Simulink nutzen im Standard solche Verfahren.
+
+## Weiteres Lernmaterial
+
+Das folgende Video zeigt das Euler-Verfahren **ab** ca. Zeitindex 8:16 min.
+
+```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
 
 ## Zusammenfassung und Ausblick
 
-Die beiden Beispiele dieses Abschnitts zeigen das vollständige Vorgehen beim
-Lösen technischer ODEs: Aus der Physik folgt die ODE, aus der Struktur der ODE
-folgt die Methode, und aus der Lösung folgt eine physikalisch interpretierbare
-Aussage. Die Euler-Eytelwein-Gleichung $F' = \mu F$ liefert das
-Exponentialgesetz des Riementriebs, die Torricellische Gleichung $\dot{h} =
--k\sqrt{h}$ die endliche Entleerungszeit eines Hydraulikbehälters. In beiden
-Fällen war die Separation der Variablen aus Abschnitt 7.1 das entscheidende
-Werkzeug.
+Das Euler-Verfahren übersetzt die geometrische Idee des Richtungsfeldes in
+einen Algorithmus: In jedem Schritt wird die Lösungskurve durch ihre Tangente
+ersetzt, und der nächste Punkt ergibt sich aus der Euler-Formel
+$v_{n+1} = v_n + h \cdot F(t_n, v_n)$. Die entstehende Punktfolge bildet
+einen Polygonzug, der im Richtungsfeld entlang der Linienelemente verläuft.
+Die Schrittweite $h$ kontrolliert dabei den Fehler; wegen der Fehlerakkumulation
+über viele Schritte ist eine kleine Schrittweite entscheidend für eine
+brauchbare Näherung.
 
-In Kapitel 8 erweitern wir den Lösungsbereich auf lineare ODEs 1. Ordnung der
-Form $y' + p(x)\,y = q(x)$. Diese Gleichungen sind nicht mehr notwendigerweise
-separierbar, erlauben aber eine systematische Lösungstheorie, die in der
-Regelungstechnik und der Strukturmechanik allgegenwärtig ist.
+In Abschnitt 6.4 wechseln wir vom numerischen zum analytischen Standpunkt.
+Die Methode der Trennung der Variablen liefert die exakte Lösung
+$v(t) = v_\infty(1 - e^{-kt})$, mit der wir in diesem Abschnitt den
+Euler-Fehler gemessen haben.

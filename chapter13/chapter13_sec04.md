@@ -3,198 +3,246 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.4 Erzwungene Schwingung mit periodischer Erregung
+# 13.4 Fourierreihen berechnen: Beispiele
 
-In Abschnitt 13.3 haben wir das Amplitudenspektrum der Lagerkraft unserer
-Kurbelwelle berechnet: Neben der Grundschwingung bei $25~\text{Hz}$ enthält
-es Spektrallinien bei $75~\text{Hz}$, $125~\text{Hz}$ und allen weiteren
-ungeraden Vielfachen der Grundfrequenz, deren Amplituden wie $1/n$ abklingen.
-Die Linie bei $75~\text{Hz}$ trägt noch ein Drittel der
-Grundschwingungsamplitude. Jetzt stellen wir die entscheidende
-Ingenieursfrage: *Welche dieser Oberschwingungen kann das Lager in Resonanz
-treiben, und wie geht man damit rechnerisch um?* Die Antwort verbindet die
-Fourieranalyse aus den Kapiteln 12 und 13 mit der Theorie der erzwungenen
-Schwingungen aus Kapitel 11.
+In Abschnitt 12.3 haben wir die Formeln zur Bestimmung der Fourierkoeffizienten
+kennengelernt und den Mittelwert $a_0$ für ein asymmetrisches Rechtecksignal
+berechnet. Jetzt führen wir die vollständige Rechnung durch: alle Koeffizienten
+$a_n$ und $b_n$, die Fourierreihe in geschlossener Summenform und eine
+Plausibilitätsprüfung. Als Beispiel dient eine symmetrische Rechteckschwingung,
+die im Maschinenbau als Modell für Taktsignale, Schaltventile oder digitale
+Steuerbefehle auftritt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie verstehen, wie das **Superpositionsprinzip** bei linearen ODEs
-  erlaubt, eine periodisch erregte Schwingung komponentenweise zu lösen.
-* [ ] Sie können die Grundidee der Lösung skizzieren: Fourierreihe der
-  Erregung aufstellen, jede Komponente separat durch die ODE schicken,
-  Ergebnisse überlagern.
-* [ ] Sie können mithilfe des Amplitudenspektrums die **resonanzgefährdende
-  Harmonische** eines Erregersignals identifizieren und kritische
-  Drehzahlen berechnen.
-* [ ] Sie kennen den konzeptionellen Schritt von der Fourierreihe zur
-  **Fouriertransformation** für nicht-periodische Signale.
+* [ ] Sie können die Fourierkoeffizienten $a_0$, $a_n$ und $b_n$ einer
+  stückweise definierten periodischen Funktion durch Integration berechnen.
+* [ ] Sie können das Ergebnis als vollständige **Fourierreihe** in
+  Summenform angeben.
+* [ ] Sie können eine berechnete Fourierreihe auf Plausibilität prüfen,
+  indem Sie Partialsummen an ausgewählten Stellen mit dem Funktionswert
+  vergleichen.
 ```
 
-## Die Grundidee: Superposition und Fourierzerlegung
+## Die Rechteckschwingung als Leitbeispiel
 
-In Kapitel 11 haben wir die erzwungene Schwingung für eine einzelne
-Sinuskraft $F(t) = F_0\,\sin(\Omega t)$ gelöst. Die Lagerkraft unserer
-Kurbelwelle ist aber keine reine Sinusschwingung, sondern enthält viele
-Oberschwingungen. Das Feder-Masse-System mit Eigenfrequenz $\omega_{\text{sys}}$
-und Masse $m$ wird durch diese komplizierte Kraft erregt:
+Wir betrachten eine symmetrische Rechteckschwingung mit der Periode
+$T = 2\pi$ und der Kreisfrequenz $\omega_0 = 1$:
 
 \begin{equation*}
-m\,y''(t) + k\,y(t) = F(t),
-\quad \omega_{\text{sys}} = \sqrt{\frac{k}{m}}.
+f(t) = \begin{cases}
+-1, & -\pi \leq t < 0, \\
+\phantom{-}1, & \phantom{-}0 \leq t < \pi.
+\end{cases}
 \end{equation*}
 
-*Wie löst man eine solche ODE, wenn $F(t)$ keine einfache Sinusfunktion ist?*
-Die Antwort liegt im Superpositionsprinzip, das wir aus Kapitel 8 kennen: Bei
-einer linearen ODE darf man Lösungen addieren. Wenn $y_1$ die Antwort auf
-$F_1$ ist und $y_2$ die Antwort auf $F_2$, dann ist $y_1 + y_2$ die Antwort
-auf $F_1 + F_2$.
+Die Funktion wechselt also alle halbe Periode ihr Vorzeichen. Im Maschinenbau
+entspricht das dem Taktsignal eines Zweiwege-Schaltventils, das in jeder
+Halbperiode die Strömungsrichtung umkehrt.
 
-```{admonition} Wie lautet die Lösungsstrategie für periodische Erregung?
+```{figure} pics/chap12_sec04_fig01.svg
+---
+name: chap12_sec04_fig01
+---
+Symmetrische Rechteckschwingung mit Periode $T = 2\pi$. Die Funktion springt
+an den Stellen $t = 0, \pm\pi, \pm 2\pi, \ldots$ zwischen $+1$ und $-1$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Die Dirichlet-Bedingungen aus Abschnitt 12.3 sind erfüllt: Auf jedem der
+beiden Teilintervalle ist $f$ konstant, also stetig und monoton, und an den
+Sprungstellen existieren beide einseitigen Grenzwerte. Die Fourierreihe
+konvergiert daher an allen Stetigkeitsstellen gegen $f(t)$ und an den
+Sprungstellen gegen den Mittelwert $0$.
+
+## Berechnung von $a_0$
+
+Wir starten mit dem Mittelwertkoeffizienten. Mit $T = 2\pi$ lautet die Formel
+
+\begin{equation*}
+a_0 = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt
+= \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,dt.
+\end{equation*}
+
+Wir teilen das Integral an der Sprungstelle $t = 0$ auf:
+
+\begin{align*}
+a_0 &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\,dt \\
+    &= \frac{1}{\pi}\Big[-t\Big]_{-\pi}^{0}
+     + \frac{1}{\pi}\Big[t\Big]_{0}^{\pi} \\
+    &= \frac{1}{\pi}(0 - \pi)
+     + \frac{1}{\pi}(\pi - 0) = -1 + 1 = 0.
+\end{align*}
+
+Das Ergebnis ist plausibel: Die Funktion ist antisymmetrisch um die Zeitachse,
+verbringt gleich viel Zeit bei $+1$ und bei $-1$, ihr Mittelwert ist also Null.
+
+## Berechnung von $a_n$
+
+Mit $\omega_0 = 1$ lautet die Formel für $n \geq 1$:
+
+\begin{equation*}
+a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\cos(nt)\,dt.
+\end{equation*}
+
+Wir teilen wieder an $t = 0$ auf:
+
+\begin{align*}
+a_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\cos(nt)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\cos(nt)\,dt \\
+    &= \frac{1}{\pi}\left[-\frac{\sin(nt)}{n}\right]_{-\pi}^{0}
+     + \frac{1}{\pi}\left[\frac{\sin(nt)}{n}\right]_{0}^{\pi}.
+\end{align*}
+
+Da $n$ eine natürliche Zahl ist, gilt $\sin(0) = 0$ und $\sin(\pm n\pi) = 0$
+für alle $n \in \mathbb{N}$. Damit verschwinden beide Ausdrücke in eckigen
+Klammern vollständig, und es folgt
+
+\begin{equation*}
+a_n = 0 \quad \text{für alle } n \geq 0.
+\end{equation*}
+
+Die Fourierreihe enthält also gar keine Kosinusterme. _Ist das Zufall, oder
+steckt eine tiefere Ursache dahinter?_ Wir bemerken, dass $f$ antisymmetrisch
+ist: $f(-t) = -f(t)$. Eine solche Funktion heißt ungerade. Die Kosinusfunktion
+ist dagegen gerade: $\cos(-nt) = \cos(nt)$. Das Produkt einer ungeraden und
+einer geraden Funktion ist wieder ungerade, und das Integral einer ungeraden
+Funktion über ein symmetrisches Intervall ist stets null. Das Verschwinden
+aller $a_n$ ist also kein Zufall, sondern eine direkte Folge der Symmetrie von
+$f$. In Abschnitt 13.1 werden wir diesen Zusammenhang systematisch ausnutzen.
+
+## Berechnung von $b_n$
+
+Für $n \geq 1$ gilt:
+
+\begin{equation*}
+b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\sin(nt)\,dt.
+\end{equation*}
+
+Wir teilen erneut an $t = 0$ auf:
+
+\begin{align*}
+b_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\sin(nt)\,dt
+     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\sin(nt)\,dt \\
+    &= \frac{1}{\pi}\left[\frac{\cos(nt)}{n}\right]_{-\pi}^{0}
+     + \frac{1}{\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi} \\
+    &= \frac{1}{n\pi}\Big[\cos(nt)\Big]_{-\pi}^{0}
+     - \frac{1}{n\pi}\Big[\cos(nt)\Big]_{0}^{\pi}.
+\end{align*}
+
+Wir setzen die Grenzen ein. Mit $\cos(0) = 1$ und $\cos(-n\pi) = \cos(n\pi)$
+(Kosinusfunktion ist gerade) ergibt sich:
+
+\begin{align*}
+b_n &= \frac{1}{n\pi}\bigl(\cos(0) - \cos(-n\pi)\bigr)
+     - \frac{1}{n\pi}\bigl(\cos(n\pi) - \cos(0)\bigr) \\
+    &= \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr)
+     + \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr) \\
+    &= \frac{2}{n\pi}\bigl(1 - (-1)^n\bigr).
+\end{align*}
+
+Jetzt werten wir $(-1)^n$ aus. Für gerades $n$ gilt $(-1)^n = +1$,
+für ungerades $n$ gilt $(-1)^n = -1$. Damit ergibt sich:
+
+\begin{equation*}
+b_n = \begin{cases}
+0, & n \text{ gerade}, \\[4pt]
+\dfrac{4}{n\pi}, & n \text{ ungerade}.
+\end{cases}
+\end{equation*}
+
+## Die Fourierreihe der Rechteckschwingung
+
+Wir setzen alle Koeffizienten in die allgemeine Fourierreihe ein. Da alle
+$a_n = 0$ und alle $b_n$ mit geradem $n$ verschwinden, bleiben nur die ungeraden
+Terme übrig:
+
+\begin{equation*}
+f(t) = \frac{4}{\pi}\sin(t) + \frac{4}{3\pi}\sin(3t)
+      + \frac{4}{5\pi}\sin(5t) + \ldots
+\end{equation*}
+
+Um eine kompakte Summenformel zu erhalten, schreiben wir die ungeraden Zahlen
+als $2k-1$ mit $k \in \mathbb{N}$:
+
+\begin{equation*}
+f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)t\bigr)}{2k-1}.
+\end{equation*}
+
+```{admonition} Was ist ... die Fourierreihe der symmetrischen Rechteckschwingung?
 :class: note
-Sei $F(t)$ eine periodische Erregerkraft mit der Fourierreihe
+Die symmetrische Rechteckschwingung
 
 \begin{equation*}
-F(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty}
-\bigl(a_n\cos(n\omega_0 t) + b_n\sin(n\omega_0 t)\bigr).
+f(t) = \begin{cases} -1, & -\pi \leq t < 0, \\ \phantom{-}1, & 0 \leq t < \pi \end{cases}
 \end{equation*}
 
-Die vollständige Lösung der linearen ODE $m\,y'' + k\,y = F(t)$ ergibt sich
-in drei Schritten:
+hat die Fourierreihe
 
-1. **Fourierzerlegung:** Fourierkoeffizienten $a_n$ und $b_n$ der Erregerkraft
-   berechnen.
-2. **Komponentenweise Lösung:** Für jeden Term $a_n\cos(n\omega_0 t)$ und
-   $b_n\sin(n\omega_0 t)$ die partikuläre Lösung $y_{p,n}$ separat bestimmen
-   (Ansatz aus Kapitel 11).
-3. **Überlagerung:** Die Gesamtlösung ist $y_p(t) = \sum_{n} y_{p,n}(t)$,
-   ergänzt um die homogene Lösung $y_h$.
+\begin{equation*}
+f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)\,t\bigr)}{2k-1}.
+\end{equation*}
+
+Nur ungerade Oberschwingungen treten auf. Die Amplituden $4/((2k-1)\pi)$ klingen
+mit wachsendem $k$ wie $1/k$ ab.
 ```
 
-Das ist kein neues Lösungsverfahren, sondern eine Kombination zweier bekannter
-Werkzeuge: der Fourieranalyse und des Ansatzes vom Typ der rechten Seite aus
-Kapitel 11. Die entscheidende Frage bei Schritt 2 ist dieselbe wie in Kapitel
-11: Liegt die Erregerfrequenz $n\omega_0$ in der Nähe der Eigenfrequenz
-$\omega_{\text{sys}}$?
+## Plausibilitätsprüfung der Partialsummen
 
-## Welche Harmonische ist gefährlich?
+Wir prüfen die Formel, indem wir die Partialsumme $S_1$ an einer konkreten
+Stelle auswerten. Für $t = \pi/2$ gilt $f(\pi/2) = +1$ (wir befinden uns im
+Teilintervall $[0, \pi)$).
 
-Wir kehren zur Kurbelwelle zurück. Die Grundfrequenz der Lagerkraft beträgt
-bei der Betriebsdrehzahl $1500~\text{min}^{-1}$ genau $f_0 = 25~\text{Hz}$,
-die zugehörige Kreisfrequenz ist
-$\omega_0 = 2\pi \cdot 25~\text{Hz} = 50\pi~\text{rad\,s}^{-1}$. Die $n$-te
-Harmonische hat die Kreisfrequenz $n\omega_0 = 50\pi\,n~\text{rad\,s}^{-1}$.
-
-Angenommen, das Pleuellager und die zugehörige Wellenbaugruppe haben die
-Eigenfrequenz $\omega_{\text{sys}} = 150\pi~\text{rad\,s}^{-1} \approx
-471~\text{rad\,s}^{-1}$, was einer Eigenfrequenz von $75~\text{Hz}$
-entspricht. Wir suchen die Ordnung $n$ der Harmonischen, bei der Resonanz droht:
+Die erste Partialsumme ist $S_1(t) = \frac{4}{\pi}\sin(t)$. An der Stelle
+$t = \pi/2$:
 
 \begin{equation*}
-n\,\omega_0 = \omega_{\text{sys}}
-\quad \Rightarrow \quad
-n = \frac{\omega_{\text{sys}}}{\omega_0}
-= \frac{150\pi}{50\pi} = 3.
+S_1\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right)
+= \frac{4}{\pi} \approx 1.27.
 \end{equation*}
 
-Die dritte Harmonische ($n = 3$) trifft die Eigenfrequenz des Lagers exakt.
-Aus der Fourierreihe der Rechteck-Lagerkraft wissen wir aus Abschnitt 12.4,
-dass $n = 3$ eine ungerade Zahl ist und damit ein nichtverschwindender
-Koeffizient vorliegt: $b_3 = 4/(3\pi)$. Die Amplitude dieser Harmonischen
-beträgt
+Mit nur einem Term weicht die Approximation noch um etwa $27\,\%$ ab. Wir
+ergänzen den zweiten nichtverschwindenden Term ($k=2$, also $n=3$):
 
 \begin{equation*}
-\hat{F}_3 = b_3 \cdot F_0 = \frac{4}{3\pi}\,F_0 \approx 0.42\,F_0,
+S_3\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right) +
+\frac{4}{3\pi}\sin\!\left(\frac{3\pi}{2}\right)
+= \frac{4}{\pi} - \frac{4}{3\pi}
+= \frac{8}{3\pi} \approx 0.85.
 \end{equation*}
 
-wobei $F_0$ die Amplitude der Rechteck-Lagerkraft ist. Bezogen auf die
-Grundschwingung mit $\hat{F}_1 = \frac{4}{\pi}\,F_0$ ist das exakt ein
-Drittel, wie wir es in Abschnitt 13.3 im Spektrum abgelesen haben. Das ist
-kein vernachlässigbarer Anteil.
+Mit drei Termen liegt die Partialsumme bei $0.85$ statt $+1$, die Abweichung
+beträgt jetzt noch $15\,\%$. Jeder weitere Term verbessert die Annäherung, und
+für $N \to \infty$ konvergiert die Summe gegen den exakten Wert $+1$.
 
-%```{figure} pics/chap13_sec04_fig01.svg
-%---
-%name: chap13_sec04_fig01
-%---
-%Frequenzspektrum der Rechteck-Lagerkraft: Die Balken zeigen die Amplituden
-%$\hat{F}_n$ der ersten Harmonischen. Die dritte Harmonische bei
-%$75~\text{Hz}$ trifft die Eigenfrequenz des Lagers (rot markiert).
-%(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-%```
+```{figure} pics/chap12_sec04_fig02.svg
+---
+name: chap12_sec04_fig02
+---
+Partialsummen $S_1$, $S_3$ und $S_9$ der Fourierreihe der Rechteckschwingung.
+An den Sprungstellen $t = 0$ und $t = \pm\pi$ ist die Überschwingung gut
+erkennbar.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
 
-Das Brisante an diesem Ergebnis: Die Resonanz droht nicht etwa nur in einem
-kurzen Übergangsmoment, sondern genau bei der Betriebsdrehzahl
-$1500~\text{min}^{-1}$, also im Dauerbetrieb. Aus Kapitel 11 wissen wir, was
-das bedeutet: Trifft die Erregerfrequenz die Eigenfrequenz, wächst die
-Schwingungsamplitude ohne Dämpfung unbegrenzt an. Konstruktiv gibt es zwei
-Auswege, die Sie in der Technischen Mechanik und der Maschinendynamik
-vertiefen werden: Entweder verschiebt man die Eigenfrequenz der
-Lagerbaugruppe durch Änderung von Steifigkeit oder Masse aus dem Bereich der
-starken Spektrallinien heraus, oder man führt gezielt Dämpfung ein, die die
-Resonanzamplitude begrenzt.
+In der Abbildung fällt auf, dass die Partialsummen an den Sprungstellen stets
+überschießen, und zwar unabhängig davon, wie viele Terme wir mitnehmen. Dieses
+Verhalten hat einen Namen. In Abschnitt 13.2 werden wir sehen, dass dieses
+Überschießen selbst bei unendlich vielen Termen nicht vollständig verschwindet
+und als **Gibbssches Phänomen** bekannt ist.
 
-*Und was passiert beim Hochlaufen der Kurbelwelle von null auf die
-Betriebsdrehzahl?* Bei einer Drehzahl $N$ in $\text{min}^{-1}$ beträgt die
-Grundfrequenz $f_0 = N/60$, und die $n$-te Harmonische trifft die
-Eigenfrequenz $75~\text{Hz}$, sobald $n \cdot N/60 = 75~\text{Hz}$ gilt, also
-bei den kritischen Drehzahlen
+## Zusammenfassung und Ausblick
 
-\begin{equation*}
-N_{\text{krit}} = \frac{4500}{n}~\text{min}^{-1},
-\qquad n = 1, 3, 5, 7, 9, \ldots
-\end{equation*}
+Die vollständige Rechnung für die Rechteckschwingung hat gezeigt, wie die
+Fourierkoeffizienten systematisch berechnet werden: Integrationsintervall
+aufteilen, Stammfunktionen bestimmen, Grenzen einsetzen, Fallunterscheidung
+nach geraden und ungeraden $n$, Ergebnis in kompakter Summenform angeben. Die
+Plausibilitätsprüfung bestätigt die Rechnung numerisch.
 
-Nur die ungeraden $n$ zählen, weil die geraden Koeffizienten der
-Rechteck-Lagerkraft verschwinden. Beim Hochlauf werden also nacheinander die
-Drehzahlen $500~\text{min}^{-1}$ ($n = 9$), etwa $643~\text{min}^{-1}$
-($n = 7$) und $900~\text{min}^{-1}$ ($n = 5$) durchfahren, bevor das System
-bei $1500~\text{min}^{-1}$ ($n = 3$) in der Betriebsresonanz landet. Die
-Stärke dieser Zwischenresonanzen nimmt mit $1/n$ ab: Bei
-$500~\text{min}^{-1}$ regt die neunte Harmonische mit immerhin
-$\hat{F}_9 = \frac{4}{9\pi}\,F_0 \approx 0.14\,F_0$ an. In der Praxis heißt
-das: Der Hochlauf muss schnell genug durch diese Drehzahlbereiche geführt
-werden, damit die Amplituden klein bleiben, und die Betriebsdrehzahl selbst
-darf bei dieser Auslegung so nicht stehenbleiben.
-
-Die Fourierzerlegung liefert hier also mehr als nur eine mathematische
-Darstellung. Sie zeigt, bei welchen Betriebsdrehzahlen kritische
-Resonanzzustände auftreten können, und zwar nicht nur für die
-Grundschwingung, sondern für alle harmonischen Anteile der Erregerkraft.
-In der Maschinenakustik und der Rotordynamik ist genau diese Analyse der
-Ausgangspunkt für die konstruktive Auslegung.
-
-## Ausblick: Von der Reihe zur Transformation
-
-Die Fourierreihe, in reeller wie in komplexer Form, setzt ein periodisches
-Signal voraus. Viele technische Signale sind aber nicht periodisch: ein
-einzelner Stoß beim Anfahren, das Ausschwingen nach einer Notabschaltung,
-ein einmaliger Lastwechsel. *Wie zerlegt man ein solches Signal in seine
-Frequenzanteile?*
-
-Die Antwort gibt die **Fouriertransformation**, die Verallgemeinerung der
-Fourierreihe auf nicht-periodische Signale. Die komplexe Darstellung aus
-Abschnitt 13.3 ist dafür der natürliche Ausgangspunkt: Aus der Summe über
-die diskreten Frequenzen $n\omega_0$ wird ein Integral über ein
-kontinuierliches Frequenzspektrum $\hat{f}(\omega)$. Die Fouriertransformation
-ist das zentrale Werkzeug der modernen Signalverarbeitung, von der
-Schwingungsdiagnose über die Bildverarbeitung bis zur Kommunikationstechnik.
-In den Lehrveranstaltungen Regelungstechnik und Signalverarbeitung werden Sie
-diese Methode systematisch vertiefen.
-
-## Zusammenfassung: Kapitel 12 und 13
-
-Mit diesem Abschnitt schließen wir das Thema Fourierreihen ab. Der Weg führte
-von der periodischen Funktion (12.1) über Grundschwingung und Oberschwingungen
-(12.2) zu den Euler-Fourier-Formeln (12.3) und den konkreten Rechenbeispielen
-(12.4). In Kapitel 13 haben wir Symmetrie als Rechenhilfsmittel genutzt (13.1),
-das Konvergenzverhalten und das Gibbssche Phänomen analysiert (13.2), die
-komplexe Darstellung samt Amplitudenspektrum entwickelt (13.3) und schließlich
-die Brücke zur erzwungenen Schwingung aus Kapitel 11 geschlagen (13.4).
-
-Das durchgängige Leitbeispiel der Kurbelwelle hat dabei gezeigt, wie dieselbe
-physikalische Fragestellung, nämlich die periodische Lagerkraft einer
-rotierenden Welle, alle mathematischen Konzepte motiviert und verbindet. In
-der Maschinenakustik, der Rotordynamik und der Regelungstechnik werden Sie
-diese Werkzeuge auf komplexere Systeme anwenden und um die Fourier- und
-Laplace-Transformation erweitern.
+Dabei ist aufgefallen, dass alle Kosinuskoeffizienten verschwinden, weil $f$
+eine ungerade Funktion ist. Diesen Zusammenhang zwischen Symmetrie und
+Fourierkoeffizienten werden wir in Abschnitt 13.1 systematisch ausnutzen, um
+den Rechenaufwand bei ähnlichen Beispielen deutlich zu reduzieren.

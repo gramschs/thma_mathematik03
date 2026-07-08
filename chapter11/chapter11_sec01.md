@@ -3,273 +3,262 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 11.1 Die partikuläre Lösung: Ansatz vom Typ der rechten Seite
+# 11.1 Lineare ODE 2. Ordnung: wenn auch die Beschleunigung eine Rolle spielt
 
-In Kapitel 10 haben wir gelernt, wie man die allgemeine Lösung der homogenen
-ODE 2. Ordnung vollständig bestimmt. Was noch fehlt, ist die partikuläre Lösung
-$y_p$ der inhomogenen Gleichung $y'' + ay' + by = g(x)$: Erst sie macht die
-Gesamtlösung vollständig. Wir betrachten dazu ein Feder-Masse-Dämpfer-System,
-das in der Strukturdynamik und im Maschinenbau zu den wichtigsten Modellen
-überhaupt gehört, und fragen: *Wie reagiert ein gedämpftes Maschinenelement
-auf eine äußere Kraft, die nach einem Stoß exponentiell abklingt?*
+Die Wuppertaler Schwebebahn hängt wie ein Pendel an ihrer Schiene: Der
+Fahrwagen ist über ein Drehgelenk am Fahrwerk befestigt und kann seitlich
+ausschwingen. Bei einer Kurvenfahrt wird er durch die Zentripetalkraft aus der
+Ruhelage gedrückt und nimmt eine neue Gleichgewichtslage ein. Verlässt die
+Bahn die Kurve, pendelt der Wagen zurück. *Wie schnell schwingt er? Klingt die
+Schwingung vor der nächsten Haltestelle ab, oder schaukelt sie sich auf?* Solche
+Fragen lassen sich nicht mit einer ODE 1. Ordnung beantworten, denn die
+Beschleunigung des Wagens spielt eine entscheidende Rolle. Wir brauchen eine
+Gleichung, in der auch die zweite Ableitung der gesuchten Funktion auftritt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie verstehen, warum ein **Ansatz vom Typ der rechten Seite** funktioniert:
-  Ableitungen von Polynomen, Exponentialfunktionen und trigonometrischen
-  Funktionen bleiben strukturgleich.
-* [ ] Sie kennen die **Ansatztabelle** für die drei Standardfälle (Polynom,
-  Exponential, sin/cos) und können den passenden Ansatz zur gegebenen
-  Störfunktion $g(t)$ ablesen.
-* [ ] Sie können die unbekannten Koeffizienten eines Ansatzes durch
-  **Einsetzen und Koeffizientenvergleich** bestimmen und das Ergebnis
-  durch Einsetzen in die ODE verifizieren.
-* [ ] Sie können die **allgemeine Lösung**
-  $$y_{\text{allgemein}} = y_h + y_p$$
-  einer inhomogenen linearen ODE 2. Ordnung vollständig zusammensetzen.
+* [ ] Sie kennen die Definition einer **linearen ODE 2. Ordnung mit konstanten
+  Koeffizienten** der Form $y'' + ay' + by = g(x)$ mit $a, b \in \mathbb{R}$.
+* [ ] Sie können zu einer gegebenen inhomogenen linearen ODE 2. Ordnung die
+  **zugehörige homogene ODE** aufstellen.
+* [ ] Sie wissen, dass die allgemeine Lösung der inhomogenen ODE 2. Ordnung die
+  Struktur
+  \begin{equation*}
+  y_{\text{allgemein}} = y_h + y_p
+  \end{equation*}
+  hat, und dass $y_h$ zwei freie Konstanten $C_1$ und $C_2$ enthält.
+* [ ] Sie können eine **partikuläre Lösung** durch Einsetzen der beiden
+  Anfangswerte $y(x_0) = y_0$ und $y'(x_0) = v_0$ bestimmen.
 ```
 
-## Warum „vom Typ der rechten Seite"?
+## Wie entsteht eine ODE 2. Ordnung aus der Pendelbewegung?
 
-Ein Maschinenelement der Masse $m = 2~\text{kg}$ ist über eine Feder mit
-Steifigkeit $k = 4~\text{N/m}$ und einen Dämpfer mit Dämpfungskonstante
-$d = 6~\text{N\,s/m}$ am Maschinengestell befestigt.
+Der Fahrwagen der Schwebebahn verhält sich bei kleinen Auslenkungen wie ein
+mathematisches Pendel der Länge $L$. Wir beschreiben seine Lage durch den
+Auslenkungswinkel $\varphi(t)$ zur Zeit $t$, gemessen von der senkrechten
+Ruhelage. Drei Kräfte bestimmen die Bewegung: die rücktreibende Komponente
+der Schwerkraft, eine Dämpfungskraft proportional zur Winkelgeschwindigkeit
+$\varphi'(t)$ (durch Luftwiderstand und mechanische Reibung) sowie eine
+mögliche äußere Störkraft $F(t)$, zum Beispiel durch Seitenwind.
 
-```{figure} pics/chap11_masse_feder_daempfungssytem.svg
----
-name: chap11_masse_feder_daempfungssytem
----
-Feder-Masse-Dämpfer-System
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Nach einem kurzen Stoß, etwa durch ein auftreffendes Werkzeug, wirkt auf das
-Element eine Kraft, die exponentiell abklingt: $F(t) = 10\,e^{-3t}~\text{N}$.
-
-```{figure} pics/chap11_sec01_fig02.svg
----
-name: chap11_sec01_fig02
----
-Exponentiell wirkende Kraft, z.B. durch Stoß
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Das ist ein typisches Szenario in der Strukturdynamik: Der Impuls ist kurz und
-intensiv, klingt aber rasch ab, während das System noch lange weiterschwingt.
-
-Aus dem zweiten Newtonschen Gesetz $ma = F_{\text{ges}}$ folgt mit den drei
-wirkenden Kräften (Federkraft $-ky$, Dämpferkraft $-d\dot{y}$, äußere
-Stoßkraft $F(t)$):
+Das zweite Newtonsche Gesetz für die Winkelbewegung liefert, mit der
+Kleinwinkelnäherung $\sin\varphi \approx \varphi$:
 
 \begin{equation*}
-m\,y'' + d\,y' + k\,y = F(t).
+mL\,\varphi''(t) = -mg\,\varphi(t) - d\,\varphi'(t) + F(t).
 \end{equation*}
 
-Division durch $m = 2$ liefert die Standardform:
+Hier ist $m$ die Masse des Wagens, $g \approx 9.81~\text{m\,s}^{-2}$ die
+Erdbeschleunigung und $d \geq 0$ die Dämpfungskonstante. Division durch $mL$
+und die Abkürzungen $a = d/(mL)$, $b = g/L$ sowie $g(t) = F(t)/(mL)$ ergeben
 
 \begin{equation*}
-y'' + 3\,y' + 2\,y = 5\,e^{-3t}.
+\varphi''(t) + a\,\varphi'(t) + b\,\varphi(t) = g(t).
 \end{equation*}
 
-Aus Abschnitt 10.3 kennen wir bereits die homogene Lösung dieser Gleichung.
-Die charakteristische Gleichung $\lambda^2 + 3\lambda + 2 = 0$ hat die
-Eigenwerte $\lambda_1 = -1$ und $\lambda_2 = -2$, also
+Die gesuchte Funktion $\varphi$ und ihre ersten beiden Ableitungen treten
+ausschließlich zur ersten Potenz auf, multipliziert mit Konstanten. Das ist das
+Muster, das wir im gesamten Kapitel untersuchen.
 
-\begin{equation*}
-y_h(t) = C_1\,e^{-t} + C_2\,e^{-2t}
-\end{equation*}
-
-mit $C_1, C_2\in\mathbb{R}$. Was noch fehlt, ist $y_p$. *Welche Funktion können
-wir ansetzen, sodass nach dem Einsetzen auf der linken Seite genau $5\,e^{-3t}$
-herauskommt?* Die entscheidende Beobachtung ist diese: Leiten wir $e^{-3t}$ ab,
-erhalten wir $-3\,e^{-3t}$. Leiten wir nochmals ab, erhalten wir $9\,e^{-3t}$.
-In jedem Fall bleibt die Funktionsstruktur $e^{-3t}$ erhalten, nur der Vorfaktor
-ändert sich. Wenn wir also $y_p = A\,e^{-3t}$ ansetzen und in die ODE einsetzen,
-entstehen auf der linken Seite ausschließlich Terme vom Typ $e^{-3t}$. Wir
-können den Koeffizienten $A$ dann so wählen, dass die rechte Seite genau
-getroffen wird.
-
-Dasselbe Prinzip gilt für Polynome und für trigonometrische Funktionen.
-Die Ableitung eines Polynoms vom Grad $n$ ist wieder ein Polynom, und die
-Ableitungen von $\sin(\omega t)$ und $\cos(\omega t)$ wechseln zwar zwischen
-Sinus und Kosinus, verlassen aber nie diese Funktionsklasse. In allen drei
-Fällen bleibt die Struktur bei der Differentiation erhalten. Das ist der Grund,
-warum der Ansatz funktioniert.
-
-```{figure} pics/chap11_sec01_fig03.svg
----
-name: chap11_sec01_fig03
----
-Darstellung eines Polynoms, einer Exponentialfunktion und einer Sinusfunktion (blau) sowie ihrer Ableitungen (rot); in allen drei Fällen bleibt die Funktionsklasse bei der Ableitung erhalten.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-```{admonition} Was ist ... ein Ansatz vom Typ der rechten Seite?
+```{admonition} Was ist ... eine lineare ODE 2. Ordnung mit konstanten Koeffizienten?
 :class: note
-Gegeben sei die inhomogene lineare ODE $y'' + ay' + by = g(x)$ mit
-konstanten Koeffizienten $a, b \in \mathbb{R}$. Ein **Ansatz vom Typ der
-rechten Seite** ist eine Funktion $y_p$, die dieselbe Funktionsstruktur wie
-die Störfunktion $g(x)$ besitzt, jedoch mit zunächst unbekannten
-Koeffizienten. Die Koeffizienten werden durch Einsetzen in die ODE und
-anschließenden Koeffizientenvergleich bestimmt.
+Eine Gleichung der Form
+
+\begin{equation*}
+y''(x) + a\,y'(x) + b\,y(x) = g(x), \quad a, b \in \mathbb{R},
+\end{equation*}
+
+heißt **lineare gewöhnliche Differentialgleichung 2. Ordnung mit konstanten
+Koeffizienten**. Die Funktion $g(x)$ auf der rechten Seite heißt
+**Störfunktion**. Die Ordnung 2 gibt an, dass die höchste vorkommende Ableitung
+die zweite Ableitung $y''$ ist.
 ```
 
-Für unser Feder-Masse-Dämpfer-System mit $g(t) = 5\,e^{-3t}$ lautet der
-Ansatz demnach:
+Für die Schwebebahn mit einer Pendellänge von $L = 3.0~\text{m}$ lautet die
+Gleichung ohne Dämpfung und ohne Störkraft konkret:
 
 \begin{equation*}
-y_p(t) = A\,e^{-3t}, \quad A \in \mathbb{R} \text{ zunächst unbekannt.}
+\varphi''(t) +
+\underbrace{\frac{9.81~\text{m\,s}^{-2}}{3.0~\text{m}}}_{b\,=\,3.27~\text{s}^{-2}}
+\,\varphi(t) = 0.
 \end{equation*}
 
-Wie wir $A$ konkret berechnen, zeigt der übernächste Abschnitt.
+Der Koeffizient $b = g/L \approx 3.27~\text{s}^{-2}$ ist das Quadrat der
+**Eigenkreisfrequenz** $\omega_0 = \sqrt{g/L} \approx 1.81~\text{rad\,s}^{-1}$.
+In der Technischen Mechanik und in der Schwingungslehre ist $\omega_0$ eine
+der zentralen Kenngrößen eines schwingfähigen Systems: Sie gibt an, wie schnell
+ein ungedämpftes Pendel ohne äußeren Antrieb schwingt.
 
-## Welchen Ansatz wähle ich für welche Störfunktion?
+## Was unterscheidet die homogene von der inhomogenen ODE?
 
-In der Praxis treten drei Grundtypen von Störfunktionen auf, die zusammen fast
-alle technisch relevanten Fälle abdecken. Die folgende Tabelle gibt für jeden
-Typ den passenden Ansatz und ein Beispiel aus dem Maschinenbau.
+*Was passiert, wenn kein Wind weht und der Wagen einfach aus einer Auslenkung
+losgelassen wird?* In diesem Fall ist die äußere Kraft null, also $g(t) = 0$.
+Die Gleichung lautet dann
 
-```{figure} pics/chap11_sec01_fig04.svg
----
-name: chap11_sec01_fig04
----
-Darstellung der drei Standardtypen von Störfunktionen im Ansatzverfahren: Polynom (links), exponentiell abklingende Funktion (Mitte) und sinusförmige Schwingung (rechts). 
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+\begin{equation*}
+\varphi''(t) + a\,\varphi'(t) + b\,\varphi(t) = 0.
+\end{equation*}
+
+Diese Gleichung besitzt keine Störfunktion auf der rechten Seite und beschreibt
+eine **freie Schwingung**: Das System entwickelt sich ausschließlich aus seinen
+Anfangsbedingungen heraus. In Analogie zu Abschnitt 8.1 nennen wir sie die
+**zugehörige homogene ODE**. Man erhält sie, indem man in der inhomogenen
+Gleichung die Störfunktion durch null ersetzt. Sobald eine äußere Kraft wirkt,
+etwa ein periodischer Seitenwind $F(t) = F_0\sin(\Omega t)$, spricht man von
+einer **erzwungenen Schwingung** und die Gleichung ist **inhomogen**.
+
+Die Lösungsstruktur folgt demselben Superpositionsprinzip, das wir aus
+Kapitel 8 kennen:
+
+```{admonition} Was ist ... die allgemeine Lösung der inhomogenen ODE 2. Ordnung?
+:class: note
+Die allgemeine Lösung der inhomogenen linearen ODE 2. Ordnung
+$y'' + ay' + by = g(x)$ lautet
+
+\begin{equation*}
+y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
+\end{equation*}
+
+wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen ODE
+und $y_p$ eine partikuläre Lösung der inhomogenen ODE ist. Der homogene
+Anteil $y_h$ enthält zwei freie Konstanten $C_1, C_2 \in \mathbb{R}$.
 ```
 
-| Störfunktion $g(t)$ | Ansatz $y_p$ | Beispiel im Maschinenbau |
-| --- | --- | --- |
-| Polynom $p_n(t)$ vom Grad $n$ | Polynom vom Grad $n$ mit unbekannten Koeffizienten | linear ansteigende Drucklast auf ein Strukturbauteil |
-| $e^{\alpha t}$ | $A\,e^{\alpha t}$ | exponentiell abklingende Stoßkraft |
-| $\sin(\omega t)$ oder $\cos(\omega t)$ | $A\sin(\omega t) + B\cos(\omega t)$ | periodische Unwuchtkraft in einer rotierenden Welle |
+Welche Bedingung $y_1$ und $y_2$ erfüllen müssen, damit $y_h = C_1 y_1 + C_2 y_2$
+wirklich alle Lösungen der homogenen ODE abdeckt, klärt Abschnitt 10.2.
+Die partikuläre Lösung $y_p$ der inhomogenen Gleichung wird in Kapitel 11
+bestimmt.
 
-Beim Polynomansatz ist zu beachten, dass der Ansatz stets alle Terme bis zum
-Grad $n$ enthalten muss, auch wenn einzelne Terme in $g(t)$ fehlen. Warum das
-nötig ist, zeigt sich beim Einsetzen: Die Ableitungen eines Polynoms vom Grad
-$n$ erzeugen Terme aller niedrigeren Grade, und ohne diese Flexibilität kann
-der Koeffizientenvergleich nicht aufgehen.
+## Warum brauchen wir jetzt zwei freie Konstanten?
 
-*Was passiert, wenn der gewählte Ansatz $y_p$ zufällig schon eine Lösung der
-homogenen ODE ist?* Dann verschwindet er beim Einsetzen auf der linken Seite
-vollständig, und wir erhalten $0 = g(t)$. Das ist widersprüchlich und bedeutet,
-dass der Standardansatz scheitert. Dieser Fall tritt genau dann auf, wenn der
-Parameter $\alpha$ der Störfunktion $e^{\alpha t}$ mit einem der Eigenwerte
-der charakteristischen Gleichung übereinstimmt. Er heißt **Resonanzfall** und
-erfordert eine Modifikation des Ansatzes, die Abschnitt 11.2 genau untersucht.
+Bei einer ODE 1. Ordnung genügt eine Anfangsbedingung, um die Lösung
+eindeutig festzulegen: Wir geben den Wert der gesuchten Funktion zum Zeitpunkt
+$t_0$ vor, und die einzige Integrationskonstante ist bestimmt. Bei einer ODE
+2. Ordnung tritt die zweite Ableitung $y''$ auf, und zur eindeutigen Festlegung
+der Lösung müssen wir zusätzlich den Wert der ersten Ableitung $y'(t_0)$
+vorgeben. Diese zwei Vorgaben legen genau die zwei freien Konstanten $C_1$ und
+$C_2$ in $y_h$ fest.
 
-Für unser laufendes Beispiel gilt: Die Eigenwerte sind $\lambda_1 = -1$ und
-$\lambda_2 = -2$. Der Exponent der Störfunktion ist $\alpha = -3$. Da
-$-3 \neq -1$ und $-3 \neq -2$, liegt kein Resonanzfall vor. Wir dürfen also
-direkt mit dem Standardansatz $y_p = A\,e^{-3t}$ rechnen.
-
-## Wie bestimme ich die unbekannten Koeffizienten?
-
-Wir setzen den Ansatz $y_p(t) = A\,e^{-3t}$ in die ODE
-$y'' + 3y' + 2y = 5\,e^{-3t}$ ein. Dazu berechnen wir zunächst die
-Ableitungen:
-
-\begin{align*}
-y_p(t)   &= A\,e^{-3t}, \\
-y_p'(t)  &= -3A\,e^{-3t}, \\
-y_p''(t) &= 9A\,e^{-3t}.
-\end{align*}
-
-Einsetzen in die linke Seite der ODE liefert:
-
-\begin{align*}
-y_p'' + 3\,y_p' + 2\,y_p
-&= 9A\,e^{-3t} + 3\cdot(-3A)\,e^{-3t} + 2A\,e^{-3t} \\
-&= (9A - 9A + 2A)\,e^{-3t} \\
-&= 2A\,e^{-3t}.
-\end{align*}
-
-Damit die ODE erfüllt ist, muss dieser Ausdruck gleich der rechten Seite
-$5\,e^{-3t}$ sein. Der **Koeffizientenvergleich** ergibt:
+Für die Schwebebahn bedeutet das: Wir müssen den Auslenkungswinkel
+$\varphi(t_0)$ beim Verlassen der Kurve und die Winkelgeschwindigkeit
+$\varphi'(t_0)$ in diesem Moment vorgeben. Das ergibt ein **Anfangswertproblem**:
 
 \begin{equation*}
-2A\,e^{-3t} \stackrel{!}{=} 5\,e^{-3t}
+y''(x) + a\,y'(x) + b\,y(x) = g(x),
+\quad y(x_0) = y_0,
+\quad y'(x_0) = v_0.
+\end{equation*}
+
+In der Strukturdynamik, einem wichtigen Teilgebiet des Maschinenbaus, ist genau
+das die Standardaufgabe: Die Bewegung eines schwingenden Bauteils wird aus
+vorgegebener Anfangslage und Anfangsgeschwindigkeit vorhergesagt. Beispiele
+reichen von Antriebswellen über Brücken bis eben zum Fahrwagen der Schwebebahn.
+
+## Wie bestimmt man die Konstanten aus Anfangsbedingungen?
+
+Wir kehren zur Schwebebahn zurück und berechnen die Anfangsbedingungen.
+Bei einer Kurvenfahrt mit $v = 60~\text{km/h} \approx 16.67~\text{m\,s}^{-1}$
+und Kurvenradius $R = 120~\text{m}$ hält der Wagen eine Gleichgewichtslage ein,
+in der Zentripetalkraft und rücktreibende Schwerkraftkomponente im Gleichgewicht
+stehen:
+
+\begin{equation*}
+\tan(\varphi_0) = \frac{v^2 / R}{g}
+= \frac{(16.67)^2}{120 \cdot 9.81}
+\approx 0.236
 \qquad \Rightarrow \qquad
-2A = 5
-\qquad \Rightarrow \qquad
-A = \frac{5}{2}.
+\varphi_0 \approx 0.231~\text{rad} \approx 13.3°.
 \end{equation*}
 
-Die partikuläre Lösung lautet damit:
+Sobald die Bahn die Kurve verlässt, entfällt die Zentripetalkraft abrupt. Der
+Wagen schwingt aus der Auslenkung $\varphi_0$ heraus, zunächst ohne
+Anfangswinkelgeschwindigkeit. Die Anfangsbedingungen lauten daher
 
 \begin{equation*}
-y_p(t) = \frac{5}{2}\,e^{-3t}.
+\varphi(0) = 0.231~\text{rad},
+\qquad
+\varphi'(0) = 0~\text{rad\,s}^{-1}.
 \end{equation*}
 
-Wir verifizieren das Ergebnis durch direktes Einsetzen in die ODE:
+Wir werden in Abschnitt 10.3 systematisch zeigen, wie man die homogene Lösung
+findet. Als Vorschau: Für die ungedämpfte Schwebebahn-Gleichung
+$\varphi'' + \omega_0^2\,\varphi = 0$ lautet sie
 
 \begin{equation*}
-y_p'' + 3\,y_p' + 2\,y_p
-= \frac{5}{2}\bigl(9 - 9 + 2\bigr)\,e^{-3t}
-= \frac{5}{2} \cdot 2\,e^{-3t}
-= 5\,e^{-3t}. \quad \checkmark
+\varphi_h(t) = C_1\cos(\omega_0 t) + C_2\sin(\omega_0 t),
+\quad \omega_0 \approx 1.81~\text{rad\,s}^{-1},
 \end{equation*}
 
-Die allgemeine Lösung der inhomogenen ODE ist nun vollständig:
+mit $C_1, C_2\in\mathbb{R}$. Wir prüfen das durch Einsetzen. Zweimaliges Ableiten ergibt
+$\varphi_h'' = -\omega_0^2 C_1\cos(\omega_0 t) - \omega_0^2 C_2\sin(\omega_0 t)
+= -\omega_0^2\,\varphi_h$, also
+
+\begin{equation*}
+\varphi_h'' + \omega_0^2\,\varphi_h = -\omega_0^2\,\varphi_h + \omega_0^2\,\varphi_h = 0.
+\quad \checkmark
+\end{equation*}
+
+Nun setzen wir die Anfangsbedingungen ein. Aus $\varphi_h(0) = 0.231$ folgt:
+
+\begin{equation*}
+C_1\cos(0) + C_2\sin(0) = C_1 \stackrel{!}{=} 0.231
+\qquad \Rightarrow \qquad C_1 = 0.231.
+\end{equation*}
+
+Aus $\varphi_h'(0) = 0$ folgt:
 
 <!-- markdownlint-disable -->
 \begin{equation*}
-y_{\text{allgemein}}(t)
-= \underbrace{C_1\,e^{-t} + C_2\,e^{-2t}}_{y_h} +
-  \underbrace{\frac{5}{2}\,e^{-3t}}_{y_p}.
+-\omega_0 C_1\underbrace{\sin(0)}_{=\,0} +
+\omega_0 C_2\underbrace{\cos(0)}_{=\,1}
+= \omega_0 C_2
+\stackrel{!}{=} 0
+\qquad \Rightarrow \qquad C_2 = 0.
 \end{equation*}
 <!-- markdownlint-enable -->
 
-```{figure} pics/chap11_sec01_fig05.svg
----
-name: chap11_sec01_fig05
----
-Überlagerung des homogenen (transienten) Anteils $y_h(t)$, des partikulären
-(erzwungenen) Anteils $y_p(t)$ und der Gesamtlösung $y(t) = y_h(t) + y_p(t)$
-für das Feder-Masse-Dämpfer-System. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
-4.0](https://creativecommons.org/licenses/by-sa/4.0))
+Die partikuläre Lösung des Anfangswertproblems lautet damit:
+
+\begin{equation*}
+\varphi(t) = 0.231\cdot\cos(1.81\,t).
+\end{equation*}
+
+Der Wagen schwingt mit der Periode $T = 2\pi / \omega_0 \approx 3.5~\text{s}$
+und konstanter Amplitude $0.231~\text{rad}$. *Ist das realistisch?* Ohne
+Dämpfung würde die Schwingung nie abklingen. Im realen Betrieb sorgt die
+Dämpfungskonstante $a > 0$ für ein Abklingen, und die Frage, ob der Wagen
+dabei überhaupt noch sichtbar schwingt oder direkt in die Ruhelage zurückgleitet,
+hängt vom Verhältnis von $a$ und $\omega_0$ ab. Genau diese Fallunterscheidung
+ist Thema der Abschnitte 10.3 und 10.4.
+
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lineare DGL 2. Ordnung (Teil 1)" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/7XrIDsaySJA?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 2. Ordnung mit konstanten
+Koeffizienten - Definition" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-Der homogene Anteil $y_h$ beschreibt das freie Abklingverhalten des Systems
-aus beliebigen Anfangszuständen heraus. In der Strukturdynamik nennt man ihn
-den **transienten Anteil** der Lösung. Der partikuläre Anteil $y_p$ beschreibt
-den vom Stoß erzwungenen Beitrag: Er klingt ebenfalls exponentiell ab, und zwar
-mit dem Abfall $e^{-3t}$, der von der äußeren Kraft vorgegeben ist. Dieser
-Teil heißt **erzwungener Anteil**, weil er unabhängig von den
-Anfangsbedingungen ist und allein durch die Störfunktion bestimmt wird. Die
-freien Konstanten $C_1$ und $C_2$ hängen von der Anfangsauslenkung und der
-Anfangsgeschwindigkeit des Maschinenelements ab und werden in Abschnitt 11.2
-aus konkreten Anfangsbedingungen berechnet.
-
-```{admonition} Lernkontrolle
-:class: tip
-[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec01_quiz.html)
+```{dropdown} Video "Lineare DGL 2. Ordnung (Teil 2)" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/4h2x8hwFmvs?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 2. Ordnung mit konstanten
+Koeffizienten - zum AWP und zur Lösungsstrategie" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-
-```{dropdown} Video "Spezielle Lösung inhom. lin. DGL 2. Ordnung" von Prof. Hielscher
-<iframe width="966" height="613"
-src="https://www.youtube.com/embed/Vnv4itD5euc?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Spezielle Lösung der inhomogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
-```
+<!-- markdownlint-enable -->
 
 ## Zusammenfassung und Ausblick
 
-Der Ansatz vom Typ der rechten Seite liefert $y_p$ für die drei Standardfälle
-(Polynom, Exponential, sin/cos) auf systematische Weise: Man setzt eine
-Funktion derselben Struktur wie $g(t)$ an, bestimmt die unbekannten
-Koeffizienten durch Einsetzen und Koeffizientenvergleich und verifiziert das
-Ergebnis. Zusammen mit der homogenen Lösung aus Kapitel 10 ist die allgemeine
-Lösung der inhomogenen ODE damit vollständig.
+Aus dem physikalischen Modell der Wuppertaler Schwebebahn haben wir die
+lineare ODE 2. Ordnung $y'' + ay' + by = g(x)$ als Modellgleichung für
+Schwingungsvorgänge abgeleitet. Im Vergleich zur ODE 1. Ordnung aus den
+Kapiteln 8 und 9 enthält der homogene Anteil der allgemeinen Lösung jetzt
+zwei freie Konstanten, die durch Anfangslage und Anfangsgeschwindigkeit
+festgelegt werden. Im ungedämpften Fall konnten wir die Konstanten bereits
+berechnen und das Schwingungsverhalten quantitativ beschreiben.
 
-Zwei Fragen bleiben noch offen. Erstens: Was tun, wenn der Exponent $\alpha$
-der Störfunktion mit einem Eigenwert der homogenen ODE übereinstimmt und der
-Standardansatz scheitert? Zweitens: Wie legen wir aus der allgemeinen Lösung
-durch konkrete Anfangsbedingungen die Konstanten $C_1$ und $C_2$ fest? Beide
-Fragen beantwortet Abschnitt 11.2. In der Technischen Mechanik ist genau das
-die Standardaufgabe bei jedem Schwingungsproblem mit äußerer Anregung: Die
-Bewegung eines Bauteils wird aus vorgegebener Anfangslage und
-Anfangsgeschwindigkeit vollständig vorhergesagt.
+Damit die Formel $y_h = C_1 y_1 + C_2 y_2$ wirklich alle Lösungen der
+homogenen ODE liefert, müssen $y_1$ und $y_2$ eine besondere Eigenschaft
+besitzen: lineare Unabhängigkeit. Abschnitt 10.2 klärt, was das bedeutet,
+und stellt ein konkretes Testverfahren vor, das auf einem Determinantenkriterium
+beruht und damit an Werkzeuge anknüpft, die wir bereits aus Kapitel 1 kennen.

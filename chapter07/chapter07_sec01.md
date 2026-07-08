@@ -3,239 +3,264 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 7.1 Trennung der Variablen
+# 7.1 Was ist eine Differentialgleichung?
 
-In Abschnitt 6.3 haben wir das Euler-Verfahren kennengelernt: einen Algorithmus, der die
-Lösungskurve einer DGL Schritt für Schritt durch Geradenstücke annähert. Dabei blieb eine
-Frage bewusst offen. Woher stammt eigentlich die exakte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$, gegen die wir den Euler-Fehler gemessen haben, und wie
-leitet man sie her? Die Antwort ist die **Methode der Trennung der Variablen**, das erste
-analytische Lösungsverfahren dieses Kapitels. Es greift immer dann, wenn sich die rechte
-Seite einer DGL als Produkt zweier Funktionen schreiben lässt: eine, die nur von der
-unabhängigen Variablen abhängt, und eine, die nur von der gesuchten Funktion abhängt.
+Am Ende von Kapitel 5 haben wir gesehen, wie die Modalanalyse ein gekoppeltes
+Schwingungssystem auf seine Eigenfrequenzen zurückführt. Dabei sind Ausdrücke
+wie $m\ddot{x} = -kx$ aufgetaucht: Gleichungen, in denen die gesuchte Funktion
+und ihre Ableitungen gemeinsam vorkommen. Solche Gleichungen sind kein
+Sonderfall, sondern das wichtigste mathematische Werkzeug der Ingenieurpraxis.
+Wärmeübertragung, Strömungsmechanik, Regelungstechnik und Festigkeitslehre
+führen alle auf denselben Typ von Beschreibung. In diesem Kapitel klären wir,
+was eine **Differentialgleichung** ist, was ihre Lösungen bedeuten und wie
+eine einzige Zusatzbedingung die Lösung eindeutig festlegt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie erkennen eine **separierbare** (trennbare) ODE 1. Ordnung der Form
-  $y' = f(x) \cdot g(y)$.
-* [ ] Sie beherrschen das Verfahren der **Separation der Variablen** und können die vier
-  Lösungsschritte (Trennen, Integrieren, Stammfunktion einsetzen, nach $y$ auflösen) auf
-  eine gegebene DGL anwenden.
-* [ ] Sie können die **allgemeine Lösung** einer separierbaren ODE angeben.
-* [ ] Sie beachten den Sonderfall $g(y) = 0$ und können die zugehörige **konstante
-  Lösung** bestimmen.
+* [ ] Sie wissen, was eine **gewöhnliche Differentialgleichung (ODE)** ist,
+  und können sie von einer partiellen Differentialgleichung unterscheiden.
+* [ ] Sie kennen die wichtigsten **Schreibweisen** für ODEs und können
+  dieselbe Gleichung in Punkt-, Strich- und Leibniz-Notation lesen.
+* [ ] Sie kennen die Begriffe **Ordnung** und **Grad** einer ODE und können
+  diese an konkreten Beispielen bestimmen.
+* [ ] Sie können zwischen der **allgemeinen Lösung** und der **speziellen
+  (partikulären) Lösung** einer ODE unterscheiden.
+* [ ] Sie wissen, was ein **Anfangswertproblem (AWP)** und ein
+  **Randwertproblem (RWP)** sind, und können für ein gegebenes AWP die
+  Anfangsbedingungen benennen.
 ```
 
-## Wann lässt sich eine DGL "trennen"?
+## Wie wird aus einem Physikproblem eine Differentialgleichung?
 
-Unsere Fallschirmspringer-Gleichung lautet $\dot{v} = g - kv$. Die rechte Seite enthält
-nur $v$, nicht die Zeit $t$ explizit. *Lässt sich das als Produkt zweier unabhängiger
-Faktoren schreiben?* Ja: Wir schreiben $g - kv = 1 \cdot (g - kv)$, wobei der erste
-Faktor ausschließlich von $t$ abhängt (er ist die Konstante $1$) und der zweite
-ausschließlich von $v$. Diese Produktstruktur ist das entscheidende Merkmal einer
-**separierbaren** Differentialgleichung.
+Ein Mensch mit Masse $m = 80~\text{kg}$ springt aus einem Flugzeug. Vor dem
+Öffnen des Fallschirms wirken auf ihn zwei Kräfte: die Schwerkraft
+$F_g = mg$ nach unten und der Luftwiderstand $F_L = b\,v$ entgegen der
+Fallrichtung. Der Luftwiderstand wächst mit der Geschwindigkeit $v(t)$; je
+schneller der Fall, desto stärker bremst die Luft. Mit dem
+Luftwiderstandskoeffizient $b = 16~\text{kg\,s}^{-1}$ und
+$g = 9.81~\text{m\,s}^{-2}$ lautet das zweite Newtonsche Gesetz:
 
-Ein weiteres Beispiel verdeutlicht das Muster. Ein erwärmtes Maschinenbauteil
-kühlt nach dem Newtonschen Abkühlgesetz gemäß $\dot{T} = -\alpha(T - T_\infty)$
-ab, wobei $T_\infty$ die Umgebungstemperatur und $\alpha > 0$ ein
-materialabhängiger Koeffizient ist. Die rechte Seite hat die Form $1 \cdot
-(-\alpha)(T - T_\infty)$: ein Produkt aus einer Funktion von $t$ (der Konstanten
-$-\alpha$) und einer Funktion von $T$. Dieselbe Struktur, dasselbe Verfahren. In
-der Wärme- und Stoffübertragung ist dieser Gleichungstyp allgegenwärtig.
+\begin{equation*}
+m\,\dot{v} = mg - b\,v.
+\end{equation*}
 
-Nicht separierbar wäre dagegen eine DGL wie $\dot{v} = g - k \cdot t \cdot v^2$: Die
-rechte Seite enthält $t$ und $v$ so verflochten, dass sie sich nicht als sauberes
-Produkt $f(t) \cdot g(v)$ schreiben lässt.
+Wir dividieren durch $m$ und führen die Abkürzung $k = b/m = 0.2~\text{s}^{-1}$
+ein:
 
-```{admonition} Was ist ... eine separierbare Differentialgleichung?
+\begin{equation*}
+\dot{v} = g - k\,v.
+\end{equation*}
+
+In dieser Gleichung ist $v(t)$ die gesuchte Funktion. Auf der linken Seite
+steht ihre Ableitung $\dot{v}$, auf der rechten Seite ein Ausdruck, der $v$
+selbst enthält. Das unterscheidet diese Gleichung grundlegend von einer
+algebraischen Gleichung wie $2x - 3 = 0$: Dort suchen wir eine Zahl, hier
+suchen wir eine Funktion, deren Ableitung eine vorgeschriebene Beziehung zur
+Funktion selbst erfüllt.
+
+### Schreibweisen für dieselbe Gleichung
+
+In Lehrbüchern und späteren Lehrveranstaltungen begegnet dieselbe ODE in
+verschiedenen Notationen. Unsere Fallgleichung lässt sich äquivalent
+schreiben als:
+
+\begin{equation*}
+\dot{v} = g - kv \quad \text{(Punkt-Notation, üblich bei Zeitableitungen)},
+\end{equation*}
+
+\begin{equation*}
+v' = g - kv \quad \text{(Strich-Notation)},
+\end{equation*}
+
+\begin{equation*}
+\frac{dv}{dt} = g - kv \quad \text{(Leibniz-Notation, betont die unabhängige Variable $t$)}.
+\end{equation*}
+
+Alle drei Schreibweisen drücken dieselbe Forderung aus. In der Mechanik ist die
+Punkt-Notation für Zeitableitungen am gebräuchlichsten; in der Mathematik und
+bei Ableitungen nach dem Ort wird meist die Strich- oder Leibniz-Notation
+bevorzugt.
+
+```{admonition} Was ist ... eine gewöhnliche Differentialgleichung?
 :class: note
-Eine gewöhnliche Differentialgleichung 1. Ordnung
+Eine **gewöhnliche Differentialgleichung** (englisch: *ordinary differential
+equation*, **ODE**) ist eine Gleichung, die eine unbekannte Funktion einer
+einzigen unabhängigen Variable und mindestens eine ihrer Ableitungen enthält.
 
-\begin{equation*}
-y' = f(x) \cdot g(y)
-\end{equation*}
+Die **Ordnung** einer ODE ist die höchste auftretende Ableitungsordnung. Der
+**Grad** ist der Exponent, mit dem diese höchste Ableitung in der Gleichung
+vorkommt, sofern die Gleichung polynomial in den Ableitungen ist.
 
-heißt **separierbar** (oder **trennbar**), wenn sich die rechte Seite als Produkt einer
-Funktion $f$, die nur von der unabhängigen Variablen $x$ abhängt, und einer Funktion $g$,
-die nur von der gesuchten Funktion $y$ abhängt, schreiben lässt.
+Eine **partielle Differentialgleichung** enthält partielle Ableitungen nach
+mehreren unabhängigen Variablen gleichzeitig.
 ```
 
-Für unsere Fallschirmspringer-DGL in der allgemeinen Notation $y' = f(x) \cdot g(y)$
-lautet die Zuordnung: $x \equiv t$, $y \equiv v$, $f(t) = 1$ und $g(v) = g - kv$. Die
-Gleichung ist damit separierbar, und wir können das Verfahren anwenden.
+Unsere Fallgleichung $\dot{v} = g - kv$ ist eine ODE 1. Ordnung und 1. Grades,
+denn $\dot{v}$ erscheint linear und es tritt keine höhere Ableitung auf.
+Zum Vergleich: Die Bewegungsgleichung eines ungedämpften Schwingers
+$m\ddot{x} = -kx$ ist eine ODE 2. Ordnung. Die Wärmeleitungsgleichung
+$\partial T/\partial t = a\,\partial^2 T/\partial x^2$ hingegen ist eine
+partielle Differentialgleichung, denn die Temperatur $T$ hängt sowohl von der
+Zeit $t$ als auch vom Ort $x$ ab; solche Gleichungen liegen außerhalb des
+Rahmens dieses Kapitels.
 
-## Wie funktioniert das Verfahren? Die vier Lösungsschritte
+In der Strukturmechanik trifft man regelmäßig auf ODEs höherer Ordnung.
+Die Biegelinie eines Balkens genügt der Gleichung $EI\,w'' = M(x)$, einer
+ODE 2. Ordnung in der Durchbiegung $w(x)$. Die Gleichung $EI\,w'''' = q(x)$
+für eine verteilte Streckenlast $q(x)$ ist sogar eine ODE 4. Ordnung. In der
+Technischen Mechanik werden Sie diese Gleichungen ausführlich einsetzen.
 
-Das Verfahren arbeitet mit der Leibniz-Notation $\frac{dv}{dt}$, die wir in Abschnitt 6.1
-eingeführt haben. Der entscheidende Kunstgriff ist, $dv$ und $dt$ wie algebraische Größen
-zu behandeln und alles, was $v$ enthält, auf eine Seite zu sortieren und alles, was $t$
-enthält, auf die andere.
+## Was ist eine Lösung, und warum gibt es unendlich viele?
 
-**Schritt 1: Variablen trennen.** Wir schreiben $\frac{dv}{dt} = g - kv$ um und dividieren
-durch $g - kv$ (was voraussetzt, dass $g - kv \neq 0$; diesen Sonderfall untersuchen wir
-am Ende des Abschnitts):
-
-\begin{equation*}
-\frac{dv}{g - kv} = dt.
-\end{equation*}
-
-Auf der linken Seite steht nun nur noch $v$, auf der rechten nur noch $t$. Die Variablen
-sind getrennt.
-
-**Schritt 2: Auf beiden Seiten integrieren.** Wir integrieren die linke Seite nach $v$
-und die rechte nach $t$:
+*Was bedeutet es überhaupt, eine ODE zu „lösen"?* Eine Lösung ist eine
+Funktion, die die Gleichung identisch erfüllt, wenn man sie einsetzt. Für
+unser Fallbeispiel behaupten wir, dass die Funktion
 
 \begin{equation*}
-\int \frac{dv}{g - kv} = \int dt.
+v(t) = \frac{g}{k} + C\,e^{-kt}
 \end{equation*}
 
-**Schritt 3: Stammfunktionen einsetzen.** Das linke Integral ist vom Typ
-$\int \frac{du}{a + bu}$. Mit der Substitution $w = g - kv$, also $dw = -k\,dv$, folgt:
+für jede Konstante $C \in \mathbb{R}$ eine Lösung von $\dot{v} = g - kv$ ist.
+Die Größe $g/k = 9.81 / 0.2 = 49.05~\text{m\,s}^{-1}$ ist die
+**Grenzgeschwindigkeit** $v_\infty$: die Geschwindigkeit, bei der sich
+Schwerkraft und Luftwiderstand gerade ausgleichen.
+
+Wir verifizieren das durch Einsetzen. Die Ableitung der behaupteten Lösung ist:
 
 \begin{equation*}
-\int \frac{dv}{g - kv} = -\frac{1}{k} \ln|g - kv|.
+\dot{v}(t) = -kC\,e^{-kt}.
 \end{equation*}
 
-Das rechte Integral ergibt $t$. Mit einer gemeinsamen Integrationskonstante $C_1 \in \mathbb{R}$:
-
-\begin{equation*}
--\frac{1}{k}\ln|g - kv| = t + C_1.
-\end{equation*}
-
-**Schritt 4: Nach $v$ auflösen.** Wir multiplizieren mit $-k$, nehmen die
-Exponentialfunktion und fassen alle Konstanten in einer neuen reellen Konstante $C$
-zusammen:
+Die rechte Seite der ODE lautet mit unserer Lösung:
 
 \begin{align*}
-\ln|g - kv| &= -k(t + C_1), \\
-g - kv      &= e^{-kC_1} \cdot e^{-kt} =: C \cdot e^{-kt}.
+g - k\,v(t) &= g - k\!\left(\frac{g}{k} + C\,e^{-kt}\right)
+             = g - g - kC\,e^{-kt}
+             = -kC\,e^{-kt}.
 \end{align*}
 
-Auflösen nach $v$ liefert die allgemeine Lösung:
+Linke und rechte Seite stimmen für jedes $C$ überein. Die Verifikation ist
+damit abgeschlossen.
 
-\begin{equation*}
-v(t) = \frac{g}{k} + C'\,e^{-kt}, \quad C' \in \mathbb{R},
-\end{equation*}
-
-wobei $C' = -C/k$ wieder eine freie reelle Konstante ist. Zur Vereinfachung der
-Schreibweise nennen wir sie von nun an wieder $C$. Genau diese Lösungsschar haben wir in
-Abschnitt 6.1 durch Einsetzen verifiziert. Jetzt wissen wir, wie sie zustande kommt.
-
-```{admonition} Was ist ... die Methode der Separation der Variablen?
+```{admonition} Was ist ... die allgemeine Lösung einer ODE?
 :class: note
-Gegeben sei die separierbare DGL $y' = f(x) \cdot g(y)$ mit $g(y) \neq 0$.
-Das Verfahren der **Separation der Variablen** besteht aus vier Schritten:
-
-1. **Trennen:** $\dfrac{dy}{g(y)} = f(x)\,dx$.
-2. **Integrieren:** $\displaystyle\int \frac{dy}{g(y)} = \int f(x)\,dx + C$.
-3. **Stammfunktionen einsetzen:** $G(y) = F(x) + C$.
-4. **Nach $y$ auflösen** (sofern möglich).
-
-Die entstehende Familie von Lösungen ist die **allgemeine Lösung** der DGL.
+Die **allgemeine Lösung** einer ODE $n$-ter Ordnung ist eine Familie von
+Funktionen, die $n$ frei wählbare Konstanten $C_1, \ldots, C_n$ enthält und
+alle Lösungen der Gleichung umfasst. Jede Wahl der Konstanten liefert eine
+**spezielle (partikuläre) Lösung**.
 ```
 
-## Wie legt eine Anfangsbedingung die Lösung fest?
+In unserem Beispiel ist $v(t) = v_\infty + C\,e^{-kt}$ die allgemeine Lösung.
+Für $C > 0$ startet die Geschwindigkeit über der Grenzgeschwindigkeit und fällt
+auf sie zu; für $C < 0$ startet sie darunter und steigt gegen $v_\infty$; für
+$C = 0$ liegt man von Beginn an exakt auf der Grenzgeschwindigkeit. Die
+Gesamtheit aller Lösungen bildet eine Kurvenschar, in der $v_\infty$ als
+waagerechte Asymptote erscheint. In Abschnitt 6.2 werden wir dieses Bild
+systematisch als Richtungsfeld darstellen, noch bevor wir die Lösung berechnen.
 
-Die allgemeine Lösung $v(t) = \frac{g}{k} + Ce^{-kt}$ enthält die freie Konstante $C$
-und beschreibt damit unendlich viele mögliche Bewegungen, genau die Kurvenschar aus
-Abschnitt 6.1. Erst eine Anfangsbedingung wählt eine einzige Kurve heraus. Der
-Fallschirmspringer startet aus der Ruhe: $v(0) = 0$. Einsetzen ergibt:
+<!-- markdownlint-disable MD033 -->
+<div id="applet-container-720a">
+
+<iframe
+  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_kurvenschar.html"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+
+</div>
+<!-- markdownlint-enable MD033 -->
+
+## Wie legt eine Bedingung die Lösung fest?
+
+Die allgemeine Lösung enthält eine freie Konstante und beschreibt damit
+unendlich viele mögliche Bewegungen. In der Praxis wissen wir jedoch den
+Anfangszustand: Der Fallschirmspringer ist zu Beginn in Ruhe, also gilt
+$v(0) = 0$. Wir setzen diese Bedingung ein:
 
 \begin{equation*}
-v(0) = \frac{g}{k} + C \cdot e^{0} = \frac{g}{k} + C = 0
+v(0) = v_\infty + C\,e^{0} = v_\infty + C = 0
 \quad \Rightarrow \quad
-C = -\frac{g}{k} = -v_\infty.
+C = -v_\infty = -49.05~\text{m\,s}^{-1}.
 \end{equation*}
 
-Die spezielle Lösung des Anfangswertproblems lautet damit:
+Die spezielle Lösung lautet damit:
 
 \begin{equation*}
-v(t) = \frac{g}{k}\bigl(1 - e^{-kt}\bigr) = v_\infty\bigl(1 - e^{-kt}\bigr).
+v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
+     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
 \end{equation*}
 
-Mit $g = 9.81~\text{m\,s}^{-2}$, $k = 0.2~\text{s}^{-1}$ und damit
-$v_\infty = g/k = 49.05~\text{m\,s}^{-1}$:
+Probe für $t = 0$: $v(0) = 49.05\,(1 - 1) = 0$. Korrekt. Für große $t$
+nähert sich $e^{-0.2\,t}$ gegen null, und $v(t)$ strebt gegen die
+Grenzgeschwindigkeit $49.05~\text{m\,s}^{-1}$, was etwa
+$177~\text{km\,h}^{-1}$ entspricht. Das ist ein bekannter Richtwert für
+Fallschirmspringer im freien Fall.
+
+```{admonition} Was ist ... ein Anfangswertproblem und ein Randwertproblem?
+:class: note
+Bei einem **Anfangswertproblem (AWP)** werden alle $n$ Bedingungen einer ODE
+$n$-ter Ordnung an derselben Stelle $t_0$ vorgegeben:
 
 \begin{equation*}
-v(t) = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+y(t_0) = y_0,\quad \dot{y}(t_0) = y_1,\quad \ldots,\quad y^{(n-1)}(t_0) = y_{n-1}.
 \end{equation*}
 
-**Verifikation.** Wir prüfen, ob diese Funktion die DGL $\dot{v} = g - kv$ und die
-Anfangsbedingung erfüllt.
+Bei einem **Randwertproblem (RWP)** werden die Bedingungen an verschiedenen
+Stellen vorgegeben, typischerweise an den Enden eines Intervalls $[x_0, x_1]$.
+```
 
-Anfangsbedingung: $v(0) = 49.05\,(1 - 1) = 0~\text{m\,s}^{-1}$. Korrekt.
+Unser Fallbeispiel ist ein AWP: Die einzige Bedingung $v(0) = 0$ liegt am
+Anfangszeitpunkt $t = 0$.
 
-Ableitung der Lösung:
+Ein typisches RWP im Maschinenbau ist die Biegelinie eines einfach gelagerten
+Balkens der Länge $L$. Die Gleichung $EI\,w'' = M(x)$ ist eine ODE 2. Ordnung
+in der Durchbiegung $w(x)$. Die allgemeine Lösung enthält zwei freie Konstanten,
+die durch die Auflagerbedingungen $w(0) = 0$ und $w(L) = 0$ festgelegt werden.
+Da die Bedingungen an zwei verschiedenen Stellen liegen, handelt es sich um ein
+Randwertproblem. *Warum führen RWP auf andere mathematische Schwierigkeiten als
+AWP?* Das werden wir in Abschnitt 6.6 bei ODEs 2. Ordnung genauer untersuchen.
 
-\begin{equation*}
-\dot{v}(t) = 49.05 \cdot 0.2\,e^{-0.2\,t} = 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
-\end{equation*}
+## Weiteres Lernmaterial
 
-Rechte Seite der DGL:
+Die folgenden beiden Videos stammen von Prof. Hielscher der TH Mannheim.
 
-\begin{align*}
-g - k\,v(t) &= 9.81 - 0.2 \cdot 49.05\,(1 - e^{-0.2\,t}) \\
-             &= 9.81 - 9.81 + 9.81\,e^{-0.2\,t} \\
-             &= 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
-\end{align*}
-
-Linke und rechte Seite stimmen überein. Das Versprechen aus Abschnitt 6.3 ist damit
-eingelöst: Die Trennung der Variablen liefert exakt die Funktion, die das Euler-Verfahren
-nur näherungsweise berechnen konnte.
-
-## Was passiert, wenn $g(y) = 0$ ist?
-
-Im ersten Schritt des Verfahrens haben wir durch $g(v) = g - kv$ dividiert. Das ist nur
-erlaubt, solange $g - kv \neq 0$ gilt. *Was tun wir, wenn der Nenner verschwindet?* Ist
-$g(v) = 0$, so ist $\dot{v} = g(v) = 0$: Die Ableitung verschwindet identisch, und wir
-erhalten unmittelbar eine **konstante Lösung**.
-
-Für unsere DGL: $g(v) = g - kv = 0$ ergibt $v = g/k = v_\infty = 49.05~\text{m\,s}^{-1}$.
-Wir prüfen durch Einsetzen:
-
-\begin{equation*}
-\dot{v} = 0 \stackrel{?}{=} g - k \cdot v_\infty = 9.81 - 0.2 \cdot 49.05 = 9.81 - 9.81 = 0.
-\quad \checkmark
-\end{equation*}
-
-Die konstante Lösung $v(t) = v_\infty$ ist die Grenzgeschwindigkeit, die wir schon im
-Richtungsfeld von Abschnitt 6.2 als Nullisokline identifiziert haben. Bei unserer linearen
-DGL ist sie im Übrigen bereits in der allgemeinen Lösung enthalten, nämlich für den
-Spezialfall $C = 0$. Das muss nicht immer so sein: Bei nichtlinearen DGL kann die
-konstante Lösung außerhalb der allgemeinen Lösungsschar liegen und ist dann separat
-anzugeben.
-
-```{dropdown} Video "Trennung der Variable" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/IPbG7lnzccE?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
 ```
 
-```{dropdown} Video "Trennung der Variablen" von Mathematrick
-<iframe width="927" height="521" src="https://www.youtube.com/embed/Sm0Go9IioJ4"
-title="Differentialgleichung lösen - DGL 1. Ordnung, Anfangswertproblem, Trennung der Variablen" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Anfangswert- und Randwertprobleme" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/kEuTsYsK5nk?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Anfangswert- und Randwertprobleme" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Separierbare Differentialgleichungen" von MathePeter
-<iframe width="927" height="521" src="https://www.youtube.com/embed/Oa7a6rP8Zd4"
-title="Separierbare Differentialgleichungen | Trennung der Veränderlichen (3-Schritte-Methode)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+Das folgende Video zeigt eine Einführung in Differentialgleichungen für
+Ingenieure an der Hochschule Bochum, die im traditionellen Vorlesungsstil
+gehalten wird.
+
+```{dropdown} Video "Gewöhnliche Differentialgleichungen - Ein Einstieg" von Jörg Frochte
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/kN5CxBG_z-k"
+title="Gewöhnliche Differentialgleichungen - Ein Einstieg -" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die Separation der Variablen überführt eine separierbare DGL $y' = f(x) \cdot g(y)$
-durch vier Schritte (Trennen, Integrieren, Stammfunktion einsetzen, auflösen) in ihre
-allgemeine Lösung. Am Fallschirmspringer-Beispiel haben wir damit die Funktion
-$v(t) = v_\infty(1 - e^{-kt})$ vollständig hergeleitet und durch Einsetzen verifiziert.
-Der Sonderfall $g(y) = 0$ liefert konstante Lösungen, die stets gesondert zu prüfen sind.
+Eine gewöhnliche Differentialgleichung (ODE) sucht nicht eine Zahl, sondern
+eine Funktion, deren Ableitung einer vorgeschriebenen Bedingung genügt. Die
+allgemeine Lösung einer ODE $n$-ter Ordnung enthält $n$ freie Konstanten und
+beschreibt eine ganze Kurvenschar. Erst eine Anfangsbedingung wählt aus dieser
+Schar eine einzige spezielle Lösung heraus. Unser Leitbeispiel
+$\dot{v} = g - kv$ mit $v(0) = 0$ hat als spezielle Lösung
+$v(t) = v_\infty(1 - e^{-kt})$: Die Geschwindigkeit des Fallschirmspringers
+steigt von null und nähert sich asymptotisch der Grenzgeschwindigkeit
+$v_\infty = 49.05~\text{m\,s}^{-1}$.
 
-In Abschnitt 7.2 stoßen wir auf DGL der Form $y' = f(ax + by + c)$, die sich auf den
-ersten Blick nicht trennen lassen. Eine geeignete Substitution verwandelt sie in eine
-separierbare DGL und erschließt damit einen deutlich breiteren Bereich von
-Gleichungstypen. Diese Substitutionstechnik ist der erste Schritt in Richtung der
-allgemeinen Lösungstheorie, die Sie in der Vorlesung Technische Mechanik für die
-Analyse von Schwingungssystemen mit nichtlinearen Rückstellkräften benötigen werden.
+In Abschnitt 6.2 lernen wir, wie man die Lösungskurven einer ODE 1. Ordnung
+sieht, bevor man sie berechnet: Das Richtungsfeld macht aus der Gleichung
+$\dot{v} = g - kv$ unmittelbar sichtbar, dass alle Lösungen gegen $v_\infty$
+streben, unabhängig vom Startwert.

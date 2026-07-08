@@ -14,19 +14,15 @@ verschiedenen Bestandteile einer Matrix kennenlernen.
 :class: attention
 * [ ] Sie wissen, was eine **Matrix** ist.
 * [ ] Sie kennen den Unterschied zwischen einem **Zeilenvektor** und einem
-  **Spaltenvektor**. 
-* [ ] Sie können die Teile einer Matrix benennen, d.h. Sie wissen, was die folgenden
-  Begriffe bedeuten: 
-    * **Element**, 
-    * **Zeilenindex**, 
-    * **Spaltenindex** und
-    * **Hauptdiagonale**.
+  **Spaltenvektor**.
+* [ ] Sie können die Teile einer Matrix benennen: **Element**,
+  **Zeilenindex**, **Spaltenindex** und **Hauptdiagonale**.
 * [ ] Sie wissen, was die **Dimension** einer Matrix ist und wann zwei Matrizen
   **gleich** sind.
 * [ ] Sie können beurteilen, ob eine Matrix **quadratisch** ist.
 ```
 
-## Matrix
+## Wie wird aus einer Tabelle eine Matrix?
 
 Im Alltag werden häufig Tabellen benutzt, um Daten zu erfassen. Vor allem im
 Profisport ist es mittlerweile Standard, möglichst viele Daten im Training und
@@ -99,12 +95,12 @@ Damit kommen wir zum Fachbegriff Matrix. Eine solche rechteckige Anordnung von
 Zahlen nennen wir **Matrix**. Die Mehrzahl des Wortes Matrix lautet
 **Matrizen**. Der Plural ist unregelmäßig.
 
-```{admonition}  Was ist ... eine Matrix?
+```{admonition} Was ist ... eine Matrix?
 :class: note
 Eine rechteckige Anordnung von Zahlen wird in der Mathematik **Matrix** genannt.
 ```
 
-## Bestandteile einer Matrix
+## Welche Bestandteile hat eine Matrix?
 
 Wir werden später noch sehen, dass Matrizen eine sehr kompakte Art und Weise
 sind, Informationen zu kodieren. Mit Matrizen kann aber auch gerechnet werden.
@@ -126,9 +122,12 @@ Einträge in der Matrix sind reelle Zahlen. Wir schreiben daher
 \end{equation*}
 
 und sagen, dass diese Matrix eine $3\times 3$-Matrix ist (sprich: 3 Kreuz 3).
-Die kombinierte Angabe der Zeilen- und Spaltenanzahl nennen wir **Dimension**
-der Matrix. Bei der Angabe der Dimension kommt immer die Anzahl der Zeilen
-zuerst und die Angabe der Spalten als zweites.
+Die kombinierte Angabe der Zeilen- und Spaltenanzahl nennen wir **Dimension
+der Matrix**. Bei der Angabe der Dimension kommt immer die Anzahl der Zeilen
+zuerst und die Angabe der Spalten als zweites. In der Finite-Elemente-Methode
+bestimmt beispielsweise die Anzahl der Freiheitsgrade eines Bauteils die
+Dimension der zugehörigen Steifigkeitsmatrix, ein Zusammenhang, dem wir in der
+Technischen Mechanik wieder begegnen werden.
 
 Für Matrizen verwenden wir meistens Großbuchstaben, die fettgedruckt werden,
 hier beispielsweise $\mathbf{A}$, weil es sich um die Anzahl der Pässe handelt:
@@ -151,7 +150,7 @@ der Mathematik der Fachbegriff **Index** verwendet. Wir schreiben das Element
 mit Zeilenindex 3 und Spaltenindex 2 als
 
 \begin{equation*}
-a_{3 2} = 2
+a_{32} = 2
 \end{equation*}
 
 mit einem Kleinbuchstaben (wir nehmen hier "a", weil die Matrix mit $\mathbf{A}$
@@ -166,9 +165,15 @@ a_{31} & a_{32} \\
 \end{pmatrix}.
 \end{equation*}
 
+Auch der Vergleich zweier Matrizen lässt sich präzise fassen. Zwei Matrizen
+stimmen genau dann überein, wenn sie dieselbe Dimension haben und an jeder
+Position denselben Wert tragen.
+
+```{admonition} Was ist ... die Gleichheit zweier Matrizen?
+:class: note
 Zwei Matrizen $\mathbf{A}$ und $\mathbf{B}$ sind **gleich**, wenn sie dieselbe
-Dimension haben und wenn jedes Element $a_{ij}$ der ersten Matrix $\mathbf{A}$
-mit jedem Element $b_{ij}$ der zweiten Matrix $\mathbf{B}$ übereinstimmt.
+Dimension haben und für alle Indizes $i,j$ gilt: $a_{ij} = b_{ij}$.
+```
 
 Schneiden wir aus der Matrix eine ganze Zeile aus, z.B. die 2. Zeile, erhalten
 wir einen Vektor
@@ -218,8 +223,9 @@ Ralf Pfeifer [Wikimedia Commons](https://commons.wikimedia.org/w/index.php?curid
 Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/))
 ```
 
-## Quadratische Matrizen
+## Wann ist eine Matrix quadratisch?
 
+*Muss eine Matrix eigentlich immer gleich viele Zeilen und Spalten haben?*
 Nachdem wir nun die allgemeine Struktur einer Matrix kennengelernt haben,
 betrachten wir einen besonderen Typ von Matrix. Eine besondere Art von Matrix
 ist die **quadratische Matrix**. Bei einer quadratischen Matrix ist die Anzahl
@@ -234,7 +240,19 @@ ist die $2\times 2$-Matrix
 \end{equation*}
 
 eine quadratische Matrix. Auch die oben eingeführte Matrix mit der Anzahl der
-Pässe ist eine quadratische Matrix. Um zu verstehen, wann eine Matrix nicht
+Pässe ist eine quadratische Matrix.
+
+```{admonition} Was ist ... eine quadratische Matrix?
+:class: note
+Eine Matrix mit gleich vielen Zeilen und Spalten, also $m=n$, heißt
+**quadratische Matrix**.
+```
+
+Quadratische Matrizen begegnen uns im Maschinenbau häufig, etwa als
+Trägheitstensor eines starren Körpers oder als Steifigkeitsmatrix eines
+Bauteils mit gleich vielen Kraft- und Verschiebungsfreiheitsgraden.
+
+Um zu verstehen, wann eine Matrix nicht
 quadratisch ist, betrachten wir ein anderes Beispiel aus dem Alltag: ein
 Haushaltsbuch. Protokollieren wir Eingaben und Ausgaben im ersten Quartal, so
 haben wir drei Spalten (Monate) und mehr als drei Zeilen (Posten) wie in dem

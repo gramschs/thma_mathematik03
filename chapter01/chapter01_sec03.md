@@ -5,13 +5,18 @@ authors:
 
 # 1.3 Addition und Skalarmultiplikation
 
-In den letzten beiden Kapiteln haben wir gelernt, was Matrizen sind und
-welche besonderen Formen wie die Einheitsmatrix oder die Dreiecksmatrix es gibt.
-Jetzt rechnen wir zum ersten Mal mit Matrizen. Zwei Operationen stehen im
-Mittelpunkt: die elementweise Addition zweier Matrizen und die Multiplikation
-einer Matrix mit einer reellen Zahl, die wir Skalarmultiplikation nennen. Beide
-begegnen uns überall dort im Maschinenbau, wo Daten aus verschiedenen Lastfällen
-überlagert oder mit Faktoren gewichtet werden.
+In den letzten beiden Kapiteln haben wir anhand des 3x3-Basketballspiels
+gelernt, was Matrizen sind und welche besonderen Formen wie die Einheitsmatrix
+oder die Dreiecksmatrix es gibt. Für die folgenden Rechenoperationen wechseln
+wir das Beispiel zu einem Fußballtraining. Anders als beim 3x3-Basketball mit
+seiner festen Dreierbesetzung erlaubt uns eine Trainingsgruppe mit frei
+wählbarer Größe, sowohl gleich große als auch unterschiedlich große Matrizen zu
+betrachten, was insbesondere bei der Matrizenmultiplikation im nächsten Kapitel
+wichtig wird. Jetzt rechnen wir zum ersten Mal mit Matrizen. Zwei Operationen
+stehen im Mittelpunkt: die elementweise Addition zweier Matrizen und die
+Multiplikation einer Matrix mit einer reellen Zahl, die wir Skalarmultiplikation
+nennen. Beide begegnen uns überall dort im Maschinenbau, wo Daten aus
+verschiedenen Lastfällen überlagert oder mit Faktoren gewichtet werden.
 
 ## Lernziele
 
@@ -322,13 +327,13 @@ clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
 
 ## Zusammenfassung und Ausblick
 
-In diesem Abschnitt haben wir die Addition, die Skalarmultiplikation und die
+In diesem Kapitel haben wir die Addition, die Skalarmultiplikation und die
 Subtraktion von Matrizen kennengelernt. Alle drei Operationen werden elementweise
 ausgeführt und setzen voraus, dass alle beteiligten Matrizen dieselbe Dimension
 haben. Die vertrauten Rechengesetze der reellen Zahlen übertragen sich
 vollständig auf diese Operationen.
 
-Im nächsten Abschnitt begegnet uns eine ganz andere Art der Multiplikation: die
+Im nächsten Kapitel begegnet uns eine ganz andere Art der Multiplikation: die
 Matrizenmultiplikation, bei der zwei Matrizen miteinander multipliziert werden.
 Diese Operation ist deutlich komplexer als die elementweise Skalarmultiplikation,
 und sie zeigt eine überraschende Eigenschaft: Das Kommutativgesetz gilt im

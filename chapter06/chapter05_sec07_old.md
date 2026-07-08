@@ -1,4 +1,4 @@
-# Berechnung der Eigenvektoren
+# 5.7 Berechnung der Eigenvektoren
 
 Wir kennen jetzt die Eigenwerte einer Matrix, aber die Richtungen, die diesen
 Eigenwerten entsprechen, fehlen noch. In der Schwingungsanalyse sind das die

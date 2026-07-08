@@ -3,264 +3,264 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 6.1 Was ist eine Differentialgleichung?
+# 6.1 Koordinatendarstellung bezüglich einer Basis
 
-Am Ende von Kapitel 5 haben wir gesehen, wie die Modalanalyse ein gekoppeltes
-Schwingungssystem auf seine Eigenfrequenzen zurückführt. Dabei sind Ausdrücke
-wie $m\ddot{x} = -kx$ aufgetaucht: Gleichungen, in denen die gesuchte Funktion
-und ihre Ableitungen gemeinsam vorkommen. Solche Gleichungen sind kein
-Sonderfall, sondern das wichtigste mathematische Werkzeug der Ingenieurpraxis.
-Wärmeübertragung, Strömungsmechanik, Regelungstechnik und Festigkeitslehre
-führen alle auf denselben Typ von Beschreibung. In diesem Kapitel klären wir,
-was eine **Differentialgleichung** ist, was ihre Lösungen bedeuten und wie
-eine einzige Zusatzbedingung die Lösung eindeutig festlegt.
+Bisher haben wir Vektoren stets in kartesischen Koordinaten beschrieben, also
+bezüglich der Standardbasis mit den Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und
+$\vec{e}_3$. In der Ingenieurpraxis ist die Standardbasis jedoch häufig nicht die
+sinnvollste Wahl. Ein Konstrukteur beschreibt ein Bauteil im körperfesten
+Koordinatensystem, das mit dem Bauteil mitdreht. Ein Schwingungsanalytiker wählt
+die Eigenformen des Systems als Basis, weil die Bewegungsgleichungen in dieser
+Basis vollständig entkoppeln. In diesem Kapitel lernen wir, wie man denselben Vektor in verschiedenen Basen darstellt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was eine **gewöhnliche Differentialgleichung (ODE)** ist,
-  und können sie von einer partiellen Differentialgleichung unterscheiden.
-* [ ] Sie kennen die wichtigsten **Schreibweisen** für ODEs und können
-  dieselbe Gleichung in Punkt-, Strich- und Leibniz-Notation lesen.
-* [ ] Sie kennen die Begriffe **Ordnung** und **Grad** einer ODE und können
-  diese an konkreten Beispielen bestimmen.
-* [ ] Sie können zwischen der **allgemeinen Lösung** und der **speziellen
-  (partikulären) Lösung** einer ODE unterscheiden.
-* [ ] Sie wissen, was ein **Anfangswertproblem (AWP)** und ein
-  **Randwertproblem (RWP)** sind, und können für ein gegebenes AWP die
-  Anfangsbedingungen benennen.
+* Sie wissen, was eine **Basis** des $\mathbb{R}^n$ ist, und kennen die
+  **kanonische Basis**.
+* Sie können einen Vektor $\vec{a} \in \mathbb{R}^n$ als **Linearkombination**
+  von Basisvektoren darstellen.
+* Sie kennen den **Koordinatenvektor** $[\vec{a}]_V$ eines Vektors $\vec{a}$
+  bezüglich einer Basismatrix $V$ und können ihn berechnen.
+* Sie können den **Koordinatenvektor** $[\vec{a}]_V$ berechnen, indem Sie das lineare
+  Gleichungssystem $V \cdot [\vec{a}]_V = \vec{a}$ lösen.
 ```
 
-## Wie wird aus einem Physikproblem eine Differentialgleichung?
+## Wiederholung: Lineare Unabhängigkeit und Basis
 
-Ein Mensch mit Masse $m = 80~\text{kg}$ springt aus einem Flugzeug. Vor dem
-Öffnen des Fallschirms wirken auf ihn zwei Kräfte: die Schwerkraft
-$F_g = mg$ nach unten und der Luftwiderstand $F_L = b\,v$ entgegen der
-Fallrichtung. Der Luftwiderstand wächst mit der Geschwindigkeit $v(t)$; je
-schneller der Fall, desto stärker bremst die Luft. Mit dem
-Luftwiderstandskoeffizient $b = 16~\text{kg\,s}^{-1}$ und
-$g = 9.81~\text{m\,s}^{-2}$ lautet das zweite Newtonsche Gesetz:
+Bevor wir die Koordinatendarstellung einführen, erinnern wir uns an die notwendigen
+Grundbegriffe.
+
+Vektoren $\vec{v}_1, \ldots, \vec{v}_m \in \mathbb{R}^n$ heißen **linear
+unabhängig**, wenn die Vektorgleichung
 
 \begin{equation*}
-m\,\dot{v} = mg - b\,v.
+\lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_m \vec{v}_m = \vec{0}
 \end{equation*}
 
-Wir dividieren durch $m$ und führen die Abkürzung $k = b/m = 0.2~\text{s}^{-1}$
-ein:
+nur für $\lambda_1 = \lambda_2 = \cdots = \lambda_m = 0$ erfüllt wird. Kein Vektor
+lässt sich dann als Linearkombination der anderen darstellen.
+
+Eine Menge von $n$ linear unabhängigen Vektoren $\vec{v}_1, \ldots, \vec{v}_n$
+im $\mathbb{R}^n$ heißt **Basis** des $\mathbb{R}^n$. Eine Basis ermöglicht es,
+jeden Vektor $\vec{a} \in \mathbb{R}^n$ als eindeutige Linearkombination der
+Basisvektoren darzustellen.
+
+Der Zusammenhang zwischen linearer Unabhängigkeit und Determinante ist dabei
+besonders nützlich. Fasst man die Basisvektoren als Spalten einer quadratischen
+Matrix $V$ zusammen, so gilt:
 
 \begin{equation*}
-\dot{v} = g - k\,v.
+\det(V) \neq 0 \quad \Longleftrightarrow \quad \vec{v}_1, \ldots, \vec{v}_n \text{ sind linear unabhängig.}
 \end{equation*}
 
-In dieser Gleichung ist $v(t)$ die gesuchte Funktion. Auf der linken Seite
-steht ihre Ableitung $\dot{v}$, auf der rechten Seite ein Ausdruck, der $v$
-selbst enthält. Das unterscheidet diese Gleichung grundlegend von einer
-algebraischen Gleichung wie $2x - 3 = 0$: Dort suchen wir eine Zahl, hier
-suchen wir eine Funktion, deren Ableitung eine vorgeschriebene Beziehung zur
-Funktion selbst erfüllt.
+## Die kanonische Basis
 
-### Schreibweisen für dieselbe Gleichung
-
-In Lehrbüchern und späteren Lehrveranstaltungen begegnet dieselbe ODE in
-verschiedenen Notationen. Unsere Fallgleichung lässt sich äquivalent
-schreiben als:
+Die einfachste und am häufigsten verwendete Basis ist die **kanonische Basis** (auch
+Standardbasis genannt). Im $\mathbb{R}^2$ besteht sie aus den beiden Einheitsvektoren
 
 \begin{equation*}
-\dot{v} = g - kv \quad \text{(Punkt-Notation, üblich bei Zeitableitungen)},
+\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad
+\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix},
 \end{equation*}
+
+und im $\mathbb{R}^3$ aus den drei Einheitsvektoren
 
 \begin{equation*}
-v' = g - kv \quad \text{(Strich-Notation)},
+\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}, \quad
+\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}.
 \end{equation*}
+
+Bezüglich der kanonischen Basis sind die Koordinaten eines Vektors $\vec{a}$ gerade
+seine Einträge selbst:
 
 \begin{equation*}
-\frac{dv}{dt} = g - kv \quad \text{(Leibniz-Notation, betont die unabhängige Variable $t$)}.
+\vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
+= a_1 \cdot \vec{e}_1 + a_2 \cdot \vec{e}_2 + a_3 \cdot \vec{e}_3.
 \end{equation*}
 
-Alle drei Schreibweisen drücken dieselbe Forderung aus. In der Mechanik ist die
-Punkt-Notation für Zeitableitungen am gebräuchlichsten; in der Mathematik und
-bei Ableitungen nach dem Ort wird meist die Strich- oder Leibniz-Notation
-bevorzugt.
+## Koordinatenvektoren bezüglich einer neuen Basis
 
-```{admonition} Was ist ... eine gewöhnliche Differentialgleichung?
-:class: note
-Eine **gewöhnliche Differentialgleichung** (englisch: *ordinary differential
-equation*, **ODE**) ist eine Gleichung, die eine unbekannte Funktion einer
-einzigen unabhängigen Variable und mindestens eine ihrer Ableitungen enthält.
-
-Die **Ordnung** einer ODE ist die höchste auftretende Ableitungsordnung. Der
-**Grad** ist der Exponent, mit dem diese höchste Ableitung in der Gleichung
-vorkommt, sofern die Gleichung polynomial in den Ableitungen ist.
-
-Eine **partielle Differentialgleichung** enthält partielle Ableitungen nach
-mehreren unabhängigen Variablen gleichzeitig.
-```
-
-Unsere Fallgleichung $\dot{v} = g - kv$ ist eine ODE 1. Ordnung und 1. Grades,
-denn $\dot{v}$ erscheint linear und es tritt keine höhere Ableitung auf.
-Zum Vergleich: Die Bewegungsgleichung eines ungedämpften Schwingers
-$m\ddot{x} = -kx$ ist eine ODE 2. Ordnung. Die Wärmeleitungsgleichung
-$\partial T/\partial t = a\,\partial^2 T/\partial x^2$ hingegen ist eine
-partielle Differentialgleichung, denn die Temperatur $T$ hängt sowohl von der
-Zeit $t$ als auch vom Ort $x$ ab; solche Gleichungen liegen außerhalb des
-Rahmens dieses Kapitels.
-
-In der Strukturmechanik trifft man regelmäßig auf ODEs höherer Ordnung.
-Die Biegelinie eines Balkens genügt der Gleichung $EI\,w'' = M(x)$, einer
-ODE 2. Ordnung in der Durchbiegung $w(x)$. Die Gleichung $EI\,w'''' = q(x)$
-für eine verteilte Streckenlast $q(x)$ ist sogar eine ODE 4. Ordnung. In der
-Technischen Mechanik werden Sie diese Gleichungen ausführlich einsetzen.
-
-## Was ist eine Lösung, und warum gibt es unendlich viele?
-
-*Was bedeutet es überhaupt, eine ODE zu „lösen"?* Eine Lösung ist eine
-Funktion, die die Gleichung identisch erfüllt, wenn man sie einsetzt. Für
-unser Fallbeispiel behaupten wir, dass die Funktion
+Sei nun $V = (\vec{v}_1 \mid \vec{v}_2 \mid \cdots \mid \vec{v}_n)$ eine
+invertierbare $n \times n$-Matrix mit den Basisvektoren $\vec{v}_1, \ldots, \vec{v}_n$
+als Spalten.
+Jeder Vektor $\vec{a} \in \mathbb{R}^n$ lässt sich eindeutig als Linearkombination
+der Spalten schreiben:
 
 \begin{equation*}
-v(t) = \frac{g}{k} + C\,e^{-kt}
+\vec{a} = \lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_n \vec{v}_n.
 \end{equation*}
 
-für jede Konstante $C \in \mathbb{R}$ eine Lösung von $\dot{v} = g - kv$ ist.
-Die Größe $g/k = 9.81 / 0.2 = 49.05~\text{m\,s}^{-1}$ ist die
-**Grenzgeschwindigkeit** $v_\infty$: die Geschwindigkeit, bei der sich
-Schwerkraft und Luftwiderstand gerade ausgleichen.
-
-Wir verifizieren das durch Einsetzen. Die Ableitung der behaupteten Lösung ist:
+Die Koeffizienten $\lambda_1, \lambda_2, \ldots, \lambda_n$ dieser Linearkombination
+heißen die **Koordinaten** von $\vec{a}$ bezüglich der Basismatrix $V$. Sie werden im
+**Koordinatenvektor** zusammengefasst:
 
 \begin{equation*}
-\dot{v}(t) = -kC\,e^{-kt}.
+[\vec{a}]_V = \begin{pmatrix} \lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_n \end{pmatrix}.
 \end{equation*}
 
-Die rechte Seite der ODE lautet mit unserer Lösung:
+Derselbe geometrische Vektor $\vec{a}$ wird durch verschiedene Zahlentupel
+beschrieben, je nachdem welche Basis verwendet wird. Das geometrische Objekt selbst
+ändert sich nicht, nur seine Darstellung.
 
-\begin{align*}
-g - k\,v(t) &= g - k\!\left(\frac{g}{k} + C\,e^{-kt}\right)
-             = g - g - kC\,e^{-kt}
-             = -kC\,e^{-kt}.
-\end{align*}
+## Berechnung des Koordinatenvektors
 
-Linke und rechte Seite stimmen für jedes $C$ überein. Die Verifikation ist
-damit abgeschlossen.
-
-```{admonition} Was ist ... die allgemeine Lösung einer ODE?
-:class: note
-Die **allgemeine Lösung** einer ODE $n$-ter Ordnung ist eine Familie von
-Funktionen, die $n$ frei wählbare Konstanten $C_1, \ldots, C_n$ enthält und
-alle Lösungen der Gleichung umfasst. Jede Wahl der Konstanten liefert eine
-**spezielle (partikuläre) Lösung**.
-```
-
-In unserem Beispiel ist $v(t) = v_\infty + C\,e^{-kt}$ die allgemeine Lösung.
-Für $C > 0$ startet die Geschwindigkeit über der Grenzgeschwindigkeit und fällt
-auf sie zu; für $C < 0$ startet sie darunter und steigt gegen $v_\infty$; für
-$C = 0$ liegt man von Beginn an exakt auf der Grenzgeschwindigkeit. Die
-Gesamtheit aller Lösungen bildet eine Kurvenschar, in der $v_\infty$ als
-waagerechte Asymptote erscheint. In Abschnitt 6.2 werden wir dieses Bild
-systematisch als Richtungsfeld darstellen, noch bevor wir die Lösung berechnen.
-
-<!-- markdownlint-disable MD033 -->
-<div id="applet-container-720">
-
-<iframe
-  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_kurvenschar.html"
-  width="100%"
-  frameborder="0"
-  scrolling="no">
-</iframe>
-
-</div>
-<!-- markdownlint-enable MD033 -->
-
-## Wie legt eine Bedingung die Lösung fest?
-
-Die allgemeine Lösung enthält eine freie Konstante und beschreibt damit
-unendlich viele mögliche Bewegungen. In der Praxis wissen wir jedoch den
-Anfangszustand: Der Fallschirmspringer ist zu Beginn in Ruhe, also gilt
-$v(0) = 0$. Wir setzen diese Bedingung ein:
+Die Berechnung des Koordinatenvektors $[\vec{a}]_V$ führt auf ein lineares
+Gleichungssystem. Schreibt man die Gleichung in Matrixform, erhält man:
 
 \begin{equation*}
-v(0) = v_\infty + C\,e^{0} = v_\infty + C = 0
-\quad \Rightarrow \quad
-C = -v_\infty = -49.05~\text{m\,s}^{-1}.
+\vec{a} = V \cdot [\vec{a}]_V.
 \end{equation*}
 
-Die spezielle Lösung lautet damit:
+Da $V$ aus linear unabhängigen Vektoren besteht, ist $\det(V) \neq 0$ und die Matrix
+ist invertierbar. Der Koordinatenvektor ergibt sich daher durch:
 
 \begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+[\vec{a}]_V = V^{-1} \cdot \vec{a}.
 \end{equation*}
 
-Probe für $t = 0$: $v(0) = 49.05\,(1 - 1) = 0$. Korrekt. Für große $t$
-nähert sich $e^{-0.2\,t}$ gegen null, und $v(t)$ strebt gegen die
-Grenzgeschwindigkeit $49.05~\text{m\,s}^{-1}$, was etwa
-$177~\text{km\,h}^{-1}$ entspricht. Das ist ein bekannter Richtwert für
-Fallschirmspringer im freien Fall.
+In der Praxis berechnet man $[\vec{a}]_V$ meist nicht über die explizite Inverse,
+sondern durch Lösung des Gleichungssystems $V \cdot [\vec{a}]_V = \vec{a}$ mit dem
+Gauß-Algorithmus.
 
-```{admonition} Was ist ... ein Anfangswertproblem und ein Randwertproblem?
-:class: note
-Bei einem **Anfangswertproblem (AWP)** werden alle $n$ Bedingungen einer ODE
-$n$-ter Ordnung an derselben Stelle $t_0$ vorgegeben:
+## Vollständiges Beispiel
+
+Wir berechnen die Koordinaten des Vektors $\vec{a} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$
+bezüglich der Basismatrix
 
 \begin{equation*}
-y(t_0) = y_0,\quad \dot{y}(t_0) = y_1,\quad \ldots,\quad y^{(n-1)}(t_0) = y_{n-1}.
+V = (\vec{v}_1 \mid \vec{v}_2 \mid \vec{v}_3)
+\quad \text{mit} \quad
+\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+\vec{v}_2 = \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix}, \quad
+\vec{v}_3 = \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
 \end{equation*}
 
-Bei einem **Randwertproblem (RWP)** werden die Bedingungen an verschiedenen
-Stellen vorgegeben, typischerweise an den Enden eines Intervalls $[x_0, x_1]$.
-```
+Zunächst überprüfen wir, ob die Vektoren tatsächlich eine Basis bilden. Wir berechnen
+die Determinante der Koeffizientenmatrix $V = \begin{pmatrix} 1 & 0 & -1 \\ 1 & 2 & 0 \\ 0 & -2 & -2 \end{pmatrix}$.
+Es gilt $\det(V) \neq 0$, also sind die drei Vektoren linear unabhängig und bilden
+eine Basis des $\mathbb{R}^3$.
 
-Unser Fallbeispiel ist ein AWP: Die einzige Bedingung $v(0) = 0$ liegt am
-Anfangszeitpunkt $t = 0$.
+Wir suchen $\lambda_1, \lambda_2, \lambda_3$ mit $\vec{a} = \lambda_1 \vec{v}_1 +
+\lambda_2 \vec{v}_2 + \lambda_3 \vec{v}_3$, also
 
-Ein typisches RWP im Maschinenbau ist die Biegelinie eines einfach gelagerten
-Balkens der Länge $L$. Die Gleichung $EI\,w'' = M(x)$ ist eine ODE 2. Ordnung
-in der Durchbiegung $w(x)$. Die allgemeine Lösung enthält zwei freie Konstanten,
-die durch die Auflagerbedingungen $w(0) = 0$ und $w(L) = 0$ festgelegt werden.
-Da die Bedingungen an zwei verschiedenen Stellen liegen, handelt es sich um ein
-Randwertproblem. *Warum führen RWP auf andere mathematische Schwierigkeiten als
-AWP?* Das werden wir in Abschnitt 6.6 bei ODEs 2. Ordnung genauer untersuchen.
+\begin{equation*}
+\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
+= \lambda_1 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} +
+\lambda_2 \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix} +
+\lambda_3 \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
+\end{equation*}
 
-## Weiteres Lernmaterial
+Mit dem Gauß-Algorithmus erhält man die Lösung:
 
-Die folgenden beiden Videos stammen von Prof. Hielscher der TH Mannheim.
+\begin{equation*}
+\lambda_1 = -3, \quad \lambda_2 = \frac{5}{2}, \quad \lambda_3 = -4,
+\end{equation*}
 
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
+und damit den Koordinatenvektor:
 
-```{dropdown} Video "Anfangswert- und Randwertprobleme" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/kEuTsYsK5nk?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Anfangswert- und Randwertprobleme" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+\begin{equation*}
+[\vec{a}]_V = \begin{pmatrix} -3 \\ \frac{5}{2} \\ -4 \end{pmatrix}.
+\end{equation*}
 
-Das folgende Video zeigt eine Einführung in Differentialgleichungen für
-Ingenieure an der Hochschule Bochum, die im traditionellen Vorlesungsstil
-gehalten wird.
-
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Ein Einstieg" von Jörg Frochte
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/kN5CxBG_z-k"
-title="Gewöhnliche Differentialgleichungen - Ein Einstieg -" frameborder="0"
+```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" von The Bright Side of Mathematics
+<iframe width="1054" height="585" src="https://www.youtube.com/embed/FFVauAY_FMI"
+title="Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
 web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
+```{dropdown} Video "Basis-Transformation" von MathePeter
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/CR7e7Zc0QLg"
+title="BASISTRANSFORMATION | Transformationsmatrix berechnen am BEISPIEL (linearer Unterraum)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video (EN) "Change of basis" von 3Blue1Brown
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/P2LTAUO1TdA"
+title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Anwendungen im Maschinenbau
+
+Die Koordinatendarstellung bezüglich einer Basis ist in der Ingenieurpraxis überall
+präsent. Die folgenden Beispiele zeigen, wie sich der Stoff aus diesem Kapitel in
+den späteren Vorlesungen wiederfinden wird. In vielen dieser Anwendungen wird später
+auch der allgemeine Wechsel zwischen zwei beliebigen Basen benötigt; die hier
+entwickelten Grundlagen sind dafür die notwendige Vorbereitung.
+
+**Roboterkinematik:** Ein Roboterarm wird zunächst in einem weltfesten
+Koordinatensystem beschrieben. Für die Steuerung der Gelenke ist es günstiger, die
+Koordinaten im körperfesten System des jeweiligen Armgliedes anzugeben. Der Übergang
+zwischen beiden Systemen ist eine Koordinatentransformation, die sich als
+Matrixmultiplikation darstellt. In der Vorlesung Robotik werden Sie die sogenannte
+Denavit-Hartenberg-Konvention kennenlernen, die systematisch solche Transformationen
+entlang der Gelenkkette aufstellt.
+
+**Hauptachsentransformation in der Festigkeitslehre:** Der allgemeine Spannungszustand
+in einem Punkt eines Bauteils wird durch den Spannungstensor beschrieben, eine
+symmetrische $3\times 3$-Matrix. In einem geeignet gewählten Koordinatensystem, den
+sogenannten Hauptachsen, nimmt dieser Tensor eine Diagonalgestalt an. Die
+Diagonalelemente sind die Hauptspannungen $\sigma_1$, $\sigma_2$, $\sigma_3$, die
+entscheidend für die Festigkeitsbewertung sind. Die geeigneten Basisvektoren heißen
+Eigenvektoren, und die Hauptspannungen heißen Eigenwerte. Den mathematischen Apparat
+dafür werden Sie im nächsten Kapitel kennenlernen.
+
+**Modalanalyse in der Schwingungstechnik:** Bei der Analyse von Maschinenschwingungen
+wählt man die Eigenformen des schwingenden Systems als neue Basis. In dieser Basis
+zerfällt das gekoppelte Differentialgleichungssystem mit vielen wechselwirkenden
+Freiheitsgraden in vollständig entkoppelte Einzelschwingungen. Jede Eigenform kann
+dann getrennt analysiert werden. Die mathematische Grundlage dafür ist das Kapitel
+über Eigenwerte und Eigenvektoren sowie die Diagonalisierung, die in den folgenden
+Kapiteln behandelt werden.
+
+**FEM: Lokale und globale Koordinaten:** In der Finite-Elemente-Methode werden
+Steifigkeitsmatrizen zunächst im lokalen Koordinatensystem jedes Elements berechnet
+und dann durch Koordinatentransformation in das globale Koordinatensystem überführt,
+bevor sie zur globalen Steifigkeitsmatrix zusammengefügt werden. Dieser Schritt ist
+für jedes FEM-Programm fundamental.
+
+```{admonition} Was ist ... der Koordinatenvektor bezüglich einer Basis?
+:class: note
+Gegeben sei ein Vektor $\vec{a} \in \mathbb{R}^n$ und eine invertierbare Matrix
+$V = (\vec{v}_1 \mid \cdots \mid \vec{v}_n) \in \mathbb{R}^{n \times n}$ mit
+linear unabhängigen Spalten.
+
+Der **Koordinatenvektor** $[\vec{a}]_V$ enthält die Koeffizienten
+$\lambda_1, \ldots, \lambda_n$ der eindeutigen Darstellung
+
+\begin{equation*}
+\vec{a} = \lambda_1 \vec{v}_1 + \cdots + \lambda_n \vec{v}_n = V \cdot [\vec{a}]_V.
+\end{equation*}
+
+Er wird berechnet durch Lösung des linearen Gleichungssystems
+
+\begin{equation*}
+V \cdot [\vec{a}]_V = \vec{a},
+\end{equation*}
+
+wobei $\vec{a}$ in Standardkoordinaten gegeben ist.
+```
+
 ## Zusammenfassung und Ausblick
 
-Eine gewöhnliche Differentialgleichung (ODE) sucht nicht eine Zahl, sondern
-eine Funktion, deren Ableitung einer vorgeschriebenen Bedingung genügt. Die
-allgemeine Lösung einer ODE $n$-ter Ordnung enthält $n$ freie Konstanten und
-beschreibt eine ganze Kurvenschar. Erst eine Anfangsbedingung wählt aus dieser
-Schar eine einzige spezielle Lösung heraus. Unser Leitbeispiel
-$\dot{v} = g - kv$ mit $v(0) = 0$ hat als spezielle Lösung
-$v(t) = v_\infty(1 - e^{-kt})$: Die Geschwindigkeit des Fallschirmspringers
-steigt von null und nähert sich asymptotisch der Grenzgeschwindigkeit
-$v_\infty = 49.05~\text{m\,s}^{-1}$.
+Eine Basis des $\mathbb{R}^n$ ist eine Menge von $n$ linear unabhängigen Vektoren,
+bezüglich derer jeder Vektor eindeutig als Linearkombination dargestellt werden kann.
+Fasst man diese Basisvektoren als Spalten der invertierbaren Matrix $V$ zusammen,
+so erhält man den Koordinatenvektor $[\vec{a}]_V$ eines in Standardkoordinaten
+gegebenen Vektors $\vec{a}$ durch Lösung des Gleichungssystems
+$V \cdot [\vec{a}]_V = \vec{a}$.
 
-In Abschnitt 6.2 lernen wir, wie man die Lösungskurven einer ODE 1. Ordnung
-sieht, bevor man sie berechnet: Das Richtungsfeld macht aus der Gleichung
-$\dot{v} = g - kv$ unmittelbar sichtbar, dass alle Lösungen gegen $v_\infty$
-streben, unabhängig vom Startwert.
+Im Maschinenbau ist die Koordinatendarstellung in verschiedenen Basen allgegenwärtig:
+in der Roboterkinematik, der FEM, der Festigkeitslehre und der Schwingungsanalyse.
+Besonders bedeutsam ist sie als Vorbereitung auf die Eigenwertrechnung: Die
+Eigenvektoren einer Matrix bilden eine besonders günstige Basis, in der die lineare
+Abbildung eine Diagonalgestalt annimmt. In dieser Basis lassen sich
+Schwingungsanalysen, Stabilitätsuntersuchungen und Hauptspannungsberechnungen mit
+minimalem Rechenaufwand durchführen. Den allgemeinen Wechsel zwischen zwei
+beliebigen Basen sowie die dafür benötigte Basiswechselmatrix werden wir im Kapitel
+über Eigenwerte und Eigenvektoren einführen, wenn wir sie konkret benötigen.

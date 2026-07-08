@@ -3,200 +3,267 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 12.3 Die Fourierreihe und ihre Koeffizienten
+# 12.3 Schwingungen und Bewegungsgleichungen: DGL 2. Ordnung in der Technik
 
-In Abschnitt 12.2 haben wir gesehen, dass sich ein reales Motorsignal als
-Überlagerung einer Grundschwingung und ihrer Oberschwingungen beschreiben lässt.
-Wir wussten dort aber noch nicht, mit welchen Amplituden die einzelnen Anteile
-auftreten. *Wie bestimmt man diese Amplituden systematisch, wenn man nur die
-Funktion selbst kennt?* Die Antwort geben Formeln, die das zentrale
-Rechenwerkzeug dieses Kapitels bilden.
+In den Abschnitten 11.1 und 11.2 haben wir die ODE des Feder-Masse-Dämpfer-Systems
+stets als fertige Gleichung übernommen und ihre Lösung bestimmt. Jetzt gehen
+wir einen Schritt zurück und fragen: *Wie entsteht diese Gleichung überhaupt
+aus den physikalischen Gesetzen?* Außerdem betrachten wir den Sonderfall ohne
+Dämpfung und ohne äußere Kraft. Er führt auf die reinste Form der Schwingung
+und auf eine der wichtigsten Kenngrößen der Ingenieurpraxis: die Kreisfrequenz.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die Formeln für die Fourierkoeffizienten $a_0$,
-  $a_n$ und $b_n$ korrekt aufschreiben und die Bedeutung jedes Terms erläutern.
-* [ ] Sie verstehen, dass die Fourierreihe eine periodische Funktion als
-  Überlagerung von Sinus- und Kosinusschwingungen darstellt, und können
-  diesen Zusammenhang in eigenen Worten beschreiben.
-* [ ] Sie können die **Fourierreihe** einer gegebenen periodischen Funktion
-  formal aufstellen und die ersten Partialsummen angeben.
-* [ ] Sie kennen die **Dirichlet-Bedingungen** und können für typische
-  technische Signale entscheiden, ob eine Fourierreihe konvergiert.
+* [ ] Sie können ein Feder-Masse-System physikalisch beschreiben, die
+  wirkenden Kräfte benennen und aus dem Newtonschen Gesetz $ma = F$ die
+  **Bewegungsgleichung** als lineare ODE 2. Ordnung aufstellen.
+* [ ] Sie erkennen die **Schwingungsgleichung** $y'' + \omega_0^2\,y = 0$ als
+  Sonderfall ohne Dämpfung und ohne äußere Kraft und können sie einem
+  gegebenen physikalischen System zuordnen.
+* [ ] Sie können die allgemeine Lösung der Schwingungsgleichung mit den
+  Fundamentallösungen $\cos(\omega_0 t)$ und $\sin(\omega_0 t)$ angeben und
+  die **Kreisfrequenz** $\omega_0 = \sqrt{k/m}$ physikalisch interpretieren.
+* [ ] Sie können aus vorgegebenen Anfangsbedingungen die Konstanten $C_1$ und
+  $C_2$ bestimmen und die Lösung als **Amplitude** und **Schwingungsdauer**
+  physikalisch deuten.
 ```
 
-## Vom trigonometrischen Polynom zur Fourierreihe
+## Wie entsteht die Bewegungsgleichung aus dem Newtonschen Gesetz?
 
-In Abschnitt 12.2 haben wir ein Signal aus zwei Termen zusammengesetzt:
-Grundschwingung plus erste Oberschwingung. Das Ergebnis war eine kompliziertere
-periodische Funktion. Wir können diesen Gedanken umkehren: Jede periodische
-Funktion lässt sich als Summe von Sinus- und Kosinusfunktionen unterschiedlicher
-Frequenz schreiben. Eine endliche solche Summe nennt man ein
-**trigonometrisches Polynom**.
+Wir betrachten unser Feder-Masse-System aus Kapitel 11: Ein Maschinenelement
+der Masse $m = 2~\text{kg}$ ist horizontal verschiebbar und über eine Feder
+mit Steifigkeit $k = 4~\text{N/m}$ am Gestell befestigt. Ein Dämpfer mit
+Konstante $d \geq 0$ wirkt parallel zur Feder. Die Auslenkung aus der Ruhelage
+zur Zeit $t$ bezeichnen wir mit $y(t)$, gemessen in Metern und positiv in
+Bewegungsrichtung.
 
-```{admonition} Was ist ... ein trigonometrisches Polynom?
-:class: note
-Ein **trigonometrisches Polynom** vom Grad $N$ zur Kreisfrequenz
-$\omega_0 = 2\pi/T$ ist eine Funktion der Form
+Drei Kräfte wirken auf das Element: die Federkraft $F_F = -k\,y$, die
+Dämpferkraft $F_D = -d\,y'$ sowie eine mögliche äußere Kraft $F(t)$.
 
-\begin{equation*}
-S_N(t) = \frac{a_0}{2} + \sum_{n=1}^{N}
-\bigl(a_n \cos(n\,\omega_0\,t) + b_n \sin(n\,\omega_0\,t)\bigr).
-\end{equation*}
-
-Die Konstanten $a_0,\, a_1,\, b_1,\, a_2,\, b_2,\, \ldots$ heißen
-**Fourierkoeffizienten**. Der Term $a_0/2$ beschreibt den Mittelwert der
-Funktion über eine Periode.
-```
-
-Der Faktor $\frac{1}{2}$ vor $a_0$ wirkt zunächst willkürlich. Er kommt daher,
-dass die Kosinusfunktion für $n = 0$ den konstanten Wert $\cos(0) = 1$ hat,
-und die zugehörige Integrationsformel dann dieselbe Gestalt wie für alle
-anderen $a_n$ annimmt. Wir halten uns an diese in der Literatur übliche
-Schreibweise.
-
-Je höher wir den Grad $N$ wählen, desto mehr Schwingungsanteile nehmen wir mit.
-Die Frage ist: Welche Koeffizienten $a_n$ und $b_n$ muss man wählen, damit das
-trigonometrische Polynom die gegebene Funktion $f$ möglichst gut annähert?
-
-## Wie berechnet man die Fourierkoeffizienten?
-
-Die entscheidende mathematische Eigenschaft der Sinus- und Kosinusfunktionen
-ist ihre **Orthogonalität**: Integriert man das Produkt zweier verschiedener
-Sinus- und Kosinusfunktionen über eine vollständige Periode, ergibt sich stets
-null. Nur wenn man eine Funktion mit sich selbst multipliziert, erhält man einen
-von null verschiedenen Wert. Dieses Prinzip ist vergleichbar mit dem
-Skalarprodukt senkrechter Vektoren: $\vec{e}_1 \cdot \vec{e}_2 = 0$, aber
-$\vec{e}_1 \cdot \vec{e}_1 = 1$.
-
-Nutzt man diese Orthogonalität aus und multipliziert beide Seiten des
-trigonometrischen Polynoms mit $\cos(n\,\omega_0\,t)$ beziehungsweise
-$\sin(n\,\omega_0\,t)$ und integriert dann über eine Periode, so fallen alle
-Terme bis auf einen heraus. Das Ergebnis sind die folgenden Formeln zur
-Berechnung der Fourierkoeffizienten.
-
-```{admonition} Was sind ... die Fourierkoeffizienten?
-:class: note
-Sei $f$ eine periodische Funktion mit Periode $T$ und Kreisfrequenz
-$\omega_0 = 2\pi/T$. Die **Fourierkoeffizienten** von $f$ werden berechnet als
-
-\begin{align*}
-a_n &= \frac{2}{T} \int_{-T/2}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt,
-\quad n = 0, 1, 2, \ldots \\
-b_n &= \frac{2}{T} \int_{-T/2}^{T/2} f(t)\,\sin(n\,\omega_0\,t)\,dt,
-\quad n = 1, 2, \ldots
-\end{align*}
-
-Der Koeffizient $a_0 = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt$ ist der
-doppelte Mittelwert von $f$ über eine Periode.
-```
-
-Der Koeffizient $a_n$ gibt an, wie stark die $n$-te Kosinusschwingung in $f$
-enthalten ist, der Koeffizient $b_n$ entsprechend für die $n$-te
-Sinusschwingung. Ein großes $|a_3|$ bedeutet, dass die dritte Oberschwingung
-des Kosinusanteils einen starken Einfluss auf das Signal hat.
-
-Wir wenden die Formeln sofort auf unser Kurbelwellen-Signal an. Wir nehmen
-vereinfachend an, dass der Kolbenhub auf einer Periode durch
-
-\begin{equation*}
-f(t) = \begin{cases}
-2, & 0 \leq t < T/2, \\
--1, & T/2 \leq t < T
-\end{cases}
-\end{equation*}
-
-beschrieben wird, also ein asymmetrisches Rechtecksignal mit den Werten $2$ und
-$-1$ und der Periode $T = 0.04~\text{s}$. Wir berechnen zunächst $a_0$:
-
-\begin{align*}
-a_0 &= \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt
-= \frac{2}{T}\left(\int_{0}^{T/2} 2\,dt + \int_{T/2}^{T}(-1)\,dt\right) \\
-&= \frac{2}{T}\left(2\cdot\frac{T}{2} + (-1)\cdot\frac{T}{2}\right)
-= \frac{2}{T}\cdot\frac{T}{2} = 1.
-\end{align*}
-
-Der Mittelwert von $f$ über eine Periode beträgt $a_0/2 = 0.5$. Das ist
-plausibel: Das Signal verbringt die halbe Zeit bei $+2$ und die halbe Zeit bei
-$-1$, der arithmetische Mittelwert ist also $(2 + (-1))/2 = 0.5$.
-
-## Was ist die Fourierreihe?
-
-Lassen wir den Grad $N$ des trigonometrischen Polynoms gegen unendlich wachsen,
-erhalten wir eine unendliche Summe. Diese heißt **Fourierreihe**.
-
-```{admonition} Was ist ... die Fourierreihe?
-:class: note
-Die **Fourierreihe** einer periodischen Funktion $f$ mit Periode $T$ und
-Kreisfrequenz $\omega_0 = 2\pi/T$ ist die unendliche Summe
-
-\begin{equation*}
-f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty}
-\bigl(a_n \cos(n\,\omega_0\,t) + b_n \sin(n\,\omega_0\,t)\bigr),
-\end{equation*}
-
-mit den Fourierkoeffizienten $a_n$ und $b_n$.
-```
-
-Die **Partialsumme** $S_N$ ist die Näherung, die man erhält, wenn man die
-Reihe nach $N$ Termen abbricht. Für $N = 1$ enthält $S_1$ nur Grundschwingung
-und Mittelwert, für $N = 3$ kommen noch die erste und zweite Oberschwingung
-hinzu. Je größer $N$, desto besser die Annäherung an $f$.
-
-```{figure} pics/chap12_sec03_fig01.svg
+```{figure} pics/chap11_sec03_fig01.svg
 ---
-name: chap12_sec03_fig01
+name: chap11_sec03_fig01
 ---
-Partialsummen $S_1$, $S_3$ und $S_7$ der Fourierreihe des asymmetrischen
-Rechtecksignals. Mit wachsendem $N$ nähert sich die Partialsumme der
-ursprünglichen Funktion an.
+Alle drei am Maschinenelement angreifenden Kräfte: Federkraft $F_F = -k\,y$
+(rot) und Dämpferkraft $F_D = -d\,y'$ (orange) wirken der Auslenkung entgegen,
+die äußere Kraft $F(t)$ (blau) treibt das System an.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-## Wann konvergiert die Fourierreihe?
-
-Die Frage, ob die Fourierreihe tatsächlich gegen $f$ konvergiert, ist nicht
-trivial. Für praktische Anwendungen im Maschinenbau liefern die
-**Dirichlet-Bedingungen** eine hinreichende Antwort.
-
-```{admonition} Was sind ... die Dirichlet-Bedingungen?
-:class: note
-Eine periodische Funktion $f$ kann in eine konvergente Fourierreihe entwickelt
-werden, wenn innerhalb einer Periode die folgenden beiden Bedingungen erfüllt
-sind:
-
-1. Das Periodenintervall lässt sich in endlich viele Teilintervalle unterteilen,
-   auf denen $f$ stetig und monoton ist.
-2. An jeder Unstetigkeitsstelle existieren der linksseitige und der
-   rechtsseitige Grenzwert.
-
-An einer Unstetigkeitsstelle $t^*$ konvergiert die Fourierreihe dann gegen den
-Mittelwert der beiden einseitigen Grenzwerte:
+Das negative Vorzeichen bei $F_F$ und $F_D$ zeigt an, dass beide Kräfte der
+Auslenkung und der Bewegung entgegenwirken. Das zweite Newtonsche Gesetz $m\,a =
+F_{\text{ges}}$ liefert mit $a = y''$:
 
 \begin{equation*}
-\frac{f(t^*-) + f(t^*+)}{2}.
+m\,y''(t) = -k\,y(t) - d\,y'(t) + F(t).
 \end{equation*}
+
+Division durch $m$ und die Abkürzungen $a_D = d/m$ sowie $\omega_0^2 = k/m$
+ergeben die Standardform:
+
+\begin{equation*}
+y''(t) + a_D\,y'(t) + \omega_0^2\,y(t) = \frac{F(t)}{m}.
+\end{equation*}
+
+Für unsere Parameter mit $d = 6~\text{N\,s/m}$ ergibt sich $a_D = 3~\text{s}^{-1}$
+und $\omega_0^2 = 2~\text{s}^{-2}$. Das ist genau die Gleichung aus den
+Abschnitten 11.1 und 11.2. Wir sehen also: Die Koeffizienten $a_D$ und
+$\omega_0^2$ sind nicht willkürlich gewählt, sondern tragen konkrete
+physikalische Bedeutung.
+
+```{admonition} Was ist ... die Bewegungsgleichung eines Feder-Masse-Systems?
+:class: note
+Für ein Feder-Masse-Dämpfer-System mit Masse $m$, Federkonstante $k$,
+Dämpfungskonstante $d$ und äußerer Kraft $F(t)$ lautet die
+**Bewegungsgleichung**:
+
+\begin{equation*}
+y'' + \frac{d}{m}\,y' + \frac{k}{m}\,y = \frac{F(t)}{m}.
+\end{equation*}
+
+Die Größe $\omega_0 = \sqrt{k/m}$ heißt **Eigenkreisfrequenz** des Systems.
+Sie hängt ausschließlich von den Systemparametern $k$ und $m$ ab, nicht von
+den Anfangsbedingungen oder der äußeren Kraft.
 ```
 
-Alle in der Ingenieurtechnik auftretenden Signale, also Rechteck-, Sägezahn-
-und Dreiecksschwingungen, aber auch stückweise lineare Verläufe wie
-Nockenprofile oder Ventilhubkurven, erfüllen diese Bedingungen. Die
-Dirichlet-Bedingungen sind daher in der Praxis fast immer automatisch erfüllt.
+[![Schwingungsplot](../logos/app_start_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_systemparameter.html)
 
-Für unser asymmetrisches Rechtecksignal springt $f$ an den Stellen $t = 0$
-und $t = T/2$. An der Stelle $t = 0$ beträgt der Mittelwert der einseitigen
-Grenzwerte $(f(0-) + f(0+))/2 = (-1 + 2)/2 = 0.5$. Gegen diesen Wert
-konvergiert die Fourierreihe an der Sprungstelle, nicht gegen $2$ oder $-1$.
+Dieselbe Gleichungsstruktur tritt überall in der Technik auf, wo ein System
+aus einer Gleichgewichtslage ausgelenkt wird und eine rücktreibende Kraft
+wirkt. Beim Fadenpendel der Länge $L$ liefert das Newtonsche Gesetz
+(mit Kleinwinkelnäherung) $\varphi'' + (g/L)\,\varphi = 0$, also
+$\omega_0 = \sqrt{g/L}$. Bei einer Torsionswelle mit Massenträgheitsmoment
+$J$ und Torsionssteifigkeit $c$ gilt entsprechend $\theta'' + (c/J)\,\theta = 0$,
+also $\omega_0 = \sqrt{c/J}$. Alle drei Systeme führen auf dieselbe
+mathematische Form, und alle drei werden in der Technischen Mechanik und der
+Maschinendynamik mit denselben Methoden behandelt.
+
+## Was ist die Schwingungsgleichung und wie lautet ihre allgemeine Lösung?
+
+Wir betrachten jetzt den Sonderfall ohne Dämpfung ($d = 0$) und ohne äußere
+Kraft ($F = 0$). Mit unseren Parametern $m = 2~\text{kg}$ und $k = 4~\text{N/m}$
+lautet die ODE:
+
+\begin{equation*}
+y'' + 2\,y = 0.
+\end{equation*}
+
+*Was schwingt hier eigentlich, wenn keine äußere Kraft treibt und keine
+Dämpfung Energie entzieht?* Allein die Anfangsbedingungen setzen das System
+in Bewegung, zum Beispiel eine anfängliche Auslenkung oder ein Anstoß. Das
+System schwingt dann unbegrenzt weiter, weil keine Energie dissipiert wird.
+
+```{admonition} Was ist ... die Schwingungsgleichung?
+:class: note
+Die Gleichung
+
+\begin{equation*}
+y''(t) + \omega_0^2\,y(t) = 0, \quad \omega_0 > 0,
+\end{equation*}
+
+heißt **Schwingungsgleichung**. Sie ist der Sonderfall der linearen ODE
+2. Ordnung mit $a = 0$ (keine Dämpfung) und $g(t) = 0$ (keine äußere Kraft).
+Die Konstante $\omega_0$ heißt **Kreisfrequenz** und gibt an, wie schnell das
+System schwingt. Die Schwingungsdauer beträgt $T = 2\pi/\omega_0$.
+```
+
+Für die allgemeine Lösung nutzen wir das Ergebnis aus Abschnitt 10.4. Die
+charakteristische Gleichung $\lambda^2 + \omega_0^2 = 0$ hat keine reellen
+Lösungen, sondern die rein imaginären Eigenwerte $\lambda_{1,2} = \pm\,i\,\omega_0$.
+Das ist der Fall $D < 0$ aus Abschnitt 10.4 mit Abklingrate $\alpha = 0$, also
+ohne Dämpfung. Das reelle Fundamentalsystem lautet:
+
+\begin{equation*}
+y_1(t) = \cos(\omega_0\,t), \qquad y_2(t) = \sin(\omega_0\,t).
+\end{equation*}
+
+Die allgemeine Lösung der Schwingungsgleichung ist damit:
+
+\begin{equation*}
+y(t) = C_1\,\cos(\omega_0\,t) + C_2\,\sin(\omega_0\,t).
+\end{equation*}
+
+Wir prüfen das durch Einsetzen. Mit $y'' = -\omega_0^2\,C_1\cos(\omega_0 t) -
+\omega_0^2\,C_2\sin(\omega_0 t) = -\omega_0^2\,y$ folgt:
+
+\begin{equation*}
+y'' + \omega_0^2\,y = -\omega_0^2\,y + \omega_0^2\,y = 0. \quad \checkmark
+\end{equation*}
+
+Für unser System mit $\omega_0 = \sqrt{2} \approx 1.41~\text{rad\,s}^{-1}$
+lautet die allgemeine Lösung:
+
+\begin{equation*}
+y(t) = C_1\,\cos\!\left(\sqrt{2}\,t\right) + C_2\,\sin\!\left(\sqrt{2}\,t\right).
+\end{equation*}
+
+Die Schwingungsdauer beträgt $T = 2\pi/\sqrt{2} = \pi\sqrt{2} \approx 4.44~\text{s}$.
+Das System braucht also knapp viereinhalb Sekunden für eine vollständige
+Schwingung. Dieser Wert hängt ausschließlich von $k$ und $m$ ab, nicht von der
+Auslenkung oder der Anfangsgeschwindigkeit.
+
+## Was verrät die Lösung über Amplitude und Phase der Schwingung?
+
+Wir nehmen an, das Maschinenelement wird in einem Schwingungstest um
+$y_0 = 5~\text{mm} = 0.005~\text{m}$ aus der Ruhelage ausgelenkt und dann
+losgelassen. Die Anfangsbedingungen lauten:
+
+\begin{equation*}
+y(0) = 0.005~\text{m}, \qquad y'(0) = 0~\text{m\,s}^{-1}.
+\end{equation*}
+
+Aus $y(0) = 0.005$ folgt:
+
+\begin{equation*}
+C_1\,\cos(0) + C_2\,\sin(0) = C_1 \stackrel{!}{=} 0.005.
+\end{equation*}
+
+Aus $y'(0) = 0$ folgt mit $y'(t) = -\sqrt{2}\,C_1\sin(\sqrt{2}\,t) +
+\sqrt{2}\,C_2\cos(\sqrt{2}\,t)$:
+
+\begin{equation*}
+\sqrt{2}\,C_2 \stackrel{!}{=} 0
+\qquad \Rightarrow \qquad C_2 = 0.
+\end{equation*}
+
+Die Lösung des Anfangswertproblems lautet:
+
+\begin{equation*}
+y(t) = 0.005\,\cos\!\left(\sqrt{2}\,t\right)~\text{m}.
+\end{equation*}
+
+Das ist eine reine Kosinusschwingung. Das Element pendelt mit konstanter
+Amplitude $\hat{y} = 5~\text{mm}$ zwischen den Extremlagen $+5~\text{mm}$
+und $-5~\text{mm}$ hin und her, ohne dass die Schwingung jemals abklingt.
+In der Praxis ist das natürlich ein idealisiertes Modell: Jedes reale System
+hat eine gewisse Dämpfung, und die Schwingung klingt schließlich ab. Die
+ungedämpfte Lösung zeigt aber, wie groß die Auslenkung im Grenzfall
+verschwindender Dämpfung werden kann.
+
+Die allgemeine Lösung lässt sich stets in die **Amplituden-Phasen-Form**
+umschreiben:
+
+\begin{equation*}
+y(t) = \hat{y}\,\cos(\omega_0\,t - \varphi),
+\end{equation*}
+
+wobei die **Amplitude** $\hat{y} = \sqrt{C_1^2 + C_2^2}$ und die
+**Phasenverschiebung** $\varphi$ mit $\tan(\varphi) = C_2 / C_1$ aus den
+Anfangsbedingungen folgen.
+
+```{figure} pics/chap11_sec03_fig02.svg
+---
+name: chap11_sec03_fig02
+---
+Geometrische Deutung der Amplituden-Phasen-Form: Amplitude $\hat{y} = \sqrt{C_1^2 + C_2^2}$
+(blau) ist der Betrag des Konstantenvektors $(C_1, C_2)$, die Phasenverschiebung
+$\varphi$ mit $\tan\varphi = C_2/C_1$ sein Winkel zur $C_1$-Achse; die Komponenten
+$C_1$ (rot) und $C_2$ (orange) entsprechen den Anfangsbedingungen $y(0)$ und $y'(0)/\omega_0$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+In unserem Fall gilt $\hat{y} = 0.005~\text{m}$ und $\varphi = 0$, weil das
+Element aus der Ruhe losgelassen wurde. Ein Anfangsanstoß (zum Beispiel $y'(0)
+\neq 0$ bei $y(0) = 0$) würde $C_1 = 0$ und $C_2 \neq 0$ ergeben, also eine
+reine Sinusschwingung mit Phasenverschiebung $\varphi = \pi/2$.
+
+```{admonition} Merkregel: Amplitude und Schwingungsdauer
+:class: note
+Für die Schwingungsgleichung $y'' + \omega_0^2\,y = 0$ gilt:
+
+- Die **Kreisfrequenz** $\omega_0 = \sqrt{k/m}$ wird allein durch das System
+  bestimmt (Feder und Masse), nicht durch die Anfangsbedingungen.
+- Die **Amplitude** $\hat{y} = \sqrt{C_1^2 + C_2^2}$ wird allein durch die
+  Anfangsbedingungen bestimmt, nicht durch das System.
+- Die **Schwingungsdauer** $T = 2\pi / \omega_0$ ist ebenfalls eine
+  Systemeigenschaft und ändert sich nicht, wenn man das System stärker auslenkt.
+```
+
+[![Schwingungsplot](pics/chap11_sec03_schwingung_preview.png)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_schwingung.html)
+
+In der Maschinendynamik ist die Kreisfrequenz $\omega_0$ eine der wichtigsten
+Entwurfsgrößen: Liegt die Erregerfrequenz einer äußeren Kraft in der Nähe von
+$\omega_0$, so kann es zu Resonanz kommen. Was das konkret bedeutet und wie
+stark das System dann antwortet, untersucht Abschnitt 11.4.
+
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_quiz.html)
 
 ## Zusammenfassung und Ausblick
 
-Die Formeln zur Berechnung der Fourierkoeffizienten liefern zu jeder hinreichend
-regulären periodischen Funktion eindeutig bestimmte Fourierkoeffizienten $a_n$
-und $b_n$. Der Koeffizient $a_0$ ist der doppelte Mittelwert, die übrigen
-Koeffizienten messen den Anteil der jeweiligen Sinus- und Kosinusschwingung am
-Signal. Die Dirichlet-Bedingungen garantieren die Konvergenz in allen technisch
-relevanten Fällen. In Abschnitt 12.4 rechnen wir die Koeffizienten für ein
-konkretes Beispiel vollständig durch und stellen die zugehörige Fourierreihe in
-geschlossener Form auf.
+Aus dem Newtonschen Gesetz folgt die Bewegungsgleichung des
+Feder-Masse-Systems direkt und systematisch. Der Sonderfall ohne Dämpfung und
+ohne äußere Kraft führt auf die Schwingungsgleichung, deren Lösung eine
+harmonische Schwingung mit der Kreisfrequenz $\omega_0 = \sqrt{k/m}$ ist.
+Amplitude und Phase hängen von den Anfangsbedingungen ab, die Schwingungsdauer
+dagegen ausschließlich von den Systemparametern.
+
+Bisher haben wir die äußere Kraft stets als exponentiell abklingende Stoßkraft
+modelliert. In Abschnitt 11.4 kommt ein technisch besonders wichtiger Fall
+hinzu: eine periodische Kraft $F(t) = F_0\,\sin(\Omega\,t)$, wie sie etwa
+durch eine Unwucht in einem rotierenden Bauteil entsteht. Wenn die
+Erregerfrequenz $\Omega$ nahe an $\omega_0$ liegt, tritt das Phänomen der
+Resonanz auf, das in der Ingenieursgeschichte spektakuläre Schadensfälle
+verursacht hat und das wir in der Maschinenakustik und Schwingungslehre
+sorgfältig vermeiden müssen.

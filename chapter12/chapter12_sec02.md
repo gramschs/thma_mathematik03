@@ -3,198 +3,303 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 12.2 Grundschwingung und Oberschwingungen
+# 12.2 Der Resonanzfall und das Anfangswertproblem
 
-In Abschnitt 12.1 haben wir den Kolbenhub der Kurbelwelle mit der einfachen
-Funktion $f(t) = 3\,\sin(\omega_0 t)$ modelliert. Das ist eine nützliche
-Vereinfachung, aber wer schon einmal einen laufenden Motor gehört hat, ahnt,
-dass das echte Signal komplizierter ist: Der Klang ändert sich mit der
-Drehzahl, und bei manchen Drehzahlen entstehen störende Geräusche, die auf
-bestimmte Schwingungsanteile zurückgehen. *Wie lässt sich das mathematisch
-erfassen?* Die Antwort führt uns auf die Begriffe Grundschwingung,
-Harmonische und Oberschwingung.
+In Abschnitt 11.1 haben wir die partikuläre Lösung für eine Stoßkraft
+$F(t) = 10\,e^{-3t}~\text{N}$ bestimmt, die rasch abklang. Jetzt verändern wir
+das Szenario: Die Kraft klingt mit $F(t) = 10\,e^{-t}~\text{N}$ langsamer ab,
+mit genau derselben Zeitkonstante wie die natürliche Systemreaktion.
+
+```{figure} pics/chap11_sec02_fig01.svg
+---
+name: chap11_sec02_fig01
+---
+Vergleich der beiden Stoßkräfte aus den Abschnitten 11.1 und 11.2: schnell abklingende Kraft $F_1(t)=10e^{-3t}$ (blau) und langsamer abklingende Kraft $F_2(t)=10e^{-t}$ (rot). (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das führt
+auf einen Fall, in dem der Standardansatz aus Abschnitt 11.1 versagt und eine
+Modifikation nötig ist. Anschließend legen wir aus der vollständigen allgemeinen
+Lösung durch zwei Anfangsbedingungen alle freien Konstanten fest.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die Begriffe **Grundschwingung** und **Grundfrequenz** und
-  können die Grundfrequenz $f_0 = 1/T$ aus der Periode $T$ berechnen.
-* [ ] Sie kennen die Begriffe **Harmonische** und **Oberschwingung** und
-  können die Frequenzen der ersten Harmonischen zu einer gegebenen
-  Grundfrequenz bestimmen.
-* [ ] Sie können erklären, warum Oberschwingungen ganzzahlige Vielfache der
-  Grundfrequenz sind, und diese Eigenschaft mit der Periodizität begründen.
-* [ ] Sie können eine einfache Überlagerung von Grundschwingung und
-  Oberschwingungen grafisch und rechnerisch auswerten.
+* [ ] Sie erkennen den **Resonanzfall** bei der inhomogenen linearen ODE
+  2. Ordnung: Der Standardansatz scheitert, wenn der Parameter $\alpha$ der
+  Störfunktion mit einem Eigenwert der homogenen ODE übereinstimmt.
+* [ ] Sie können den **modifizierten Ansatz** $y_p = A\,t\,e^{\alpha t}$
+  aufstellen, die Koeffizienten durch Einsetzen und Koeffizientenvergleich
+  bestimmen und das Ergebnis verifizieren.
+* [ ] Sie wissen, dass bei einem doppelten Eigenwert $\lambda$ der modifizierte
+  Ansatz $y_p = A\,t^2\,e^{\lambda t}$ zu verwenden ist.
+* [ ] Sie können aus der allgemeinen Lösung $y_{\text{allgemein}} = y_h + y_p$
+  durch Einsetzen zweier Anfangsbedingungen ein **lineares Gleichungssystem**
+  für $C_1$ und $C_2$ aufstellen und lösen.
 ```
 
-## Was ist die Grundschwingung?
+## Wann schlägt der Standardansatz fehl?
 
-Wir kehren zu unserer Kurbelwelle mit der Periode $T = 0.04~\text{s}$ zurück.
-Das einfachste periodische Signal mit genau dieser Periode ist eine
-Sinusfunktion, die pro Zeitintervall der Länge $T$ genau einen vollständigen
-Schwingungszyklus ausführt. Diese elementare Schwingung nennen wir die
-**Grundschwingung** des Systems.
-
-Neben der Kreisfrequenz $\omega_0 = 2\pi/T$ aus Abschnitt 12.1 ist es in der
-Akustik und der Messtechnik üblich, die Schwingungsgeschwindigkeit durch die
-**Grundfrequenz** $f_0$ anzugeben. Sie gibt an, wie viele vollständige
-Schwingungszyklen pro Sekunde stattfinden.
-
-```{admonition} Was ist ... die Grundschwingung?
-:class: note
-Zu einer periodischen Funktion mit Periode $T$ ist die **Grundschwingung** die
-Sinusfunktion mit derselben Periode $T$. Ihre **Grundfrequenz** ist
+Unser Feder-Masse-Dämpfer-System aus Abschnitt 11.1 mit $m = 2~\text{kg}$,
+$k = 4~\text{N/m}$ und $d = 6~\text{N\,s/m}$ ist jetzt einer langsamer
+abklingenden Kraft ausgesetzt. Division der Bewegungsgleichung durch $m = 2$
+liefert:
 
 \begin{equation*}
-f_0 = \frac{1}{T},
+y'' + 3\,y' + 2\,y = 5\,e^{-t}.
 \end{equation*}
 
-gemessen in Hertz ($\text{Hz} = \text{s}^{-1}$). Die zugehörige
-**Kreisfrequenz** ist $\omega_0 = 2\pi\,f_0 = 2\pi/T$.
-```
-
-Für die Kurbelwelle mit $T = 0.04~\text{s}$ ergibt sich
-
-\begin{equation*}
-f_0 = \frac{1}{T} = \frac{1}{0.04~\text{s}} = 25~\text{Hz}.
-\end{equation*}
-
-Die Kurbelwelle führt also $25$ Umdrehungen pro Sekunde aus. Das entspricht
-der Drehzahl $1500~\text{min}^{-1}$, die wir in Abschnitt 12.1 als
-Ausgangspunkt gewählt haben. Die Kreisfrequenz der Grundschwingung ist
-
-\begin{equation*}
-\omega_0 = 2\pi\,f_0 = 2\pi \cdot 25~\text{Hz} = 50\pi~\text{rad\,s}^{-1}
-\approx 157.1~\text{rad\,s}^{-1}.
-\end{equation*}
-
-## Was sind Harmonische und Oberschwingungen?
-
-Ein reales Motorsignal enthält neben der Grundschwingung weitere schnellere
-Schwingungsanteile. Beim Vierzylindermotor zündet jeder Zylinder bei jeder
-zweiten Kurbelwellenumdrehung, die Zündfrequenz beträgt also das Doppelte der
-Grundfrequenz. Dazu kommen mechanische Ungleichförmigkeiten, die noch höhere
-Frequenzanteile erzeugen. *Warum sind diese Zusatzfrequenzen ausgerechnet
-ganzzahlige Vielfache der Grundfrequenz?*
-
-Der Grund ist die Periodizität. Das Gesamtsignal soll nach der Zeit $T$
-wieder denselben Wert annehmen. Eine Sinusfunktion mit der Frequenz $n \cdot
-f_0$ führt in der Zeit $T$ genau $n$ vollständige Zyklen aus und erfüllt
-damit $f(t + T) = f(t)$ automatisch. Eine Frequenz, die kein ganzzahliges
-Vielfaches von $f_0$ ist, würde hingegen nach der Zeit $T$ an einer anderen
-Stelle im Zyklus stehen und die Periodizität des Gesamtsignals zerstören.
-
-```{admonition} Was sind ... Harmonische und Oberschwingungen?
-:class: note
-Zu einer Grundfrequenz $f_0$ ist die **$n$-te Harmonische**
-($n = 1, 2, 3, \ldots$) die Sinusfunktion mit der Frequenz
-
-\begin{equation*}
-f_n = n \cdot f_0
-\end{equation*}
-
-und der Kreisfrequenz
-
-\begin{equation*}
-\omega_n = n \cdot \omega_0 = \frac{2\pi\,n}{T}.
-\end{equation*}
-
-Die erste Harmonische ($n = 1$) ist die Grundschwingung selbst. Alle
-Harmonischen oberhalb der Grundschwingung ($n \geq 2$) heißen
-zusammenfassend **Oberschwingungen**. Die Zahl $n$ heißt auch die
-**Ordnung** der Harmonischen.
-```
-
-In der Akustik- und Musikliteratur werden Obertöne versetzt gezählt: Der
-erste Oberton ist dort die zweite Harmonische, also die Schwingung mit der
-Frequenz $2\,f_0$. Um Missverständnisse zu vermeiden, nummerieren wir in
-diesem Skript ausschließlich Harmonische, bei denen die Ordnung $n$ direkt
-das Frequenzvielfache angibt. Das Wort Oberschwingungen verwenden wir nur
-als Sammelbegriff ohne Nummerierung.
-
-Für die Kurbelwelle mit $f_0 = 25~\text{Hz}$ berechnen wir die ersten vier
-Harmonischen:
-
-| Ordnung $n$ | Bezeichnung | Frequenz $f_n$ | Kreisfrequenz $\omega_n$ | Technische Bedeutung |
-| --- | --- | --- | --- | --- |
-| $1$ | Grundschwingung (1. Harmonische) | $25~\text{Hz}$ | $50\pi~\text{rad\,s}^{-1}$ | Kurbelwellenumdrehung |
-| $2$ | 2. Harmonische | $50~\text{Hz}$ | $100\pi~\text{rad\,s}^{-1}$ | Zündfrequenz (4-Zylinder) |
-| $3$ | 3. Harmonische | $75~\text{Hz}$ | $150\pi~\text{rad\,s}^{-1}$ | Drehmomentwelligkeit |
-| $4$ | 4. Harmonische | $100~\text{Hz}$ | $200\pi~\text{rad\,s}^{-1}$ | Strukturresonanz möglich |
-
-In der Maschinenakustik und der Schwingungsdiagnose ist diese Tabelle ein
-Standardwerkzeug: Tritt in einer Frequenzanalyse ein auffälliger Peak bei
-$50~\text{Hz}$ auf, deutet das auf ein Problem im Zündrhythmus hin; ein Peak
-bei $100~\text{Hz}$ kann auf eine Strukturresonanz der vierten Ordnung
-hinweisen. In der Diagnose rotierender Maschinen trägt die
-**Ordnungsanalyse** die gemessenen Amplituden direkt über den Ordnungen der
-Drehfrequenz auf und nutzt damit genau diese Zählweise.
-
-## Wie überlagern sich Grundschwingung und Oberschwingungen?
-
-Jede Harmonische trägt mit einer bestimmten Stärke zum Gesamtsignal bei.
-Diese Stärke wird durch ihre **Amplitude** beschrieben. Wenn wir
-Grundschwingung und zweite Harmonische mit den Amplituden $A_1$ und $A_2$
-überlagern, erhalten wir eine neue Funktion:
-
-\begin{equation*}
-s(t) = A_1\,\sin(\omega_0\,t) + A_2\,\sin(2\omega_0\,t).
-\end{equation*}
-
-Diese Funktion ist ebenfalls periodisch mit der Periode $T$, hat aber eine
-kompliziertere Form als eine einzelne Sinusfunktion. Als konkretes Beispiel
-wählen wir $A_1 = 3~\text{cm}$ und $A_2 = 0.8~\text{cm}$:
-
-\begin{equation*}
-s(t) = 3\,\sin(50\pi\,t) + 0.8\,\sin(100\pi\,t).
-\end{equation*}
-
-Wir prüfen, dass $s$ tatsächlich die Periode $T = 0.04~\text{s}$ hat:
+Der Exponent $\alpha = -1$ der Störfunktion stimmt mit dem Eigenwert
+$\lambda_1 = -1$ aus Abschnitt 11.1 überein. Wir probieren den Standardansatz
+$y_p = A\,e^{-t}$ und setzen ihn in die ODE ein:
 
 \begin{align*}
-s(t + T)
-&= 3\,\sin\!\bigl(50\pi\,(t + 0.04)\bigr) + 0.8\,\sin\!\bigl(100\pi\,(t + 0.04)\bigr) \\
-&= 3\,\sin(50\pi\,t + 2\pi) + 0.8\,\sin(100\pi\,t + 4\pi) \\
-&= 3\,\sin(50\pi\,t) + 0.8\,\sin(100\pi\,t) = s(t). \quad \checkmark
+y_p(t)   &= A\,e^{-t}, \\
+y_p'(t)  &= -A\,e^{-t}, \\
+y_p''(t) &= A\,e^{-t}.
 \end{align*}
 
-Die Grundschwingung durchläuft einen Zyklus ($+2\pi$), die zweite
-Harmonische genau zwei Zyklen ($+4\pi$). Beide landen wieder am
-Ausgangspunkt.
+\begin{equation*}
+y_p'' + 3\,y_p' + 2\,y_p
+= A\,e^{-t} - 3A\,e^{-t} + 2A\,e^{-t}
+= (1 - 3 + 2)\,A\,e^{-t}
+= 0.
+\end{equation*}
 
-```{figure} pics/chap12_sec02_fig01.svg
----
-name: chap12_sec02_fig01
-width: 100%
----
-Überlagerung von Grundschwingung $3\,\sin(50\pi\,t)$ (blau) und zweiter
-Harmonischer $0.8\,\sin(100\pi\,t)$ (rot) zum Summensignal $s(t)$ (grau,
-gestrichelt) über eine Periode $T = 0.04~\text{s}$.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+Die linke Seite ergibt unabhängig von $A$ den Wert null. Der
+Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert $0 = 5$,
+also einen Widerspruch. *Warum versagt der Ansatz hier vollständig?*
+Der Grund: $e^{-t}$ ist wegen $\lambda_1 = -1$ selbst eine Lösung der
+homogenen ODE. Jede Lösung der homogenen ODE ergibt, eingesetzt in die linke
+Seite, per Definition null. Der Standardansatz ist damit zum Scheitern
+verurteilt, egal welchen Wert $A$ annimmt.
+
+```{admonition} Was ist ... der Resonanzfall bei der ODE 2. Ordnung?
+:class: note
+Der **Resonanzfall** tritt auf, wenn der Parameter $\alpha$ der Störfunktion
+$g(t) = c\,e^{\alpha t}$ mit einem der Eigenwerte $\lambda_1$ oder $\lambda_2$
+der zugehörigen homogenen ODE übereinstimmt. Der Standardansatz
+$y_p = A\,e^{\alpha t}$ ist dann keine geeignete partikuläre Lösung, weil er
+die homogene ODE erfüllt und beim Einsetzen identisch null ergibt.
 ```
 
-Das Summensignal sieht nicht mehr wie eine glatte Sinuswelle aus. Je mehr
-Oberschwingungen wir hinzunehmen, desto stärker kann das Gesamtsignal von
-einer reinen Sinusfunktion abweichen. Rechteck-, Sägezahn- und
-Dreiecksschwingungen entstehen auf genau diese Weise aus unendlich vielen
-überlagerten Harmonischen. *Aber wie findet man die richtigen Amplituden,
-wenn man ein gemessenes Signal in seine Harmonischen zerlegen will?* Diese
-Frage beantwortet das Werkzeug der Fourierreihe, das wir in Abschnitt 12.3
-kennenlernen.
+In der Strukturdynamik entspricht dieser Fall dem Zustand, in dem die
+Zeitkonstante der äußeren Kraft ($\tau = 1~\text{s}$ bei $e^{-t}$) mit der
+Zeitkonstante des langsamsten Eigenmodes des Systems übereinstimmt
+($\tau_1 = 1/|\lambda_1| = 1~\text{s}$). Das System wird dauerhaft in seinem
+eigenen Abklingtakt angeregt, was zu einem vorübergehend verstärkten
+Ausschlag führt, bevor die Dämpfung übernimmt.
+
+## Wie retten wir den Ansatz im Resonanzfall?
+
+Die Lösung besteht darin, den Ansatz durch einen zusätzlichen Faktor $t$ zu
+erweitern:
+
+\begin{equation*}
+y_p(t) = A\,t\,e^{-t}.
+\end{equation*}
+
+Der Faktor $t$ stellt sicher, dass $y_p$ nicht mehr im Lösungsraum der
+homogenen ODE liegt: $t\,e^{-t}$ ist keine Lösung der homogenen ODE
+(das lässt sich durch Einsetzen sofort prüfen). Gleichzeitig bleibt die
+Struktur von $e^{-t}$ so weit erhalten, dass nach dem Einsetzen ein
+brauchbarer Koeffizientenvergleich entsteht.
+
+Wir berechnen die Ableitungen:
+
+\begin{align*}
+y_p(t)   &= A\,t\,e^{-t}, \\
+y_p'(t)  &= A\,e^{-t} - A\,t\,e^{-t} = A(1-t)\,e^{-t}, \\
+y_p''(t) &= -A\,e^{-t} - A(1-t)\,e^{-t} = A(t-2)\,e^{-t}.
+\end{align*}
+
+Einsetzen in die linke Seite der ODE ergibt:
+
+\begin{align*}
+y_p'' + 3\,y_p' + 2\,y_p
+&= A(t-2)\,e^{-t} + 3A(1-t)\,e^{-t} + 2At\,e^{-t} \\
+&= A\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t} \\
+&= A\bigl[t - 2 + 3 - 3t + 2t\bigr]\,e^{-t} \\
+&= A\,e^{-t}.
+\end{align*}
+
+Der Koeffizientenvergleich mit der rechten Seite $5\,e^{-t}$ liefert direkt:
+
+\begin{equation*}
+A = 5.
+\end{equation*}
+
+Die partikuläre Lösung im Resonanzfall lautet:
+
+\begin{equation*}
+y_p(t) = 5\,t\,e^{-t}.
+\end{equation*}
+
+Wir verifizieren durch Einsetzen in die ODE:
+
+\begin{equation*}
+y_p'' + 3\,y_p' + 2\,y_p
+= 5(t-2)\,e^{-t} + 15(1-t)\,e^{-t} + 10t\,e^{-t}
+= 5\bigl[(t-2) + 3(1-t) + 2t\bigr]\,e^{-t}
+= 5\,e^{-t}. \quad \checkmark
+\end{equation*}
+
+Der Faktor $t$ im Ausdruck $5\,t\,e^{-t}$ ist das charakteristische Merkmal
+des Resonanzfalls: Die partikuläre Lösung wächst zunächst an, weil für kleine
+$t > 0$ der Faktor $t$ dominiert, bevor $e^{-t}$ die Oberhand gewinnt und
+alles gegen null zieht. Ingenieurmäßig bedeutet das einen kurzzeitig
+verstärkten Ausschlag, der aber wegen der Dämpfung schließlich vollständig
+abklingt.
+
+```{figure} pics/chap11_sec02_fig02.svg
+---
+name: chap11_sec02_fig02
+---
+Verlauf der partikulären Lösung $y_p(t) = 5 t e^{-t}$ im Resonanzfall mit
+markiertem Maximum bei $t = 1$ und $y_p(1) = 5/e$. Der Faktor $t$ führt zunächst
+zu einem Anwachsen der Auslenkung, bevor der Exponentialterm $e^{-t}$ dominiert
+und die Antwort wieder gegen null abklingen lässt. (Quelle: eigene Abbildung;
+Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+```{admonition} Hinweis: doppelter Eigenwert im Resonanzfall
+:class: note
+Wenn $\alpha$ mit einem doppelten Eigenwert $\lambda$ übereinstimmt (also
+$D = 0$ in der charakteristischen Gleichung aus Abschnitt 10.3), scheitert
+auch der Ansatz $A\,t\,e^{\alpha t}$, weil $t\,e^{\lambda t}$ bereits im
+Fundamentalsystem liegt. In diesem Fall lautet der modifizierte Ansatz
+$y_p = A\,t^2\,e^{\alpha t}$.
+```
+
+```{figure} pics/chap11_sec02_fig03.svg
+---
+name: chap11_sec02_fig03
+---
+Vergleich der partikulären Lösungen im Nicht-Resonanzfall $y_p^{\text{NR}}(t) = \tfrac{5}{2}e^{-3t}$ (blau, Abschnitt 11.1) und im Resonanzfall $y_p^{\text{R}}(t) = 5 t e^{-t}$ (rot, Abschnitt 11.2). Im Resonanzfall wächst die Antwort zunächst an, bevor sie, wie auch im Nicht-Resonanzfall, durch das Exponential wieder gegen null abklingt. (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+## Wie bestimme ich $C_1$ und $C_2$ aus Anfangsbedingungen?
+
+Die allgemeine Lösung der inhomogenen ODE ist jetzt vollständig:
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+y_{\text{allgemein}}(t)
+= \underbrace{C_1\,e^{-t} + C_2\,e^{-2t}}_{y_h} +
+  \underbrace{5\,t\,e^{-t}}_{y_p}.
+\end{equation*}
+<!-- markdownlint-enable -->
+
+Wir nehmen an, dass das Maschinenelement zum Zeitpunkt $t = 0$ in Ruhe war,
+also weder ausgelenkt noch in Bewegung:
+
+\begin{equation*}
+y(0) = 0, \qquad y'(0) = 0.
+\end{equation*}
+
+Einsetzen der ersten Anfangsbedingung liefert:
+
+\begin{equation*}
+C_1 + C_2 + 5 \cdot 0 \cdot 1
+= C_1 + C_2
+\stackrel{!}{=} 0.
+\end{equation*}
+
+Für die zweite Bedingung berechnen wir zunächst $y'(t)$:
+
+\begin{equation*}
+y'(t) = -C_1\,e^{-t} - 2\,C_2\,e^{-2t} + 5(1-t)\,e^{-t}.
+\end{equation*}
+
+Einsetzen von $t = 0$:
+
+\begin{equation*}
+-C_1 - 2\,C_2 + 5
+\stackrel{!}{=} 0.
+\end{equation*}
+
+Wir erhalten das lineare Gleichungssystem:
+
+\begin{align*}
+C_1 + C_2          &= 0, \\
+-C_1 - 2\,C_2 + 5 &= 0.
+\end{align*}
+
+Aus der ersten Gleichung folgt $C_1 = -C_2$. Einsetzen in die zweite
+Gleichung:
+
+\begin{equation*}
+C_2 - 2\,C_2 = -5
+\qquad \Rightarrow \qquad
+C_2 = 5,
+\quad
+C_1 = -5.
+\end{equation*}
+
+Die vollständige Lösung des Anfangswertproblems lautet:
+
+\begin{equation*}
+y(t) = -5\,e^{-t} + 5\,e^{-2t} + 5\,t\,e^{-t}
+     = 5(t-1)\,e^{-t} + 5\,e^{-2t}.
+\end{equation*}
+
+Wir verifizieren die Anfangsbedingungen. Bei $t = 0$:
+
+\begin{equation*}
+y(0) = 5(0-1)\cdot 1 + 5\cdot 1 = -5 + 5 = 0. \quad \checkmark
+\end{equation*}
+
+Für $y'(t) = (10 - 5t)\,e^{-t} - 10\,e^{-2t}$ gilt bei $t = 0$:
+
+\begin{equation*}
+y'(0) = 10 \cdot 1 - 10 \cdot 1 = 0. \quad \checkmark
+\end{equation*}
+
+```{figure} pics/chap11_sec02_fig04.svg
+---
+name: chap11_sec02_fig04
+---
+Überlagerung des homogenen (transienten) Anteils $y_h(t) = -5e^{-t} +
+5e^{-2t}$, des partikulären (erzwungenen) Anteils $y_p(t) = 5 t e^{-t}$ und
+der Gesamtlösung $y(t) = y_h(t) + y_p(t)$ für das Anfangswertproblem im
+Resonanzfall aus Abschnitt 11.2. (Quelle: eigene Abbildung; Lizenz [CC BY-SA
+4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Physikalisch: Das Element startet in Ruhe. Die Kraft setzt sofort ein und
+erzeugt zunächst eine wachsende Auslenkung, die durch den Term $5t\,e^{-t}$
+im $y_p$-Anteil beschrieben wird. Dieser Anstieg ist das Kennzeichen des
+Resonanzfalls: Das System spricht stärker an als im Normalfall, weil die
+äußere Kraft genau im Takt des langsamsten Eigenmodes wirkt. Letztlich klingt
+die Auslenkung wegen der Dämpfung vollständig ab. In der Technischen Mechanik
+nennt man dieses Verhalten die **erzwungene gedämpfte Antwort** des Systems.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec02_quiz.html)
+```
+
+```{dropdown} Video "Resonanz" von Elektrotechnik leicht gemacht
+<iframe width="958" height="613" src="https://www.youtube.com/embed/bdjqPnpMF64"
+title="13. Resonanz bei inhomogener linearen DGL mit konstanten Koeffizienten erkennen"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
 
 ## Zusammenfassung und Ausblick
 
-Jedes periodische Signal lässt sich als Überlagerung von Harmonischen mit
-den Frequenzen $n \cdot f_0$ beschreiben: der Grundschwingung mit der
-Grundfrequenz $f_0 = 1/T$ und den Oberschwingungen mit $n \geq 2$. Die
-Oberschwingungen sind zwingend ganzzahlige Vielfache der Grundfrequenz, weil
-nur so die Periodizität des Gesamtsignals erhalten bleibt. In der
-Maschinenakustik und der Regelungstechnik ist die Kenntnis der dominanten
-Harmonischen ein zentrales Diagnosewerkzeug.
+Der Resonanzfall tritt auf, wenn der Parameter $\alpha$ der Störfunktion mit
+einem Eigenwert der homogenen ODE übereinstimmt. Der modifizierte Ansatz mit
+zusätzlichem Faktor $t$ liefert dann die partikuläre Lösung. Die freien
+Konstanten $C_1$ und $C_2$ ergeben sich anschließend aus einem linearen
+Gleichungssystem, das unmittelbar an die Methoden aus Kapitel 2 anknüpft.
 
-In Abschnitt 12.3 lernen wir die **Fourierreihe** kennen: ein systematisches
-Verfahren, mit dem sich jede periodische Funktion eindeutig in ihre
-Harmonischen zerlegen lässt und die zugehörigen Amplituden berechnet werden
-können.
+Bisher haben wir stets mit einer fertig aufgestellten ODE gearbeitet. In
+Abschnitt 11.3 gehen wir einen Schritt zurück und modellieren das
+Feder-Masse-Dämpfer-System aus dem Newtonschen Gesetz $ma = F$ heraus, um
+zu verstehen, wie die ODE überhaupt entsteht. Damit legen wir die Grundlage
+für die Behandlung beliebiger schwingfähiger Maschinensysteme, wie Sie sie
+in der Technischen Mechanik und in der Maschinenelementelehre antreffen
+werden.

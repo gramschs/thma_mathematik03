@@ -1,133 +1,267 @@
-# Orthogonale Matrizen
+# 4.1 Lineare Abbildungen 2D und 3D
 
-Orthogonale Matrizen spielen eine wichtige Rolle zur Beschreibung von Drehungen
-und Spiegelungen in der Geometrie. In diesem Kapitel werden die Definition und
-Eigenschaften orthogonaler Matrizen vorgestellt sowie deren
-Anwendungsmöglichkeiten erläutert.
+Matrizen beschreiben geometrische Transformationen. In diesem Kapitel lernen wir,
+wie eine Matrix einen Vektor in einen neuen Vektor umwandelt, zunächst in der Ebene
+und dann im Raum. An konkreten Beispielen aus dem Maschinenbau sehen wir, warum
+dieses Konzept in der Ingenieurpraxis unverzichtbar ist.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was eine **orthogonale** Matrix ist.
-* [ ] Sie kennen die wichtigsten **Eigenschaften von orthogonalen Matrizen**.
+* [ ] Sie verstehen, dass eine Matrix eine **lineare Abbildung** beschreibt, die
+  einen Vektor $\vec{v}$ auf einen neuen Vektor $\vec{w}$ abbildet, und kennen die
+  **Matrix-Vektor-Schreibweise**:
+  \begin{equation*}
+  F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}.
+  \end{equation*}
+* [ ] Sie können die Wirkung einer $2\times 2$-Matrix geometrisch interpretieren,
+  insbesondere für **gleichmäßige Streckung**, **Spiegelung** und **Scherung**.
+* [ ] Sie können die Wirkung einer $3\times 3$-Matrix geometrisch interpretieren,
+  insbesondere für **Streckung im Raum**, **Projektion auf eine Koordinatenebene**
+  und **Spiegelung an einer Koordinatenebene**.
+* [ ] Sie können lineare Abbildungen zwischen Räumen verschiedener Dimension
+  beschreiben, also mit $m\times n$-Matrizen mit $m \neq n$.
+* [ ] Sie kennen den Zusammenhang zwischen der **Determinante** einer
+  Abbildungsmatrix und der Änderung von **Flächeninhalt** bzw. **Volumen**.
 ```
 
-## Orthogonale Matrix
+## Matrizen als geometrische Transformationen
 
-Eine quadratische Matrix $\mathbf{Q}\in\mathbb{R}^{n\times n}$ heißt orthogonal,
-wenn sie die Bedingung erfüllt:
+In CAD-Programmen lassen sich Bauteile verschieben, drehen, spiegeln und
+skalieren. Was auf dem Bildschirm wie ein einfacher Mausklick aussieht, ist im
+Hintergrund eine mathematische Operation: die Multiplikation einer Matrix mit
+einem Vektor. Auch in der Finite-Elemente-Methode werden Verschiebungen von
+Knoten durch Matrix-Vektor-Produkte berechnet. Das Ergebnis einer
+FEM-Simulation, das als farbige Verformungsgrafik erscheint, basiert auf
+Milliarden solcher Operationen.
 
-$$\mathbf{Q}^{T}\cdot\mathbf{Q} = \mathbf{Q}\cdot\mathbf{Q}^{T} = \mathbf{E},$$
+Betrachten wir zunächst ein einfaches ebenes Bauteilprofil, das durch eine Menge
+von Punkten im $\mathbb{R}^2$ beschrieben wird. Jeder Punkt wird durch einen
+Ortsvektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ dargestellt. Eine
+**lineare Abbildung** transformiert jeden solchen Punkt durch die Multiplikation
+mit einer festen Matrix $\mathbf{A}$:
 
-wobei $\mathbf{Q}^{T}$ die Transponierte von $\mathbf{Q}$ ist. Mit $\mathbf{E}$
-bezeichnen wir wie üblich die Einheitsmatrix.
+\begin{equation*}
+F_{\mathbf{A}}\!\left(\underbrace{\vec{v}}_{\text{Input}}\right)
+= \mathbf{A} \cdot \vec{v}
+= \underbrace{\vec{w}}_{\text{Output}}.
+\end{equation*}
 
-Eine orthogonale Matrix hat die Eigenschaft, dass ihre Zeilen- und
-Spaltenvektoren paarweise orthonormal sind, d.h. sie sind orthogonal zueinander
-und haben jeweils die Länge 1.
+Der Eingabevektor $\vec{v}$ beschreibt die ursprüngliche Position, der
+Ausgabevektor $\vec{w}$ die transformierte Position. Die Matrix $\mathbf{A}$ legt
+vollständig fest, welche Transformation durchgeführt wird.
 
-Ein Beispiel für eine orthogonale Matrix ist
+Um die Wirkung einer Matrix systematisch zu verstehen, genügt es, die
+**Standardbasisvektoren** durch die Abbildung zu schicken. Im $\mathbb{R}^2$ sind
+das $\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und
+$\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$, im $\mathbb{R}^3$ kommt
+$\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ hinzu. Jeder beliebige
+Vektor lässt sich als Linearkombination dieser Basisvektoren darstellen. Die Bilder
+der Standardbasisvektoren sind nichts anderes als die **Spalten** der Matrix
+$\mathbf{A}$.
 
-$$\mathbf{A} = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.$$
+## Transformationen im $\mathbb{R}^2$
 
-Um zu überprüfen, ob $\mathbf{A}$ orthogonal ist, müssen wir die Definition
-anwenden und zeigen, dass $\mathbf{A}^{T}\cdot\mathbf{A}=\mathbf{E}$ gilt. Wir
-berechnen zunächst die transponierte Matrix:
+### Gleichmäßige Streckung
 
-$$\mathbf{A}^T = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.$$
+Das einfachste Beispiel ist die gleichmäßige Streckung: Jeder Punkt des Profils
+wird um den gleichen Faktor $s > 0$ von der Mitte weg verschoben. In einem
+CAD-System entspricht das dem maßstäblichen Vergrößern eines Bauteils in alle
+Richtungen gleichmäßig, zum Beispiel wenn ein Normteil in einem anderen Maßstab
+wiederverwendet werden soll. Die zugehörige Abbildungsmatrix ist
 
-Dann multiplizieren wir $\mathbf{A}^{T}$ mit $\mathbf{A}$:
+\begin{equation*}
+\mathbf{A}_{\text{Streckung}} = \begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}.
+\end{equation*}
 
-$$\mathbf{A}^{T}\cdot\mathbf{A} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
-\cdot \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.$$
+Für den Streckungsfaktor $s = 2$ verfolgen wir, was mit den Standardbasisvektoren
+und einem allgemeinen Vektor passiert:
 
-Das ergibt
+\begin{equation*}
+\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+= \begin{pmatrix} 2 \\ 0 \end{pmatrix}, \quad
+\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 2 \end{pmatrix}, \quad
+\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= 2 \cdot \begin{pmatrix} x \\ y \end{pmatrix}.
+\end{equation*}
 
-$$\mathbf{A}^T \cdot\mathbf{A} =
-\begin{pmatrix} (0 \cdot 0 + (-1) \cdot (-1)) & (0 \cdot 1 + (-1) \cdot 0) \\
-(1 \cdot 0 + 0 \cdot (-1)) & (1 \cdot 1 + 0 \cdot 0) \end{pmatrix}
-= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.$$
+Das Einheitsquadrat mit Flächeninhalt $1$ wird auf ein Quadrat mit Flächeninhalt $4$
+abgebildet. Diesen Skalierungsfaktor liefert die Determinante:
+$\det(\mathbf{A}) = 2 \cdot 2 = 4$. In der Kontinuumsmechanik wird diese Eigenschaft
+genutzt, um zu beschreiben, wie sich das Volumen eines Materialelements unter
+Deformation verändert. Die Determinante des Deformationsgradienten, den Sie in der
+Höheren Technischen Mechanik kennenlernen werden, gibt direkt das Volumenverhältnis
+zwischen verformtem und unverformtem Zustand an.
 
-Das Ergebnis ist die Einheitsmatrix der Dimension $2\times 2$. Ein weiteres sehr
-bekanntes Beispiel einer orthogonalen Matrix ist die $2\times 2$-Rotationsmatrix
+### Spiegelung an der Winkelhalbierenden
 
-$$\mathbf{R}(\varphi) =
-\begin{pmatrix}\cos(\varphi)&-\sin(\varphi) \\ \sin(\varphi)&\cos(\varphi)\end{pmatrix},$$
+In der Bauteilkonstruktion entstehen häufig spiegelsymmetrische Teile wie linke und
+rechte Lagerschalen oder gespiegelte Halterungen. Anstatt das gespiegelte Bauteil
+neu zu modellieren, wendet das CAD-System eine Spiegelmatrix auf alle Punkte des
+Originals an. Die Spiegelung an der Winkelhalbierenden $y = x$ vertauscht die
+$x$- und $y$-Koordinate jedes Punktes:
 
-die für jeden Winkel $\varphi$ orthogonal ist. Wir bilden zuerst die Transponierte:
+\begin{equation*}
+\mathbf{A}_{\text{Spiegelung}} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} y \\ x \end{pmatrix}.
+\end{equation*}
 
-$$\mathbf{R}^T(\varphi) =
-\begin{pmatrix} \cos(\varphi) & \sin(\varphi) \\ -\sin(\varphi) & \cos(\varphi) \end{pmatrix}.$$
+Die Determinante ist $\det(\mathbf{A}_{\text{Spiegelung}}) = -1$. Der Betrag $1$
+zeigt, dass der Flächeninhalt erhalten bleibt. Das negative Vorzeichen zeigt an,
+dass die Orientierung umgekehrt wird: Ein ursprünglich gegen den Uhrzeigersinn
+beschriebenes Profil wird nach der Abbildung im Uhrzeigersinn beschrieben.
 
-Das ergibt
+### Scherung
 
-$$\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) =
-\begin{pmatrix} \cos^2(\varphi) + \sin^2(\varphi) & \cos(\varphi)(-\sin(\varphi))
-+ \sin(\varphi) \cos(\varphi) \\ (-\sin(\varphi))\cos(\varphi) + \cos(\varphi)\sin(\varphi)
-& \sin^2(\varphi) + \cos^2(\varphi) \end{pmatrix}.$$
+Eine **Scherung** verschiebt Punkte parallel zu einer Achse, proportional zu ihrer
+Entfernung von dieser Achse. In der Festigkeitslehre beschreibt sie die Verformung
+eines Querschnitts unter Schubbelastung: Ein ursprünglich rechteckiger Querschnitt
+verformt sich zu einem Parallelogramm, wenn eine Schubspannung $\tau$ angreift. In
+der Werkstoffkunde beschreibt die Scherung die Verschiebung von Gitterebenen bei der
+plastischen Verformung von Metallen beim Walzen oder Ziehen.
 
-Die trigonometrischen Terme können weiter vereinfacht werden, denn es gelten:
+\begin{equation*}
+\mathbf{A}_{\text{Scherung}} = \begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} x + ky \\ y \end{pmatrix}.
+\end{equation*}
 
-- $\cos^2(\varphi) + \sin^2(\varphi) = 1$ (trigonometrische Identität)
-- $\cos(\varphi)(-\sin(\varphi)) + \sin(\varphi)\cos(\varphi) = 0$
-- $(- \sin(\varphi))\cos(\varphi) + \cos(\varphi)\sin(\varphi) = 0$
-- $\sin^2(\varphi) + \cos^2(\varphi) = 1$
+Die Determinante ist $\det(\mathbf{A}_{\text{Scherung}}) = 1$: Der Flächeninhalt
+bleibt erhalten. Das erklärt, warum reine Scherverformungen in der Festigkeitslehre
+keine Volumenänderung des Materials bewirken, sondern nur eine Formänderung.
 
-Somit erhalten wir erneut die $2\times 2$-Einheitsmatrix
+```{admonition} Determinante und Flächen- bzw. Volumenskalierung
+:class: note
+Der **Betrag der Determinante** einer Abbildungsmatrix gibt an, um welchen Faktor
+sich der Flächeninhalt ($2\times 2$) bzw. das Volumen ($3\times 3$) unter der
+Abbildung ändert.
 
-$$\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) =
-\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.$$
-
-## Eigenschaften von orthogonalen Matrizen
-
-### Längen- und Winkeltreue
-
-Wird eine orthogonale Matrix $\mathbf{Q}$ mit einem Vektor multipliziert, ändert
-sich seine Länge nicht. Es gilt also
-
-$$\|\mathbf{Q}\cdot\vec{x}\| = \|\vec{x}\|.$$
-
-Auch der Winkel zwischen zwei Vektoren bleibt erhalten. Es gilt
-
-$$\left(\mathbf{Q}\cdot\vec{x}\right) \cdot \left(\mathbf{Q}\cdot\vec{y}\right)
-= \vec{x}\cdot\vec{y}.$$
-
-Gemäß der geometrischen Interpretation des Skalarproduktes bleibt der Winkel
-also gleich. Diese Eigenschaften von orthogonalen Matrizen werden ausgenutzt, um
-Drehungen und Spiegelungen zu beschreiben.
-
-### Determinante orthogonaler Matrizen ist Eins
-
-Die Determinante einer orthogonalen Matrix ist immer $\pm 1$. Eine Determinante
-von $1$ bedeutet, dass die Transformation eine Drehung ist, während $−1$ auf
-eine Spiegelung hinweist.
-
-### Invertierbarkeit
-
-Jede orthogonale Matrix ist invertierbar, und ihre Inverse ist gleich ihrer
-Transponierten:
-
-   $$\mathbf{A}^{-1} = \mathbf{A}^{T}.$$
-
-Diese Eigenschaft und auch die anderen werden in dem folgenden Video demonstriert.
-
-```{dropdown} Video "Orthogonale Matrizen" von MathePeter
-<iframe width="560" height="315" src="https://www.youtube.com/embed/X4oTwBusjMk"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+* $|\det(\mathbf{A})| > 1$: Fläche bzw. Volumen nehmen zu.
+* $|\det(\mathbf{A})| = 1$: Fläche bzw. Volumen bleiben erhalten.
+* $|\det(\mathbf{A})| < 1$: Fläche bzw. Volumen nehmen ab.
+* $\det(\mathbf{A}) < 0$: zusätzlich Umkehrung der Orientierung.
+* $\det(\mathbf{A}) = 0$: Dimensionsverlust, das Gebiet wird auf eine Linie,
+  eine Fläche oder einen Punkt abgebildet.
 ```
 
-```{dropdown} Video "Orthogonale Matrizen" von Prof. Hielscher
-<iframe width="742" height="613" src="https://www.youtube.com/embed/3RCcnjyKRPg?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Orthogonale Matrizen" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+## Transformationen im $\mathbb{R}^3$
+
+Bauteile im Maschinenbau sind dreidimensionale Objekte. Das Prinzip bleibt dasselbe
+wie im $\mathbb{R}^2$: Die drei Spalten einer $3\times 3$-Matrix geben an, wohin die
+Standardbasisvektoren $\vec{e}_1$, $\vec{e}_2$, $\vec{e}_3$ abgebildet werden.
+
+### Gleichmäßige Streckung im Raum
+
+In einem CAD-System soll ein räumliches Bauteil gleichmäßig um den Faktor $s$
+vergrößert werden, zum Beispiel beim Erstellen von Produktfamilien, bei denen
+dasselbe Bauteil in verschiedenen Größen gefertigt wird:
+
+\begin{equation*}
+\mathbf{A}_{\text{Streckung}} = \begin{pmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & s \end{pmatrix}, \quad
+\begin{pmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & s \end{pmatrix}
+\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= s \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}.
+\end{equation*}
+
+Der Einheitswürfel mit dem Volumen $1$ wird auf einen Würfel mit dem Volumen $s^3$
+abgebildet. Die Determinante liefert genau diesen Volumenskalierungsfaktor:
+$\det(\mathbf{A}_{\text{Streckung}}) = s^3$.
+
+### Projektion auf eine Koordinatenebene
+
+Eine Projektion entspricht dem Erstellen einer technischen Zeichnung, bei der ein
+räumliches Bauteil aus einer bestimmten Richtung auf Papier dargestellt wird.
+Dieselbe Operation führen Messkameras in industriellen Bildverarbeitungssystemen
+durch. Die Projektion auf die $xy$-Ebene setzt die $z$-Koordinate auf null:
+
+\begin{equation*}
+\mathbf{A}_{\text{Proj},xy} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}
+\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Die Determinante ist null: Das Volumen eines dreidimensionalen Körpers wird auf null
+reduziert. Wann immer eine Abbildung die Dimension reduziert, ist die Determinante
+der zugehörigen Matrix gleich null.
+
+### Spiegelung an einer Koordinatenebene
+
+Im Maschinenbau gibt es häufig spiegelsymmetrische Baugruppen: Motorblöcke mit zwei
+Zylinderbänken, symmetrische Fahrwerkskomponenten oder gespiegelte
+Werkzeugaufnahmen. Die Spiegelung an der $xy$-Ebene kehrt das Vorzeichen der
+$z$-Koordinate um:
+
+\begin{equation*}
+\mathbf{A}_{\text{Spieg},xy} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}
+\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \\ -z \end{pmatrix}.
+\end{equation*}
+
+Das Volumen bleibt erhalten ($|\det(\mathbf{A})| = 1$), die Raumorientierung wird
+jedoch umgekehrt: Ein rechtshändiges Koordinatensystem wird zu einem linkshändigen.
+In der Robotik ist dieser Orientierungswechsel wichtig, wenn zwischen dem
+Koordinatensystem des Roboters und dem des Werkstücks gewechselt wird.
+
+## Abbildungen zwischen Räumen verschiedener Dimension
+
+Im Maschinenbau kommt es häufig vor, dass ein Sensor im Raum $\mathbb{R}^3$ misst
+und die Daten in einer zweidimensionalen Darstellung aufgezeichnet werden.
+Industrielle Bildverarbeitungssysteme projizieren dreidimensionale Objekte auf den
+zweidimensionalen Bildsensor einer Kamera. Die Abbildungsvorschrift ist dann eine
+$2\times 3$-Matrix. Umgekehrt werden in der Robotik ebene Trajektorien durch eine
+$3\times 2$-Matrix in den dreidimensionalen Arbeitsraum transformiert.
+
+Die allgemeine lineare Abbildung $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$
+wird durch eine $m\times n$-Matrix beschrieben: $m$ Zeilen für die Dimension des
+Ausgaberaums, $n$ Spalten für die Dimension des Eingaberaums. Als konkretes
+Beispiel bildet die folgende $2\times 3$-Matrix einen Raumpunkt auf seine
+$xy$-Koordinaten ab:
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}, \quad
+\mathbf{A} \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \end{pmatrix}.
+\end{equation*}
+
+## Übersicht: Wichtige Abbildungsmatrizen
+
+| Transformation | Matrix $\mathbf{A}$ | $\det(\mathbf{A})$ | Beispiel im Maschinenbau |
+| --- | --- | --- | --- |
+| Streckung um $s$ (2D) | $\begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}$ | $s^2$ | Maßstabsänderung in CAD |
+| Spiegelung an $y = x$ | $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ | $-1$ | Spiegelteile in CAD |
+| Spiegelung an $x$-Achse | $\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ | $-1$ | Koordinatensystemwechsel |
+| Scherung (2D) | $\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}$ | $1$ | Schubverformung |
+| Streckung um $s$ (3D) | $\begin{pmatrix} s&0&0\\0&s&0\\0&0&s \end{pmatrix}$ | $s^3$ | Produktfamilien in CAD |
+| Projektion auf $xy$-Ebene | $\begin{pmatrix} 1&0&0\\0&1&0\\0&0&0 \end{pmatrix}$ | $0$ | Technische Zeichnung, Kamera |
+| Spiegelung an $xy$-Ebene | $\begin{pmatrix} 1&0&0\\0&1&0\\0&0&-1 \end{pmatrix}$ | $-1$ | Spiegelbauteile, Robotik |
+
+```{admonition} Was ist ... eine lineare Abbildung?
+:class: note
+Eine **lineare Abbildung** $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ wird
+durch eine $m\times n$-Matrix $\mathbf{A}$ beschrieben. Sie ordnet jedem Vektor
+$\vec{v} \in \mathbb{R}^n$ eindeutig einen Bildvektor
+$\vec{w} = \mathbf{A} \cdot \vec{v} \in \mathbb{R}^m$ zu.
+
+Die geometrische Wirkung der Abbildung lässt sich vollständig aus den Bildern der
+Standardbasisvektoren ablesen. Diese entsprechen den **Spalten** der Matrix
+$\mathbf{A}$. Der Betrag der Determinante gibt an, um welchen Faktor sich der
+Flächen- bzw. Rauminhalt unter der Abbildung ändert.
 ```
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir die Definition und Eigenschaften orthogonaler
-Matrizen kennengelernt. Orthogonale Matrizen werden insbesondere dann verwendet,
-wenn Längen und Winkel unverändert bleiben müssen. Im nächsten Kapitel werden
-wir sehen, wir wir aus beliebigen linear unabhängigen Vektoren zueinander
-orthogonale Vektoren erzeugen können.
+In diesem Kapitel haben wir gesehen, wie Matrizen geometrische Transformationen in
+der Ebene und im Raum beschreiben. Strecken, Spiegeln, Scheren und Projizieren sind
+allesamt lineare Abbildungen der Form $\vec{w} = \mathbf{A} \cdot \vec{v}$. Diese
+Operationen bilden das mathematische Fundament von CAD-Systemen, der
+Finite-Elemente-Methode, der Messtechnik und der Robotik. Die Determinante liefert
+dabei eine wichtige Zusatzinformation über die Änderung von Fläche und Volumen sowie
+die Orientierung. Im nächsten Kapitel führen wir die formale Definition einer
+linearen Abbildung ein und lernen ihre wesentlichen Eigenschaften kennen, insbesondere
+das Superpositionsprinzip, das in der Strukturmechanik und Regelungstechnik
+allgegenwärtig ist.

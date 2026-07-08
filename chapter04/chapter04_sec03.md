@@ -1,175 +1,226 @@
-# Drehmatrizen im R²
+# 4.3 Kern einer Matrix
 
-Orthogonale Matrizen mit Determinante $+1$ beschreiben Drehungen. Das klingt
-zunächst abstrakt, ist aber in der Ingenieurpraxis allgegenwärtig: In der
-Robotik muss die Position eines Greifers nach einer Drehbewegung berechnet
-werden, in der Messtechnik werden Koordinatensysteme von Sensoren auf das
-Maschinensystem transformiert, und in der Technischen Mechanik werden Spannungen
-aus einem schräg orientierten Schnitt in das globale Koordinatensystem
-zurückgerechnet. In diesem Abschnitt lernen wir die Drehmatrix für die Ebene
-kennen.
+Wir wissen nun, was eine lineare Abbildung ist und welche Eigenschaften sie erfüllt.
+Als nächstes stellen wir die Frage: Welche Eingabevektoren werden durch eine gegebene
+Abbildung auf den Nullvektor abgebildet? Die Antwort auf diese Frage führt zum Begriff
+des Kerns einer Matrix. Im Maschinenbau taucht der Kern an überraschend vielen Stellen
+auf: Er bestimmt, wie viele Freiheitsgrade ein Mechanismus hat, ob eine Struktur
+statisch bestimmt ist, und ob ein lineares Gleichungssystem eindeutig lösbar ist.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die **Drehmatrix im $\mathbb{R}^2$** für eine Drehung um den
-  Winkel $\varphi$ gegen den Uhrzeigersinn:
-  \begin{equation*}
-  \mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-  \sin\varphi & \cos\varphi \end{pmatrix}.
-  \end{equation*}
-* [ ] Sie können überprüfen, dass jede Drehmatrix eine orthogonale Matrix ist.
-* [ ] Sie wissen, dass $\det(\mathbf{D}) = 1$ gilt, und können dies geometrisch
-  begründen: Drehungen erhalten Längen, Winkel und Orientierung.
-* [ ] Sie können die Drehmatrix anwenden, um einen Vektor oder ein Bauteilprofil
-  um einen gegebenen Winkel zu drehen.
+* Sie kennen die Definition des **Kerns** einer Matrix und können ihn geometrisch
+  interpretieren.
+* Sie können den Kern einer Matrix berechnen, indem Sie das homogene lineare
+  Gleichungssystem $\mathbf{A} \cdot \vec{v} = \vec{0}$ lösen.
+* Sie kennen die **Dimension des Kerns** und können diese aus den Lösungen des
+  Gleichungssystems ablesen.
+* Sie wissen, dass der Kern immer mindestens den Nullvektor enthält, und können
+  beurteilen, ob der Kern nur den Nullvektor enthält oder weitere Vektoren umfasst.
 ```
 
-## Was soll eine Drehmatrix leisten?
+## Motivation: Welche Vektoren verschwinden?
 
-Stellen wir uns den ebenen Roboterarm einer Fräsmaschine vor. Der Arm hat die
-Länge $r = 5~\text{cm}$ und zeigt zunächst in die positive $x$-Richtung. Die
-Spitze befindet sich also im Punkt
-
-\begin{equation*}
-\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}~\text{cm}.
-\end{equation*}
-
-Die Steuerung dreht den Arm um den Winkel $\varphi = 45°$ gegen den
-Uhrzeigersinn. *Wo befindet sich die Spitze danach?* Geometrisch liegt die
-Antwort auf der Hand: auf einem Kreis mit Radius $5~\text{cm}$, im Winkel
-$45°$ zur $x$-Achse. In Koordinaten ausgedrückt:
+Wir betrachten die Projektion auf die $xy$-Ebene, die wir im vorigen Kapitel bereits
+kennengelernt haben:
 
 \begin{equation*}
-\vec{p}' = \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} =
-\begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{5}{\sqrt{2}} \end{pmatrix} \approx
-\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
+\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
 \end{equation*}
 
-Die geometrische Überlegung funktioniert, solange wir wissen, in welchem Winkel
-der Ausgangsvektor zur $x$-Achse liegt. Für einen allgemeinen Startvektor
-benötigen wir eine systematischere Methode. Genau das liefert die Drehmatrix.
+Diese Matrix modelliert beispielsweise eine industrielle Kamera, die ein
+dreidimensionales Objekt auf eine zweidimensionale Ebene projiziert. Dabei gehen
+alle Informationen über die Tiefe ($z$-Koordinate) verloren. Welche Vektoren
+$\vec{v} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ werden durch diese Abbildung
+auf den Nullvektor abgebildet? Wir berechnen:
 
-## Woher kommt die Formel für die Drehmatrix?
+\begin{equation*}
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}
+\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.
+\end{equation*}
 
-Liegt ein Vektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ vor, so liegt
-er in einem Winkel $\alpha$ zur $x$-Achse mit $x = r\cos\alpha$ und
-$y = r\sin\alpha$, wobei $r = \|\vec{v}\|$. Nach einer Drehung um $\varphi$
-gegen den Uhrzeigersinn zeigt er in den Winkel $\alpha + \varphi$:
+Das liefert die Bedingungen $x = 0$ und $y = 0$, während $z$ beliebig sein kann.
+Die Menge aller Vektoren, die auf $\vec{0}$ abgebildet werden, ist also die
+$z$-Achse:
+
+\begin{equation*}
+\left\{ \begin{pmatrix} 0 \\ 0 \\ z \end{pmatrix} \,\middle|\, z \in \mathbb{R} \right\}
+= t \cdot \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \quad t \in \mathbb{R}.
+\end{equation*}
+
+Geometrisch bedeutet das: Alle Punkte, die direkt senkrecht über dem Ursprung
+der $xy$-Ebene liegen, werden auf den Ursprung projiziert. Die Information über ihre
+Höhe geht bei der Projektion vollständig verloren. Diese Menge heißt der
+**Kern** der Matrix.
+
+## Definition des Kerns
+
+```{admonition} Was ist ... der Kern einer Matrix?
+:class: note
+Sei $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ eine lineare Abbildung mit der
+Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Der **Kern** von $\mathbf{A}$,
+geschrieben $\text{Kern}(\mathbf{A})$, ist die Menge aller Vektoren
+$\vec{v} \in \mathbb{R}^n$, die durch die Abbildung auf den Nullvektor abgebildet
+werden:
+
+\begin{equation*}
+\text{Kern}(\mathbf{A}) = \{ \vec{v} \in \mathbb{R}^n \mid \mathbf{A} \cdot \vec{v} = \vec{0} \}.
+\end{equation*}
+
+Der Kern enthält immer mindestens den Nullvektor, da $\mathbf{A} \cdot \vec{0} =
+\vec{0}$ für jede Matrix gilt.
+```
+
+Die Dimension des Kerns, also die Anzahl der linear unabhängigen Vektoren im Kern,
+wird **Defekt** der Matrix genannt und mit $\dim(\text{Kern}(\mathbf{A}))$
+bezeichnet.
+
+## Berechnung des Kerns
+
+Der Kern wird berechnet, indem man das **homogene lineare Gleichungssystem**
+
+\begin{equation*}
+\mathbf{A} \cdot \vec{v} = \vec{0}
+\end{equation*}
+
+löst. Dieses System hat immer mindestens die triviale Lösung $\vec{v} = \vec{0}$.
+Wenn es weitere Lösungen gibt, bilden diese zusammen mit dem Nullvektor den Kern.
+
+**Beispiel 1:** Wir berechnen den Kern der Matrix
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}.
+\end{equation*}
+
+Das homogene Gleichungssystem lautet:
+
+\begin{equation*}
+\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+\cdot \begin{pmatrix} v_1 \\ v_2 \end{pmatrix}
+= \begin{pmatrix} v_1 \\ -v_2 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Daraus folgt $v_1 = 0$ und $v_2 = 0$. Der Kern enthält nur den Nullvektor:
+
+\begin{equation*}
+\text{Kern}(\mathbf{A}) = \left\{ \begin{pmatrix} 0 \\ 0 \end{pmatrix} \right\}, \quad
+\dim(\text{Kern}(\mathbf{A})) = 0.
+\end{equation*}
+
+Ein Kern, der nur den Nullvektor enthält, bedeutet, dass die Abbildung injektiv ist:
+Verschiedene Eingabevektoren werden auf verschiedene Ausgabevektoren abgebildet. In
+der Strukturmechanik entspricht das einer statisch bestimmten Lagerung: Die
+Steifigkeitsmatrix hat einen trivialen Kern, das System hat eine eindeutige Lösung.
+
+**Beispiel 2:** Wir berechnen den Kern der Matrix
+
+\begin{equation*}
+\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Das homogene Gleichungssystem lautet:
+
+\begin{equation*}
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\cdot \begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix}
+= \begin{pmatrix} v_1 \\ 0 \\ v_3 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Aus der ersten und dritten Gleichung folgt $v_1 = 0$ und $v_3 = 0$. Die zweite
+Gleichung ist immer erfüllt, unabhängig von $v_2$. Daher kann $v_2$ beliebig gewählt
+werden:
+
+\begin{equation*}
+\text{Kern}(\mathbf{C}) = \left\{ t \cdot \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
+\;\middle|\; t \in \mathbb{R} \right\}, \quad \dim(\text{Kern}(\mathbf{C})) = 1.
+\end{equation*}
+
+Das ist geometrisch die $y$-Achse. In einem FEM-Modell ohne ausreichende Lagerung
+entsprechen solche nichtrivalen Kern-Vektoren **Starrkörpermoden**: Bewegungen des
+gesamten Netzes, die keine Verformungsenergie erzeugen. Bevor ein FEM-Solver rechnen
+kann, müssen alle Starrkörpermoden durch Randbedingungen unterdrückt werden, also der
+Kern der Steifigkeitsmatrix auf den Nullvektor reduziert werden.
+
+**Beispiel 3:** Wir berechnen den Kern der Matrix
+
+\begin{equation*}
+\mathbf{D} = \begin{pmatrix} 1 & 2 & 2 \\ 1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}.
+\end{equation*}
+
+Das homogene Gleichungssystem $\mathbf{D} \cdot \vec{v} = \vec{0}$ lautet:
 
 \begin{align*}
-x' &= r\cos(\alpha + \varphi) = r\cos\alpha\cos\varphi - r\sin\alpha\sin\varphi
-     = x\cos\varphi - y\sin\varphi, \\
-y' &= r\sin(\alpha + \varphi) = r\cos\alpha\sin\varphi + r\sin\alpha\cos\varphi
-     = x\sin\varphi + y\cos\varphi.
+v_1 + 2v_2 + 2v_3 &= 0 \\
+v_1 - v_2 + 2v_3  &= 0 \\
+0                   &= 0 \\
+v_2                 &= 0.
 \end{align*}
 
-Diese beiden Gleichungen lassen sich elegant als Matrixprodukt schreiben:
+Aus der vierten Gleichung folgt direkt $v_2 = 0$. Einsetzen in die erste Gleichung
+liefert $v_1 + 2v_3 = 0$, also $v_1 = -2v_3$. Die Variable $v_3$ kann beliebig
+gewählt werden. Wir setzen $v_3 = t$ mit $t \in \mathbb{R}$ und erhalten:
 
 \begin{equation*}
-\begin{pmatrix} x' \\ y' \end{pmatrix} =
-\begin{pmatrix} \cos\varphi & -\sin\varphi \\ \sin\varphi & \cos\varphi \end{pmatrix}
-\begin{pmatrix} x \\ y \end{pmatrix}.
+\vec{v} = \begin{pmatrix} -2t \\ 0 \\ t \end{pmatrix}
+= t \cdot \begin{pmatrix} -2 \\ 0 \\ 1 \end{pmatrix}, \quad t \in \mathbb{R}.
 \end{equation*}
 
-Die Matrix auf der rechten Seite ist die gesuchte Drehmatrix.
-
-```{admonition} Was ist ... die Drehmatrix im $\mathbb{R}^2$?
-:class: note
-Die **Drehmatrix** für eine Drehung um den Winkel $\varphi$ gegen den Uhrzeigersinn
-ist:
+Der Kern ist:
 
 \begin{equation*}
-\mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-\sin\varphi & \cos\varphi \end{pmatrix}.
+\text{Kern}(\mathbf{D}) = \left\{ t \cdot \begin{pmatrix} -2 \\ 0 \\ 1 \end{pmatrix}
+\;\middle|\; t \in \mathbb{R} \right\}, \quad \dim(\text{Kern}(\mathbf{D})) = 1.
 \end{equation*}
 
-Für einen Vektor $\vec{v} \in \mathbb{R}^2$ liefert das Matrixprodukt
-$\vec{v}' = \mathbf{D}(\varphi)\cdot\vec{v}$ den um $\varphi$ gedrehten Vektor.
+```{dropdown} Video "Kern einer Matrix berechnen" von Loay
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/td9t2WohViw"
+title="KERN einer Matrix berechnen. Einfach und schnell erklärt" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-Wir wenden die Drehmatrix auf unser Roboterarm-Beispiel an. Mit $\varphi = 45°$
-und $\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}$ ergibt sich:
-
-\begin{equation*}
-\mathbf{D}(45°)\cdot\vec{p} =
-\begin{pmatrix} \cos 45° & -\sin 45° \\ \sin 45° & \cos 45° \end{pmatrix}
-\begin{pmatrix} 5 \\ 0 \end{pmatrix} =
-\begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} \approx
-\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
-\end{equation*}
-
-Das stimmt mit unserem geometrischen Ergebnis von oben überein.
-
-## Warum ist die Drehmatrix orthogonal?
-
-Wir überprüfen die Orthogonalitätsbedingung $\mathbf{D}^T\cdot\mathbf{D} = \mathbf{E}$.
-Die Transponierte ist:
-
-\begin{equation*}
-\mathbf{D}^T(\varphi) = \begin{pmatrix} \cos\varphi & \sin\varphi \\
--\sin\varphi & \cos\varphi \end{pmatrix}.
-\end{equation*}
-
-Das Produkt ergibt:
-
-\begin{equation*}
-\mathbf{D}^T\cdot\mathbf{D} =
-\begin{pmatrix} \cos^2\varphi + \sin^2\varphi & \cos\varphi\sin\varphi - \sin\varphi\cos\varphi \\
--\sin\varphi\cos\varphi + \cos\varphi\sin\varphi & \sin^2\varphi + \cos^2\varphi \end{pmatrix}
-= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \mathbf{E}.
-\end{equation*}
-
-Damit ist $\mathbf{D}^{-1} = \mathbf{D}^T = \mathbf{D}(-\varphi)$: Die Umkehrung
-einer Drehung um $\varphi$ ist eine Drehung um $-\varphi$. Das ist geometrisch
-einleuchtend.
-
-Die Determinante berechnen wir direkt:
-
-\begin{equation*}
-\det(\mathbf{D}(\varphi)) = \cos^2\varphi + \sin^2\varphi = 1.
-\end{equation*}
-
-Da $\det(\mathbf{D}) = 1 > 0$, ändert sich die Orientierung nicht: ein
-rechtshändiges Koordinatensystem bleibt rechtshändig. Wäre die Determinante
-$-1$, würde es sich um eine Spiegelung handeln.
-
-## Was passiert bei zwei hintereinander ausgeführten Drehungen?
-
-In der Kinematik eines Roboters werden häufig mehrere Gelenke nacheinander
-bewegt. Dreht der Arm zunächst um $\varphi_1$ und dann um $\varphi_2$, so
-entspricht das einer Gesamtdrehung um $\varphi_1 + \varphi_2$. Das Assoziativgesetz
-der Matrizenmultiplikation erlaubt es, dies kompakt zu schreiben:
-
-\begin{equation*}
-\mathbf{D}(\varphi_2)\cdot\mathbf{D}(\varphi_1) = \mathbf{D}(\varphi_1 + \varphi_2).
-\end{equation*}
-
-Diese Eigenschaft lässt sich mit dem Additionstheorem für den Kosinus und Sinus
-nachrechnen. Für unseren Roboterarm bedeutet das: Eine Drehung um $30°$ gefolgt
-von einer Drehung um $60°$ ergibt dasselbe wie eine einzige Drehung um $90°$.
-
-*Und was geschieht, wenn wir in drei Dimensionen drehen wollen? Dann reicht eine
-einzige Matrix nicht mehr aus, wie wir im nächsten Abschnitt sehen werden.
-
-```{dropdown} Video "Orthogonale Matrizen, Drehmatrix" von MathePeter
-<iframe width="1020" height="574" 
-src="https://www.youtube.com/embed/Enj_IYsPfc8?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
-title="Orthogonale Matrizen im R^2 | Drehmatrix, Spiegelmatrix (Komplettübersicht)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Wie man den Kern einer Matrix berechnet" von BrainPi
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/HrBjQXd1MB8"
+title="Wie man den Kern einer Matrix berechnet" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
+
+## Geometrische Bedeutung und Anwendungen
+
+Der Kern einer Matrix lässt sich geometrisch als derjenige Teil des Eingaberaums
+interpretieren, der durch die Abbildung auf den Ursprung kollabiert. Alle Vektoren im
+Kern werden auf den Nullvektor abgebildet, sie gehen bei der Transformation vollständig
+verloren.
+
+Im Maschinenbau hat der Kern folgende Bedeutungen:
+
+**Kinematik von Mechanismen:** Die Bewegungsmöglichkeiten eines Gelenkmechanismus
+entsprechen dem Kern der sogenannten Jacobi-Matrix des Mechanismus. Ein
+eindimensionaler Kern bedeutet genau einen kinematischen Freiheitsgrad, was bei
+einem Scharniergelenk der Fall ist. Ein mehrdimensionaler Kern entspricht mehreren
+unabhängigen Bewegungsmöglichkeiten.
+
+**Statische Bestimmtheit:** Bei der Analyse von Fachwerken und Rahmenkonstruktionen
+wird untersucht, ob die Gleichgewichtsbedingungen eine eindeutige Lösung für die
+Stabkräfte liefern. Eine eindeutige Lösung existiert genau dann, wenn der Kern der
+Gleichgewichtsmatrix trivial ist. Ist der Kern nichttrivial, so ist die Struktur
+statisch unbestimmt oder kinematisch beweglich.
+
+**FEM und Starrkörpermoden:** Wie oben beschrieben, entsprechen die Vektoren im Kern
+der Steifigkeitsmatrix den Starrkörpermoden des nicht gelagerten Systems. Diese müssen
+vor der Berechnung durch Randbedingungen beseitigt werden.
 
 ## Zusammenfassung und Ausblick
 
-Die Drehmatrix $\mathbf{D}(\varphi)$ ist eine orthogonale $2\times 2$-Matrix mit
-Determinante $1$. Sie dreht jeden Vektor um den Winkel $\varphi$ gegen den
-Uhrzeigersinn, ohne seine Länge zu verändern. Aufeinanderfolgende Drehungen
-werden durch einfaches Matrizenprodukt kombiniert.
-
-Im nächsten Abschnitt erweitern wir diese Idee auf den dreidimensionalen Raum.
-Dort lässt sich eine allgemeine Drehung als Produkt von drei Achsendrehungen
-darstellen, die durch die sogenannten Kardanwinkel beschrieben werden. Diese
-Darstellung ist in der Luft- und Raumfahrttechnik sowie in der Robotik fundamental.
+Der Kern einer Matrix $\mathbf{A}$ ist die Menge aller Vektoren $\vec{v}$, für die
+$\mathbf{A} \cdot \vec{v} = \vec{0}$ gilt. Er wird durch Lösung des homogenen
+linearen Gleichungssystems berechnet und enthält immer mindestens den Nullvektor. Im
+Maschinenbau beschreibt der Kern Freiheitsgrade von Mechanismen, Starrkörpermoden in
+der FEM und die statische Bestimmtheit von Tragwerken. Im nächsten Kapitel lernen wir
+das komplementäre Konzept kennen: das Bild einer Matrix, das beschreibt, welche
+Vektoren überhaupt als Ergebnis der Abbildung auftreten können.

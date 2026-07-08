@@ -1,254 +1,189 @@
-# Diagonalisierung
+# 5.4 Drehmatrizen im R³
 
-In den letzten drei Abschnitten haben wir alle Bausteine zusammengetragen: Wir
-kennen Eigenwerte und Eigenvektoren, wir wissen, dass ähnliche Matrizen dieselben
-Eigenwerte haben, und wir haben am L-Profil bereits gesehen, dass die
-Transformationsmatrix aus Eigenvektoren den Tensor auf Diagonalform bringt. In
-diesem Abschnitt setzen wir diese Bausteine zu einem vollständigen Verfahren
-zusammen und verstehen, wann es gelingt und wann nicht.
+In der Ebene genügt ein einziger Winkel, um eine Drehung vollständig zu
+beschreiben. Im dreidimensionalen Raum ist das nicht mehr ausreichend. Eine
+Turbinenschaufel, ein Robotergelenk oder ein Flugkörper kann um drei
+verschiedene Achsen rotieren, und die Reihenfolge dieser Drehungen spielt
+dabei eine entscheidende Rolle. Dieses Phänomen begegnet uns in der
+Luft- und Raumfahrttechnik ebenso wie in der Robotik und der rechnergestützten
+Kinematikanalyse.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, wann eine Matrix **diagonalisierbar** ist: genau dann, wenn
-  für alle Eigenwerte die algebraische Vielfachheit gleich der geometrischen
-  Vielfachheit ist ($m_\lambda = d_\lambda$).
-* [ ] Sie können eine diagonalisierbare Matrix $\mathbf{A}$ **diagonalisieren**,
-  indem Sie die Transformationsmatrix $\mathbf{V} = (\vec{v}_1, \ldots, \vec{v}_n)$
-  aus den Eigenvektoren aufstellen und $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$
-  berechnen.
-* [ ] Sie wissen, dass die Diagonalelemente von $\mathbf{D}$ die Eigenwerte
-  $\lambda_1, \ldots, \lambda_n$ sind.
-* [ ] Sie können begründen, warum eine Matrix nicht diagonalisierbar ist, wenn
-  $m_\lambda > d_\lambda$ für mindestens einen Eigenwert gilt.
-* [ ] Sie kennen den **Spektralsatz** und können erläutern, warum symmetrische
-  Matrizen immer diagonalisierbar sind.
+* [ ] Sie kennen die **Drehmatrizen um die Koordinatenachsen** im $\mathbb{R}^3$:
+  $\mathbf{D}_x(\alpha)$, $\mathbf{D}_y(\beta)$ und $\mathbf{D}_z(\gamma)$.
+* [ ] Sie wissen, dass eine allgemeine räumliche Drehung durch Hintereinanderausführung
+  dreier Achsendrehungen beschrieben werden kann:
+  \begin{equation*}
+  \mathbf{D}(\alpha, \beta, \gamma) = \mathbf{D}_x(\alpha)\,\mathbf{D}_y(\beta)\,\mathbf{D}_z(\gamma).
+  \end{equation*}
+* [ ] Sie kennen den Begriff der **Kardanwinkel** (auch Euler-Winkel genannt) und
+  wissen, dass die Reihenfolge der Drehungen das Ergebnis beeinflusst.
+* [ ] Sie wissen, dass das Produkt orthogonaler Matrizen wieder eine orthogonale
+  Matrix ist, und können dies auf verkettete Drehungen anwenden.
 ```
 
-## Das L-Profil: alles zusammensetzen
+## Wie beschreiben wir eine Drehung im Raum?
 
-Wir kehren ein letztes Mal zum Trägheitstensor des L-Profils zurück:
+Wir betrachten eine Messsonde an einem Roboterarm, die im Raum ausgerichtet
+werden soll. In der Ausgangsstellung zeigt der Sensor in die positive
+$z$-Richtung. Nun soll er zunächst um die $x$-Achse um den Winkel $\alpha$
+und anschließend um die $z$-Achse um den Winkel $\gamma$ geschwenkt werden.
+Jede dieser Teilbewegungen ist eine Drehung um eine der drei Koordinatenachsen,
+und jede lässt sich durch eine eigene $3\times 3$-Matrix beschreiben.
 
-\begin{equation*}
-\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
-\end{equation*}
+Die Idee ist dieselbe wie in zwei Dimensionen: Eine Drehung um eine Achse
+lässt die zugehörige Komponente unverändert und dreht die beiden anderen
+Komponenten gemäß der zweidimensionalen Drehmatrix.
 
-In Abschnitt 5.1 haben wir die Eigenwerte $\lambda_1 = 6$ und $\lambda_2 = 1$
-sowie die zugehörigen Eigenvektoren
+## Die drei Grunddrehmatrizen
 
-\begin{equation*}
-\vec{v}_1 = \begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\quad \text{und} \quad
-\vec{v}_2 = \begin{pmatrix} 1 \\ -2 \end{pmatrix}
-\end{equation*}
-
-berechnet. In Abschnitt 5.3 haben wir gesehen, dass die Matrix
-
-\begin{equation*}
-\mathbf{V} = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix},
-\end{equation*}
-
-deren Spalten die normierten Eigenvektoren sind, die Transformation
-$\mathbf{V}^{-1}\mathbf{I}\mathbf{V} = \mathbf{D}$ mit
+Eine Drehung um die $x$-Achse um den Winkel $\alpha$ lässt die $x$-Komponente
+unverändert und dreht die $yz$-Ebene:
 
 \begin{equation*}
-\mathbf{D} = \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} \cdot 10^4\,\text{mm}^4
+\mathbf{D}_x(\alpha) =
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & \cos\alpha & -\sin\alpha \\
+0 & \sin\alpha & \cos\alpha
+\end{pmatrix}.
 \end{equation*}
 
-liefert. Die Nebendiagonaleinträge sind verschwunden, die Hauptträgheitsmomente
-stehen direkt auf der Diagonale. Dieses Ergebnis ist das, was Ingenieurinnen
-und Ingenieure als Hauptachsentransformation kennen. Mathematisch nennen wir
-diesen Vorgang **Diagonalisierung** der Matrix $\mathbf{I}$.
+Entsprechend dreht eine Drehung um die $y$-Achse um den Winkel $\beta$ die
+$xz$-Ebene und lässt die $y$-Komponente fest:
 
-## Was ist Diagonalisierung, und wie geht das?
+\begin{equation*}
+\mathbf{D}_y(\beta) =
+\begin{pmatrix}
+\cos\beta & 0 & \sin\beta \\
+0 & 1 & 0 \\
+-\sin\beta & 0 & \cos\beta
+\end{pmatrix}.
+\end{equation*}
 
-Wir beobachten an unserem Beispiel das entscheidende Muster: Die Spalten von
-$\mathbf{V}$ sind die Eigenvektoren von $\mathbf{I}$, und die Diagonaleinträge
-von $\mathbf{D}$ sind die zugehörigen Eigenwerte in derselben Reihenfolge.
-Das ist kein Zufall, sondern lässt sich direkt aus der Eigenwertgleichung
-herleiten. Für jede Spalte $\vec{v}_k$ von $\mathbf{V}$ gilt
-$\mathbf{I}\vec{v}_k = \lambda_k\vec{v}_k$, und das bedeutet in Matrixschreibweise
-genau $\mathbf{I}\mathbf{V} = \mathbf{V}\mathbf{D}$. Multipliziert man von links
-mit $\mathbf{V}^{-1}$, folgt die Diagonalisierungsformel.
+Zu beachten ist das Vorzeichen: Bei der Drehung um die $y$-Achse erscheint
+$\sin\beta$ in der oberen rechten Position und $-\sin\beta$ in der unteren
+linken. Das folgt aus der Rechtshändigkeitskonvention des Koordinatensystems.
+Schließlich dreht die Drehung um die $z$-Achse um den Winkel $\gamma$ die
+$xy$-Ebene:
 
-```{admonition} Was ist ... die Diagonalisierung einer Matrix?
+\begin{equation*}
+\mathbf{D}_z(\gamma) =
+\begin{pmatrix}
+\cos\gamma & -\sin\gamma & 0 \\
+\sin\gamma & \cos\gamma & 0 \\
+0 & 0 & 1
+\end{pmatrix}.
+\end{equation*}
+
+Diese drei Matrizen kennen wir bereits strukturell aus Kapitel 4.1: Jede von
+ihnen ist eine orthogonale Matrix mit Determinante $1$.
+
+```{admonition} Was ist ... eine räumliche Drehmatrix?
 :class: note
-Eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{n\times n}$ heißt
-**diagonalisierbar**, wenn es eine invertierbare Matrix $\mathbf{V}$ gibt,
-sodass
+Eine **räumliche Drehmatrix** ist eine orthogonale $3\times 3$-Matrix mit
+$\det(\mathbf{D}) = 1$. Jede allgemeine Drehung im $\mathbb{R}^3$ kann als
+Produkt von drei Grunddrehungen um die Koordinatenachsen geschrieben werden:
 
 \begin{equation*}
-\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}
+\mathbf{D}(\alpha, \beta, \gamma) =
+\mathbf{D}_x(\alpha)\cdot\mathbf{D}_y(\beta)\cdot\mathbf{D}_z(\gamma).
 \end{equation*}
 
-eine Diagonalmatrix ist. Die Spalten von $\mathbf{V}$ sind die Eigenvektoren
-von $\mathbf{A}$, und die Diagonalelemente von $\mathbf{D}$ sind die
-zugehörigen Eigenwerte.
+Die Winkel $\alpha$, $\beta$, $\gamma$ heißen **Kardanwinkel** (oder Euler-Winkel
+je nach Konvention). Die Reihenfolge der Matrixmultiplikation legt die
+Reihenfolge der Drehungen fest.
 ```
 
-Daraus ergibt sich ein klares Vorgehen, das wir im nächsten Abschnitt Schritt
-für Schritt am Beispiel durchführen.
+## Wie wenden wir die Drehmatrizen auf unser Beispiel an?
 
-## Wie diagonalisiert man eine Matrix?
+Zurück zur Messsonde. Der Sensor zeigt zu Beginn in $z$-Richtung:
+$\vec{s} = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$. Wir drehen zunächst
+um die $x$-Achse um $\alpha = 30°$ und danach um die $z$-Achse um
+$\gamma = 45°$.
 
-Das Verfahren besteht aus drei Schritten, die wir direkt am Spannungstensor aus
-Abschnitt 5.2 durchführen:
-
-\begin{equation*}
-\boldsymbol{\sigma} = \begin{pmatrix} 7 & 2 \\ 2 & 4 \end{pmatrix}~\text{MPa}.
-\end{equation*}
-
-**Schritt 1: Eigenwerte berechnen.**
-
-Wir lösen $\det(\boldsymbol{\sigma} - \lambda\mathbf{E}) = 0$:
+Schritt 1: Drehung um die $x$-Achse.
 
 \begin{equation*}
-p(\lambda) = \lambda^2 - 11\lambda + 24 = (\lambda - 8)(\lambda - 3) = 0.
+\mathbf{D}_x(30°)\cdot\vec{s} =
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos 30° & -\sin 30° \\ 0 & \sin 30° & \cos 30° \end{pmatrix}
+\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} =
+\begin{pmatrix} 0 \\ -\sin 30° \\ \cos 30° \end{pmatrix} \approx
+\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix}.
 \end{equation*}
 
-Die Eigenwerte sind $\lambda_1 = 8~\text{MPa}$ und $\lambda_2 = 3~\text{MPa}$.
+Der Sensor zeigt jetzt schräg nach vorne unten in der $yz$-Ebene.
 
-**Schritt 2: Eigenvektoren berechnen.**
-
-Für $\lambda_1 = 8$ lösen wir $(\boldsymbol{\sigma} - 8\mathbf{E})\vec{v} = \vec{0}$:
+Schritt 2: Drehung des Ergebnisses um die $z$-Achse.
 
 \begin{equation*}
-\begin{pmatrix} -1 & 2 \\ 2 & -4 \end{pmatrix}\vec{v} = \vec{0}
-\quad \Rightarrow \quad
-\vec{v}_1 = \begin{pmatrix} 2 \\ 1 \end{pmatrix}.
+\mathbf{D}_z(45°)\cdot\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix} =
+\begin{pmatrix} \cos 45° & -\sin 45° & 0 \\ \sin 45° & \cos 45° & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix} \approx
+\begin{pmatrix} 0.354 \\ -0.354 \\ 0.866 \end{pmatrix}.
 \end{equation*}
 
-Für $\lambda_2 = 3$ lösen wir $(\boldsymbol{\sigma} - 3\mathbf{E})\vec{v} = \vec{0}$:
+Wir können beide Schritte auch zur Gesamtdrehmatrix kombinieren:
+$\mathbf{D} = \mathbf{D}_z(45°)\cdot\mathbf{D}_x(30°)$. Die Länge des Sensors
+ist erhalten: $\|\vec{s}'\| = \sqrt{0.354^2 + 0.354^2 + 0.866^2} \approx 1$.
 
-\begin{equation*}
-\begin{pmatrix} 4 & 2 \\ 2 & 1 \end{pmatrix}\vec{v} = \vec{0}
-\quad \Rightarrow \quad
-\vec{v}_2 = \begin{pmatrix} 1 \\ -2 \end{pmatrix}.
-\end{equation*}
-
-**Schritt 3: Transformationsmatrix aufstellen und Ergebnis notieren.**
-
-Wir schreiben die Eigenvektoren als Spalten in $\mathbf{V}$:
-
-\begin{equation*}
-\mathbf{V} = \begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}.
-\end{equation*}
-
-Dann gilt:
-
-\begin{equation*}
-\mathbf{D} = \mathbf{V}^{-1}\boldsymbol{\sigma}\mathbf{V} =
-\begin{pmatrix} 8 & 0 \\ 0 & 3 \end{pmatrix}~\text{MPa}.
-\end{equation*}
-
-Die Hauptspannungen $\sigma_1 = 8~\text{MPa}$ und $\sigma_2 = 3~\text{MPa}$
-stehen direkt auf der Diagonale. Die Reihenfolge der Spalten in $\mathbf{V}$
-legt die Reihenfolge der Eigenwerte in $\mathbf{D}$ fest: Der erste Eigenvektor
-gehört zum ersten Diagonalelement.
-
-Als Probe multiplizieren wir aus und prüfen, ob
-$\boldsymbol{\sigma}\mathbf{V} = \mathbf{V}\mathbf{D}$ gilt:
-
-\begin{equation*}
-\boldsymbol{\sigma}\mathbf{V} =
-\begin{pmatrix} 7 & 2 \\ 2 & 4 \end{pmatrix}
-\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix} =
-\begin{pmatrix} 16 & 3 \\ 8 & -6 \end{pmatrix},
-\quad
-\mathbf{V}\mathbf{D} =
-\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
-\begin{pmatrix} 8 & 0 \\ 0 & 3 \end{pmatrix} =
-\begin{pmatrix} 16 & 3 \\ 8 & -6 \end{pmatrix}.
-\end{equation*}
-
-Beide Seiten stimmen überein. Die Diagonalisierung ist korrekt.
-
-```{dropdown} Video (EN) "Visualizing Diagonalization" von QualityMathVisuals
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/yJ3EfoJmTFg"
-title="Visualizing Diagonalization" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```{dropdown} Video "Drehmatrizen" von Prof. Hielscher
+<iframe width="742" height="613" src="https://www.youtube.com/embed/aXAikhRe6v0?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Drehmatrizen" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Matrix diagonalisieren" von MathePeter
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/KmFq0Pl2nxM" title="Matrix diagonalisieren + Matrixpotenzen Einfach Erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+## Warum ist die Reihenfolge der Drehungen wichtig?
+
+Anders als bei reellen Zahlen gilt für Matrizen im Allgemeinen
+$\mathbf{A}\cdot\mathbf{B} \neq \mathbf{B}\cdot\mathbf{A}$. Das hat für
+Drehungen im Raum eine direkt spürbare Konsequenz: Erst um $x$, dann um $z$
+drehen ergibt eine andere Endlage als erst um $z$, dann um $x$.
+
+Wir überprüfen dies mit einem einfachen Beispiel. Mit dem Einheitsvektor
+$\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und den Winkeln
+$90°$ ergibt sich:
+
+\begin{align*}
+\mathbf{D}_x(90°)\cdot\mathbf{D}_z(90°)\cdot\vec{e}_1 &=
+\mathbf{D}_x(90°)\cdot\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} =
+\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \\
+\mathbf{D}_z(90°)\cdot\mathbf{D}_x(90°)\cdot\vec{e}_1 &=
+\mathbf{D}_z(90°)\cdot\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} =
+\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}.
+\end{align*}
+
+Die Endlagen unterscheiden sich. In der Robotik ist die Festlegung der
+Drehungsreihenfolge daher eine Konvention, auf die sich alle Beteiligten
+einigen müssen. In der Luftfahrt verwendet man typischerweise die Reihenfolge
+Gieren, Nicken, Rollen (yaw, pitch, roll) gemäß der DIN-Norm für
+Flugzustände.
+
+*Wie hängen diese Drehmatrizen mit den Eigenwerten zusammen? Tatsächlich hat
+jede Drehmatrix im $\mathbb{R}^3$ immer den Eigenwert $\lambda = 1$, und der
+zugehörige Eigenvektor zeigt genau in die Drehachse. Diese Verbindung werden
+wir in den folgenden Abschnitten dieses Kapitels herstellen.*
+
+```{dropdown} Video "Orthogonale Matrizen im R^3" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/-Zp-hz7XevM?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
+title="Orthogonale Matrizen im R^3 | Drehmatrix, Spiegelmatrix, Drehspiegelmatrix (Komplettübersicht)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-
-```{dropdown} Video "Matrix diagonalisierbar?" von The Bright Side of Mathematics
-<iframe width="1020" height="566" src="https://www.youtube.com/embed/FEGL0xo45ME"
-title="Matrix diagonalisierbar?" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-## Wann schlägt die Diagonalisierung fehl?
-
-*Funktioniert das Verfahren immer?* Nein. In Abschnitt 5.1 haben wir die Matrix
-
-\begin{equation*}
-\mathbf{B} = \begin{pmatrix} 3 & 1 \\ 0 & 3 \end{pmatrix}
-\end{equation*}
-
-untersucht. Sie hat den doppelten Eigenwert $\lambda = 3$ mit algebraischer
-Vielfachheit $m_\lambda = 2$, aber nur einen einzigen linear unabhängigen
-Eigenvektor $\vec{v} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$, also geometrische
-Vielfachheit $d_\lambda = 1$. Wir können keine $2\times 2$-Transformationsmatrix
-$\mathbf{V}$ mit zwei linear unabhängigen Spalten aufstellen. Das Verfahren
-bricht in Schritt 2 ab.
-
-Das ist kein Rechenfehler, sondern ein strukturelles Problem: Für die
-Diagonalisierung brauchen wir genau $n$ linear unabhängige Eigenvektoren, die
-die Spalten von $\mathbf{V}$ bilden. Fehlt auch nur einer, ist $\mathbf{V}$
-nicht invertierbar und die Formel $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$
-nicht anwendbar.
-
-```{admonition} Wann ist eine Matrix diagonalisierbar?
-:class: note
-Eine $n\times n$-Matrix $\mathbf{A}$ ist genau dann diagonalisierbar, wenn für
-alle Eigenwerte $\lambda$ gilt:
-
-\begin{equation*}
-d_\lambda = m_\lambda.
-\end{equation*}
-
-Gibt es auch nur einen Eigenwert, für den $d_\lambda < m_\lambda$ ist, so ist
-die Matrix nicht diagonalisierbar.
-```
-
-## Der Spektralsatz: Symmetrie als Garantie
-
-Für Maschinenbaustudierende ist die entscheidende Frage nicht, ob eine beliebige
-Matrix diagonalisierbar ist, sondern ob die Matrizen, die in der Praxis
-auftauchen, es sind. Und hier greift das Ergebnis aus Abschnitt 5.2.
-
-Alle physikalischen Tensoren, mit denen wir es im Maschinenbau zu tun haben,
-sind symmetrisch: der Spannungstensor, der Trägheitstensor, die Massenmatrix
-und die Steifigkeitsmatrix in der FEM. Für symmetrische Matrizen haben wir in
-Abschnitt 5.2 gezeigt, dass Eigenvektoren zu verschiedenen Eigenwerten stets
-senkrecht aufeinander stehen. Tritt ein Eigenwert mehrfach auf, lässt sich der
-Eigenraum mit dem Gram-Schmidt-Verfahren aus Abschnitt 4.2 immer so
-orthogonalisieren, dass auch hier $d_\lambda = m_\lambda$ gilt. Das Ergebnis
-ist ein zentraler Satz der linearen Algebra.
-
-```{admonition} Spektralsatz für symmetrische Matrizen
-:class: note
-Eine symmetrische Matrix $\mathbf{A} \in \mathbb{R}^{n\times n}$ ist stets
-diagonalisierbar. Die Transformationsmatrix $\mathbf{V}$ kann so gewählt
-werden, dass ihre Spalten paarweise orthonormal sind. In diesem Fall ist
-$\mathbf{V}$ eine orthogonale Matrix, und es gilt $\mathbf{V}^{-1} = \mathbf{V}^T$.
-```
-
-Für den Maschinenbau bedeutet das: Die Hauptachsentransformation gelingt
-immer. Es gibt immer ein Koordinatensystem, in dem Spannungstensor,
-Trägheitstensor oder Steifigkeitsmatrix diagonal sind. Man muss nur die
-Eigenvektoren berechnen und als Spalten in $\mathbf{V}$ schreiben.
 
 ## Zusammenfassung und Ausblick
 
-Eine Matrix ist diagonalisierbar, wenn sie genug linear unabhängige
-Eigenvektoren besitzt, nämlich genau dann, wenn für jeden Eigenwert
-$d_\lambda = m_\lambda$ gilt. Das Verfahren ist in drei Schritte gegliedert:
-Eigenwerte berechnen, Eigenvektoren berechnen, Transformationsmatrix aufstellen.
-Für symmetrische Matrizen garantiert der Spektralsatz, dass das Verfahren
-immer funktioniert und die Transformationsmatrix sogar orthogonal gewählt
-werden kann. In Abschnitt 5.6 werden wir sehen, wie man diese Diagonalform
-konkret für Hauptspannungen, Hauptträgheitsmomente und Eigenfrequenzen einsetzt.
+Räumliche Drehungen werden durch orthogonale $3\times 3$-Matrizen mit
+Determinante $1$ beschrieben. Jede allgemeine Drehung lässt sich als Produkt
+von Grunddrehungen um die drei Koordinatenachsen darstellen. Die Reihenfolge
+der Multiplikation ist entscheidend, weil Matrizenmultiplikation nicht
+kommutativ ist.
+
+Im nächsten Abschnitt wenden wir uns einem der wichtigsten Konzepte der linearen
+Algebra zu: den Eigenwerten und Eigenvektoren. Sie beschreiben diejenigen
+Richtungen, die eine Matrixtransformation invariant lässt. In der
+Festigkeitslehre entsprechen sie den Hauptspannungsrichtungen, in der
+Schwingungsanalyse den Eigenfrequenzen einer Struktur.

@@ -1,155 +1,175 @@
-# Ähnliche Matrizen
+# 5.3 Drehmatrizen im R²
 
-In Abschnitt 5.2 haben wir gesehen, dass es für symmetrische Matrizen immer
-ein Koordinatensystem gibt, in dem der Tensor eine besonders einfache Form
-annimmt. Dieselbe physikalische Eigenschaft, etwa die Biegesteifigkeit eines
-Querschnitts, sieht im Koordinatensystem der Hauptträgheitsachsen viel
-übersichtlicher aus als im ursprünglichen. Mathematisch steckt dahinter der
-Begriff der ähnlichen Matrizen, den wir in diesem Abschnitt einführen.
+Orthogonale Matrizen mit Determinante $+1$ beschreiben Drehungen. Das klingt
+zunächst abstrakt, ist aber in der Ingenieurpraxis allgegenwärtig: In der
+Robotik muss die Position eines Greifers nach einer Drehbewegung berechnet
+werden, in der Messtechnik werden Koordinatensysteme von Sensoren auf das
+Maschinensystem transformiert, und in der Technischen Mechanik werden Spannungen
+aus einem schräg orientierten Schnitt in das globale Koordinatensystem
+zurückgerechnet. In diesem Abschnitt lernen wir die Drehmatrix für die Ebene
+kennen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die Definition **ähnlicher Matrizen**: Zwei Matrizen
-  $\mathbf{A}, \mathbf{C} \in \mathbb{R}^{n\times n}$ heißen ähnlich, wenn
-  es eine invertierbare Matrix $\mathbf{B}$ gibt, sodass
-  $\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}$.
-* [ ] Sie verstehen, dass ähnliche Matrizen dieselbe lineare Abbildung in
-  verschiedenen Koordinatensystemen beschreiben.
-* [ ] Sie wissen, dass ähnliche Matrizen dasselbe charakteristische Polynom
-  und damit dieselben Eigenwerte besitzen, und können das an einem Beispiel
-  nachrechnen.
+* [ ] Sie kennen die **Drehmatrix im $\mathbb{R}^2$** für eine Drehung um den
+  Winkel $\varphi$ gegen den Uhrzeigersinn:
+  \begin{equation*}
+  \mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
+  \sin\varphi & \cos\varphi \end{pmatrix}.
+  \end{equation*}
+* [ ] Sie können überprüfen, dass jede Drehmatrix eine orthogonale Matrix ist.
+* [ ] Sie wissen, dass $\det(\mathbf{D}) = 1$ gilt, und können dies geometrisch
+  begründen: Drehungen erhalten Längen, Winkel und Orientierung.
+* [ ] Sie können die Drehmatrix anwenden, um einen Vektor oder ein Bauteilprofil
+  um einen gegebenen Winkel zu drehen.
 ```
 
-## Zwei Koordinatensysteme für dasselbe L-Profil
+## Was soll eine Drehmatrix leisten?
 
-Wir greifen unser L-Profil aus Abschnitt 5.1 auf. Der Trägheitstensor im
-ursprünglichen Koordinatensystem lautet:
-
-\begin{equation*}
-\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
-\end{equation*}
-
-Die Eigenwerte sind $\lambda_1 = 6$ und $\lambda_2 = 1$, die normierten
-Eigenvektoren sind:
+Stellen wir uns den ebenen Roboterarm einer Fräsmaschine vor. Der Arm hat die
+Länge $r = 5~\text{cm}$ und zeigt zunächst in die positive $x$-Richtung. Die
+Spitze befindet sich also im Punkt
 
 \begin{equation*}
-\hat{v}_1 = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\quad \text{und} \quad
-\hat{v}_2 = \frac{1}{\sqrt{5}}\begin{pmatrix} 1 \\ -2 \end{pmatrix}.
+\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}~\text{cm}.
 \end{equation*}
 
-Diese beiden Vektoren zeigen in die Hauptträgheitsachsen des Profils. Wenn wir
-unser Koordinatensystem so drehen, dass die $x'$-Achse in Richtung $\hat{v}_1$
-und die $y'$-Achse in Richtung $\hat{v}_2$ zeigt, dann sollte der Tensor in
-diesem neuen System die einfache Form
+Die Steuerung dreht den Arm um den Winkel $\varphi = 45°$ gegen den
+Uhrzeigersinn. *Wo befindet sich die Spitze danach?* Geometrisch liegt die
+Antwort auf der Hand: auf einem Kreis mit Radius $5~\text{cm}$, im Winkel
+$45°$ zur $x$-Achse. In Koordinaten ausgedrückt:
 
 \begin{equation*}
-\mathbf{D} = \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} \cdot 10^4\,\text{mm}^4
+\vec{p}' = \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} =
+\begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{5}{\sqrt{2}} \end{pmatrix} \approx
+\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
 \end{equation*}
 
-annehmen. Die Nebendiagonaleinträge verschwinden, weil im System der
-Hauptträgheitsachsen keine gemischten Anteile auftreten. Aber wie hängen
-$\mathbf{I}$ und $\mathbf{D}$ mathematisch zusammen? Genau das beschreibt der
-Begriff der ähnlichen Matrizen.
+Die geometrische Überlegung funktioniert, solange wir wissen, in welchem Winkel
+der Ausgangsvektor zur $x$-Achse liegt. Für einen allgemeinen Startvektor
+benötigen wir eine systematischere Methode. Genau das liefert die Drehmatrix.
 
-## Was bedeutet es, dass zwei Matrizen ähnlich sind?
+## Woher kommt die Formel für die Drehmatrix?
 
-Wir schreiben die normierten Eigenvektoren als Spalten in eine Matrix:
-
-\begin{equation*}
-\mathbf{V} = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}.
-\end{equation*}
-
-Da die Spalten von $\mathbf{V}$ orthonormal sind, ist $\mathbf{V}$ eine
-orthogonale Matrix im Sinne von Abschnitt 4.1. Für orthogonale Matrizen gilt
-$\mathbf{V}^{-1} = \mathbf{V}^T$, was die Rechnung erheblich vereinfacht.
-Wir berechnen $\mathbf{V}^{-1}\mathbf{I}\mathbf{V}$:
+Liegt ein Vektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ vor, so liegt
+er in einem Winkel $\alpha$ zur $x$-Achse mit $x = r\cos\alpha$ und
+$y = r\sin\alpha$, wobei $r = \|\vec{v}\|$. Nach einer Drehung um $\varphi$
+gegen den Uhrzeigersinn zeigt er in den Winkel $\alpha + \varphi$:
 
 \begin{align*}
-\mathbf{V}^T\mathbf{I}\mathbf{V}
-&= \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}^T
-\begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix}
-\frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix} \\
-&= \frac{1}{5}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
-\begin{pmatrix} 12 & 1 \\ 6 & -2 \end{pmatrix} \\
-&= \frac{1}{5}\begin{pmatrix} 30 & 0 \\ 0 & 5 \end{pmatrix}
-= \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} = \mathbf{D}.
+x' &= r\cos(\alpha + \varphi) = r\cos\alpha\cos\varphi - r\sin\alpha\sin\varphi
+     = x\cos\varphi - y\sin\varphi, \\
+y' &= r\sin(\alpha + \varphi) = r\cos\alpha\sin\varphi + r\sin\alpha\cos\varphi
+     = x\sin\varphi + y\cos\varphi.
 \end{align*}
 
-Das Ergebnis ist tatsächlich die Diagonalmatrix mit den Eigenwerten auf der
-Hauptdiagonale. Die Transformation $\mathbf{V}^{-1}\mathbf{I}\mathbf{V}$
-beschreibt den Wechsel in das Koordinatensystem der Hauptträgheitsachsen.
-Wir haben also gezeigt, dass $\mathbf{I}$ und $\mathbf{D}$ durch die
-invertierbare Matrix $\mathbf{V}$ miteinander verbunden sind. Genau das
-nennen wir ähnliche Matrizen.
-
-```{admonition} Was sind ... ähnliche Matrizen?
-:class: note
-Zwei Matrizen $\mathbf{A}, \mathbf{C} \in \mathbb{R}^{n\times n}$ heißen
-**ähnlich**, wenn es eine invertierbare Matrix $\mathbf{B} \in \mathbb{R}^{n\times n}$
-gibt, sodass
+Diese beiden Gleichungen lassen sich elegant als Matrixprodukt schreiben:
 
 \begin{equation*}
-\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}.
+\begin{pmatrix} x' \\ y' \end{pmatrix} =
+\begin{pmatrix} \cos\varphi & -\sin\varphi \\ \sin\varphi & \cos\varphi \end{pmatrix}
+\begin{pmatrix} x \\ y \end{pmatrix}.
 \end{equation*}
 
-Die Transformation $\mathbf{A} \mapsto \mathbf{B}^{-1}\mathbf{A}\mathbf{B}$
-heißt **Ähnlichkeitstransformation** mit der Matrix $\mathbf{B}$.
-```
+Die Matrix auf der rechten Seite ist die gesuchte Drehmatrix.
 
-In unserem Beispiel sind $\mathbf{I}$ und $\mathbf{D}$ ähnlich, vermittelt
-durch die Transformationsmatrix $\mathbf{V}$. Die beiden Matrizen beschreiben
-dieselbe Eigenschaft des Profils, nämlich seine Biegesteifigkeit, nur in
-verschiedenen Koordinatensystemen.
-
-## Haben ähnliche Matrizen dieselben Eigenwerte?
-
-*Wenn $\mathbf{I}$ und $\mathbf{D}$ dieselbe physikalische Eigenschaft
-beschreiben, sollten sie auch dieselben Eigenwerte haben.* Das lässt sich
-allgemein zeigen: Ähnliche Matrizen haben stets dasselbe charakteristische
-Polynom und damit dieselben Eigenwerte. Die Begründung nutzt die
-Produktregel für Determinanten aus Kapitel 1 und die Eigenschaft
-$\det(\mathbf{B}^{-1}) = 1/\det(\mathbf{B})$, auf die wir hier nicht im
-Detail eingehen.
-
-Wir überprüfen die Aussage direkt an unserem Beispiel. Die charakteristischen
-Polynome von $\mathbf{I}$ und $\mathbf{D}$ sind:
-
-\begin{align*}
-p_{\mathbf{I}}(\lambda) &= \lambda^2 - 7\lambda + 6 = (\lambda - 6)(\lambda - 1), \\
-p_{\mathbf{D}}(\lambda) &= (6 - \lambda)(1 - \lambda) = (\lambda - 6)(\lambda - 1).
-\end{align*}
-
-Beide Polynome sind identisch, die Eigenwerte $\lambda_1 = 6$ und $\lambda_2 = 1$
-stimmen überein. Das Ergebnis ist physikalisch einleuchtend: Die
-Hauptträgheitsmomente hängen nicht davon ab, in welchem Koordinatensystem wir
-den Tensor aufschreiben. Sie sind eine Eigenschaft des Profils, nicht des
-Koordinatensystems.
-
-```{admonition} Ähnliche Matrizen haben dieselben Eigenwerte
+```{admonition} Was ist ... die Drehmatrix im $\mathbb{R}^2$?
 :class: note
-Sind $\mathbf{A}$ und $\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}$
-ähnliche Matrizen, dann haben $\mathbf{A}$ und $\mathbf{C}$ dasselbe
-charakteristische Polynom und damit dieselben Eigenwerte mit denselben
-algebraischen Vielfachheiten.
+Die **Drehmatrix** für eine Drehung um den Winkel $\varphi$ gegen den Uhrzeigersinn
+ist:
+
+\begin{equation*}
+\mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
+\sin\varphi & \cos\varphi \end{pmatrix}.
+\end{equation*}
+
+Für einen Vektor $\vec{v} \in \mathbb{R}^2$ liefert das Matrixprodukt
+$\vec{v}' = \mathbf{D}(\varphi)\cdot\vec{v}$ den um $\varphi$ gedrehten Vektor.
 ```
 
-```{dropdown} Video "Ähnlichkeit von Matrizen" von Mathe für Wiwis
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/K6R4o3YTwqY"
-title="Ähnlichkeit von Matrizen" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Wir wenden die Drehmatrix auf unser Roboterarm-Beispiel an. Mit $\varphi = 45°$
+und $\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}$ ergibt sich:
+
+\begin{equation*}
+\mathbf{D}(45°)\cdot\vec{p} =
+\begin{pmatrix} \cos 45° & -\sin 45° \\ \sin 45° & \cos 45° \end{pmatrix}
+\begin{pmatrix} 5 \\ 0 \end{pmatrix} =
+\begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} \approx
+\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
+\end{equation*}
+
+Das stimmt mit unserem geometrischen Ergebnis von oben überein.
+
+## Warum ist die Drehmatrix orthogonal?
+
+Wir überprüfen die Orthogonalitätsbedingung $\mathbf{D}^T\cdot\mathbf{D} = \mathbf{E}$.
+Die Transponierte ist:
+
+\begin{equation*}
+\mathbf{D}^T(\varphi) = \begin{pmatrix} \cos\varphi & \sin\varphi \\
+-\sin\varphi & \cos\varphi \end{pmatrix}.
+\end{equation*}
+
+Das Produkt ergibt:
+
+\begin{equation*}
+\mathbf{D}^T\cdot\mathbf{D} =
+\begin{pmatrix} \cos^2\varphi + \sin^2\varphi & \cos\varphi\sin\varphi - \sin\varphi\cos\varphi \\
+-\sin\varphi\cos\varphi + \cos\varphi\sin\varphi & \sin^2\varphi + \cos^2\varphi \end{pmatrix}
+= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \mathbf{E}.
+\end{equation*}
+
+Damit ist $\mathbf{D}^{-1} = \mathbf{D}^T = \mathbf{D}(-\varphi)$: Die Umkehrung
+einer Drehung um $\varphi$ ist eine Drehung um $-\varphi$. Das ist geometrisch
+einleuchtend.
+
+Die Determinante berechnen wir direkt:
+
+\begin{equation*}
+\det(\mathbf{D}(\varphi)) = \cos^2\varphi + \sin^2\varphi = 1.
+\end{equation*}
+
+Da $\det(\mathbf{D}) = 1 > 0$, ändert sich die Orientierung nicht: ein
+rechtshändiges Koordinatensystem bleibt rechtshändig. Wäre die Determinante
+$-1$, würde es sich um eine Spiegelung handeln.
+
+## Was passiert bei zwei hintereinander ausgeführten Drehungen?
+
+In der Kinematik eines Roboters werden häufig mehrere Gelenke nacheinander
+bewegt. Dreht der Arm zunächst um $\varphi_1$ und dann um $\varphi_2$, so
+entspricht das einer Gesamtdrehung um $\varphi_1 + \varphi_2$. Das Assoziativgesetz
+der Matrizenmultiplikation erlaubt es, dies kompakt zu schreiben:
+
+\begin{equation*}
+\mathbf{D}(\varphi_2)\cdot\mathbf{D}(\varphi_1) = \mathbf{D}(\varphi_1 + \varphi_2).
+\end{equation*}
+
+Diese Eigenschaft lässt sich mit dem Additionstheorem für den Kosinus und Sinus
+nachrechnen. Für unseren Roboterarm bedeutet das: Eine Drehung um $30°$ gefolgt
+von einer Drehung um $60°$ ergibt dasselbe wie eine einzige Drehung um $90°$.
+
+*Und was geschieht, wenn wir in drei Dimensionen drehen wollen? Dann reicht eine
+einzige Matrix nicht mehr aus, wie wir im nächsten Abschnitt sehen werden.
+
+```{dropdown} Video "Orthogonale Matrizen, Drehmatrix" von MathePeter
+<iframe width="1020" height="574" 
+src="https://www.youtube.com/embed/Enj_IYsPfc8?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
+title="Orthogonale Matrizen im R^2 | Drehmatrix, Spiegelmatrix (Komplettübersicht)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Ähnliche Matrizen beschreiben dieselbe lineare Abbildung in verschiedenen
-Koordinatensystemen. Sie entstehen durch eine Ähnlichkeitstransformation
-$\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}$ und teilen dasselbe
-charakteristische Polynom sowie dieselben Eigenwerte. Für den Maschinenbau
-bedeutet das: Die Hauptträgheitsmomente oder Hauptspannungen hängen nicht davon
-ab, in welchem Koordinatensystem wir den Tensor aufschreiben. Sie sind eine
-Eigenschaft des physikalischen Objekts, nicht des Koordinatensystems. In
-Abschnitt 5.4 werden wir sehen, wie man mit Hilfe der Ähnlichkeitstransformation
-ein besonders günstiges Koordinatensystem gezielt findet.
+Die Drehmatrix $\mathbf{D}(\varphi)$ ist eine orthogonale $2\times 2$-Matrix mit
+Determinante $1$. Sie dreht jeden Vektor um den Winkel $\varphi$ gegen den
+Uhrzeigersinn, ohne seine Länge zu verändern. Aufeinanderfolgende Drehungen
+werden durch einfaches Matrizenprodukt kombiniert.
+
+Im nächsten Abschnitt erweitern wir diese Idee auf den dreidimensionalen Raum.
+Dort lässt sich eine allgemeine Drehung als Produkt von drei Achsendrehungen
+darstellen, die durch die sogenannten Kardanwinkel beschrieben werden. Diese
+Darstellung ist in der Luft- und Raumfahrttechnik sowie in der Robotik fundamental.

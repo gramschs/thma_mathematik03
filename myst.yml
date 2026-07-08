@@ -36,75 +36,71 @@ project:
       - file: chapter03/chapter03_sec02.md
       - file: chapter03/chapter03_sec03.md
       - file: chapter03/chapter03_sec04.md
-    - title: Lineare Abbildungen
+    - title: 4. Lineare Abbildungen
       children:
-       - file: chapter03_old/chapter03_sec01.md
-       - file: chapter03_old/chapter03_sec02.md
-       - file: chapter03_old/chapter03_sec03.md
-       - file: chapter03_old/chapter03_sec04.md
-       - file: chapter03_old/chapter03_sec05.md
-       - file: chapter03_old/chapter03_sec06.md
-    - title: Orthogonale Matrizen und Eigenwerte
-      children: 
        - file: chapter04/chapter04_sec01.md
        - file: chapter04/chapter04_sec02.md
        - file: chapter04/chapter04_sec03.md
        - file: chapter04/chapter04_sec04.md
-       - file: chapter04/chapter04_sec05.md
-       - file: chapter04/chapter04_sec06.md
-       - file: chapter04/chapter04_sec07.md
-    - title: Diagonalisierung und Anwendungen
-      children:
+    - title: 5. Orthogonale Matrizen und Eigenwerte
+      children: 
        - file: chapter05/chapter05_sec01.md
        - file: chapter05/chapter05_sec02.md
        - file: chapter05/chapter05_sec03.md
        - file: chapter05/chapter05_sec04.md
        - file: chapter05/chapter05_sec05.md
-    - title: 6. Gewöhnliche Differentialgleichungen
+    - title: 6. Diagonalisierung und Anwendungen
       children:
        - file: chapter06/chapter06_sec01.md
        - file: chapter06/chapter06_sec02.md
        - file: chapter06/chapter06_sec03.md
-    - title: 7. Separation der Variablen
+       - file: chapter06/chapter06_sec04.md
+       - file: chapter06/chapter06_sec05.md
+    - title: 7. Gewöhnliche Differentialgleichungen
       children:
        - file: chapter07/chapter07_sec01.md
        - file: chapter07/chapter07_sec02.md
        - file: chapter07/chapter07_sec03.md
-    - title: 8. Lineare DGL 1. Ordnung mit konstanten Koeffizienten
+    - title: 8. Separation der Variablen
       children:
        - file: chapter08/chapter08_sec01.md
        - file: chapter08/chapter08_sec02.md
        - file: chapter08/chapter08_sec03.md
-       - file: chapter08/chapter08_sec04.md
-    - title: 9. Variation der Konstanten
+    - title: 9. Lineare DGL 1. Ordnung mit konstanten Koeffizienten
       children:
        - file: chapter09/chapter09_sec01.md
        - file: chapter09/chapter09_sec02.md
        - file: chapter09/chapter09_sec03.md
-    - title: 10. Lineare DGL 2. Ordnung - homogene Lösung
+       - file: chapter09/chapter09_sec04.md
+    - title: 10. Variation der Konstanten
       children:
        - file: chapter10/chapter10_sec01.md
        - file: chapter10/chapter10_sec02.md
        - file: chapter10/chapter10_sec03.md
-       - file: chapter10/chapter10_sec04.md
-    - title: 11.  Lineare DGL 2. Ordnung - Schwingungen und Resonanz
+    - title: 11. Lineare DGL 2. Ordnung - homogene Lösung
       children:
        - file: chapter11/chapter11_sec01.md
        - file: chapter11/chapter11_sec02.md
        - file: chapter11/chapter11_sec03.md
        - file: chapter11/chapter11_sec04.md
-    - title: 12. Fourierreihen I
+    - title: 12. Lineare DGL 2. Ordnung - Schwingungen und Resonanz
       children:
        - file: chapter12/chapter12_sec01.md
        - file: chapter12/chapter12_sec02.md
        - file: chapter12/chapter12_sec03.md
        - file: chapter12/chapter12_sec04.md
-    - title: 13. Fourierreihen II
+    - title: 13. Fourierreihen I
       children:
        - file: chapter13/chapter13_sec01.md
        - file: chapter13/chapter13_sec02.md
        - file: chapter13/chapter13_sec03.md
        - file: chapter13/chapter13_sec04.md
+    - title: 14. Fourierreihen II
+      children:
+       - file: chapter14/chapter14_sec01.md
+       - file: chapter14/chapter14_sec02.md
+       - file: chapter14/chapter14_sec03.md
+       - file: chapter14/chapter14_sec04.md
     
 site:
   template: book-theme

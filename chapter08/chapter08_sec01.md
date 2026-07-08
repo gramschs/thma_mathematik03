@@ -3,212 +3,239 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 8.1 Lineare Differentialgleichungen: Struktur erkennen und benennen
+# 8.1 Trennung der Variablen
 
-In Kapitel 7 haben wir zwei Lösungsverfahren für ODEs 1. Ordnung kennengelernt:
-die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
-Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
-Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
-bisher nicht explizit benannt haben: **Linearität**. Die
-Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
-Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
-Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
-weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
-Klassifikation ist die Voraussetzung für die Lösungstheorie, die in den
-folgenden Abschnitten entwickelt wird.
+In Abschnitt 6.3 haben wir das Euler-Verfahren kennengelernt: einen Algorithmus, der die
+Lösungskurve einer DGL Schritt für Schritt durch Geradenstücke annähert. Dabei blieb eine
+Frage bewusst offen. Woher stammt eigentlich die exakte Lösung
+$v(t) = v_\infty(1 - e^{-kt})$, gegen die wir den Euler-Fehler gemessen haben, und wie
+leitet man sie her? Die Antwort ist die **Methode der Trennung der Variablen**, das erste
+analytische Lösungsverfahren dieses Kapitels. Es greift immer dann, wenn sich die rechte
+Seite einer DGL als Produkt zweier Funktionen schreiben lässt: eine, die nur von der
+unabhängigen Variablen abhängt, und eine, die nur von der gesuchten Funktion abhängt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, wie eine **lineare gewöhnliche Differentialgleichung** definiert ist,
-  und können sie von einer nichtlinearen DGL unterscheiden.
-* [ ] Sie können eine lineare DGL als **homogen** oder **inhomogen** klassifizieren und
-  wissen, dass die Störfunktion $g(x)$ den Unterschied ausmacht.
-* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung** $y(x) = 0$
-  besitzt.
-* [ ] Sie können eine lineare DGL **mit konstanten Koeffizienten** von einer linearen DGL
-  mit variablen Koeffizienten unterscheiden.
+* [ ] Sie erkennen eine **separierbare** (trennbare) ODE 1. Ordnung der Form
+  $y' = f(x) \cdot g(y)$.
+* [ ] Sie beherrschen das Verfahren der **Separation der Variablen** und können die vier
+  Lösungsschritte (Trennen, Integrieren, Stammfunktion einsetzen, nach $y$ auflösen) auf
+  eine gegebene DGL anwenden.
+* [ ] Sie können die **allgemeine Lösung** einer separierbaren ODE angeben.
+* [ ] Sie beachten den Sonderfall $g(y) = 0$ und können die zugehörige **konstante
+  Lösung** bestimmen.
 ```
 
-## Was bedeutet es, dass eine ODE "linear" ist?
+## Wann lässt sich eine DGL "trennen"?
 
-Wir betrachten noch einmal die Fallschirmspringer-Gleichung in der Form, die wir in
-Abschnitt 6.1 aufgestellt haben:
+Unsere Fallschirmspringer-Gleichung lautet $\dot{v} = g - kv$. Die rechte Seite enthält
+nur $v$, nicht die Zeit $t$ explizit. *Lässt sich das als Produkt zweier unabhängiger
+Faktoren schreiben?* Ja: Wir schreiben $g - kv = 1 \cdot (g - kv)$, wobei der erste
+Faktor ausschließlich von $t$ abhängt (er ist die Konstante $1$) und der zweite
+ausschließlich von $v$. Diese Produktstruktur ist das entscheidende Merkmal einer
+**separierbaren** Differentialgleichung.
 
-\begin{equation*}
-\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
-\end{equation*}
+Ein weiteres Beispiel verdeutlicht das Muster. Ein erwärmtes Maschinenbauteil
+kühlt nach dem Newtonschen Abkühlgesetz gemäß $\dot{T} = -\alpha(T - T_\infty)$
+ab, wobei $T_\infty$ die Umgebungstemperatur und $\alpha > 0$ ein
+materialabhängiger Koeffizient ist. Die rechte Seite hat die Form $1 \cdot
+(-\alpha)(T - T_\infty)$: ein Produkt aus einer Funktion von $t$ (der Konstanten
+$-\alpha$) und einer Funktion von $T$. Dieselbe Struktur, dasselbe Verfahren. In
+der Wärme- und Stoffübertragung ist dieser Gleichungstyp allgegenwärtig.
 
-Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
-Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
-nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
-meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
-treten ausschließlich linear auf.
+Nicht separierbar wäre dagegen eine DGL wie $\dot{v} = g - k \cdot t \cdot v^2$: Die
+rechte Seite enthält $t$ und $v$ so verflochten, dass sie sich nicht als sauberes
+Produkt $f(t) \cdot g(v)$ schreiben lässt.
 
-*Was würde die Linearität zerstören?* Bereits eine kleine Modifikation des
-Modells reicht. Wäre der Luftwiderstand quadratisch in der Geschwindigkeit, also
-$F_L = b\,v^2$ statt $F_L = b\,v$, so würde die ODE
-
-\begin{equation*}
-\dot{v} + k\,v^2 = 9.81~\text{m\,s}^{-2}
-\end{equation*}
-
-lauten. Hier erscheint $v^2$. Das ist kein linearer Term, und die Gleichung ist
-daher nichtlinear. Ebenso nichtlinear wären $\dot{v} = \sin(v)$ oder $\dot{v}
-\cdot v = 1$: im ersten Fall steckt $v$ in einer nichtlinearen Funktion, im
-zweiten Beispiel werden $\dot{v}$ und $v$ miteinander multipliziert.
-
-Die allgemeine Form einer linearen ODE $n$-ter Ordnung lautet:
-
-\begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x).
-\end{equation*}
-
-Jede Ableitung $y^{(k)}$ tritt genau einmal und zur ersten Potenz auf,
-multipliziert mit einem Koeffizient $a_k(x)$, der von $x$ abhängen darf, aber
-nicht von $y$. Die rechte Seite $g(x)$ hängt ebenfalls nur von $x$ ab.
-
-```{admonition} Was ist ... eine lineare ODE?
+```{admonition} Was ist ... eine separierbare Differentialgleichung?
 :class: note
-Eine **lineare ODE** $n$-ter Ordnung hat die Form
+Eine gewöhnliche Differentialgleichung 1. Ordnung
 
 \begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x),
+y' = f(x) \cdot g(y)
 \end{equation*}
 
-wobei die Koeffizientenfunktionen $a_0(x), \ldots, a_{n-1}(x)$ und die rechte Seite
-$g(x)$ nur von $x$ abhängen. Die gesuchte Funktion $y$ und alle ihre Ableitungen
-erscheinen ausschließlich zur ersten Potenz und werden nicht miteinander multipliziert.
-
-Eine ODE, die diese Form nicht hat, heißt **nichtlinear**.
+heißt **separierbar** (oder **trennbar**), wenn sich die rechte Seite als Produkt einer
+Funktion $f$, die nur von der unabhängigen Variablen $x$ abhängt, und einer Funktion $g$,
+die nur von der gesuchten Funktion $y$ abhängt, schreiben lässt.
 ```
 
-Die Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ ist
-eine lineare ODE 1. Ordnung mit $n = 1$, $a_0(t) = k$ und $g(t) =
-9.81~\text{m\,s}^{-2}$. Die Torricellische Ausflussgleichung $\dot{h} =
--k\sqrt{h}$ aus Abschnitt 7.3 ist hingegen nichtlinear: $\sqrt{h} = h^{1/2}$ ist
-kein linearer Term in $h$.
+Für unsere Fallschirmspringer-DGL in der allgemeinen Notation $y' = f(x) \cdot g(y)$
+lautet die Zuordnung: $x \equiv t$, $y \equiv v$, $f(t) = 1$ und $g(v) = g - kv$. Die
+Gleichung ist damit separierbar, und wir können das Verfahren anwenden.
 
-## Homogen oder inhomogen?
+## Wie funktioniert das Verfahren? Die vier Lösungsschritte
 
-Innerhalb der linearen ODEs gibt es eine weitere wichtige Unterscheidung. Wir
-schauen auf die rechte Seite der allgemeinen Form, die Funktion $g(x)$.
+Das Verfahren arbeitet mit der Leibniz-Notation $\frac{dv}{dt}$, die wir in Abschnitt 6.1
+eingeführt haben. Der entscheidende Kunstgriff ist, $dv$ und $dt$ wie algebraische Größen
+zu behandeln und alles, was $v$ enthält, auf eine Seite zu sortieren und alles, was $t$
+enthält, auf die andere.
 
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist die rechte Seite die konstante Funktion $g(t) = 9.81~\text{m\,s}^{-2}$, die
-nirgends gleich null ist. Das physikalische Bild dahinter: Die Schwerkraft
-treibt das System ständig an, auch wenn die Geschwindigkeit null ist. Eine
-solche ODE heißt **inhomogen**.
+**Schritt 1: Variablen trennen.** Wir schreiben $\frac{dv}{dt} = g - kv$ um und dividieren
+durch $g - kv$ (was voraussetzt, dass $g - kv \neq 0$; diesen Sonderfall untersuchen wir
+am Ende des Abschnitts):
 
-Streichen wir die Antriebskraft, ergibt sich die vereinfachte Gleichung $\dot{v}+
-k\,v = 0$. Physikalisch beschreibt das einen Körper, der ohne äußere Kraft nur
-durch Reibung gebremst wird. Hier ist $g(t) = 0$ für alle $t$. Eine solche ODE
-heißt **homogen**.
+\begin{equation*}
+\frac{dv}{g - kv} = dt.
+\end{equation*}
 
-```{admonition} Was ist ... eine homogene und eine inhomogene lineare ODE?
+Auf der linken Seite steht nun nur noch $v$, auf der rechten nur noch $t$. Die Variablen
+sind getrennt.
+
+**Schritt 2: Auf beiden Seiten integrieren.** Wir integrieren die linke Seite nach $v$
+und die rechte nach $t$:
+
+\begin{equation*}
+\int \frac{dv}{g - kv} = \int dt.
+\end{equation*}
+
+**Schritt 3: Stammfunktionen einsetzen.** Das linke Integral ist vom Typ
+$\int \frac{du}{a + bu}$. Mit der Substitution $w = g - kv$, also $dw = -k\,dv$, folgt:
+
+\begin{equation*}
+\int \frac{dv}{g - kv} = -\frac{1}{k} \ln|g - kv|.
+\end{equation*}
+
+Das rechte Integral ergibt $t$. Mit einer gemeinsamen Integrationskonstante $C_1 \in \mathbb{R}$:
+
+\begin{equation*}
+-\frac{1}{k}\ln|g - kv| = t + C_1.
+\end{equation*}
+
+**Schritt 4: Nach $v$ auflösen.** Wir multiplizieren mit $-k$, nehmen die
+Exponentialfunktion und fassen alle Konstanten in einer neuen reellen Konstante $C$
+zusammen:
+
+\begin{align*}
+\ln|g - kv| &= -k(t + C_1), \\
+g - kv      &= e^{-kC_1} \cdot e^{-kt} =: C \cdot e^{-kt}.
+\end{align*}
+
+Auflösen nach $v$ liefert die allgemeine Lösung:
+
+\begin{equation*}
+v(t) = \frac{g}{k} + C'\,e^{-kt}, \quad C' \in \mathbb{R},
+\end{equation*}
+
+wobei $C' = -C/k$ wieder eine freie reelle Konstante ist. Zur Vereinfachung der
+Schreibweise nennen wir sie von nun an wieder $C$. Genau diese Lösungsschar haben wir in
+Abschnitt 6.1 durch Einsetzen verifiziert. Jetzt wissen wir, wie sie zustande kommt.
+
+```{admonition} Was ist ... die Methode der Separation der Variablen?
 :class: note
-Eine lineare ODE
+Gegeben sei die separierbare DGL $y' = f(x) \cdot g(y)$ mit $g(y) \neq 0$.
+Das Verfahren der **Separation der Variablen** besteht aus vier Schritten:
 
-\begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_0(x)\,y = g(x)
-\end{equation*}
+1. **Trennen:** $\dfrac{dy}{g(y)} = f(x)\,dx$.
+2. **Integrieren:** $\displaystyle\int \frac{dy}{g(y)} = \int f(x)\,dx + C$.
+3. **Stammfunktionen einsetzen:** $G(y) = F(x) + C$.
+4. **Nach $y$ auflösen** (sofern möglich).
 
-heißt **homogen**, wenn $g(x) = 0$ für alle $x$ im Definitionsbereich gilt, und
-**inhomogen**, wenn $g(x)$ nicht identisch null ist. Die Funktion $g(x)$ auf der
-rechten Seite heißt **Störfunktion**.
+Die entstehende Familie von Lösungen ist die **allgemeine Lösung** der DGL.
 ```
 
-Die homogene Form spielt in der Lösungstheorie eine zentrale Rolle. *Warum?*
-Weil jede homogene lineare ODE eine ausgezeichnete Lösung besitzt, die wir
-sofort hinschreiben können: die **triviale Lösung** $y(x) = 0$. Einsetzen
-bestätigt das sofort, denn alle Ableitungen von $y = 0$ sind ebenfalls null:
+## Wie legt eine Anfangsbedingung die Lösung fest?
+
+Die allgemeine Lösung $v(t) = \frac{g}{k} + Ce^{-kt}$ enthält die freie Konstante $C$
+und beschreibt damit unendlich viele mögliche Bewegungen, genau die Kurvenschar aus
+Abschnitt 6.1. Erst eine Anfangsbedingung wählt eine einzige Kurve heraus. Der
+Fallschirmspringer startet aus der Ruhe: $v(0) = 0$. Einsetzen ergibt:
 
 \begin{equation*}
-0^{(n)} + a_{n-1}(x)\cdot 0 + \cdots + a_0(x)\cdot 0 = 0 = g(x). \quad \checkmark
+v(0) = \frac{g}{k} + C \cdot e^{0} = \frac{g}{k} + C = 0
+\quad \Rightarrow \quad
+C = -\frac{g}{k} = -v_\infty.
 \end{equation*}
 
-Diese triviale Lösung ist mathematisch wenig interessant, aber sie zeigt eine
-tiefe Eigenschaft linearer ODEs: Das System „ruht" immer bei $y = 0$. In der
-Schwingungslehre, die in der Technischen Mechanik vertieft wird, entspricht das
-dem ungestörten Gleichgewichtszustand. Die Störfunktion $g(x)$ beschreibt dann
-eine äußere Anregung, die das System aus diesem Gleichgewicht herausreißt.
-
-## Konstante oder variable Koeffizienten?
-
-Eine weitere Unterscheidung betrifft die Koeffizientenfunktionen $a_0(x), \ldots,
-a_{n-1}(x)$. Hängen sie wirklich von $x$ ab, oder sind sie Konstanten?
-
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist der Koeffizient vor $v$ die Konstante $k = 0.2~\text{s}^{-1}$. Sie hängt
-nicht von $t$ ab. Das ist eine lineare ODE **mit konstanten Koeffizienten**.
-
-Betrachten wir zum Vergleich die Gleichung
+Die spezielle Lösung des Anfangswertproblems lautet damit:
 
 \begin{equation*}
-y' + \frac{1}{x}\,y = x^2.
+v(t) = \frac{g}{k}\bigl(1 - e^{-kt}\bigr) = v_\infty\bigl(1 - e^{-kt}\bigr).
 \end{equation*}
 
-Hier ist der Koeffizient vor $y$ die Funktion $\frac{1}{x}$, die von $x$
-abhängt. Das ist eine lineare ODE **mit variablen Koeffizienten**. Solche
-Gleichungen treten beispielsweise in der Wärmeübertragung auf, wenn der
-Wärmeübergangskoeffizient entlang einer Kühlrippe mit dem Ort variiert, oder in
-der Strukturmechanik bei Balken mit veränderlichem Querschnitt.
+Mit $g = 9.81~\text{m\,s}^{-2}$, $k = 0.2~\text{s}^{-1}$ und damit
+$v_\infty = g/k = 49.05~\text{m\,s}^{-1}$:
 
-```{admonition} Was ist ... eine lineare ODE mit konstanten Koeffizienten?
-:class: note
-Eine lineare ODE heißt **lineare ODE mit konstanten Koeffizienten**, wenn alle
-Koeffizientenfunktionen $a_0, \ldots, a_{n-1}$ konstant sind, also nicht von $x$
-abhängen. Andernfalls spricht man von einer linearen ODE mit **variablen
-Koeffizienten**.
+\begin{equation*}
+v(t) = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+\end{equation*}
+
+**Verifikation.** Wir prüfen, ob diese Funktion die DGL $\dot{v} = g - kv$ und die
+Anfangsbedingung erfüllt.
+
+Anfangsbedingung: $v(0) = 49.05\,(1 - 1) = 0~\text{m\,s}^{-1}$. Korrekt.
+
+Ableitung der Lösung:
+
+\begin{equation*}
+\dot{v}(t) = 49.05 \cdot 0.2\,e^{-0.2\,t} = 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
+\end{equation*}
+
+Rechte Seite der DGL:
+
+\begin{align*}
+g - k\,v(t) &= 9.81 - 0.2 \cdot 49.05\,(1 - e^{-0.2\,t}) \\
+             &= 9.81 - 9.81 + 9.81\,e^{-0.2\,t} \\
+             &= 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
+\end{align*}
+
+Linke und rechte Seite stimmen überein. Das Versprechen aus Abschnitt 6.3 ist damit
+eingelöst: Die Trennung der Variablen liefert exakt die Funktion, die das Euler-Verfahren
+nur näherungsweise berechnen konnte.
+
+## Was passiert, wenn $g(y) = 0$ ist?
+
+Im ersten Schritt des Verfahrens haben wir durch $g(v) = g - kv$ dividiert. Das ist nur
+erlaubt, solange $g - kv \neq 0$ gilt. *Was tun wir, wenn der Nenner verschwindet?* Ist
+$g(v) = 0$, so ist $\dot{v} = g(v) = 0$: Die Ableitung verschwindet identisch, und wir
+erhalten unmittelbar eine **konstante Lösung**.
+
+Für unsere DGL: $g(v) = g - kv = 0$ ergibt $v = g/k = v_\infty = 49.05~\text{m\,s}^{-1}$.
+Wir prüfen durch Einsetzen:
+
+\begin{equation*}
+\dot{v} = 0 \stackrel{?}{=} g - k \cdot v_\infty = 9.81 - 0.2 \cdot 49.05 = 9.81 - 9.81 = 0.
+\quad \checkmark
+\end{equation*}
+
+Die konstante Lösung $v(t) = v_\infty$ ist die Grenzgeschwindigkeit, die wir schon im
+Richtungsfeld von Abschnitt 6.2 als Nullisokline identifiziert haben. Bei unserer linearen
+DGL ist sie im Übrigen bereits in der allgemeinen Lösung enthalten, nämlich für den
+Spezialfall $C = 0$. Das muss nicht immer so sein: Bei nichtlinearen DGL kann die
+konstante Lösung außerhalb der allgemeinen Lösungsschar liegen und ist dann separat
+anzugeben.
+
+```{dropdown} Video "Trennung der Variable" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/IPbG7lnzccE?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
 ```
 
-Für die Lösungstheorie ist diese Unterscheidung entscheidend: Lineare ODEs mit
-konstanten Koeffizienten lassen sich vollständig und systematisch lösen, wie wir
-in den Abschnitten 8.2 und 8.3 sehen werden. Bei variablen Koeffizienten ist das
-im Allgemeinen schwieriger und gelingt nur für spezielle Typen. Kapitel 8
-konzentriert sich daher auf den Fall konstanter Koeffizienten.
-
-## Klassifikation auf einen Blick
-
-Die drei Unterscheidungen lassen sich an konkreten Beispielen direkt ablesen:
-
-| ODE | Linear? | Homogen? | Koeffizienten |
-| --- | --- | --- | --- |
-| $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ | ja | nein | konstant |
-| $\dot{v} + k\,v = 0$ | ja | ja | konstant |
-| $y' + \tfrac{1}{x}\,y = x^2$ | ja | nein | variabel |
-| $\dot{h} + k\sqrt{h} = 0$ | nein | — | — |
-| $y' = y^2$ | nein | — | — |
-
-Bei nichtlinearen ODEs entfällt die Unterscheidung in homogen und inhomogen: Sie
-ist nur für lineare ODEs definiert.
-
-```{dropdown} Video "Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung - Definition
-und Vorbetrachtung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```{dropdown} Video "Trennung der Variablen" von Mathematrick
+<iframe width="927" height="521" src="https://www.youtube.com/embed/Sm0Go9IioJ4"
+title="Differentialgleichung lösen - DGL 1. Ordnung, Anfangswertproblem, Trennung der Variablen" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
 ```
 
-```{dropdown} Video "Lineare Differentialgleichung (DGL) 1. Ordnung" von MathePeter
-<iframe width="927" height="521" src="https://www.youtube.com/embed/qwJPZHmNcIs"
-title="Lineare Differentialgleichung (DGL) 1. Ordnung | Einfach erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```{dropdown} Video "Separierbare Differentialgleichungen" von MathePeter
+<iframe width="927" height="521" src="https://www.youtube.com/embed/Oa7a6rP8Zd4"
+title="Separierbare Differentialgleichungen | Trennung der Veränderlichen (3-Schritte-Methode)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Eine lineare ODE zeichnet sich dadurch aus, dass die gesuchte Funktion und alle
-ihre Ableitungen ausschließlich zur ersten Potenz auftreten. Innerhalb dieser
-Klasse unterscheiden wir nach der Störfunktion $g(x)$: Bei $g(x) = 0$ ist die
-ODE homogen und besitzt stets die triviale Lösung $y = 0$; bei $g(x) \not\equiv
-0$ ist sie inhomogen. Eine weitere Unterscheidung betrifft die
-Koeffizientenfunktionen: Konstante Koeffizienten ermöglichen eine vollständige
-Lösungstheorie, während variable Koeffizienten den Lösungsaufwand erheblich
-steigern.
+Die Separation der Variablen überführt eine separierbare DGL $y' = f(x) \cdot g(y)$
+durch vier Schritte (Trennen, Integrieren, Stammfunktion einsetzen, auflösen) in ihre
+allgemeine Lösung. Am Fallschirmspringer-Beispiel haben wir damit die Funktion
+$v(t) = v_\infty(1 - e^{-kt})$ vollständig hergeleitet und durch Einsetzen verifiziert.
+Der Sonderfall $g(y) = 0$ liefert konstante Lösungen, die stets gesondert zu prüfen sind.
 
-In Abschnitt 8.2 entwickeln wir das Lösungsverfahren für lineare ODEs 1. Ordnung
-mit konstanten Koeffizienten. Das Schlüsselwerkzeug ist die Variation der
-Konstanten, eine Methode, die die homogene Lösung als Ausgangspunkt nimmt und
-daraus die vollständige Lösung der inhomogenen Gleichung konstruiert.
+In Abschnitt 7.2 stoßen wir auf DGL der Form $y' = f(ax + by + c)$, die sich auf den
+ersten Blick nicht trennen lassen. Eine geeignete Substitution verwandelt sie in eine
+separierbare DGL und erschließt damit einen deutlich breiteren Bereich von
+Gleichungstypen. Diese Substitutionstechnik ist der erste Schritt in Richtung der
+allgemeinen Lösungstheorie, die Sie in der Vorlesung Technische Mechanik für die
+Analyse von Schwingungssystemen mit nichtlinearen Rückstellkräften benötigen werden.

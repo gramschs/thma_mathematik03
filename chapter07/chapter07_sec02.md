@@ -3,210 +3,159 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 7.2 Substitution: wenn die Trennung scheitert
+# 7.2 Richtungsfelder: Lösungskurven sehen, bevor man rechnet
 
-In Abschnitt 7.1 haben wir gelernt, ODEs der Form $y' = f(x) \cdot g(y)$ durch Trennung
-der Variablen exakt zu lösen. Das Verfahren setzt jedoch voraus, dass sich die rechte Seite
-als Produkt zweier voneinander unabhängiger Faktoren schreiben lässt. Viele ODEs, die in
-der technischen Praxis auftreten, erfüllen diese Bedingung nicht: Der Ausdruck auf der
-rechten Seite hängt von $x$ und $y$ so verflochten ab, dass eine direkte Trennung nicht
-möglich ist. Ein einfaches Beispiel ist die ODE $y' = (x + y)^2 - 1$. Hier erscheinen
-$x$ und $y$ gemeinsam im Quadrat, und keine algebraische Umformung führt auf ein Produkt
-$f(x) \cdot g(y)$. Wenn aber der Ausdruck, von dem die rechte Seite abhängt, eine lineare
-Kombination von $x$ und $y$ ist, gibt es einen eleganten Ausweg: die **Substitution**.
+In Abschnitt 6.1 haben wir die spezielle Lösung $v(t) = v_\infty(1 - e^{-kt})$
+durch Einsetzen und Verifizieren kennengelernt, aber noch nicht hergeleitet.
+Bevor wir in Abschnitt 6.4 das erste systematische Lösungsverfahren entwickeln,
+machen wir einen Schritt zurück und fragen: Was lässt sich über die Lösungen
+einer ODE sagen, ohne sie überhaupt zu berechnen? Die Antwort steckt bereits in
+der ODE selbst, denn $\dot{v} = g - kv$ schreibt in jedem Punkt des
+$(t, v)$-Koordinatensystems eine Steigung vor. Aus diesen Steigungen lässt sich
+ein Bild aufbauen, das den qualitativen Verlauf aller Lösungskurven auf einmal
+zeigt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie erkennen eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$ und wissen,
-  dass eine direkte Separation im Allgemeinen nicht möglich ist.
-* [ ] Sie können die **Substitution** $u = ax + by + c$ durchführen, $y'$ durch $u'$
-  ausdrücken und die ODE in eine separierbare ODE in $u$ und $u'$ umformen.
-* [ ] Sie können die umgeformte ODE durch Separation der Variablen lösen und anschließend
-  durch **Resubstitution** $u = ax + by + c$ die Lösung in den ursprünglichen Variablen
-  angeben.
-* [ ] Sie beachten den Sonderfall $a + b \cdot f(u) = 0$ und können die zugehörige Lösung
-  gesondert bestimmen.
+* [ ] Sie wissen, dass eine ODE 1. Ordnung in expliziter Form $\dot{v} = F(t, v)$
+  in jedem Punkt $(t, v)$ die **Steigung der Lösungskurve** durch diesen
+  Punkt vorschreibt.
+* [ ] Sie können zu einer ODE 1. Ordnung ein **Richtungsfeld** skizzieren,
+  indem Sie an ausgewählten Punkten Linienelemente mit der jeweiligen Steigung
+  $F(t, v)$ einzeichnen.
+* [ ] Sie kennen den Begriff der **Isoklinen** und können die Nullisokline
+  einer ODE bestimmen und physikalisch interpretieren.
+* [ ] Sie können zu einem gegebenen Startpunkt eine **Lösungskurve** in ein
+  Richtungsfeld einzeichnen, indem Sie den Linienelementen folgen.
 ```
 
-## Warum scheitert die direkte Trennung?
+## Was schreibt eine ODE in jedem Punkt vor?
 
-Wir betrachten die ODE $y' = (x + y)^2 - 1$. Um zu prüfen, ob sie separierbar ist,
-versuchen wir, die rechte Seite als Produkt $f(x) \cdot g(y)$ zu schreiben. Das Ausmultiplizieren ergibt:
+Unsere ODE lautet $\dot{v} = g - kv$. Die rechte Seite hängt nur von $v$ ab,
+nicht von $t$. Das bedeutet: Überall auf derselben waagerechten Linie
+$v = \text{const}$ ist die vorgeschriebene Steigung gleich. Wir berechnen die
+Steigung an einigen konkreten Geschwindigkeitswerten:
 
-\begin{equation*}
-(x + y)^2 - 1 = x^2 + 2xy + y^2 - 1.
-\end{equation*}
+| Geschwindigkeit $v$ | Steigung $\dot{v} = g - kv$ | Interpretation |
+| --- | --- | --- |
+| $0~\text{m\,s}^{-1}$ | $9.81~\text{m\,s}^{-2}$ | Starke Beschleunigung aus der Ruhe |
+| $30~\text{m\,s}^{-1}$ | $3.81~\text{m\,s}^{-2}$ | Deutlich schwächere Beschleunigung |
+| $49.05~\text{m\,s}^{-1}$ | $0~\text{m\,s}^{-2}$ | Keine Beschleunigung: Grenzgeschwindigkeit |
+| $65~\text{m\,s}^{-1}$ | $-3.19~\text{m\,s}^{-2}$ | Verzögerung: Luftwiderstand überwiegt |
 
-Hier treten $x^2$, $y^2$ und das gemischte Produkt $2xy$ auf. Es gibt keine Faktorisierung
-in einen reinen $x$-Faktor und einen reinen $y$-Faktor. Die direkte Separation schlägt
-fehl.
+An jedem dieser Punkte zeichnen wir ein kurzes Linienelement mit der
+entsprechenden Steigung ein. Die Gesamtheit aller solcher Linienelemente über
+ein Gitter von Punkten heißt **Richtungsfeld** der ODE.
 
-Was wir aber sehen: Die rechte Seite ist eine Funktion von $x + y$ allein, also von einer
-linearen Kombination beider Variablen. *Und wenn wir diese Kombination als neue Variable
-einführen?* Dann beschreibt die ODE in der neuen Variablen vielleicht etwas viel
-Einfacheres.
-
-## Wie verwandelt die Substitution die ODE?
-
-Wir benennen die Kombination $x + y$ als neue unbekannte Funktion $u(x)$:
-
-\begin{equation*}
-u = x + y \quad \Leftrightarrow \quad y = u - x.
-\end{equation*}
-
-Leiten wir beide Seiten nach $x$ ab, ergibt sich für die linke Seite $u'$ und für die
-rechte Seite $y' + 1$, also:
-
-\begin{equation*}
-u' = 1 + y' \quad \Leftrightarrow \quad y' = u' - 1.
-\end{equation*}
-
-Wir setzen in die ursprüngliche ODE ein. Die linke Seite $y'$ wird zu $u' - 1$, die rechte
-Seite $(x + y)^2 - 1$ wird zu $u^2 - 1$:
-
-\begin{equation*}
-u' - 1 = u^2 - 1 \quad \Rightarrow \quad u' = u^2.
-\end{equation*}
-
-Das ist eine separierbare ODE in $u$ und $x$, die wir mit dem Verfahren aus Abschnitt 7.1
-lösen können. Die Substitution hat ihre Schuldigkeit getan.
-
-```{admonition} Was ist ... die Substitutionsmethode für $y' = f(ax + by + c)$?
+```{admonition} Was ist ... ein Richtungsfeld?
 :class: note
-Gegeben sei eine ODE der Form
+Das **Richtungsfeld** einer ODE 1. Ordnung in expliziter Form $\dot{y} = F(t, y)$
+ist die Gesamtheit aller Linienelemente im $(t, y)$-Koordinatensystem. Am
+Punkt $(t_0, y_0)$ hat das Linienelement die Steigung $F(t_0, y_0)$.
+
+Eine **Isokline** zur Steigung $c$ ist die Menge aller Punkte, an denen die
+vorgeschriebene Steigung gleich $c$ ist:
 
 \begin{equation*}
-y' = f(ax + by + c)
+F(t, y) = c.
 \end{equation*}
 
-mit Konstanten $a, b, c \in \mathbb{R}$ und $b \neq 0$. Die **Substitution**
-$u = ax + by + c$ führt auf
-
-\begin{equation*}
-u' = a + b \cdot y' = a + b \cdot f(u).
-\end{equation*}
-
-Diese ODE in $u$ und $x$ ist separierbar (sofern $a + b \cdot f(u) \neq 0$) und kann
-durch Trennung der Variablen gelöst werden. Nach der Lösung liefert die **Resubstitution**
-$u = ax + by + c$ die Lösung in den ursprünglichen Variablen $x$ und $y$.
+Die Isokline zur Steigung $c = 0$ heißt **Nullisokline**.
 ```
 
-Für unser Beispiel: $a = 1$, $b = 1$, $c = 0$ und $f(u) = u^2 - 1$. Die substituierte ODE
-lautet $u' = 1 + 1 \cdot (u^2 - 1) = u^2$, wie wir gerade berechnet haben.
+Für unsere ODE $\dot{v} = g - kv$ ist die Nullisokline die Lösung von
+$g - kv = 0$, also die waagerechte Gerade $v = g/k = 49.05~\text{m\,s}^{-1}$.
+Das ist genau die Grenzgeschwindigkeit $v_\infty$. Da die rechte Seite nicht
+von $t$ abhängt, sind alle Isoklinen waagerechte Geraden, jeweils bei
+$v = (g - c)/k$ für eine gewählte Steigung $c$.
 
-## Lösung durch Separation und Resubstitution
-
-Wir lösen $u' = u^2$ durch Trennung der Variablen, wobei wir zunächst $u \neq 0$
-voraussetzen.
-
-**Schritt 1: Trennen.**
-
-\begin{equation*}
-\frac{du}{u^2} = dx.
-\end{equation*}
-
-**Schritt 2 und 3: Integrieren und Stammfunktionen einsetzen.**
-
-\begin{equation*}
-\int u^{-2}\,du = \int dx \quad \Rightarrow \quad -\frac{1}{u} = x + C, \quad C \in \mathbb{R}.
-\end{equation*}
-
-**Schritt 4: Nach $u$ auflösen.**
-
-\begin{equation*}
-u = -\frac{1}{x + C}.
-\end{equation*}
-
-**Resubstitution.** Wir ersetzen $u$ durch $x + y$:
-
-\begin{equation*}
-x + y = -\frac{1}{x + C}.
-\end{equation*}
-
-Auflösen nach $y$ ergibt die allgemeine Lösung in den ursprünglichen Variablen:
-
-\begin{equation*}
-y(x) = -x - \frac{1}{x + C}, \quad C \in \mathbb{R}.
-\end{equation*}
-
-**Verifikation.** Wir prüfen, ob diese Funktion die ODE $y' = (x + y)^2 - 1$ erfüllt.
-
-Ableitung der Lösung:
-\begin{equation*}
-y'(x) = -1 + \frac{1}{(x + C)^2}.
-\end{equation*}
-
-Rechte Seite der ODE:
-\begin{align*}
-(x + y)^2 - 1
-  &= \left(x - x - \frac{1}{x+C}\right)^2 - 1
-   = \frac{1}{(x+C)^2} - 1.
-\end{align*}
-
-Linke und rechte Seite stimmen überein. Die Lösung ist verifiziert. $\checkmark$
-
-In der Regelungstechnik, die Sie in höheren Semestern kennenlernen, erscheinen ODEs dieser
-Struktur bei der Analyse nichtlinearer Regelkreise, deren Zustandsänderung von einer
-skalierten Linearkombination von Zustands- und Stellgröße abhängt. Das Substitutionsverfahren
-ist dort ein Standardwerkzeug zur Gewinnung analytischer Näherungslösungen.
-
-## Was ist der Sonderfall $a + b \cdot f(u) = 0$?
-
-Im Trennungsschritt haben wir durch $u^2$ dividiert und dabei $u \neq 0$ vorausgesetzt.
-*Was passiert, wenn $u = 0$ ist?* Dann ist $u' = u^2 = 0$: Die Funktion $u$ ist konstant
-gleich null. Das entspricht in den ursprünglichen Variablen der Bedingung
-$x + y = 0$, also $y = -x$.
-
-Allgemein: Wenn $a + b \cdot f(u) = 0$ für einen Wert $u = u_0$ gilt, dann ist
-$u \equiv u_0$ eine konstante Lösung der substituierten ODE. Die zugehörige Lösung in den
-Originalvariablen ergibt sich aus $ax + by + c = u_0$, aufgelöst nach $y$.
-
-Wir prüfen für unser Beispiel. Mit $y = -x$ gilt $y' = -1$. Einsetzen in die ODE:
-
-\begin{equation*}
-(x + (-x))^2 - 1 = 0 - 1 = -1 = y'. \quad \checkmark
-\end{equation*}
-
-Die Funktion $y = -x$ ist tatsächlich eine Lösung. Sie lässt sich aus der allgemeinen
-Lösung $y = -x - 1/(x+C)$ für kein endliches $C$ gewinnen: Im Grenzwert
-$|C| \to \infty$ verschwindet der Bruch zwar, aber $C = \infty$ ist keine zulässige
-reelle Konstante. Es handelt sich um eine **singuläre Lösung**, die separat neben der
-allgemeinen Lösung anzugeben ist.
-
-```{admonition} Was ist ... die vollständige Lösung im Substitutionsverfahren?
-:class: note
-Gegeben sei eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$. Die vollständige
-Lösung besteht aus:
-
-1. Der **allgemeinen Lösung**, erhalten durch Substitution, Separation und Resubstitution
-   (gilt für $a + b \cdot f(u) \neq 0$).
-2. Den **singulären Lösungen**, die aus den Nullstellen $u_0$ von $a + b \cdot f(u) = 0$
-   durch Resubstitution $ax + by + c = u_0$ folgen.
+```{figure} pics/chap06_richtungsfeld_fallschirmspringer.svg
+:name: chap06_richtungsfeld_fallschirmspringer
+:width: 80%
+Richtungsfeld der ODE $\dot{v} = g - kv$ mit $k = 0.2~\text{s}^{-1}$ und
+$g = 9.81~\text{m\,s}^{-2}$. Die gestrichelte Linie bei $v_\infty = 49.05~\text{m\,s}^{-1}$
+ist die Nullisokline. Eingezeichnet sind Lösungskurven für die Anfangswerte
+$v(0) = 0$, $v(0) = 30~\text{m\,s}^{-1}$ und $v(0) = 70~\text{m\,s}^{-1}$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-```{dropdown} Video "Trennung der Variable nach vorheriger Substitution" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/A0Cg4tRNrfI?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable nach vorheriger Substitution" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+## Was verrät das Richtungsfeld über alle Lösungen?
 
-```{dropdown} Video "Differentialgleichung lösen durch Substitution" von Kochrezepte für Mathematik
-<iframe width="927" height="521" src="https://www.youtube.com/embed/oIjnic9GT3o"
-title="Differentialgleichung lösen durch Substitution - DGL" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+*Müssen wir die ODE lösen, um zu wissen, wohin sich die Geschwindigkeit
+langfristig entwickelt?* Nein. Das Richtungsfeld zeigt es sofort, und das
+gilt auch dann, wenn sich eine ODE gar nicht analytisch lösen lässt: Wir
+sehen dennoch, wie sich Lösungen qualitativ verhalten. Unterhalb der
+Nullisokline bei $v_\infty = 49.05~\text{m\,s}^{-1}$ zeigen alle
+Linienelemente nach oben: Die Geschwindigkeit nimmt zu. Oberhalb zeigen sie
+nach unten: Die Geschwindigkeit nimmt ab. Genau auf der Nullisokline sind die
+Linienelemente waagerecht: Dort ändert sich die Geschwindigkeit nicht.
+
+Dieses Bild beschreibt einen **stabilen Gleichgewichtszustand**. Jede Lösung,
+die unterhalb von $v_\infty$ startet, steigt gegen $v_\infty$; jede Lösung,
+die oberhalb startet, sinkt gegen $v_\infty$. Die Grenzgeschwindigkeit ist
+ein Attraktor: Alle Lösungen streben auf sie zu, unabhängig vom Anfangswert.
+In der Regelungstechnik, die Sie in höheren Semestern kennenlernen werden,
+ist diese Analyse der Gleichgewichtszustände und ihrer Stabilität ein
+zentrales Werkzeug für die Auslegung von Regelkreisen.
+
+Die Beobachtung lässt sich direkt aus der ODE ablesen, ohne die Lösung zu
+kennen: Ist $v < v_\infty$, dann ist $g - kv > 0$, also $\dot{v} > 0$; ist
+$v > v_\infty$, dann ist $g - kv < 0$, also $\dot{v} < 0$. Die Nullisokline
+teilt die $(t, v)$-Ebene in eine Beschleunigungs- und eine Verzögerungszone.
+
+## Wie zeichnet man eine Lösungskurve ein?
+
+Eine Lösungskurve durch einen Startpunkt $(t_0, v_0)$ zu skizzieren bedeutet,
+den Linienelementen des Richtungsfeldes zu folgen: Man beginnt am Startpunkt,
+bewegt sich ein kurzes Stück in Richtung des dortigen Linienelementes, liest am
+neuen Punkt die nächste Steigung ab und setzt die Kurve fort. Dieses Vorgehen
+ist qualitativ; ein exakter Algorithmus daraus wird das Euler-Verfahren in
+Abschnitt 6.3 sein.
+
+<!-- markdownlint-disable MD033 -->
+<div id="applet-container-720">
+
+<iframe
+  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_richtungsfeld.html"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+
+</div>
+<!-- markdownlint-enable MD033 -->
+
+Für unser AWP $v(0) = 0$ beginnt die Kurve bei $(0, 0)$. Das Linienelement
+dort hat die Steigung $\dot{v}(0) = g = 9.81~\text{m\,s}^{-2}$, die Kurve
+startet also steil. Mit wachsendem $v$ nimmt die Steigung ab, die Kurve flacht
+sich ab und schmiegt sich von unten an die Nullisokline $v = v_\infty$ an.
+Das stimmt genau mit der in Abschnitt 6.1 berechneten Lösung
+$v(t) = v_\infty(1 - e^{-0.2\,t})$ überein: steiler Anstieg nahe $t = 0$,
+asymptotische Annäherung an $v_\infty$ für große $t$.
+
+## Weiteres Lernmaterial
+
+Das folgende Video zeigt das Richtungsfeld **bis** ca. Zeitindex 8:16 min.
+
+```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-ODEs der Form $y' = f(ax + by + c)$ lassen sich nicht direkt trennen, weil $x$ und $y$
-gemeinsam im Argument der Funktion auftreten. Die Substitution $u = ax + by + c$ ersetzt
-dieses Argument durch eine neue Funktion und verwandelt die ODE in die separierbare Form
-$u' = a + b \cdot f(u)$, die wir mit dem Verfahren aus Abschnitt 7.1 lösen. Nach der
-Resubstitution erhalten wir die allgemeine Lösung in den Originalvariablen. Der Sonderfall
-$a + b \cdot f(u) = 0$ liefert singuläre Lösungen, die separat zu prüfen und anzugeben sind.
+Das Richtungsfeld einer ODE 1. Ordnung macht die qualitative Struktur aller
+Lösungskurven sichtbar, ohne dass eine einzige Lösung berechnet werden muss.
+Das ist besonders wertvoll, wenn eine analytische Lösung nicht existiert oder
+schwer zu finden ist. Die Nullisokline teilt die $(t, v)$-Ebene in zwei
+Bereiche mit positiver und negativer Steigung und zeigt stabile
+Gleichgewichtszustände. Für unser Fallbeispiel ist
+$v_\infty = 49.05~\text{m\,s}^{-1}$ ein solcher Attraktor: Alle Startbedingungen
+führen zur selben Grenzgeschwindigkeit.
 
-In Abschnitt 7.3 verlassen wir den methodischen Werkzeugkasten und kehren zur
-Ingenieurpraxis zurück. Wir wenden beide Verfahren dieses Kapitels auf konkrete technische
-Probleme an: den Fallschirmspringer aus Kapitel 6, dessen Lösung wir in Abschnitt 7.1
-erstmals hergeleitet haben, sowie zwei weitere Szenarien aus dem Maschinenbau, an denen
-deutlich wird, wie die Wahl des richtigen Lösungswegs vom Typ der ODE abhängt.
+In Abschnitt 6.3 machen wir das visuelle Abschätzen zu einem rechenbaren
+Verfahren: Das Euler-Verfahren ersetzt das Folgen von Linienelementen durch
+eine systematische Schrittformel und liefert eine numerische Näherungslösung
+für beliebige Startbedingungen.

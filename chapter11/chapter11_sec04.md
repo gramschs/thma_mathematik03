@@ -3,260 +3,250 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 11.4 Erzwungene Schwingungen und Resonanz
+# 11.4 Komplexe Eigenwerte und das Modell der gedämpften Schwingung
 
-In Abschnitt 11.3 schwang unser Maschinenelement ohne jede äußere Kraft mit
-konstanter Amplitude: ein idealisiertes, aber physikalisch klares Bild. Jetzt
-bringen wir eine periodische Kraft ins Spiel, wie sie in der Praxis durch eine
-Unwucht in einem rotierenden Bauteil entsteht. *Was passiert, wenn die
-Drehfrequenz des Rotors genau die Eigenfrequenz des Systems trifft?* Die
-Antwort auf diese Frage ist eines der wichtigsten Entwurfskriterien im
-Maschinenbau.
+In Abschnitt 10.3 haben wir gesehen, dass die charakteristische Gleichung für
+$D > 0$ oder $D = 0$ reelle Eigenwerte liefert und die zugehörigen Lösungen
+monoton gegen null abklingen. Die Schwebebahn schwingt in diesen Fällen nicht,
+sondern kriecht zurück in die Ruhelage. *Aber genau das hat die Bahn in der
+Realität nicht getan*: Sie pendelt mehrmals hin und her. Das ist der Fall $D <
+0$, bei dem die charakteristische Gleichung keine reellen Lösungen besitzt. Der
+Exponentialansatz liefert dann komplexe Eigenwerte, und es braucht einen
+weiteren Schritt, um daraus reelle Fundamentallösungen zu gewinnen. Dieser
+Schritt ist die eulersche Formel, die komplexe Exponentialfunktionen mit Kosinus
+und Sinus verbindet.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-
-* [ ] Sie können die inhomogene Schwingungsgleichung
-  $y'' + \omega_0^2\,y = (F_0/m)\,\sin(\Omega t)$ aufstellen und die
-  partikuläre Lösung für $\Omega \neq \omega_0$ durch den Ansatz
-  $y_p = A\,\sin(\Omega t)$ berechnen.
-* [ ] Sie kennen die **Resonanzamplitude**
-  $\hat{y}_p = \frac{F_0/m}{|\omega_0^2 - \Omega^2|}$ und verstehen,
-  warum sie für $\Omega \to \omega_0$ unbegrenzt wächst und nur für
-  $\Omega \neq \omega_0$ sinnvoll definiert ist.
-* [ ] Sie erkennen den Resonanzfall $\Omega = \omega_0$ und können erklären,
-  warum der modifizierte Ansatz eine mit $t$ linear wachsende Lösung liefert,
-  die zur **Resonanzkatastrophe** führt.
-* [ ] Sie können die **kritische Drehzahl** als diejenige Betriebsdrehzahl
-  beschreiben, bei der $\Omega = \omega_0$ gilt, und die Bedeutung dieser
-  Größe für den Maschinenbau erläutern.
+* [ ] Sie können für $D < 0$ die beiden konjugiert komplexen Eigenwerte
+  \begin{equation*}\lambda_{1,2} = -\alpha \pm i\,\omega_d\end{equation*}
+  bestimmen und Real- und Imaginärteil benennen.
+* [ ] Sie wissen, wie die **eulersche Formel** $e^{i\varphi} = \cos\varphi +
+  i\sin\varphi$ genutzt wird, um komplexe Exponentialfunktionen in reelle
+  Lösungen umzuschreiben.
+* [ ] Sie können das **reelle Fundamentalsystem**
+  $\{e^{-\alpha x}\cos(\omega_d x),\; e^{-\alpha x}\sin(\omega_d x)\}$ angeben
+  und die allgemeine Lösung
+  \begin{equation*}
+  y_h(x) = e^{-\alpha x}\bigl(C_1\cos(\omega_d x) + C_2\sin(\omega_d x)\bigr)
+  \end{equation*}
+  aufschreiben.
+* [ ] Sie können die Parameter $\alpha$ (Abklingrate) und $\omega_d$ (gedämpfte
+  Kreisfrequenz) physikalisch als **gedämpfte Schwingung** interpretieren und
+  von der ungedämpften Eigenkreisfrequenz $\omega_0$ aus Abschnitt 10.1
+  unterscheiden.
 ```
 
-## Wie reagiert das System auf eine periodische Erregerkraft?
+## Wie entstehen komplexe Eigenwerte?
 
-Eine rotierende Welle mit kleiner Unwucht erzeugt eine Kraft, die mit der
-Drehfrequenz $\Omega$ periodisch schwankt. Wir modellieren diese Kraft als
-$F(t) = F_0\,\sin(\Omega t)$ mit $F_0 = 4~\text{N}$. Um das Resonanzphänomen
-in seiner reinsten Form zu zeigen, betrachten wir das ungedämpfte System
-($d = 0$). Mit $m = 2~\text{kg}$, $\omega_0^2 = k/m = 2~\text{s}^{-2}$ und
-$F_0/m = 2~\text{m\,s}^{-2}$ lautet die inhomogene Schwingungsgleichung:
+Für $D < 0$ ist der Ausdruck unter der Wurzel in der Lösungsformel
+$\lambda_{1,2} = -a/2 \pm \sqrt{D}$ negativ. Wir schreiben $D = -|D|$ und
+erhalten:
 
 \begin{equation*}
-y'' + 2\,y = 2\,\sin(\Omega\,t).
+\lambda_{1,2} = -\frac{a}{2} \pm \sqrt{-|D|}
+              = -\frac{a}{2} \pm i\sqrt{|D|}.
 \end{equation*}
 
-Für $\Omega \neq \omega_0 = \sqrt{2}$ setzen wir den Ansatz
-$y_p = A\,\sin(\Omega t) + B\,\cos(\Omega t)$ an. Da die ODE keinen $y'$-Term
-enthält und die rechte Seite nur Sinus enthält, koppeln Sinus- und
-Kosinusanteile im Koeffizientenvergleich nicht. Einsetzen liefert:
+Wir führen zwei Abkürzungen ein:
+
+\begin{equation*}
+\alpha = \frac{a}{2} \geq 0
+\qquad \text{und} \qquad
+\omega_d = \sqrt{|D|} = \sqrt{b - \frac{a^2}{4}} > 0.
+\end{equation*}
+
+Die Eigenwerte sind dann das konjugiert komplexe Paar
+$\lambda_{1,2} = -\alpha \pm i\,\omega_d$. Die Größe $\alpha$ heißt
+**Abklingrate** und $\omega_d$ heißt **gedämpfte Kreisfrequenz**. Im Unterschied
+zur ungedämpften Eigenkreisfrequenz $\omega_0 = \sqrt{b}$ aus Abschnitt 10.1
+gilt stets $\omega_d < \omega_0$: Dämpfung verlangsamt die Schwingung.
+
+Der Exponentialansatz liefert zunächst die komplexwertigen Lösungen
+
+\begin{equation*}
+y_1(x) = e^{(-\alpha + i\omega_d)x}
+\quad \text{und} \quad
+y_2(x) = e^{(-\alpha - i\omega_d)x}.
+\end{equation*}
+
+Für die Praxis brauchen wir reelle Lösungen. Die eulersche Formel stellt die
+Verbindung her.
+
+## Die eulersche Formel: von komplex nach reell
+
+Die **eulersche Formel**
+
+\begin{equation*}
+e^{i\varphi} = \cos\varphi + i\sin\varphi, \quad \varphi \in \mathbb{R},
+\end{equation*}
+
+verknüpft die komplexe Exponentialfunktion mit Kosinus und Sinus. Sie ist nicht
+mit dem Euler-Verfahren aus Abschnitt 6.3 zu verwechseln: Beide tragen den
+Namen desselben Mathematikers, beschreiben aber völlig verschiedene Dinge. Die
+eulersche Formel folgt formal aus den Potenzreihen von $e^z$, $\cos$ und $\sin$.
+
+Wir wenden sie auf die komplexen Fundamentallösungen an:
 
 \begin{align*}
-y_p'' + 2\,y_p
-&= (2 - \Omega^2)(A\,\sin(\Omega t) + B\,\cos(\Omega t))
-\stackrel{!}{=} 2\,\sin(\Omega t).
+e^{(-\alpha + i\omega_d)x}
+&= e^{-\alpha x}\cdot e^{i\omega_d x}
+ = e^{-\alpha x}\bigl(\cos(\omega_d x) + i\sin(\omega_d x)\bigr), \\
+e^{(-\alpha - i\omega_d)x}
+&= e^{-\alpha x}\cdot e^{-i\omega_d x}
+ = e^{-\alpha x}\bigl(\cos(\omega_d x) - i\sin(\omega_d x)\bigr).
 \end{align*}
 
-Koeffizientenvergleich ergibt $B = 0$ und:
+Da die ODE reelle Koeffizienten hat, ist mit jeder komplexen Lösung auch ihr
+Realteil und ihr Imaginärteil eine reelle Lösung. Wir bilden die Summe und
+Differenz der beiden komplexen Lösungen:
 
-\begin{equation*}
-(2 - \Omega^2)\,A = 2
-\qquad \Rightarrow \qquad
-A = \frac{2}{2 - \Omega^2}.
-\end{equation*}
+\begin{align*}
+\tilde{y}_1(x)
+&= \frac{1}{2}\bigl(e^{\lambda_1 x} + e^{\lambda_2 x}\bigr)
+ = e^{-\alpha x}\cos(\omega_d x), \\
+\tilde{y}_2(x)
+&= \frac{1}{2i}\bigl(e^{\lambda_1 x} - e^{\lambda_2 x}\bigr)
+ = e^{-\alpha x}\sin(\omega_d x).
+\end{align*}
 
-In allgemeiner Schreibweise mit $\omega_0^2 = k/m$ lautet die partikuläre
-Lösung:
+Beide Funktionen sind reell, und da sie aus Linearkombinationen zweier
+Lösungen entstehen, sind sie selbst Lösungen der homogenen ODE.
 
-\begin{equation*}
-y_p(t) = \frac{F_0/m}{\omega_0^2 - \Omega^2}\,\sin(\Omega\,t).
-\end{equation*}
+## Das reelle Fundamentalsystem
 
-```{admonition} Was ist ... die Resonanzamplitude?
+Wir berechnen die Wronski-Determinante von $\tilde{y}_1$ und $\tilde{y}_2$, um
+lineare Unabhängigkeit zu bestätigen. Mit $u = e^{-\alpha x}\cos(\omega_d x)$
+und $v = e^{-\alpha x}\sin(\omega_d x)$ lauten die Ableitungen:
+
+\begin{align*}
+u' &= e^{-\alpha x}\bigl(-\alpha\cos(\omega_d x) - \omega_d\sin(\omega_d x)\bigr), \\
+v' &= e^{-\alpha x}\bigl(-\alpha\sin(\omega_d x) + \omega_d\cos(\omega_d x)\bigr).
+\end{align*}
+
+Die Wronski-Determinante ergibt:
+
+\begin{align*}
+W(u, v)
+&= u\,v' - v\,u' \\
+&= e^{-2\alpha x}\Bigl[
+   \cos(\omega_d x)\bigl(-\alpha\sin + \omega_d\cos\bigr) -
+   \sin(\omega_d x)\bigl(-\alpha\cos - \omega_d\sin\bigr)
+   \Bigr] \\
+&= e^{-2\alpha x}\bigl[-\alpha\cos\sin + \omega_d\cos^2 + \alpha\sin\cos + \omega_d\sin^2
+   \bigr] \\
+&= \omega_d\,e^{-2\alpha x}
+   \underbrace{\bigl(\cos^2(\omega_d x) + \sin^2(\omega_d x)\bigr)}_{=\,1}
+ = \omega_d\,e^{-2\alpha x} \neq 0,
+\end{align*}
+
+denn $\omega_d > 0$ und $e^{-2\alpha x} > 0$ für alle $x$.
+
+```{admonition} Fundamentalsystem für $D < 0$
 :class: note
-Bei der ungedämpften erzwungenen Schwingung
-$y'' + \omega_0^2\,y = (F_0/m)\,\sin(\Omega t)$ lautet die
-**Resonanzamplitude** der partikulären Lösung:
+Haben die Eigenwerte der charakteristischen Gleichung den konjugiert komplexen
+Wert $\lambda_{1,2} = -\alpha \pm i\,\omega_d$ mit $\alpha = a/2$ und
+$\omega_d = \sqrt{b - a^2/4}$, so ist
+$\{e^{-\alpha x}\cos(\omega_d x),\; e^{-\alpha x}\sin(\omega_d x)\}$
+ein Fundamentalsystem und die allgemeine Lösung lautet
 
 \begin{equation*}
-\hat{y}_p = \frac{F_0/m}{|\omega_0^2 - \Omega^2|}.
+y_h(x) = e^{-\alpha x}\bigl(C_1\cos(\omega_d x) + C_2\sin(\omega_d x)\bigr),
+\quad C_1, C_2 \in \mathbb{R}.
 \end{equation*}
-
-Diese Formel ist nur für $\Omega \neq \omega_0$ definiert: Im exakten
-Resonanzfall $\Omega = \omega_0$ existiert keine sinusförmige stationäre
-Antwort mehr; die partikuläre Lösung enthält dann einen Faktor $t$ und
-wächst im Betrag mit der Zeit.
-
-Für sehr langsame Erregung $\Omega \to 0$ gilt $\hat{y}_p \to F_0/k$: das
-ist die statische Auslenkung unter der Kraft $F_0$. Für $\Omega \to \omega_0$
-wächst $\hat{y}_p$ ohne Schranke. Im schwingungstechnischen Sinn bezeichnet
-man genau diesen Fall der Frequenzgleichheit von Eigenfrequenz und
-Erregerfrequenz als **Resonanz**.
 ```
 
-Wir berechnen die vollständige Lösung für $\Omega = 1~\text{rad\,s}^{-1}$,
-also für eine Drehzahl deutlich unterhalb der Eigenfrequenz
-$\omega_0 = \sqrt{2} \approx 1.41~\text{rad\,s}^{-1}$:
+## Die Schwebebahn im schwach gedämpften Fall
+
+Wir wählen $a = 1.0~\text{s}^{-1}$ und $b = \omega_0^2 \approx 3.27~\text{s}^{-2}$.
+Die Diskriminante ist
 
 \begin{equation*}
-A = \frac{2}{2 - 1^2} = 2
-\qquad \Rightarrow \qquad
-y_p(t) = 2\,\sin(t).
+D = \frac{(1.0)^2}{4} - 3.27 = 0.25 - 3.27 = -3.02~\text{s}^{-2} < 0.
 \end{equation*}
 
-Wir verifizieren durch Einsetzen:
-$y_p'' + 2\,y_p = -2\sin(t) + 4\sin(t) = 2\sin(t)$. $\checkmark$
-
-Für die Anfangsbedingungen $y(0) = 0$ und $y'(0) = 0$ (System startet in
-Ruhe, die Unwuchtkraft setzt bei $t = 0$ ein) ergibt sich mit der allgemeinen
-Lösung $y = C_1\cos(\sqrt{2}\,t) + C_2\sin(\sqrt{2}\,t) + 2\sin(t)$:
+Abklingrate und gedämpfte Kreisfrequenz lauten:
 
 \begin{equation*}
-C_1 = 0, \qquad \sqrt{2}\,C_2 + 2 = 0 \;\Rightarrow\; C_2 = -\sqrt{2}.
-\end{equation*}
-
-Die vollständige Lösung lautet:
-
-\begin{equation*}
-y(t) = -\sqrt{2}\,\sin(\sqrt{2}\,t) + 2\,\sin(t)~\text{m}.
-\end{equation*}
-
-Die Bewegung ist eine Überlagerung zweier Sinusschwingungen: die freie
-Schwingung bei $\omega_0 = \sqrt{2}$ mit Amplitude $\sqrt{2} \approx 1.41~\text{m}$
-und die erzwungene Schwingung bei $\Omega = 1$ mit Amplitude $2~\text{m}$. Beide
-Amplituden sind endlich. Da die Frequenzen nahe beieinander liegen, zeigt der
-Verlauf eine typische **Schwebung**: Die schnelle Schwingung wird von einer
-langsam veränderlichen Hüllkurve mit der Differenzfrequenz $|\omega_0 - \Omega|$
-moduliert. In der Maschinendynamik nennt man diesen Betriebszustand
-den unterkritischen Betrieb: Die Drehfrequenz liegt unterhalb der kritischen
-Drehzahl, die Schwingungen bleiben beherrschbar.
-
-## Was passiert, wenn die Erregerfrequenz die Eigenfrequenz trifft?
-
-Wir erhöhen die Drehzahl auf genau $\Omega = \omega_0 = \sqrt{2}~\text{rad\,s}^{-1}$.
-Die ODE lautet jetzt:
-
-\begin{equation*}
-y'' + 2\,y = 2\,\sin(\sqrt{2}\,t).
-\end{equation*}
-
-Der Standardansatz $y_p = A\,\sin(\sqrt{2}\,t) + B\,\cos(\sqrt{2}\,t)$ schlägt
-fehl, weil $\sin(\sqrt{2}\,t)$ und $\cos(\sqrt{2}\,t)$ Lösungen der homogenen
-ODE sind. Einsetzen würde $0 = 2\sin(\sqrt{2}\,t)$ ergeben. Wie in Abschnitt
-11.2 gezeigt, rettet ein zusätzlicher Faktor $t$ den Ansatz:
-
-\begin{equation*}
-y_p(t) = A\,t\,\sin(\sqrt{2}\,t) + B\,t\,\cos(\sqrt{2}\,t).
-\end{equation*}
-
-Wir berechnen $y_p'' + 2\,y_p$. Nach zweimaligem Ableiten und Vereinfachen
-verbleiben nur die zeitlich konstanten Vorfaktoren:
-
-\begin{equation*}
-y_p'' + 2\,y_p = 2A\,\sqrt{2}\,\cos(\sqrt{2}\,t) - 2B\,\sqrt{2}\,\sin(\sqrt{2}\,t).
-\end{equation*}
-
-Der Koeffizientenvergleich mit $2\,\sin(\sqrt{2}\,t)$ liefert:
-
-\begin{equation*}
-2A\sqrt{2} = 0 \;\Rightarrow\; A = 0,
+\alpha = 0.5~\text{s}^{-1},
 \qquad
--2B\sqrt{2} = 2 \;\Rightarrow\; B = -\frac{\sqrt{2}}{2}.
+\omega_d = \sqrt{3.02} \approx 1.74~\text{rad\,s}^{-1}.
 \end{equation*}
 
-Die partikuläre Lösung im Resonanzfall lautet:
+Verglichen mit $\omega_0 \approx 1.81~\text{rad\,s}^{-1}$ ist $\omega_d$ etwas
+kleiner: Die gedämpfte Schwingungsperiode beträgt $T_d = 2\pi/\omega_d \approx
+3.61~\text{s}$ statt $T_0 \approx 3.47~\text{s}$. Die allgemeine Lösung lautet:
 
 \begin{equation*}
-y_p(t) = -\frac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t).
+\varphi_h(t) = e^{-0.5\,t}\bigl(C_1\cos(1.74\,t) + C_2\sin(1.74\,t)\bigr).
 \end{equation*}
 
-Wir verifizieren durch Einsetzen. Mit $y_p'' = 2\sin(\sqrt{2}\,t) + \sqrt{2}\,t\,\cos(\sqrt{2}\,t)$
-gilt:
+Die Anfangsbedingungen $\varphi(0) = 0.231$ und $\varphi'(0) = 0$ liefern
+zunächst $C_1 = 0.231$. Die Ableitung bei $t = 0$ ergibt:
 
 \begin{equation*}
-y_p'' + 2\,y_p
-= 2\sin(\sqrt{2}\,t) + \sqrt{2}\,t\,\cos(\sqrt{2}\,t) -
-  \sqrt{2}\,t\,\cos(\sqrt{2}\,t)
-= 2\sin(\sqrt{2}\,t). \quad \checkmark
+\varphi'(0) = -\alpha C_1 + \omega_d C_2
+= -0.5\cdot 0.231 + 1.74\cdot C_2 \stackrel{!}{=} 0
+\qquad \Rightarrow \qquad
+C_2 = \frac{0.116}{1.74} \approx 0.067.
 \end{equation*}
 
-Für die Anfangsbedingungen $y(0) = 0$, $y'(0) = 0$ ergibt sich die vollständige
-Lösung:
+Die partikuläre Lösung des Anfangswertproblems lautet:
 
 \begin{equation*}
-y(t) = \tfrac{1}{2}\,\sin(\sqrt{2}\,t)
-       - \tfrac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t)~\text{m}.
+\varphi(t) = e^{-0.5\,t}\bigl(0.231\cos(1.74\,t) + 0.067\sin(1.74\,t)\bigr).
 \end{equation*}
 
-Der erste Term $\tfrac{1}{2}\sin(\sqrt{2}\,t)$ ist eine gewöhnliche Sinusschwingung
-mit beschränkter Amplitude. Der zweite Term $-\tfrac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t)$
-ist das Kennzeichen der **Resonanzkatastrophe**: Seine Amplitude $\tfrac{\sqrt{2}}{2}\,t$
-wächst linear mit der Zeit ohne jede Schranke. Nach $t = 10~\text{s}$ beträgt
-die Amplitude bereits $\tfrac{\sqrt{2}}{2} \cdot 10 \approx 7.1~\text{m}$, nach
-$t = 100~\text{s}$ über $70~\text{m}$. Ein reales Bauteil würde bei einem
-Bruchteil dieser Werte versagen.
+Der Faktor $e^{-0.5\,t}$ bestimmt, wie schnell die Schwingungsamplitude
+abklingt. Nach einer gedämpften Periode $T_d \approx 3.61~\text{s}$ ist die
+Hüllkurve auf $e^{-0.5\cdot 3.61} \approx 0.16$ des Ausgangswertes gesunken,
+nach zwei Perioden auf etwa $0.03$. Der Fahrwagen schwingt also sichtbar, kehrt
+aber innerhalb weniger Perioden in die Ruhelage zurück. *Ist das für die
+Fahrgäste akzeptabel?* Das hängt vom Abstand zur nächsten Haltestelle ab: eine
+ingenieurmäßige Auslegungsfrage, die über die Mathematik hinausgeht.
 
-```{figure} pics/chap11_sec04_fig01.svg
-:name: fig-chap11-sec04-resonanzkatastrophe
+## Der vollständige Überblick: alle drei Fälle
 
-Zeitverlauf der vollständigen Lösung im Resonanzfall $\Omega = \omega_0 = \sqrt{2}\,\text{rad\,s}^{-1}$ mit den Hüllkurven $\pm\tfrac{\sqrt{2}}{2}\,t$, die das unbegrenzte lineare Amplitudenwachstum zeigen.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+Mit den Abschnitten 10.3 und 10.4 ist die Lösungstheorie für die homogene
+lineare ODE 2. Ordnung mit konstanten Koeffizienten abgeschlossen. Die folgende
+Tabelle fasst zusammen, welches Fundamentalsystem die charakteristische Gleichung
+für jeden der drei Fälle liefert:
+
+| Fall | Bedingung | Eigenwerte | Fundamentalsystem |
+| ---- | --------- | ---------- | ----------------- |
+| Kriechfall | $D > 0$ | $\lambda_1 \neq \lambda_2$ reell | $\{e^{\lambda_1 x},\, e^{\lambda_2 x}\}$ |
+| Aperiod. Grenzfall | $D = 0$ | $\lambda$ doppelt reell | $\{e^{\lambda x},\, x\,e^{\lambda x}\}$ |
+| Schwingungsfall | $D < 0$ | $-\alpha \pm i\omega_d$ komplex | $\{e^{-\alpha x}\cos(\omega_d x),\, e^{-\alpha x}\sin(\omega_d x)\}$ |
+
+Für die Schwebebahn durchlaufen wir mit wachsender Dämpfungskonstante $a$ alle
+drei Fälle: Bei kleinem $a$ schwingt der Wagen, beim kritischen Wert $a =
+2\omega_0$ liegt der aperiodische Grenzfall vor, und bei starker Dämpfung
+kriecht der Wagen ohne Überschwingen zurück.
+
+```{dropdown} Video "Homogene DGL 2. Ordnung (Teil 3)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/HbHhHP9domY"
+title="Wie löse ich eine homogene Differentialgleichung 2. Ordnung? | komplexe homogene Lösung | DGL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{admonition} Merkregel: Resonanz und kritische Drehzahl
-:class: note
-Die **kritische Drehzahl** $n_{\text{krit}}$ einer Welle oder eines Rotors ist
-die Drehzahl, bei der die Erregerfrequenz $\Omega = 2\pi\,n$ mit der
-Eigenfrequenz $\omega_0 = \sqrt{k/m}$ übereinstimmt:
-
-\begin{equation*}
-n_{\text{krit}} = \frac{\omega_0}{2\pi} = \frac{1}{2\pi}\sqrt{\frac{k}{m}}.
-\end{equation*}
-
-Im schwingungstechnischen Sinn spricht man genau in diesem Fall
-$\Omega = \omega_0$ von **Resonanz**. Im Maschinenbau wird die kritische
-Drehzahl entweder durch gezielte Dämpfung entschärft oder durch konstruktive
-Maßnahmen so gelegt, dass der Betriebsbereich sie weit verfehlt.
+```{dropdown} Video "Hom. DGL 2. Ordnung" von Mathe ohne Magie
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/LN1WHesVpyc" title="Homogene lineare Differenzialgleichungen zweiter Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{figure} pics/chap11_sec04_fig02.svg
-:name: fig-chap11-sec04-amplitudenfrequenzgang
+## Zusammenfassung und Ausblick
 
-Amplitudenfrequenzgang der ungedämpften erzwungenen Schwingung: Die normierte Resonanzamplitude $\hat{y}_p\,k/F_0$ divergiert bei $\Omega = \omega_0$ und nähert sich für $\Omega \to 0$ dem statischen Wert $F_0/k$ an.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
+Die eulersche Formel überbrückt die Lücke zwischen komplexen Eigenwerten und
+reellen Lösungen. Aus $e^{(-\alpha \pm i\omega_d)x}$ werden durch Real- und
+Imaginärteiltrennung die Fundamentallösungen $e^{-\alpha x}\cos(\omega_d x)$
+und $e^{-\alpha x}\sin(\omega_d x)$. Die allgemeine Lösung beschreibt eine
+gedämpfte Schwingung, deren Amplitude exponentiell mit der Rate $\alpha$
+abklingt und deren Frequenz $\omega_d$ kleiner als die ungedämpfte
+Eigenkreisfrequenz $\omega_0$ ist.
 
-In der Ingenieurpraxis ist reiner Resonanzbetrieb ohne Dämpfung nie dauerhaft
-möglich: Jedes reale System hat eine Restdämpfung, die das unbegrenzte Anwachsen
-verhindert und die Amplitude auf einen endlichen, wenn auch sehr großen Wert
-begrenzt. Trotzdem können beim Hochlaufen eines Motors auf Betriebsdrehzahl
-oder beim Abfahren die kritischen Drehzahlen durchfahren werden. Ingenieurinnen
-und Ingenieure müssen dann sicherstellen, dass die Anlage schnell genug durch
-den Resonanzbereich geführt wird, bevor die Schwingungsamplituden gefährliche
-Werte annehmen. In der Maschinenakustik, der Schwingungslehre und der
-Rotordynamik werden Sie diese Fragen systematisch vertiefen.
-
-```{admonition} Lernkontrolle
-:class: tip
-[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec04_quiz.html)
-```
-
-## Zusammenfassung: Kapitel 11
-
-Mit Abschnitt 11.4 schließt sich der Bogen von Kapitel 11. Aus dem Newtonschen
-Gesetz haben wir die Bewegungsgleichung des Feder-Masse-Systems hergeleitet,
-mit den Methoden aus Kapitel 10 die homogene Lösung $y_h$ bestimmt und in den
-Abschnitten 11.1 bis 11.4 die partikuläre Lösung $y_p$ für alle technisch
-wichtigen Störfunktionen berechnet: abklingende Stoßkräfte, den Resonanzfall
-mit wachsendem Ansatz, und periodische Erregerkräfte bis hin zur
-Resonanzkatastrophe.
-
-Die allgemeine Lösung $y_{\text{allgemein}} = y_h + y_p$ ist damit das
-vollständige Werkzeug zur Beschreibung linearer Schwingungssysteme. Die freien
-Konstanten legen Anfangslage und Anfangsgeschwindigkeit fest, die Eigenfrequenz
-$\omega_0$ ist eine reine Systemeigenschaft, und die Resonanz tritt genau dann
-auf, wenn Erreger und System im selben Takt schwingen. Dieses Grundprinzip
-bleibt in allen späteren Lehrveranstaltungen wie der Technischen Mechanik 3,
-der Maschinendynamik und der Schwingungsmesstechnik erhalten, auch wenn die
-Systeme dort komplexer und die Methoden verfeinert sind.
+Damit ist Kapitel 10 vollständig: Für jede homogene lineare ODE 2. Ordnung mit
+konstanten Koeffizienten lässt sich das Fundamentalsystem systematisch aus den
+Nullstellen der charakteristischen Gleichung bestimmen. In Kapitel 11 wird die
+Störfunktion $g(x)$ hinzugefügt. Die partikuläre Lösung $y_p$ beschreibt den
+erzwungenen Anteil der Schwingung, und ihr Zusammenspiel mit der homogenen
+Lösung $y_h$ führt auf das zentrale Phänomen der Schwingungslehre: die Resonanz.

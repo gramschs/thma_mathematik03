@@ -3,243 +3,247 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 8.3 Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
+# 8.3 Technische Anwendungen der Separation der Variablen
 
-In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
-Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
-ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
-hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
-modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
-**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
-der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
-dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
-den Bogen, der in Kapitel 6 geöffnet wurde.
+In den Abschnitten 7.1 und 7.2 haben wir zwei analytische Lösungsverfahren entwickelt:
+die Trennung der Variablen für ODEs der Form $y' = f(x) \cdot g(y)$ und die Substitution
+für ODEs der Form $y' = f(ax + by + c)$. Jetzt wenden wir beide Verfahren auf konkrete
+Ingenieurprobleme an. Der Schwerpunkt liegt dabei auf den Schritten, die in 7.1 und 7.2
+noch fehlten: eine physikalische Situation als ODE zu formulieren, den richtigen Lösungsweg
+zu erkennen und das mathematische Ergebnis physikalisch zu deuten.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
-  $$y_{\text{allgemein}} = y_h + y_p$$
-  aus homogener Lösung und partikulärer Lösung zusammensetzt.
-* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
-  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
-* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
-  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
-* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
-  Anfangsbedingungen anpassen.
+* [ ] Sie können zu einer physikalischen Problemstellung die zugehörige ODE aufstellen
+  und als separierbar identifizieren.
+* [ ] Sie können die **Euler-Eytelwein-Gleichung** $F' = \mu\,F$ durch Separation lösen,
+  das Ergebnis auf ein Riementrieb-Beispiel mit konkreten Zahlenwerten anwenden und
+  physikalisch interpretieren.
+* [ ] Sie können die **Torricellische Ausflussgleichung** $\dot{h} = -k\sqrt{h}$ durch
+  Separation lösen, die Entleerungszeit berechnen und das Ergebnis physikalisch deuten.
+* [ ] Sie können anhand der Struktur der rechten Seite einer ODE entscheiden, ob die
+  direkte Separation (Abschnitt 7.1) oder die Substitutionsmethode (Abschnitt 7.2)
+  anzuwenden ist.
 ```
 
-## Warum reicht die homogene Lösung nicht aus?
+## Beispiel 1: Seilkraft am Riementrieb
 
-Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
-9.81$ erfüllt:
+An einem Riementrieb läuft ein Flachriemen über eine Scheibe mit dem
+Reibungskoeffizienten $\mu = 0.3$. Auf der Zugseite wirkt die große Kraft $F$, auf der
+Schlupfseite die kleine Haltekraft $F_0$. *Wie ändert sich die Riemenkraft entlang des
+Umschlingungsbogens, und wie groß ist der Kraftunterschied für eine Umschlingung von
+$180°$?*
+
+### Aufstellen der ODE
+
+Wir betrachten ein infinitesimales Bogenelement des Riemens am Umschlingungswinkel
+$\varphi$. Die Reibungskraft an diesem Element ist proportional zur lokalen Riemenkraft
+$F(\varphi)$ und zum Winkelinkrement $d\varphi$. Das Kräftegleichgewicht ergibt die
+**Euler-Eytelwein-Gleichung**:
 
 \begin{equation*}
-\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
+\frac{dF}{d\varphi} = \mu\,F.
 \end{equation*}
 
-$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
-Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
-wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
-genau diesen fehlenden Anteil liefert.
+Die gesuchte Funktion ist $F(\varphi)$, die unabhängige Variable ist der
+Umschlingungswinkel $\varphi$. Die rechte Seite hat die Form $\mu \cdot F$, also
+$f(\varphi) \cdot g(F) = \mu \cdot F$. Die ODE ist separierbar.
 
-*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
-ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+### Lösung durch Separation
+
+Wir wenden das Verfahren aus Abschnitt 7.1 an. Die Anfangsbedingung ist $F(0) =
+F_0$: die Riemenkraft an der Schlupfseite ($\varphi = 0$) ist bekannt.
+
+**Trennen:**
+
+\begin{equation*}
+\frac{dF}{F} = \mu\,d\varphi.
+\end{equation*}
+
+**Integrieren und Stammfunktion einsetzen:**
+
+\begin{equation*}
+\ln|F| = \mu\varphi + C_1 \quad \Rightarrow \quad F(\varphi) = C\,e^{\mu\varphi},
+\quad C > 0.
+\end{equation*}
+
+**Anfangsbedingung einsetzen:** $F(0) = C\,e^{0} = C = F_0$. Die spezielle
+Lösung lautet:
+
+\begin{equation*}
+F(\varphi) = F_0\,e^{\mu\varphi}.
+\end{equation*}
+
+**Verifikation:** $F'(\varphi) = F_0\,\mu\,e^{\mu\varphi} = \mu \cdot
+F(\varphi)$. $\checkmark$
+
+### Ergebnis und physikalische Interpretation
+
+Mit $\mu = 0.3$ und einer Umschlingung von $180°$, also $\varphi = \pi$:
+
+\begin{equation*}
+F(\pi) = F_0\,e^{0.3\pi} \approx F_0 \cdot 2.57.
+\end{equation*}
+
+Für eine Haltekraft von $F_0 = 200~\text{N}$ auf der Schlupfseite beträgt die Zugkraft
+auf der Gegenseite also rund $514~\text{N}$, mehr als das Doppelte. Der Faktor
+$e^{\mu\varphi}$ wächst exponentiell mit dem Umschlingungswinkel: Bei einer vollen
+Umrundung ($\varphi = 2\pi$) betrüge das Verhältnis bereits $e^{0.6\pi} \approx 6.6$.
+Dieses Prinzip nutzen Winden und Poller: Wenige Umschlingungen genügen, um sehr große
+Lasten mit kleiner Haltekraft zu sichern. In der Auslegung von Riemengetrieben und
+Seilzügen, die Sie in der Vorlesung Maschinenelemente vertiefen werden, ist das
+Euler-Eytelwein-Gesetz eine Grundformel.
+
+```{dropdown} Video "Seilreibung" von Studyflix
+<iframe width="927" height="521" src="https://www.youtube.com/embed/CP69S-F40Mk"
+title="Seilreibung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Beispiel 2: Entleerung eines Hydraulikbehälters
+
+Ein zylindrischer Hydraulikbehälter mit konstantem Querschnitt hat zum Zeitpunkt $t = 0$
+einen Füllstand von $h_0 = 0.64~\text{m}$. Durch eine Bodenöffnung fließt Öl aus.
+Nach dem Torricellischen Ausflussgesetz ist die Ausflussgeschwindigkeit proportional zur
+Wurzel des aktuellen Füllstands. *Wann ist der Behälter leer, und wie verläuft der
+Füllstand dabei zeitlich?*
 
 <!-- markdownlint-disable -->
-\begin{align*}
-(y_h + y_p)' + f(x)\,(y_h + y_p)
-  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
-   = g(x). \quad \checkmark
-\end{align*}
+### Aufstellen der ODE
 <!-- markdownlint-enable -->
 
-Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
-die Störfunktion reproduziert. Dieses Zusammenspiel heißt
-**Superpositionsprinzip**.
-
-```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
-:class: note
-Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
-setzt sich zusammen aus
+Die Volumenänderungsrate im Behälter entspricht dem abfließenden Volumenstrom.
+Mit dem Behälterquerschnitt $A$ und dem Ausflusskoeffizienten folgt nach
+Division durch $A$ die **Torricellische Ausflussgleichung**:
 
 \begin{equation*}
-y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
+\dot{h} = -k\sqrt{h}, \quad k = 0.04~\text{m}^{1/2}\,\text{s}^{-1}.
 \end{equation*}
 
-wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
-$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
-Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
-festgelegt.
-```
+Das negative Vorzeichen drückt aus, dass der Füllstand sinkt. Die rechte Seite
+hat die Form $f(t) \cdot g(h) = (-k) \cdot \sqrt{h}$, die ODE ist also
+separierbar.
 
-## Wie wählen wir den richtigen Ansatz?
-
-Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
-$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
-$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
-Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
-Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
-$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
-die drei wichtigsten Typen zusammen:
+Bevor wir durch $\sqrt{h}$ dividieren, prüfen wir den **Sonderfall** $g(h) =
+\sqrt{h} = 0$, also $h = 0$: Ein leerer Behälter bleibt leer, $\dot{h} = 0$. Das
+ist die konstante Lösung $h(t) = 0$, physikalisch trivial, aber mathematisch
+vollständig.
 
 <!-- markdownlint-disable -->
-| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
-| --- | --- |
-| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
-| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
-| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
+### Lösung durch Separation
 <!-- markdownlint-enable -->
 
-Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
-homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
-null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
-werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
+Die Anfangsbedingung ist $h(0) = h_0 = 0.64~\text{m}$. Wir setzen $h > 0$ voraus.
 
-## Beispiel 1: der Fallschirmsprung
-
-Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
-0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
-Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
+**Trennen:**
 
 \begin{equation*}
-v_p = C, \quad C \in \mathbb{R}.
+\frac{dh}{\sqrt{h}} = -k\,dt.
 \end{equation*}
 
-Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
+**Integrieren und Stammfunktion einsetzen:**
 
 \begin{equation*}
-\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
+\int h^{-1/2}\,dh = \int -k\,dt \quad \Rightarrow \quad 2\sqrt{h} = -kt + C_1.
 \end{equation*}
 
-**Koeffizientenvergleich** liefert unmittelbar:
+**Anfangsbedingung einsetzen:** $2\sqrt{h_0} = C_1$, also:
 
 \begin{equation*}
-C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
+\sqrt{h(t)} = \sqrt{h_0} - \frac{k}{2}\,t.
 \end{equation*}
 
-Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
-physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
-Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
-A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
+**Nach $h$ auflösen:** Quadrieren ergibt die spezielle Lösung:
 
 \begin{equation*}
-v(t) = A\,e^{-kt} + v_\infty.
+h(t) = \left(\sqrt{h_0} - \frac{k}{2}\,t\right)^2.
 \end{equation*}
 
-**Anfangsbedingung** $v(0) = 0$:
+Diese Formel gilt, solange $\sqrt{h_0} - \frac{k}{2}\,t \geq 0$ ist. Danach gilt
+$h(t) = 0$.
+
+**Verifikation:** Die Ableitung der Lösung ist:
 
 \begin{equation*}
-v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
-\quad \Rightarrow \quad A = -v_\infty.
+\dot{h}(t) = 2\!\left(\sqrt{h_0} - \frac{k}{2}\,t\right)\cdot\left(-\frac{k}{2}\right)
+           = -k\left(\sqrt{h_0} - \frac{k}{2}\,t\right).
 \end{equation*}
 
-Die spezielle Lösung des AWP lautet:
+Die rechte Seite der ODE ergibt:
 
 \begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49{,}05\,\bigl(1 - e^{-0{,}2\,t}\bigr)~\text{m\,s}^{-1}.
+-k\sqrt{h(t)} = -k\sqrt{\left(\sqrt{h_0} - \frac{k}{2}\,t\right)^2}
+              = -k\left(\sqrt{h_0} - \frac{k}{2}\,t\right). \quad \checkmark
 \end{equation*}
-
-Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
-hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
-ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
-$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
-
-## Beispiel 2: eine Sinus-Störfunktion
-
-Wir betrachten die ODE
-
-\begin{equation*}
-y' + y = \sin(x).
-\end{equation*}
-
-Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
-(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
-\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
-
-\begin{equation*}
-y_p(x) = P\cos(x) + Q\sin(x).
-\end{equation*}
-
-Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
-\sin(x)$:
-
-\begin{align*}
-y_p'(x) + y_p(x)
-  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
-  &= (Q - P)\sin(x) + (P + Q)\cos(x)
-   \stackrel{!}{=} \sin(x).
-\end{align*}
-
-**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
-$\cos(x)$ auf beiden Seiten:
-
-\begin{align*}
-\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
-\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
-\end{align*}
-
-Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
-= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
-lautet:
-
-\begin{equation*}
-y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-Die allgemeine Lösung ist:
-
-\begin{equation*}
-y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
-
-\begin{align*}
-y' + y
-  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
-     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
-  &= \sin(x). \quad \checkmark
-\end{align*}
-
-Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
-durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
-Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
-Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
-
-```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
-<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
-```
 
 <!-- markdownlint-disable -->
-```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
-<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
-title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
-```
+### Ergebnis und physikalische Interpretation
 <!-- markdownlint-enable -->
+
+Mit $h_0 = 0.64~\text{m}$, also $\sqrt{h_0} = 0.8~\text{m}^{1/2}$, und
+$k = 0.04~\text{m}^{1/2}\,\text{s}^{-1}$:
+
+\begin{equation*}
+h(t) = \bigl(0.8 - 0.02\,t\bigr)^2~\text{m}.
+\end{equation*}
+
+Der Behälter ist leer, wenn $\sqrt{h} = 0$, also wenn $0.8 -
+0.02\,t_{\text{leer}} = 0$:
+
+\begin{equation*}
+t_{\text{leer}} = \frac{2\sqrt{h_0}}{k} = \frac{2 \cdot 0.8}{0.04} = 40~\text{s}.
+\end{equation*}
+
+Das ist ein bemerkenswert konkretes Ergebnis: Der Behälter entleert sich in
+endlicher Zeit. Im Vergleich dazu würde ein Modell mit linearem Ausfluss
+($\dot{h} = -k\,h$) den Füllstand nur asymptotisch gegen null treiben, der
+Behälter wäre theoretisch nie leer. Die Nichtlinearität $\sqrt{h}$ liefert hier
+das physikalisch realistischere Bild. In der Hydraulik, die Sie in der
+Strömungslehre vertiefen werden, bildet das Torricellische Ausflussgesetz die
+Grundlage für die Dimensionierung von Ablaufventilen und
+Druckausgleichsbehältern.
+
+```{dropdown} Video (EN) "Torricelli's Law" von GekkoFactor-Calculus
+<iframe width="927" height="521" src="https://www.youtube.com/embed/SfXm22iQD2Y"
+title="Modelling with differential equations - Torricelli&#39;s Law" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Welche Methode für welche ODE?
+
+Mit den Beispielen dieses Kapitels lässt sich eine einfache Entscheidungsregel formulieren.
+Der erste Blick gilt der Struktur der rechten Seite:
+
+<!-- markdownlint-disable -->
+| Struktur der rechten Seite | Methode | Abschnitt |
+| --- | --- | --- |
+| $y' = f(x) \cdot g(y)$ (Produkt aus reinem $x$-Anteil und reinem $y$-Anteil) | Trennung der Variablen | 7.1 |
+| $y' = f(ax + by + c)$ (Funktion einer Linearkombination) | Substitution $u = ax + by + c$ | 7.2 |
+<!-- markdownlint-enable -->
+
+In der Praxis empfiehlt es sich, zuerst auf eine Produktstruktur zu prüfen.
+Gelingt die Faktorisierung nicht, ist zu fragen, ob die rechte Seite von einer
+Linearkombination $ax + by + c$ abhängt. Trifft keine der beiden Formen zu,
+führt weder Separation noch Substitution direkt zum Ziel. Für solche Fälle
+stellt Kapitel 8 die Lösungstheorie linearer ODEs 1. Ordnung bereit, die einen
+breiteren Bereich von Gleichungstypen abdeckt.
 
 ## Zusammenfassung und Ausblick
 
-Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
-Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
-beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
-trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
-funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
-Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
-Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
-Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
+Die beiden Beispiele dieses Abschnitts zeigen das vollständige Vorgehen beim
+Lösen technischer ODEs: Aus der Physik folgt die ODE, aus der Struktur der ODE
+folgt die Methode, und aus der Lösung folgt eine physikalisch interpretierbare
+Aussage. Die Euler-Eytelwein-Gleichung $F' = \mu F$ liefert das
+Exponentialgesetz des Riementriebs, die Torricellische Gleichung $\dot{h} =
+-k\sqrt{h}$ die endliche Entleerungszeit eines Hydraulikbehälters. In beiden
+Fällen war die Separation der Variablen aus Abschnitt 7.1 das entscheidende
+Werkzeug.
 
-In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
-an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
-Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
-nicht in die Ansatztabelle passt.
+In Kapitel 8 erweitern wir den Lösungsbereich auf lineare ODEs 1. Ordnung der
+Form $y' + p(x)\,y = q(x)$. Diese Gleichungen sind nicht mehr notwendigerweise
+separierbar, erlauben aber eine systematische Lösungstheorie, die in der
+Regelungstechnik und der Strukturmechanik allgegenwärtig ist.

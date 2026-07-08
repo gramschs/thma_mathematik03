@@ -14,14 +14,13 @@ die Diagonalmatrix und die Einheitsmatrix sowie die Dreiecksmatrix.
 
 ```{admonition} Lernziele
 :class: attention
-Sie kennen die besonderen Matrizen
-* [ ] **Nullmatrix**,
-* [ ] **Diagonalmatrix**,
-* [ ] **Einheitsmatrix** und
-* [ ] **untere Dreiecksmatrix** bzw. **obere Dreiecksmatrix**.
+* [ ] Sie kennen die **Nullmatrix**.
+* [ ] Sie kennen die **Diagonalmatrix**.
+* [ ] Sie kennen die **Einheitsmatrix**.
+* [ ] Sie kennen die **untere Dreiecksmatrix** und die **obere Dreiecksmatrix**.
 ```
 
-## Nullmatrix
+## Was ist eine Nullmatrix?
 
 Eine Matrix, bei der jeder Eintrag Null ist, kann sehr nützlich sein. Sollen
 beispielsweise während eines 3x3-Basketballspiels die Pässe eines Spielers zu jedem
@@ -88,7 +87,7 @@ $$\mathbf{0}_{5\times 2} =
 Eine Matrix, bei der alle Elemente Null sind, heißt **Nullmatrix**.
 ```
 
-## Diagonalmatrix und Einheitsmatrix
+## Was zeichnet Diagonal- und Einheitsmatrizen aus?
 
 Im vorherigen Kapitel haben wir den Fachbegriff Hauptdiagonale kennengelernt.
 Damit sind die Einträge einer Matrix gemeint, bei denen der Zeilenindex gleich
@@ -160,14 +159,14 @@ Werte (auch Null) enthalten.
 In dem Beispiel
 
 \begin{equation*}
-\mathbf{B} = \begin{pmatrix}
+\mathbf{M} = \begin{pmatrix}
 -2 & 1 \\
 0 & 4 \\
 \end{pmatrix}
 \end{equation*}
 
-ist das Element $b_{12} = 1$ nicht Null, obwohl es ein Element außerhalb der
-Hauptdiagonale ist. Daher ist dieses Beispiel $\mathbf{B}$ keine Diagonalmatrix,
+ist das Element $m_{12} = 1$ nicht Null, obwohl es ein Element außerhalb der
+Hauptdiagonale ist. Daher ist dieses Beispiel $\mathbf{M}$ keine Diagonalmatrix,
 weil bei einer Diagonalmatrix *jeder* Eintrag außerhalb der Hauptdiagonale Null
 sein muss.
 
@@ -193,16 +192,18 @@ Ein weiteres Beispiel für eine Diagonalmatrix ist
 
 Es dürfen auch Nullen in der Hauptdiagonale sein.
 
-Eine besondere Diagonalmatrix ist die sogenannte **Einheitsmatrix**. Eine
-Einheitsmatrix ist zunächst einmal eine Diagonalmatrix. Damit ist sie also
-quadratisch und alle Elemente außerhalb der Hauptdiagonale sind Null. Damit
-eine Diagonalmatrix zu einer Einheitsmatrix wird, müssen zusätzlich alle
-Elemente auf der Hauptdiagonale gleich der Zahl Eins sein. Oft wird sie mit
-einem großen, fettgedruckten $\mathbf{E}$ oder $\mathbf{I}$ gekennzeichnet. Das
-$\mathbf{I}$ kommt von dem englischen Begriff "identity matrix". An den
-Variablennamen wird die Anzahl der Zeilen als tiefgestelltes Zeichen
-geschrieben. Und da die Matrix quadratisch sein muss, ist dies gleich der Anzahl
-der Spalten der Einheitsmatrix. Die Einheitsmatrix der Dimension $2\times 2$ ist
+*Gibt es unter den Diagonalmatrizen eine, die beim Rechnen dieselbe Rolle
+spielt wie die Zahl Eins bei reellen Zahlen?* Eine besondere Diagonalmatrix ist
+die sogenannte **Einheitsmatrix**. Eine Einheitsmatrix ist zunächst einmal eine
+Diagonalmatrix. Damit ist sie also quadratisch und alle Elemente außerhalb der
+Hauptdiagonale sind Null. Damit eine Diagonalmatrix zu einer Einheitsmatrix
+wird, müssen zusätzlich alle Elemente auf der Hauptdiagonale gleich der Zahl
+Eins sein. Oft wird sie mit einem großen, fettgedruckten $\mathbf{E}$ oder
+$\mathbf{I}$ gekennzeichnet. Das $\mathbf{I}$ kommt von dem englischen Begriff
+"identity matrix". An den Variablennamen wird die Anzahl der Zeilen als
+tiefgestelltes Zeichen geschrieben. Und da die Matrix quadratisch sein muss,
+ist dies gleich der Anzahl der Spalten der Einheitsmatrix. Die Einheitsmatrix
+der Dimension $2\times 2$ ist
 
 $$
 \mathbf{E}_{2} =
@@ -230,7 +231,7 @@ Null sind und alle Elemente der Hauptdiagonale Eins sind, wird
 **Einheitsmatrix** genannt.
 ```
 
-## Dreiecksmatrix
+## Was ist eine Dreiecksmatrix?
 
 Wie Diagonalmatrizen und Einheitsmatrizen sind auch Dreiecksmatrizen
 *quadratisch*. Wenn zusätzlich alle Elemente oberhalb der Hauptdiagonale Null
@@ -283,9 +284,11 @@ $$\begin{pmatrix}
 \end{pmatrix}.$$
 
 Dreiecksmatrizen wirken auf den ersten Blick weniger anschaulich als die
-Basketballmatrix mit den Pässen. Ihre praktische Bedeutung zeigt sich jedoch
-beim Lösen von linearen Gleichungssystemen, das wir in einem späteren Kapitel
-behandeln.
+Basketballmatrix mit den Pässen. Ihre praktische Bedeutung zeigt sich jedoch in
+der Strukturmechanik, wo große Gleichungssysteme durch eine sogenannte
+LR-Zerlegung in eine untere und eine obere Dreiecksmatrix aufgeteilt werden, um
+sie numerisch effizient zu lösen. Diesen Zusammenhang vertiefen wir, wenn wir
+lineare Gleichungssysteme in einem späteren Kapitel behandeln.
 
 ```{admonition} Was ist ... eine Dreiecksmatrix?
 :class: note

@@ -1,198 +1,163 @@
-# Anwendungen der Diagonalisierung
+# 5.5 Eigenwerte und Eigenvektoren: Motivation und Definition
 
-Wir haben in diesem Kapitel das Werkzeug der Diagonalisierung vollständig
-entwickelt. Jetzt setzen wir es ein. Der Trägheitstensor des L-Profils und der
-Spannungstensor haben uns als Leitbeispiele begleitet, und beide sind bereits
-vollständig behandelt. In diesem Abschnitt fassen wir die Ergebnisse dieser
-beiden Beispiele aus Ingenieurperspektive zusammen und fügen eine dritte
-wichtige Anwendung hinzu: die Modalanalyse schwingender Systeme.
+Bisher haben wir Matrizen als Werkzeuge für lineare Gleichungssysteme und als
+Beschreibung von Drehungen und Transformationen kennengelernt. Jetzt stellen
+wir eine ganz andere Frage: *Gibt es Richtungen im Raum, die durch eine
+Matrixtransformation nicht verbogen, sondern nur gestreckt oder gestaucht
+werden?* Diese Frage führt uns direkt zum Begriff der Eigenwerte und
+Eigenvektoren, der zu den bedeutsamsten Konzepten der gesamten linearen
+Algebra gehört.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können erläutern, wie die Diagonalisierung des **Trägheitstensors**
-  die Hauptträgheitsmomente und Hauptträgheitsachsen eines Querschnitts liefert.
-* [ ] Sie können den Zusammenhang zwischen Diagonalisierung und der Berechnung
-  von **Hauptspannungen** erläutern: Die Eigenwerte des Spannungstensors sind
-  die Hauptspannungen, die Eigenvektoren geben die Hauptspannungsrichtungen an.
-* [ ] Sie können erläutern, wie die Diagonalisierung in der **Modalanalyse**
-  eingesetzt wird: Ein gekoppeltes Schwingungssystem zerfällt in der Basis der
-  Eigenvektoren in unabhängige Einzelschwingungen.
+* [ ] Sie verstehen, was ein **Eigenvektor** und ein **Eigenwert** einer
+  quadratischen Matrix sind, und können die definierende Gleichung
+  \begin{equation*}
+  \mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
+  \end{equation*} 
+  erläutern.
+* [ ] Sie können geometrisch beschreiben, was es bedeutet, dass ein Vektor
+  Eigenvektor einer Abbildung ist: Er wird durch die Abbildung nur gestreckt
+  oder gestaucht, nicht gedreht.
+* [ ] Sie wissen, dass der Nullvektor kein Eigenvektor ist.
+* [ ] Sie kennen mindestens zwei maschinenbauliche Anwendungen von Eigenwerten,
+  etwa **Hauptspannungen** in der Festigkeitslehre und **Eigenfrequenzen** in
+  der Schwingungsanalyse.
 ```
 
-## Hauptträgheitsmomente und Hauptträgheitsachsen
+## Wo begegnen uns Eigenwerte im Maschinenbau?
 
-Ein Balken mit L-förmigem Querschnitt wurde in diesem Kapitel als durchgehendes
-Beispiel verwendet. Der Trägheitstensor im ursprünglichen Koordinatensystem
+In der Festigkeitslehre wird der Spannungszustand an einem Punkt eines Bauteils
+durch den Spannungstensor beschrieben, eine symmetrische $3\times 3$-Matrix.
+Die Frage, welche Schnittflächen an diesem Punkt keine Schubspannungen erfahren
+und nur durch Normalspannungen belastet sind, führt auf ein Eigenwertproblem.
+Die Eigenwerte des Spannungstensors sind die **Hauptspannungen**, und die
+Eigenvektoren zeigen in die **Hauptspannungsrichtungen**. Diese Größen sind für
+die Auslegung von Bauteilen unter Betriebslast unverzichtbar.
 
-\begin{equation*}
-\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4
-\end{equation*}
+Ein zweites, sehr vertrautes Beispiel aus dem Maschinenbau sind schwingungsfähige
+Systeme. Ein einfacher Zweimassenschwinger besteht aus zwei Massen, die über
+Federn miteinander und mit einem Rahmen verbunden sind. Die Differentialgleichungen
+der Bewegung lassen sich in Matrizenform schreiben. Die Frequenzen, bei denen
+das System resonant schwingt, die **Eigenfrequenzen**, sind direkt mit den
+Eigenwerten der Systemmatrix verknüpft. Wir werden diesen Zusammenhang im
+weiteren Verlauf des Kurses noch vertiefen.
 
-hat den Nebendiagonaleintrag $2 \cdot 10^4\,\text{mm}^4$, weil die
-Koordinatenachsen nicht mit den natürlichen Symmetrieachsen des Profils
-übereinstimmen. Durch Diagonalisierung haben wir in Abschnitt 5.4 das
-Koordinatensystem der Hauptträgheitsachsen gefunden:
+## Was ist ein Eigenvektor?
 
-\begin{equation*}
-\mathbf{D} = \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
-\end{equation*}
-
-Die Diagonaleinträge sind die **Hauptträgheitsmomente** $I_1 = 6 \cdot 10^4\,\text{mm}^4$
-und $I_2 = 1 \cdot 10^4\,\text{mm}^4$. Die zugehörigen Eigenvektoren
-
-\begin{equation*}
-\vec{v}_1 = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\quad \text{und} \quad
-\vec{v}_2 = \frac{1}{\sqrt{5}}\begin{pmatrix} 1 \\ -2 \end{pmatrix}
-\end{equation*}
-
-zeigen in die **Hauptträgheitsachsen**, also in die Richtungen der größten und
-kleinsten Biegesteifigkeit. Um den Balken zu biegen, ist die Kraft in Richtung
-$\vec{v}_2$ am wirksamsten, weil das kleinste Trägheitsmoment dort liegt.
-
-Diese Information ist in der Praxis unverzichtbar: In der Norm DIN EN 1993
-(Bemessung von Stahlbauten) werden alle Nachweise für Biegung und Knickung
-bezüglich der Hauptträgheitsachsen geführt. Ohne die Diagonalisierung müsste
-man mit dem ungünstigeren ursprünglichen Koordinatensystem rechnen und würde
-dabei entweder auf der sicheren Seite zu konservativ oder im ungünstigen Fall
-falsch liegen.
-
-## Hauptspannungen und Hauptspannungsrichtungen
-
-Der Spannungstensor an einem Punkt eines belasteten Bauteils beschreibt, welche
-Normal- und Schubspannungen auf Schnittflächen in verschiedene Richtungen
-wirken. Im Beispiel aus Abschnitt 5.2 lautete er:
+Wir betrachten eine konkrete Situation. Gegeben sei die Matrix
 
 \begin{equation*}
-\boldsymbol{\sigma} = \begin{pmatrix} 7 & 2 \\ 2 & 4 \end{pmatrix}~\text{MPa}.
+\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}.
 \end{equation*}
 
-Durch Diagonalisierung haben wir in Abschnitt 5.4 die Hauptspannungen
-$\sigma_1 = 8~\text{MPa}$ und $\sigma_2 = 3~\text{MPa}$ bestimmt. Die
-zugehörigen Eigenvektoren geben die **Hauptspannungsrichtungen** an, also die
-Schnittflächen, auf denen ausschließlich Normalspannungen und keine
-Schubspannungen wirken.
-
-*Warum ist das für die Auslegung wichtig?* Die meisten Versagenskriterien im
-Maschinenbau, wie das von-Mises-Kriterium oder das Tresca-Kriterium, werden in
-den Hauptspannungen formuliert. Konkret lautet die von-Mises-Vergleichsspannung
-für den ebenen Spannungszustand:
+Wir multiplizieren verschiedene Vektoren mit $\mathbf{A}$ und beobachten,
+was geschieht. Für den Vektor $\vec{u} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
+ergibt sich:
 
 \begin{equation*}
-\sigma_V = \sqrt{\sigma_1^2 - \sigma_1\sigma_2 + \sigma_2^2}.
+\mathbf{A}\cdot\vec{u} = \begin{pmatrix} 6 \\ 2 \end{pmatrix}.
 \end{equation*}
 
-Für unser Beispiel ergibt sich:
+Der Vektor zeigt nach der Transformation in eine andere Richtung. Versuchen
+wir es mit $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$:
 
 \begin{equation*}
-\sigma_V = \sqrt{8^2 - 8\cdot 3 + 3^2} = \sqrt{64 - 24 + 9} = \sqrt{49} = 7~\text{MPa}.
+\mathbf{A}\cdot\vec{v} =
+\begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}
+\begin{pmatrix} 2 \\ 1 \end{pmatrix} =
+\begin{pmatrix} 14 \\ 7 \end{pmatrix} = 7 \cdot \begin{pmatrix} 2 \\ 1 \end{pmatrix}
+= 7\cdot\vec{v}.
 \end{equation*}
 
-Diesen Wert vergleicht man mit der Streckgrenze des Werkstoffs. Die
-Diagonalisierung ist hier also kein Selbstzweck, sondern der notwendige erste
-Schritt vor dem Festigkeitsnachweis. In der Technischen Mechanik II werden Sie
-diesen Zusammenhang für den räumlichen Spannungszustand mit einem $3\times 3$-Tensor
-vertiefen.
+Hier passiert etwas Besonderes: Das Ergebnis ist dasselbe wie $\vec{v}$,
+lediglich mit dem Faktor $7$ gestreckt. Die Matrix hat die Richtung von $\vec{v}$
+vollständig erhalten und ihn nur skaliert. Genau solche Vektoren nennen wir
+Eigenvektoren.
 
-## Modalanalyse: wenn Maschinen schwingen
-
-Eine dritte, in der Praxis besonders wichtige Anwendung der Diagonalisierung
-ist die Analyse schwingender Systeme. Jede Maschine schwingt, wenn sie in
-Betrieb ist: Motoren, Pumpen, Brücken, Flugzeugtragflächen. Die Frage, bei
-welchen Frequenzen Resonanz auftritt, entscheidet über Komfort, Lärm und im
-Extremfall über das Versagen des Bauteils.
-
-Wir betrachten ein einfaches Modell: zwei Massen $m_1$ und $m_2$, die über
-Federn miteinander und mit einem festen Rahmen verbunden sind. Die Bewegung
-beider Massen ist gekoppelt, weil die mittlere Feder beide Massen gleichzeitig
-beeinflusst. Die Gleichgewichtsbedingung führt auf ein lineares
-Gleichungssystem der Form
+```{admonition} Was sind ... Eigenwert und Eigenvektor?
+:class: note
+Ein Vektor $\vec{v} \neq \vec{0}$ heißt **Eigenvektor** der quadratischen
+Matrix $\mathbf{A}$, wenn es eine reelle Zahl $\lambda$ gibt, sodass
 
 \begin{equation*}
-\mathbf{K}\vec{x} = \omega^2 \mathbf{M}\vec{x},
+\mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
 \end{equation*}
 
-wobei $\mathbf{K}$ die **Steifigkeitsmatrix**, $\mathbf{M}$ die **Massenmatrix**,
-$\vec{x}$ der Vektor der Auslenkungen und $\omega$ die gesuchte Kreisfrequenz
-ist. Das ist ein verallgemeinertes Eigenwertproblem. Für den Sonderfall gleicher
-Massen $m_1 = m_2 = m$ vereinfacht es sich auf ein gewöhnliches Eigenwertproblem
-für die Matrix $\mathbf{A} = \frac{1}{m}\mathbf{K}$.
+gilt. Die Zahl $\lambda$ heißt der zu $\vec{v}$ gehörende **Eigenwert**.
 
-Als konkretes Beispiel wählen wir $m = 1\,\text{kg}$ und die Steifigkeitsmatrix
+Der Nullvektor $\vec{0}$ ist ausdrücklich kein Eigenvektor, da
+$\mathbf{A}\cdot\vec{0} = \vec{0} = \lambda\cdot\vec{0}$ für jedes $\lambda$
+gilt und damit keine sinnvolle Aussage über eine Richtung liefert.
+```
+
+Wir haben bereits überprüft, dass $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$
+ein Eigenvektor von $\mathbf{A}$ zum Eigenwert $\lambda = 7$ ist. Jedes
+skalare Vielfache $s\cdot\vec{v}$ mit $s \neq 0$ ist ebenfalls ein Eigenvektor
+zum selben Eigenwert, denn:
 
 \begin{equation*}
-\mathbf{K} = \begin{pmatrix} 3 & -1 \\ -1 & 3 \end{pmatrix}~\frac{\text{N}}{\text{m}},
+\mathbf{A}\cdot(s\vec{v}) = s\cdot(\mathbf{A}\vec{v}) = s\cdot 7\vec{v} = 7\cdot(s\vec{v}).
 \end{equation*}
 
-sodass $\mathbf{A} = \mathbf{K}$. Die Matrix ist symmetrisch, der Spektralsatz
-garantiert, dass die Diagonalisierung gelingt. Wir berechnen die Eigenwerte:
+Es gibt also nicht den einen Eigenvektor zu einem Eigenwert, sondern eine ganze
+Richtung im Raum. Alle Vielfachen von $\vec{v}$ bilden zusammen den
+**Eigenraum** zum Eigenwert $\lambda = 7$.
+
+## Was bedeutet ein negativer Eigenwert?
+
+Ein Eigenwert $\lambda > 1$ entspricht einer Streckung in die Richtung des
+Eigenvektors. Für $0 < \lambda < 1$ schrumpft der Vektor. Ist $\lambda < 0$,
+kehrt sich die Richtung um, der Vektor wird gespiegelt und zusätzlich skaliert.
+Für $\lambda = 0$ wäre $\mathbf{A}\vec{v} = \vec{0}$, was bedeutet, dass der
+Eigenvektor auf den Nullvektor abgebildet wird. In diesem Fall ist die Matrix
+nicht invertierbar, wie wir aus dem Kapitel über Determinanten wissen.
+
+*Aber wie berechnet man Eigenwerte systematisch, ohne wie oben nach Vektoren
+raten zu müssen?* Diese Frage führt auf das charakteristische Polynom, das wir
+im nächsten Abschnitt kennenlernen.
+
+## Eigenwerte und Eigenvektoren in der Festigkeitslehre
+
+In der Technischen Mechanik beschreibt der ebene Spannungstensor den
+Spannungszustand an einem Punkt eines dünnwandigen Bauteils:
 
 \begin{equation*}
-p(\lambda) = (3 - \lambda)^2 - 1 = \lambda^2 - 6\lambda + 8 = (\lambda - 4)(\lambda - 2) = 0.
+\boldsymbol{\sigma} =
+\begin{pmatrix} \sigma_{xx} & \tau_{xy} \\ \tau_{xy} & \sigma_{yy} \end{pmatrix}.
 \end{equation*}
 
-Die Eigenwerte sind $\lambda_1 = 4$ und $\lambda_2 = 2$. Die zugehörigen
-**Eigenkreisfrequenzen** sind:
+Die Diagonalelemente sind Normalspannungen, die Nebendiagonalelemente sind
+Schubspannungen. Die Eigenwerte dieser Matrix sind genau die Hauptspannungen
+$\sigma_1$ und $\sigma_2$, auf die es für die Bewertung nach der Gestaltänderungs-
+energiehypothese (von-Mises-Kriterium) ankommt. Die Eigenvektoren zeigen in die
+Richtungen, in denen keine Schubspannungen auftreten. Diese Verbindung werden
+Sie in der Technischen Mechanik II vertiefen.
 
-\begin{equation*}
-\omega_1 = \sqrt{\lambda_1} = 2~\frac{\text{rad}}{\text{s}}
-\quad \text{und} \quad
-\omega_2 = \sqrt{\lambda_2} = \sqrt{2}~\frac{\text{rad}}{\text{s}} \approx 1{,}41~\frac{\text{rad}}{\text{s}}.
-\end{equation*}
+```{dropdown} Video "Eigenwertproblem Einfach Erklärt!" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/eJWgKvrhDmE?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
+title="Eigenwertproblem Einfach Erklärt! | Eigenwerte und Eigenvektoren: Bedeutung, Anwendung, Herleitung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
-Jetzt berechnen wir die Eigenvektoren. Für $\lambda_1 = 4$:
+```{dropdown} Video (EN) "Eigenvectors and Eigenvalues" von 3Blue1Brown
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PFDu9oVAE-g"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
 
-\begin{equation*}
-\mathbf{A} - 4\mathbf{E} = \begin{pmatrix} -1 & -1 \\ -1 & -1 \end{pmatrix}
-\quad \Rightarrow \quad
-\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
-\end{equation*}
+## Zusammenfassung und Ausblick
 
-Für $\lambda_2 = 2$:
+Ein Eigenvektor einer Matrix ist ein Vektor, dessen Richtung durch die
+Matrixtransformation nicht geändert wird. Er wird nur gestreckt, gestaucht oder
+gespiegelt, und der Streckungsfaktor ist der zugehörige Eigenwert. Der Nullvektor
+ist ausdrücklich kein Eigenvektor.
 
-\begin{equation*}
-\mathbf{A} - 2\mathbf{E} = \begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}
-\quad \Rightarrow \quad
-\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
-\end{equation*}
-
-Diese Eigenvektoren sind die **Eigenformen** des Schwingungssystems. Sie
-beschreiben, wie die beiden Massen bei der jeweiligen Eigenfrequenz relativ
-zueinander schwingen. Im ersten Eigenvektor $\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}$
-bewegen sich die beiden Massen in entgegengesetzte Richtungen: Die eine geht
-nach links, während die andere nach rechts geht. Im zweiten Eigenvektor
-$\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ bewegen sich beide Massen
-gemeinsam in dieselbe Richtung.
-
-*Wozu hilft die Diagonalisierung hier?* Das originale System mit der Matrix
-$\mathbf{A}$ beschreibt zwei gekoppelte Schwingungen: Die Bewegung von Masse 1
-beeinflusst Masse 2 und umgekehrt. In der Basis der Eigenvektoren, also nach
-der Transformation $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ mit
-
-\begin{equation*}
-\mathbf{V} = \begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}
-\quad \text{und} \quad
-\mathbf{D} = \begin{pmatrix} 4 & 0 \\ 0 & 2 \end{pmatrix},
-\end{equation*}
-
-zerfällt das gekoppelte System in zwei vollständig unabhängige Einzelschwingungen.
-Jede Einzelschwingung lässt sich separat analysieren und lösen. Das ist der
-zentrale Vorteil der Modalanalyse: Ein kompliziertes gekoppeltes System wird
-durch Diagonalisierung in einfache Teilsysteme zerlegt. In der
-Maschinendynamik, die Sie in höheren Semestern kennenlernen werden, bildet
-dieses Prinzip die Grundlage für die rechnergestützte Schwingungsanalyse ganzer
-Fahrzeuge, Turbinen und Brückentragwerke.
-
-## Zusammenfassung
-
-Die Diagonalisierung ist in allen drei Beispielen dasselbe mathematische
-Werkzeug, aber die Interpretation der Eigenwerte und Eigenvektoren wechselt
-mit dem physikalischen Kontext. Beim Trägheitstensor sind die Eigenwerte
-Hauptträgheitsmomente und die Eigenvektoren Hauptachsen. Beim Spannungstensor
-sind die Eigenwerte Hauptspannungen und die Eigenvektoren spannungsfreie
-Schnittrichtungen. Bei der Modalanalyse sind die Wurzeln der Eigenwerte
-Eigenfrequenzen und die Eigenvektoren Schwingungsformen. Das verbindende
-Prinzip ist stets dasselbe: Im Koordinatensystem der Eigenvektoren wird eine
-komplizierte, gekoppelte Beschreibung durch eine einfache, diagonale ersetzt.
+Im nächsten Abschnitt lernen wir, wie wir die Eigenwerte einer Matrix
+systematisch berechnen: über das charakteristische Polynom, das durch
+$\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ definiert ist. Die Kenntnis der
+Determinante aus Kapitel 1 zahlt sich jetzt aus.

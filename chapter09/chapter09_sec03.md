@@ -3,169 +3,243 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.3 Welches Verfahren für welche ODE? Orientierung im Methodenüberblick
+# 9.3 Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
 
-Mit Kapitel 9.2 ist der Block über gewöhnliche Differentialgleichungen 1. Ordnung
-abgeschlossen. In den Kapiteln 7 bis 9 haben wir sechs Verfahren kennengelernt, die
-zusammen einen breiten Bereich von ODEs abdecken: von der einfachen Trennung der
-Variablen bis zur Variation der Konstanten im Resonanzfall. Vor dem Wechsel zu linearen
-ODEs 2. Ordnung in Kapitel 10 lohnt es sich, die Verfahren in einer Übersicht zu
-ordnen und das Wichtigste zu üben: nicht das Ausrechnen, sondern das Erkennen. Denn
-in der Klausur wie in der Ingenieurpraxis entscheidet die richtige Methodenwahl darüber,
-ob ein Problem in drei Schritten oder gar nicht lösbar ist.
+In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
+Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
+ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
+hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
+modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
+**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
+der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
+dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
+den Bogen, der in Kapitel 6 geöffnet wurde.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können eine gegebene ODE 1. Ordnung anhand ihrer Struktur als separierbar,
-  substituierbar oder linear klassifizieren und das passende Lösungsverfahren aus den
-  Kapiteln 7 bis 9 auswählen.
-* [ ] Sie können bei einer linearen ODE 1. Ordnung entscheiden, ob der **Ansatz vom
-  Typ der rechten Seite** oder die **Variation der Konstanten** das effizientere
-  Verfahren ist, und den Resonanzfall erkennen.
-* [ ] Sie können die vollständige Lösung einer ODE 1. Ordnung selbständig von der
-  Klassifikation bis zur verifizierten allgemeinen Lösung durchführen.
+* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
+  $$y_{\text{allgemein}} = y_h + y_p$$
+  aus homogener Lösung und partikulärer Lösung zusammensetzt.
+* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
+  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
+* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
+  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
+* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
+  Anfangsbedingungen anpassen.
 ```
 
-## Ein Entscheidungsweg in zwei Stufen
+## Warum reicht die homogene Lösung nicht aus?
 
-Der erste Blick gilt stets der Frage: Ist die ODE linear oder nichtlinear? Die Antwort
-teilt den Methodenraum in zwei Hälften.
-
-### Nichtlineare ODEs 1. Ordnung
-
-Bei einer nichtlinearen ODE prüfen wir die Struktur der rechten Seite:
-
-| ODE-Form | Lösungsverfahren | Kapitel |
-| --- | --- | --- |
-| $y' = f(x) \cdot g(y)$ | Trennung der Variablen | 7.1 |
-| $y' = f(ax + by + c)$, $b \neq 0$ | Substitution $u = ax + by + c$ | 7.2 |
-| Keiner der obigen Typen | Richtungsfeld (qualitativ) oder Euler-Verfahren (numerisch) | 6.2, 6.3 |
-
-Passt die ODE in keine der ersten beiden Zeilen, ist eine analytische Lösung mit den
-Mitteln dieses Kurses nicht mehr möglich. Richtungsfeld und Euler-Verfahren liefern
-dann qualitative oder numerische Aussagen.
-
-### Lineare ODEs 1. Ordnung $y' + f(x)\,y = g(x)$
-
-Bei einer linearen ODE prüfen wir Koeffizienten und Störfunktion:
-
-| Situation | Lösungsverfahren | Kapitel |
-| --- | --- | --- |
-| $f(x) = a$ konstant, $g(x)$ aus Ansatztabelle, kein Resonanzfall | Ansatz vom Typ der rechten Seite | 8.3 |
-| $f(x) = a$ konstant, Resonanzfall $b = -a$ | Variation der Konstanten (Kompaktformel) | 9.2 |
-| $f(x)$ variabel, beliebiges $g(x)$ | Variation der Konstanten (allgemeine Formel) | 9.1 |
-
-Der Ansatz vom Typ der rechten Seite ist, wo anwendbar, der schnellere Weg. Die
-Variation der Konstanten ist das allgemeinere Werkzeug und greift immer. Den
-Resonanzfall erkennt man daran, dass der Exponent $b$ in $g(x) = \alpha\,e^{bx}$ mit
-dem Exponenten $-a$ der homogenen Lösung $y_h = A\,e^{-ax}$ übereinstimmt.
-
-## Drei Beispiele: zuerst erkennen, dann lösen
-
-Die folgenden drei ODEs decken je einen zentralen Ast des Entscheidungswegs ab. Bei
-jeder ODE benennen wir zuerst explizit die Methode und den Grund für die Wahl, bevor
-wir rechnen.
-
-### Beispiel 1: $y' = x\,y^2$
-
-**Methode.** Die rechte Seite lässt sich als $f(x) \cdot g(y) = x \cdot y^2$ schreiben.
-Die ODE ist nichtlinear (wegen $y^2$) und separierbar. Lösungsverfahren: Trennung der
-Variablen (Abschnitt 7.1).
-
-**Sonderfall.** $g(y) = y^2 = 0$ ergibt die konstante Lösung $y(x) = 0$.
-
-**Lösung** für $y \neq 0$. Trennen, integrieren und auflösen:
+Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
+9.81$ erfüllt:
 
 \begin{equation*}
-\frac{dy}{y^2} = x\,dx
-\quad \Rightarrow \quad
--\frac{1}{y} = \frac{x^2}{2} + C
-\quad \Rightarrow \quad
-y(x) = -\frac{1}{\dfrac{x^2}{2} + C}, \quad C \in \mathbb{R}.
+\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
 \end{equation*}
 
-**Verifikation.**
+$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
+Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
+wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
+genau diesen fehlenden Anteil liefert.
+
+*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
+ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+
+<!-- markdownlint-disable -->
+\begin{align*}
+(y_h + y_p)' + f(x)\,(y_h + y_p)
+  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
+   = g(x). \quad \checkmark
+\end{align*}
+<!-- markdownlint-enable -->
+
+Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
+die Störfunktion reproduziert. Dieses Zusammenspiel heißt
+**Superpositionsprinzip**.
+
+```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
+:class: note
+Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
+setzt sich zusammen aus
 
 \begin{equation*}
-y' = \frac{x}{\left(\dfrac{x^2}{2} + C\right)^2} = x \cdot \frac{1}{\left(\dfrac{x^2}{2} + C\right)^2} = x\,y^2. \quad \checkmark
+y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
 \end{equation*}
 
-### Beispiel 2: $y' + 3y = e^{-x}$
+wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
+$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
+Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
+festgelegt.
+```
 
-**Methode.** Die ODE ist linear mit konstantem Koeffizienten $a = 3$. Die Störfunktion
-$g(x) = e^{-x}$ ist exponentiell mit Exponent $b = -1$. Wir prüfen den Resonanzfall:
-$b = -1 \neq -3 = -a$. Kein Resonanzfall. Lösungsverfahren: Ansatz vom Typ der rechten
-Seite (Abschnitt 8.3).
+## Wie wählen wir den richtigen Ansatz?
 
-**Homogene Lösung.** $y_h = A\,e^{-3x}$.
+Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
+$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
+$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
+Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
+Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
+$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
+die drei wichtigsten Typen zusammen:
 
-**Partikuläre Lösung.** Ansatz $y_p = C\,e^{-x}$:
+<!-- markdownlint-disable -->
+| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
+| --- | --- |
+| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
+| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
+| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
+<!-- markdownlint-enable -->
+
+Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
+homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
+null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
+werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
+
+## Beispiel 1: der Fallschirmsprung
+
+Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
+0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
+Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
 
 \begin{equation*}
-y_p' + 3\,y_p = -C\,e^{-x} + 3C\,e^{-x} = 2C\,e^{-x} \stackrel{!}{=} e^{-x}
-\quad \Rightarrow \quad C = \frac{1}{2}.
+v_p = C, \quad C \in \mathbb{R}.
 \end{equation*}
 
-**Allgemeine Lösung.**
+Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
 
 \begin{equation*}
-y(x) = A\,e^{-3x} + \frac{1}{2}\,e^{-x}, \quad A \in \mathbb{R}.
+\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
 \end{equation*}
 
-**Verifikation.** $y' = -3A\,e^{-3x} - \tfrac{1}{2}\,e^{-x}$:
+**Koeffizientenvergleich** liefert unmittelbar:
 
 \begin{equation*}
-y' + 3y = \left(-3A\,e^{-3x} - \tfrac{1}{2}e^{-x}\right)
-        + 3\left(A\,e^{-3x} + \tfrac{1}{2}e^{-x}\right)
-= e^{-x}. \quad \checkmark
+C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
 \end{equation*}
 
-### Beispiel 3: $y' - y = e^{x}$
-
-**Methode.** Die ODE ist linear mit konstantem Koeffizienten $a = -1$. Die Störfunktion
-$g(x) = e^{x}$ ist exponentiell mit Exponent $b = 1$. Wir prüfen den Resonanzfall:
-$b = 1 = -(-1) = -a$. Resonanzfall! Der Standardansatz $C\,e^{x}$ würde versagen, weil
-$e^{x}$ bereits $y_h$ ist. Lösungsverfahren: Variation der Konstanten (Abschnitt 9.2).
-
-**Homogene Lösung.** $y_h = A\,e^{x}$.
-
-**Partikuläre Lösung** über die Kompaktformel mit $a = -1$:
+Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
+physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
+Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
+A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
 
 \begin{equation*}
-\int g(x)\,e^{ax}\,dx = \int e^{x} \cdot e^{-x}\,dx = \int 1\,dx = x.
+v(t) = A\,e^{-kt} + v_\infty.
 \end{equation*}
 
-Damit: $y_p = x \cdot e^{x}$.
-
-**Allgemeine Lösung.**
+**Anfangsbedingung** $v(0) = 0$:
 
 \begin{equation*}
-y(x) = A\,e^{x} + x\,e^{x} = (A + x)\,e^{x}, \quad A \in \mathbb{R}.
+v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
+\quad \Rightarrow \quad A = -v_\infty.
 \end{equation*}
 
-**Verifikation.** $y' = e^{x} + (A + x)\,e^{x} = (1 + A + x)\,e^{x}$:
+Die spezielle Lösung des AWP lautet:
 
 \begin{equation*}
-y' - y = (1 + A + x)\,e^{x} - (A + x)\,e^{x} = e^{x}. \quad \checkmark
+v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
+     = 49{,}05\,\bigl(1 - e^{-0{,}2\,t}\bigr)~\text{m\,s}^{-1}.
 \end{equation*}
 
-Die drei Beispiele zeigen dasselbe Muster: Der entscheidende Schritt ist nicht die
-Rechnung, sondern die Klassifikation. Wer die Struktur der ODE richtig liest, wählt das
-effizienteste Verfahren und vermeidet Sackgassen.
+Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
+hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
+ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
+$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
+
+## Beispiel 2: eine Sinus-Störfunktion
+
+Wir betrachten die ODE
+
+\begin{equation*}
+y' + y = \sin(x).
+\end{equation*}
+
+Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
+(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
+\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
+
+\begin{equation*}
+y_p(x) = P\cos(x) + Q\sin(x).
+\end{equation*}
+
+Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
+\sin(x)$:
+
+\begin{align*}
+y_p'(x) + y_p(x)
+  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
+  &= (Q - P)\sin(x) + (P + Q)\cos(x)
+   \stackrel{!}{=} \sin(x).
+\end{align*}
+
+**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
+$\cos(x)$ auf beiden Seiten:
+
+\begin{align*}
+\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
+\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
+\end{align*}
+
+Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
+= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
+lautet:
+
+\begin{equation*}
+y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
+\end{equation*}
+
+Die allgemeine Lösung ist:
+
+\begin{equation*}
+y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
+\end{equation*}
+
+**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
+
+\begin{align*}
+y' + y
+  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
+     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
+  &= \sin(x). \quad \checkmark
+\end{align*}
+
+Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
+durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
+Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
+Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
+
+```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
+<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+<!-- markdownlint-disable -->
+```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
+<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
+title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+<!-- markdownlint-enable -->
 
 ## Zusammenfassung und Ausblick
 
-Der Block über ODEs 1. Ordnung umfasst sechs Verfahren aus vier Kapiteln. Die
-Entscheidung läuft in zwei Stufen: zuerst linear oder nichtlinear, dann innerhalb der
-jeweiligen Klasse anhand der Koeffizienten und der Störfunktion. Den Resonanzfall
-erkennt man am Exponenten: Tritt $b = -a$ auf, versagt der Standardansatz, und die
-Variation der Konstanten greift automatisch korrekt.
+Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
+Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
+beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
+trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
+funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
+Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
+Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
+$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
+Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
 
-In Kapitel 10 beginnt ein neuer Block: lineare ODEs 2. Ordnung mit konstanten
-Koeffizienten. Die Gleichung $y'' + ay' + by = g(x)$ beschreibt Schwingungssysteme,
-deren Analyse in der Technischen Mechanik, der Akustik und der Strukturdynamik zentral
-ist. Die Lösungsstruktur $y = y_h + y_p$ aus Abschnitt 8.3 bleibt erhalten, aber $y_h$
-enthält nun zwei freie Konstanten und wird aus zwei Fundamentallösungen aufgebaut, deren
-Form von den Wurzeln einer charakteristischen Gleichung abhängt.
+In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
+an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
+Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
+nicht in die Ansatztabelle passt.

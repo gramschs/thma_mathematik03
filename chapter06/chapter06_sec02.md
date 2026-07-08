@@ -1,161 +1,195 @@
----
-authors:
-  - name: Simone Gramsch
----
+# 6.2 Berechnung der Eigenwerte
 
-# 6.2 Richtungsfelder: Lösungskurven sehen, bevor man rechnet
-
-In Abschnitt 6.1 haben wir die spezielle Lösung $v(t) = v_\infty(1 - e^{-kt})$
-durch Einsetzen und Verifizieren kennengelernt, aber noch nicht hergeleitet.
-Bevor wir in Abschnitt 6.4 das erste systematische Lösungsverfahren entwickeln,
-machen wir einen Schritt zurück und fragen: Was lässt sich über die Lösungen
-einer ODE sagen, ohne sie überhaupt zu berechnen? Die Antwort steckt bereits in
-der ODE selbst, denn $\dot{v} = g - kv$ schreibt in jedem Punkt des
-$(t, v)$-Koordinatensystems eine Steigung vor. Aus diesen Steigungen lässt sich
-ein Bild aufbauen, das den qualitativen Verlauf aller Lösungskurven auf einmal
-zeigt.
+Im letzten Abschnitt haben wir den Eigenvektor von $\mathbf{A}$ durch
+glückliches Raten gefunden. In der Praxis mit großen Matrizen ist das natürlich
+keine taugliche Methode. Wir brauchen ein systematisches Verfahren. Die
+Schlüsselidee ist dabei eine Bedingung, die wir bereits kennen: die
+Determinante. Wenn wir die Eigenwertgleichung geschickt umformulieren, führt
+sie direkt auf die Suche nach den Nullstellen eines Polynoms.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, dass eine ODE 1. Ordnung in expliziter Form $\dot{v} = F(t, v)$
-  in jedem Punkt $(t, v)$ die **Steigung der Lösungskurve** durch diesen
-  Punkt vorschreibt.
-* [ ] Sie können zu einer ODE 1. Ordnung ein **Richtungsfeld** skizzieren,
-  indem Sie an ausgewählten Punkten Linienelemente mit der jeweiligen Steigung
-  $F(t, v)$ einzeichnen.
-* [ ] Sie kennen den Begriff der **Isoklinen** und können die Nullisokline
-  einer ODE bestimmen und physikalisch interpretieren.
-* [ ] Sie können zu einem gegebenen Startpunkt eine **Lösungskurve** in ein
-  Richtungsfeld einzeichnen, indem Sie den Linienelementen folgen.
+* [ ] Sie können die Eigenwerte einer quadratischen Matrix $\mathbf{A}$ berechnen,
+  indem Sie das **charakteristische Polynom**
+  $p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = 0$
+  aufstellen und lösen.
+* [ ] Sie können das charakteristische Polynom für $2\times 2$- und
+  $3\times 3$-Matrizen explizit berechnen.
+* [ ] Sie wissen, dass eine $n\times n$-Matrix **höchstens $n$ verschiedene
+  Eigenwerte** besitzen kann.
+* [ ] Sie können die Eigenwerte einer **Diagonal- oder Dreiecksmatrix** direkt
+  aus der Diagonalen ablesen, ohne das charakteristische Polynom berechnen
+  zu müssen.
 ```
 
-## Was schreibt eine ODE in jedem Punkt vor?
+## Wie kommen wir von der Eigenwertgleichung zum charakteristischen Polynom?
 
-Unsere ODE lautet $\dot{v} = g - kv$. Die rechte Seite hängt nur von $v$ ab,
-nicht von $t$. Das bedeutet: Überall auf derselben waagerechten Linie
-$v = \text{const}$ ist die vorgeschriebene Steigung gleich. Wir berechnen die
-Steigung an einigen konkreten Geschwindigkeitswerten:
-
-| Geschwindigkeit $v$ | Steigung $\dot{v} = g - kv$ | Interpretation |
-| --- | --- | --- |
-| $0~\text{m\,s}^{-1}$ | $9.81~\text{m\,s}^{-2}$ | Starke Beschleunigung aus der Ruhe |
-| $30~\text{m\,s}^{-1}$ | $3.81~\text{m\,s}^{-2}$ | Deutlich schwächere Beschleunigung |
-| $49.05~\text{m\,s}^{-1}$ | $0~\text{m\,s}^{-2}$ | Keine Beschleunigung: Grenzgeschwindigkeit |
-| $65~\text{m\,s}^{-1}$ | $-3.19~\text{m\,s}^{-2}$ | Verzögerung: Luftwiderstand überwiegt |
-
-An jedem dieser Punkte zeichnen wir ein kurzes Linienelement mit der
-entsprechenden Steigung ein. Die Gesamtheit aller solcher Linienelemente über
-ein Gitter von Punkten heißt **Richtungsfeld** der ODE.
-
-```{admonition} Was ist ... ein Richtungsfeld?
-:class: note
-Das **Richtungsfeld** einer ODE 1. Ordnung in expliziter Form $\dot{y} = F(t, y)$
-ist die Gesamtheit aller Linienelemente im $(t, y)$-Koordinatensystem. Am
-Punkt $(t_0, y_0)$ hat das Linienelement die Steigung $F(t_0, y_0)$.
-
-Eine **Isokline** zur Steigung $c$ ist die Menge aller Punkte, an denen die
-vorgeschriebene Steigung gleich $c$ ist:
+Wir starten mit der definierenden Gleichung $\mathbf{A}\vec{v} = \lambda\vec{v}$
+und bringen alles auf eine Seite:
 
 \begin{equation*}
-F(t, y) = c.
+\mathbf{A}\vec{v} - \lambda\vec{v} = \vec{0}.
 \end{equation*}
 
-Die Isokline zur Steigung $c = 0$ heißt **Nullisokline**.
+Da wir $\mathbf{A}$ und $\lambda\mathbf{E}$ beide mit $\vec{v}$ multiplizieren,
+können wir ausklammern:
+
+\begin{equation*}
+(\mathbf{A} - \lambda\mathbf{E})\vec{v} = \vec{0}.
+\end{equation*}
+
+Das ist ein homogenes lineares Gleichungssystem. Es hat eine nichttriviale
+Lösung $\vec{v} \neq \vec{0}$ genau dann, wenn die Koeffizientenmatrix
+$\mathbf{A} - \lambda\mathbf{E}$ nicht invertierbar ist, also wenn ihre
+Determinante null ist. Aus dem Kapitel über Determinanten wissen wir: eine
+Matrix ist genau dann nicht invertierbar, wenn ihre Determinante verschwindet.
+Damit ergibt sich die Bedingung für Eigenwerte:
+
+\begin{equation*}
+\det(\mathbf{A} - \lambda\mathbf{E}) = 0.
+\end{equation*}
+
+```{admonition} Was ist ... das charakteristische Polynom?
+:class: note
+Für eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{n\times n}$ heißt der
+Ausdruck
+
+\begin{equation*}
+p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E})
+\end{equation*}
+
+das **charakteristische Polynom** von $\mathbf{A}$. Es ist ein Polynom vom Grad
+$n$ in $\lambda$. Die Eigenwerte von $\mathbf{A}$ sind genau die reellen
+Nullstellen von $p(\lambda)$. Die Gleichung $p(\lambda) = 0$ heißt die
+**charakteristische Gleichung**.
 ```
 
-Für unsere ODE $\dot{v} = g - kv$ ist die Nullisokline die Lösung von
-$g - kv = 0$, also die waagerechte Gerade $v = g/k = 49.05~\text{m\,s}^{-1}$.
-Das ist genau die Grenzgeschwindigkeit $v_\infty$. Da die rechte Seite nicht
-von $t$ abhängt, sind alle Isoklinen waagerechte Geraden, jeweils bei
-$v = (g - c)/k$ für eine gewählte Steigung $c$.
+Eine $n\times n$-Matrix hat also höchstens $n$ verschiedene Eigenwerte, da ein
+Polynom vom Grad $n$ höchstens $n$ Nullstellen hat. Für $2\times 2$-Matrizen
+ist das charakteristische Polynom quadratisch, für $3\times 3$-Matrizen kubisch.
 
-```{figure} pics/chap06_richtungsfeld_fallschirmspringer.svg
-:name: chap06_richtungsfeld_fallschirmspringer
-:width: 80%
-Richtungsfeld der ODE $\dot{v} = g - kv$ mit $k = 0.2~\text{s}^{-1}$ und
-$g = 9.81~\text{m\,s}^{-2}$. Die gestrichelte Linie bei $v_\infty = 49.05~\text{m\,s}^{-1}$
-ist die Nullisokline. Eingezeichnet sind Lösungskurven für die Anfangswerte
-$v(0) = 0$, $v(0) = 30~\text{m\,s}^{-1}$ und $v(0) = 70~\text{m\,s}^{-1}$.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
+## Wie berechnen wir Eigenwerte für eine $2\times 2$-Matrix?
 
-## Was verrät das Richtungsfeld über alle Lösungen?
+Wir kehren zu der Matrix zurück, die wir im letzten Abschnitt untersucht haben:
 
-*Müssen wir die ODE lösen, um zu wissen, wohin sich die Geschwindigkeit
-langfristig entwickelt?* Nein. Das Richtungsfeld zeigt es sofort, und das
-gilt auch dann, wenn sich eine ODE gar nicht analytisch lösen lässt: Wir
-sehen dennoch, wie sich Lösungen qualitativ verhalten. Unterhalb der
-Nullisokline bei $v_\infty = 49.05~\text{m\,s}^{-1}$ zeigen alle
-Linienelemente nach oben: Die Geschwindigkeit nimmt zu. Oberhalb zeigen sie
-nach unten: Die Geschwindigkeit nimmt ab. Genau auf der Nullisokline sind die
-Linienelemente waagerecht: Dort ändert sich die Geschwindigkeit nicht.
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}.
+\end{equation*}
 
-Dieses Bild beschreibt einen **stabilen Gleichgewichtszustand**. Jede Lösung,
-die unterhalb von $v_\infty$ startet, steigt gegen $v_\infty$; jede Lösung,
-die oberhalb startet, sinkt gegen $v_\infty$. Die Grenzgeschwindigkeit ist
-ein Attraktor: Alle Lösungen streben auf sie zu, unabhängig vom Anfangswert.
-In der Regelungstechnik, die Sie in höheren Semestern kennenlernen werden,
-ist diese Analyse der Gleichgewichtszustände und ihrer Stabilität ein
-zentrales Werkzeug für die Auslegung von Regelkreisen.
+Die Matrix $\mathbf{A} - \lambda\mathbf{E}$ lautet:
 
-Die Beobachtung lässt sich direkt aus der ODE ablesen, ohne die Lösung zu
-kennen: Ist $v < v_\infty$, dann ist $g - kv > 0$, also $\dot{v} > 0$; ist
-$v > v_\infty$, dann ist $g - kv < 0$, also $\dot{v} < 0$. Die Nullisokline
-teilt die $(t, v)$-Ebene in eine Beschleunigungs- und eine Verzögerungszone.
+\begin{equation*}
+\mathbf{A} - \lambda\mathbf{E} =
+\begin{pmatrix} 6 - \lambda & 2 \\ 2 & 3 - \lambda \end{pmatrix}.
+\end{equation*}
 
-## Wie zeichnet man eine Lösungskurve ein?
+Die Determinante dieser Matrix ist das charakteristische Polynom:
 
-Eine Lösungskurve durch einen Startpunkt $(t_0, v_0)$ zu skizzieren bedeutet,
-den Linienelementen des Richtungsfeldes zu folgen: Man beginnt am Startpunkt,
-bewegt sich ein kurzes Stück in Richtung des dortigen Linienelementes, liest am
-neuen Punkt die nächste Steigung ab und setzt die Kurve fort. Dieses Vorgehen
-ist qualitativ; ein exakter Algorithmus daraus wird das Euler-Verfahren in
-Abschnitt 6.3 sein.
+\begin{equation*}
+p(\lambda) = \det\begin{pmatrix} 6 - \lambda & 2 \\ 2 & 3 - \lambda \end{pmatrix}
+= (6 - \lambda)(3 - \lambda) - 2 \cdot 2.
+\end{equation*}
 
-<!-- markdownlint-disable MD033 -->
-<div id="applet-container-720">
+Wir multiplizieren aus und vereinfachen:
 
-<iframe
-  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_richtungsfeld.html"
-  width="100%"
-  frameborder="0"
-  scrolling="no">
-</iframe>
+\begin{equation*}
+p(\lambda) = 18 - 9\lambda + \lambda^2 - 4 = \lambda^2 - 9\lambda + 14.
+\end{equation*}
 
-</div>
-<!-- markdownlint-enable MD033 -->
+Die charakteristische Gleichung $p(\lambda) = 0$ lösen wir mit der pq-Formel:
 
-Für unser AWP $v(0) = 0$ beginnt die Kurve bei $(0, 0)$. Das Linienelement
-dort hat die Steigung $\dot{v}(0) = g = 9.81~\text{m\,s}^{-2}$, die Kurve
-startet also steil. Mit wachsendem $v$ nimmt die Steigung ab, die Kurve flacht
-sich ab und schmiegt sich von unten an die Nullisokline $v = v_\infty$ an.
-Das stimmt genau mit der in Abschnitt 6.1 berechneten Lösung
-$v(t) = v_\infty(1 - e^{-0.2\,t})$ überein: steiler Anstieg nahe $t = 0$,
-asymptotische Annäherung an $v_\infty$ für große $t$.
+\begin{align*}
+\lambda_{1/2}
+&= \frac{9}{2} \pm \sqrt{\frac{81}{4} - 14}
+= \frac{9}{2} \pm \sqrt{\frac{25}{4}}
+= \frac{9}{2} \pm \frac{5}{2}.
+\end{align*}
 
-## Weiteres Lernmaterial
+Damit erhalten wir die beiden Eigenwerte:
 
-Das folgende Video zeigt das Richtungsfeld **bis** ca. Zeitindex 8:16 min.
+\begin{equation*}
+\lambda_{1} = 7 \quad \text{und} \quad \lambda_{2} = 2.
+\end{equation*}
 
-```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
+Das überprüfen wir sofort: $p(7) = 49 - 63 + 14 = 0$ und $p(2) = 4 - 18 + 14 = 0$.
+Beide Werte sind tatsächlich Nullstellen des charakteristischen Polynoms.
+
+Für den Maschinenbau ist dieses Beispiel nicht nur akademisch. Stellen wir uns
+vor, $\mathbf{A}$ sei der ebene Spannungstensor eines Biegebalkens mit
+$\sigma_{xx} = 6~\text{MPa}$, $\sigma_{yy} = 3~\text{MPa}$ und
+$\tau_{xy} = 2~\text{MPa}$. Dann sind die Eigenwerte $\lambda_1 = 7~\text{MPa}$
+und $\lambda_2 = 2~\text{MPa}$ die Hauptspannungen des Spannungszustands.
+
+## Wie berechnen wir Eigenwerte für eine $3\times 3$-Matrix?
+
+Das Verfahren ist identisch: charakteristisches Polynom aufstellen,
+Nullstellen bestimmen. Der Unterschied ist, dass die Determinante einer
+$3\times 3$-Matrix ein kubisches Polynom in $\lambda$ ergibt.
+
+Wir betrachten die Matrix
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 5 & -1 & 2 \\ -1 & 5 & 2 \\ 2 & 2 & 2 \end{pmatrix}.
+\end{equation*}
+
+Die charakteristische Gleichung lautet:
+
+\begin{equation*}
+\det\begin{pmatrix} 5 - \lambda & -1 & 2 \\ -1 & 5 - \lambda & 2 \\ 2 & 2 & 2 - \lambda \end{pmatrix} = 0.
+\end{equation*}
+
+Die Berechnung der Determinante mit der Regel von Sarrus oder dem Laplaceschen
+Entwicklungssatz ergibt nach Ausmultiplizieren:
+
+\begin{equation*}
+p(\lambda) = -\lambda^3 + 12\lambda^2 - 36\lambda = -\lambda(\lambda^2 - 12\lambda + 36)
+= -\lambda(\lambda - 6)^2.
+\end{equation*}
+
+Die Nullstellen sind $\lambda_3 = 0$ und $\lambda_1 = \lambda_2 = 6$. Der
+Eigenwert $\lambda = 6$ ist eine doppelte Nullstelle: Wir sagen, er hat die
+**algebraische Vielfachheit** $2$. Die drei Eigenwerte der Matrix sind somit
+$\{0, 6, 6\}$.
+
+*Was bedeutet es, wenn ein Eigenwert gleich Null ist?* Dann ist
+$\det(\mathbf{A} - 0 \cdot \mathbf{E}) = \det(\mathbf{A}) = 0$. Die Matrix ist
+nicht invertierbar, und das lineare Gleichungssystem $\mathbf{A}\vec{x} = \vec{b}$
+hat keine eindeutige Lösung für jeden beliebigen Ergebnisvektor $\vec{b}$.
+
+## Können wir Eigenwerte manchmal direkt ablesen?
+
+Ja. Für Dreiecks- und Diagonalmatrizen lässt sich das charakteristische Polynom
+besonders einfach berechnen. Erinnern wir uns an die Eigenschaft aus Kapitel 1:
+die Determinante einer Dreiecksmatrix ist das Produkt ihrer Diagonalelemente.
+Damit gilt für eine obere Dreiecksmatrix mit den Einträgen $d_1, d_2, \ldots, d_n$
+auf der Diagonale:
+
+\begin{equation*}
+p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = (d_1 - \lambda)(d_2 - \lambda)\cdots(d_n - \lambda).
+\end{equation*}
+
+Die Nullstellen sind direkt die Diagonaleinträge: Die Eigenwerte einer
+Dreiecksmatrix (oder Diagonalmatrix) stehen auf der Hauptdiagonale. Für die
+Matrix
+
+\begin{equation*}
+\mathbf{T} = \begin{pmatrix} 3 & 1 & 7 \\ 0 & -2 & 4 \\ 0 & 0 & 5 \end{pmatrix}
+\end{equation*}
+
+können wir sofort ablesen: die Eigenwerte sind $\lambda_1 = 3$, $\lambda_2 = -2$
+und $\lambda_3 = 5$.
 
 ## Zusammenfassung und Ausblick
 
-Das Richtungsfeld einer ODE 1. Ordnung macht die qualitative Struktur aller
-Lösungskurven sichtbar, ohne dass eine einzige Lösung berechnet werden muss.
-Das ist besonders wertvoll, wenn eine analytische Lösung nicht existiert oder
-schwer zu finden ist. Die Nullisokline teilt die $(t, v)$-Ebene in zwei
-Bereiche mit positiver und negativer Steigung und zeigt stabile
-Gleichgewichtszustände. Für unser Fallbeispiel ist
-$v_\infty = 49.05~\text{m\,s}^{-1}$ ein solcher Attraktor: Alle Startbedingungen
-führen zur selben Grenzgeschwindigkeit.
+Die Eigenwerte einer quadratischen Matrix werden als Nullstellen des
+charakteristischen Polynoms $p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = 0$
+berechnet. Für $2\times 2$-Matrizen führt das auf eine quadratische, für
+$3\times 3$-Matrizen auf eine kubische Gleichung. Dreiecks- und Diagonalmatrizen
+erlauben das direkte Ablesen der Eigenwerte aus der Diagonale.
 
-In Abschnitt 6.3 machen wir das visuelle Abschätzen zu einem rechenbaren
-Verfahren: Das Euler-Verfahren ersetzt das Folgen von Linienelementen durch
-eine systematische Schrittformel und liefert eine numerische Näherungslösung
-für beliebige Startbedingungen.
+Jetzt kennen wir die Eigenwerte, aber noch nicht die zugehörigen Eigenvektoren.
+Der nächste Abschnitt zeigt, wie man für jeden gefundenen Eigenwert $\lambda_i$
+das homogene Gleichungssystem $(\mathbf{A} - \lambda_i\mathbf{E})\vec{v} = \vec{0}$
+löst und damit die Eigenvektoren bestimmt.

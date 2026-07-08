@@ -3,174 +3,198 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.2 Konvergenzgeschwindigkeit und Gibbssches Phänomen
+# 13.2 Grundschwingung und Oberschwingungen
 
-In Abschnitt 12.4 haben wir beobachtet, dass die Partialsummen der
-Rechteck-Lagerkraft an den Sprungstellen stets überschießen, egal wie viele
-Terme wir mitnehmen. Die Dreiecksschwingung aus Abschnitt 13.1 verhält sich
-ganz anders: Ihre Partialsummen schmiegen sich gleichmäßig an die Funktion an,
-und ihre Koeffizienten klingen wie $1/n^2$ ab statt wie $1/n$. *Was genau
-passiert an einer Sprungstelle, wenn wir unendlich viele Terme summieren, und
-warum bestimmt die Glattheit einer Funktion das Tempo der Konvergenz?* Beide
-Fragen führen auf das Konvergenzverhalten der Fourierreihe, das wir in diesem
-Abschnitt klären.
+In Abschnitt 12.1 haben wir den Kolbenhub der Kurbelwelle mit der einfachen
+Funktion $f(t) = 3\,\sin(\omega_0 t)$ modelliert. Das ist eine nützliche
+Vereinfachung, aber wer schon einmal einen laufenden Motor gehört hat, ahnt,
+dass das echte Signal komplizierter ist: Der Klang ändert sich mit der
+Drehzahl, und bei manchen Drehzahlen entstehen störende Geräusche, die auf
+bestimmte Schwingungsanteile zurückgehen. *Wie lässt sich das mathematisch
+erfassen?* Die Antwort führt uns auf die Begriffe Grundschwingung,
+Harmonische und Oberschwingung.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können den Wert berechnen, gegen den eine Fourierreihe an einer
-  **Sprungstelle** konvergiert, und das Ergebnis physikalisch interpretieren.
-* [ ] Sie können aus dem **Abklingverhalten** der Fourierkoeffizienten auf
-  die Glattheit einer Funktion schließen und umgekehrt.
-* [ ] Sie kennen das **Gibbssche Phänomen** und können es qualitativ
-  beschreiben: Wo tritt es auf, und warum verschwindet es auch bei sehr
-  vielen Termen nicht?
+* [ ] Sie kennen die Begriffe **Grundschwingung** und **Grundfrequenz** und
+  können die Grundfrequenz $f_0 = 1/T$ aus der Periode $T$ berechnen.
+* [ ] Sie kennen die Begriffe **Harmonische** und **Oberschwingung** und
+  können die Frequenzen der ersten Harmonischen zu einer gegebenen
+  Grundfrequenz bestimmen.
+* [ ] Sie können erklären, warum Oberschwingungen ganzzahlige Vielfache der
+  Grundfrequenz sind, und diese Eigenschaft mit der Periodizität begründen.
+* [ ] Sie können eine einfache Überlagerung von Grundschwingung und
+  Oberschwingungen grafisch und rechnerisch auswerten.
 ```
 
-## Gegen welchen Wert konvergiert die Reihe an einer Sprungstelle?
+## Was ist die Grundschwingung?
 
-An Stetigkeitsstellen ist die Lage einfach: Dort konvergieren die
-Partialsummen $S_N(t)$ für $N \to \infty$ gegen den Funktionswert $f(t)$. An
-Sprungstellen kann die Reihe nicht gleichzeitig gegen zwei verschiedene Werte
-konvergieren, sie wählt einen Mittelweg. Welchen, das haben wir bereits in
-Abschnitt 12.3 bei den Dirichlet-Bedingungen festgehalten: An einer
-Sprungstelle $t^*$ konvergiert die Fourierreihe gegen den Mittelwert der
-beiden einseitigen Grenzwerte,
+Wir kehren zu unserer Kurbelwelle mit der Periode $T = 0.04~\text{s}$ zurück.
+Das einfachste periodische Signal mit genau dieser Periode ist eine
+Sinusfunktion, die pro Zeitintervall der Länge $T$ genau einen vollständigen
+Schwingungszyklus ausführt. Diese elementare Schwingung nennen wir die
+**Grundschwingung** des Systems.
 
-\begin{equation*}
-\frac{f(t^*-) + f(t^*+)}{2},
-\end{equation*}
+Neben der Kreisfrequenz $\omega_0 = 2\pi/T$ aus Abschnitt 12.1 ist es in der
+Akustik und der Messtechnik üblich, die Schwingungsgeschwindigkeit durch die
+**Grundfrequenz** $f_0$ anzugeben. Sie gibt an, wie viele vollständige
+Schwingungszyklen pro Sekunde stattfinden.
 
-wobei $f(t^*-)$ den linksseitigen und $f(t^*+)$ den rechtsseitigen Grenzwert
-bezeichnet. Jetzt wenden wir diese Aussage erstmals konkret an.
-
-Die Rechteck-Lagerkraft aus Abschnitt 12.4 hat Sprungstellen bei $t^* = 0$ und
-$t^* = \pm\pi$. An der Stelle $t^* = 0$ gilt $f(0-) = -1$ (linksseitiger
-Grenzwert aus dem Intervall $[-\pi, 0)$) und $f(0+) = +1$ (rechtsseitiger
-Grenzwert aus dem Intervall $[0, \pi)$). Der Konvergenzwert der Fourierreihe
-an dieser Stelle ist damit
-
-\begin{equation*}
-\frac{f(0-) + f(0+)}{2} = \frac{-1 + 1}{2} = 0.
-\end{equation*}
-
-An der Stelle $t^* = \pi$ springt die Funktion von $+1$ auf $-1$ (periodische
-Fortsetzung), der Konvergenzwert ist ebenfalls $0$. Physikalisch ist das
-plausibel: Im Moment des Kraftrichtungswechsels liefert die Reihe genau den
-Nulldurchgang der Lagerkraft. Zur Verifikation werfen wir einen Blick zurück
-auf die Partialsummen in Abschnitt 12.4: Alle Kurven $S_1$, $S_3$ und $S_9$
-laufen an den Sprungstellen tatsächlich durch den Wert $0$. $\checkmark$
-
-## Warum konvergiert die Dreiecksreihe so viel schneller?
-
-Der Vergleich unserer beiden Leitrechnungen zeigt ein Muster. Die
-Rechteck-Lagerkraft hat Sprungstellen, ihre Koeffizienten klingen wie $1/n$
-ab, und wir brauchten in Abschnitt 12.4 viele Terme für eine brauchbare
-Näherung. Die Dreiecksschwingung ist überall stetig und hat nur Knickstellen,
-an denen die Ableitung springt; ihre Koeffizienten klingen wie $1/n^2$ ab,
-und schon $S_3$ lag in Abschnitt 13.1 nur noch $5\,\%$ vom exakten Wert
-entfernt. *Ist das ein allgemeines Prinzip?*
-
-Ja, und es lässt sich anschaulich begründen: Die Dreiecksschwingung entsteht,
-grob gesprochen, durch Integration der Rechteckschwingung, und jede
-Integration bringt im Frequenzbereich einen zusätzlichen Faktor $1/n$. Je
-glatter eine Funktion ist, desto weniger hochfrequente Anteile braucht ihre
-Fourierreihe, desto schneller klingen die Koeffizienten ab und desto weniger
-Terme genügen für eine vorgegebene Genauigkeit. Die folgende Übersicht fasst
-die drei wichtigsten Fälle zusammen:
-
-| Verhalten der Funktion | Abklingen der Koeffizienten | Beispiel | Beispiel im Maschinenbau |
-| --- | --- | --- | --- |
-| Sprungstelle | $\sim 1/n$ | Rechteckschwingung | schaltende Lagerkraft, Taktventil |
-| stetig, Knick in der Ableitung | $\sim 1/n^2$ | Dreiecksschwingung | Hubkurve eines Nockens |
-| beliebig oft differenzierbar | schneller als jede Potenz $1/n^k$ | Sinusschwingung | ideale Unwuchterregung |
-
-Wie drastisch der Unterschied zwischen beiden Abklingraten ausfällt, zeigt der
-direkte Vergleich der Koeffizientenbeträge unserer beiden Leitbeispiele.
-
-```{figure} pics/chap13_sec02_fig02.svg
----
-name: chap13_sec02_fig02
----
-Abklingverhalten der Fourierkoeffizienten von Rechteck- und Dreiecksschwingung
-im Vergleich.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Für die Praxis bedeutet das: Wer in der Messtechnik ein Signal mit scharfen
-Flanken analysiert, muss mit einem breiten Frequenzspektrum rechnen, denn die
-hohen Frequenzanteile sterben nur langsam aus. In der Auslegung von
-Nockenprofilen wird deshalb gezielt auf stetige Übergänge mit stetigen
-Ableitungen geachtet, um hochfrequente Anregungen des Ventiltriebs klein zu
-halten.
-
-## Was ist das Gibbssche Phänomen?
-
-Selbst wenn wir wissen, gegen welchen Wert die Fourierreihe konvergiert, bleibt
-eine auffällige Beobachtung aus den Abbildungen in Abschnitt 12.4: Kurz vor
-und kurz hinter jeder Sprungstelle überschießt die Partialsumme $S_N$ den
-Funktionswert deutlich. Und dieses Überschießen wird mit wachsendem $N$ nicht
-kleiner, es wird nur schmaler.
-
-```{figure} pics/chap13_sec02_fig01.svg
----
-name: chap13_sec02_fig01
----
-Partialsumme $S_{15}$ der Fourierreihe der Rechteck-Lagerkraft in der Nähe der
-Sprungstelle bei $t = 0$. Das Überschießen beträgt unabhängig von $N$ stets
-etwa $9\,\%$ der Sprunghöhe.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Dieses Verhalten ist kein Rechenfehler und kein Zufall. Es ist ein
-strukturelles Merkmal jeder Fourierreihe an Sprungstellen und trägt den Namen
-seines Entdeckers.
-
-```{admonition} Was ist ... das Gibbssche Phänomen?
+```{admonition} Was ist ... die Grundschwingung?
 :class: note
-An einer Sprungstelle der Höhe $\Delta = f(t^*+) - f(t^*-)$ überschießen die
-Partialsummen $S_N$ der Fourierreihe den Funktionswert um etwa
+Zu einer periodischen Funktion mit Periode $T$ ist die **Grundschwingung** die
+Sinusfunktion mit derselben Periode $T$. Ihre **Grundfrequenz** ist
 
 \begin{equation*}
-\delta \approx 0.09 \cdot |\Delta|,
+f_0 = \frac{1}{T},
 \end{equation*}
 
-also ungefähr $9\,\%$ der Sprunghöhe. Dieser Überschwinger wird mit
-wachsendem $N$ zwar schmaler, aber nicht kleiner. Er verschwindet auch im
-Grenzfall $N \to \infty$ nicht vollständig. Dieses Verhalten heißt
-**Gibbssches Phänomen**.
+gemessen in Hertz ($\text{Hz} = \text{s}^{-1}$). Die zugehörige
+**Kreisfrequenz** ist $\omega_0 = 2\pi\,f_0 = 2\pi/T$.
 ```
 
-Für die Rechteck-Lagerkraft beträgt die Sprunghöhe $|\Delta| = 2$, das
-Überschießen beläuft sich also auf etwa $0.09 \cdot 2 = 0.18$. Die
-Partialsumme erreicht nahe der Sprungstelle Werte von ungefähr $\pm 1.18$,
-obwohl die Funktion selbst nur zwischen $-1$ und $+1$ variiert. Für das Lager
-heißt das: Eine aus endlich vielen Harmonischen rekonstruierte Kraft
-überschätzt die Spitzenlast in der Nähe des Umschaltmoments systematisch um
-knapp ein Fünftel der Sprunghöhe.
+Für die Kurbelwelle mit $T = 0.04~\text{s}$ ergibt sich
 
-In der Messtechnik und der digitalen Signalverarbeitung ist das Gibbssche
-Phänomen praktisch relevant: Wann immer ein Signal scharfe Flanken hat,
-etwa bei Schaltimpulsen eines Hydraulikventils oder bei abrupten
-Lastwechseln, entstehen nach einer Fourieranalyse und Rücktransformation
-diese Überschwinger. Bei der Auslegung von Filtern in der Regelungstechnik
-muss man diesen Effekt berücksichtigen, um unerwünschte Schwingungen in der
-Steuergröße zu vermeiden.
+\begin{equation*}
+f_0 = \frac{1}{T} = \frac{1}{0.04~\text{s}} = 25~\text{Hz}.
+\end{equation*}
+
+Die Kurbelwelle führt also $25$ Umdrehungen pro Sekunde aus. Das entspricht
+der Drehzahl $1500~\text{min}^{-1}$, die wir in Abschnitt 12.1 als
+Ausgangspunkt gewählt haben. Die Kreisfrequenz der Grundschwingung ist
+
+\begin{equation*}
+\omega_0 = 2\pi\,f_0 = 2\pi \cdot 25~\text{Hz} = 50\pi~\text{rad\,s}^{-1}
+\approx 157.1~\text{rad\,s}^{-1}.
+\end{equation*}
+
+## Was sind Harmonische und Oberschwingungen?
+
+Ein reales Motorsignal enthält neben der Grundschwingung weitere schnellere
+Schwingungsanteile. Beim Vierzylindermotor zündet jeder Zylinder bei jeder
+zweiten Kurbelwellenumdrehung, die Zündfrequenz beträgt also das Doppelte der
+Grundfrequenz. Dazu kommen mechanische Ungleichförmigkeiten, die noch höhere
+Frequenzanteile erzeugen. *Warum sind diese Zusatzfrequenzen ausgerechnet
+ganzzahlige Vielfache der Grundfrequenz?*
+
+Der Grund ist die Periodizität. Das Gesamtsignal soll nach der Zeit $T$
+wieder denselben Wert annehmen. Eine Sinusfunktion mit der Frequenz $n \cdot
+f_0$ führt in der Zeit $T$ genau $n$ vollständige Zyklen aus und erfüllt
+damit $f(t + T) = f(t)$ automatisch. Eine Frequenz, die kein ganzzahliges
+Vielfaches von $f_0$ ist, würde hingegen nach der Zeit $T$ an einer anderen
+Stelle im Zyklus stehen und die Periodizität des Gesamtsignals zerstören.
+
+```{admonition} Was sind ... Harmonische und Oberschwingungen?
+:class: note
+Zu einer Grundfrequenz $f_0$ ist die **$n$-te Harmonische**
+($n = 1, 2, 3, \ldots$) die Sinusfunktion mit der Frequenz
+
+\begin{equation*}
+f_n = n \cdot f_0
+\end{equation*}
+
+und der Kreisfrequenz
+
+\begin{equation*}
+\omega_n = n \cdot \omega_0 = \frac{2\pi\,n}{T}.
+\end{equation*}
+
+Die erste Harmonische ($n = 1$) ist die Grundschwingung selbst. Alle
+Harmonischen oberhalb der Grundschwingung ($n \geq 2$) heißen
+zusammenfassend **Oberschwingungen**. Die Zahl $n$ heißt auch die
+**Ordnung** der Harmonischen.
+```
+
+In der Akustik- und Musikliteratur werden Obertöne versetzt gezählt: Der
+erste Oberton ist dort die zweite Harmonische, also die Schwingung mit der
+Frequenz $2\,f_0$. Um Missverständnisse zu vermeiden, nummerieren wir in
+diesem Skript ausschließlich Harmonische, bei denen die Ordnung $n$ direkt
+das Frequenzvielfache angibt. Das Wort Oberschwingungen verwenden wir nur
+als Sammelbegriff ohne Nummerierung.
+
+Für die Kurbelwelle mit $f_0 = 25~\text{Hz}$ berechnen wir die ersten vier
+Harmonischen:
+
+| Ordnung $n$ | Bezeichnung | Frequenz $f_n$ | Kreisfrequenz $\omega_n$ | Technische Bedeutung |
+| --- | --- | --- | --- | --- |
+| $1$ | Grundschwingung (1. Harmonische) | $25~\text{Hz}$ | $50\pi~\text{rad\,s}^{-1}$ | Kurbelwellenumdrehung |
+| $2$ | 2. Harmonische | $50~\text{Hz}$ | $100\pi~\text{rad\,s}^{-1}$ | Zündfrequenz (4-Zylinder) |
+| $3$ | 3. Harmonische | $75~\text{Hz}$ | $150\pi~\text{rad\,s}^{-1}$ | Drehmomentwelligkeit |
+| $4$ | 4. Harmonische | $100~\text{Hz}$ | $200\pi~\text{rad\,s}^{-1}$ | Strukturresonanz möglich |
+
+In der Maschinenakustik und der Schwingungsdiagnose ist diese Tabelle ein
+Standardwerkzeug: Tritt in einer Frequenzanalyse ein auffälliger Peak bei
+$50~\text{Hz}$ auf, deutet das auf ein Problem im Zündrhythmus hin; ein Peak
+bei $100~\text{Hz}$ kann auf eine Strukturresonanz der vierten Ordnung
+hinweisen. In der Diagnose rotierender Maschinen trägt die
+**Ordnungsanalyse** die gemessenen Amplituden direkt über den Ordnungen der
+Drehfrequenz auf und nutzt damit genau diese Zählweise.
+
+## Wie überlagern sich Grundschwingung und Oberschwingungen?
+
+Jede Harmonische trägt mit einer bestimmten Stärke zum Gesamtsignal bei.
+Diese Stärke wird durch ihre **Amplitude** beschrieben. Wenn wir
+Grundschwingung und zweite Harmonische mit den Amplituden $A_1$ und $A_2$
+überlagern, erhalten wir eine neue Funktion:
+
+\begin{equation*}
+s(t) = A_1\,\sin(\omega_0\,t) + A_2\,\sin(2\omega_0\,t).
+\end{equation*}
+
+Diese Funktion ist ebenfalls periodisch mit der Periode $T$, hat aber eine
+kompliziertere Form als eine einzelne Sinusfunktion. Als konkretes Beispiel
+wählen wir $A_1 = 3~\text{cm}$ und $A_2 = 0.8~\text{cm}$:
+
+\begin{equation*}
+s(t) = 3\,\sin(50\pi\,t) + 0.8\,\sin(100\pi\,t).
+\end{equation*}
+
+Wir prüfen, dass $s$ tatsächlich die Periode $T = 0.04~\text{s}$ hat:
+
+\begin{align*}
+s(t + T)
+&= 3\,\sin\!\bigl(50\pi\,(t + 0.04)\bigr) + 0.8\,\sin\!\bigl(100\pi\,(t + 0.04)\bigr) \\
+&= 3\,\sin(50\pi\,t + 2\pi) + 0.8\,\sin(100\pi\,t + 4\pi) \\
+&= 3\,\sin(50\pi\,t) + 0.8\,\sin(100\pi\,t) = s(t). \quad \checkmark
+\end{align*}
+
+Die Grundschwingung durchläuft einen Zyklus ($+2\pi$), die zweite
+Harmonische genau zwei Zyklen ($+4\pi$). Beide landen wieder am
+Ausgangspunkt.
+
+```{figure} pics/chap12_sec02_fig01.svg
+---
+name: chap12_sec02_fig01
+width: 100%
+---
+Überlagerung von Grundschwingung $3\,\sin(50\pi\,t)$ (blau) und zweiter
+Harmonischer $0.8\,\sin(100\pi\,t)$ (rot) zum Summensignal $s(t)$ (grau,
+gestrichelt) über eine Periode $T = 0.04~\text{s}$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Das Summensignal sieht nicht mehr wie eine glatte Sinuswelle aus. Je mehr
+Oberschwingungen wir hinzunehmen, desto stärker kann das Gesamtsignal von
+einer reinen Sinusfunktion abweichen. Rechteck-, Sägezahn- und
+Dreiecksschwingungen entstehen auf genau diese Weise aus unendlich vielen
+überlagerten Harmonischen. *Aber wie findet man die richtigen Amplituden,
+wenn man ein gemessenes Signal in seine Harmonischen zerlegen will?* Diese
+Frage beantwortet das Werkzeug der Fourierreihe, das wir in Abschnitt 12.3
+kennenlernen.
 
 ## Zusammenfassung und Ausblick
 
-An Stetigkeitsstellen konvergiert die Fourierreihe gegen den Funktionswert,
-an Sprungstellen gegen den Mittelwert der einseitigen Grenzwerte. Wie schnell
-die Konvergenz läuft, verrät das Abklingverhalten der Koeffizienten: Je
-glatter die Funktion, desto schneller sterben die hohen Frequenzanteile aus.
-Das Gibbssche Phänomen zeigt schließlich, dass die Konvergenz an
-Sprungstellen nicht gleichmäßig ist: Der Überschwinger von rund $9\,\%$ der
-Sprunghöhe bleibt bei beliebig vielen Termen erhalten.
+Jedes periodische Signal lässt sich als Überlagerung von Harmonischen mit
+den Frequenzen $n \cdot f_0$ beschreiben: der Grundschwingung mit der
+Grundfrequenz $f_0 = 1/T$ und den Oberschwingungen mit $n \geq 2$. Die
+Oberschwingungen sind zwingend ganzzahlige Vielfache der Grundfrequenz, weil
+nur so die Periodizität des Gesamtsignals erhalten bleibt. In der
+Maschinenakustik und der Regelungstechnik ist die Kenntnis der dominanten
+Harmonischen ein zentrales Diagnosewerkzeug.
 
-Bisher führt jede Frequenz in der Fourierreihe zwei Koeffizienten $a_n$ und
-$b_n$ mit sich. Für die Frage, wie stark die Lagerkraft bei einer bestimmten
-Frequenz schwingt, ist das unhandlich. In Abschnitt 13.3 schreiben wir die
-Fourierreihe mithilfe der eulerschen Formel aus Abschnitt 10.4 in eine
-komplexe Form um, in der jede Frequenz nur noch einen einzigen Koeffizienten
-trägt, und gewinnen daraus das Amplitudenspektrum der Lagerkraft.
+In Abschnitt 12.3 lernen wir die **Fourierreihe** kennen: ein systematisches
+Verfahren, mit dem sich jede periodische Funktion eindeutig in ihre
+Harmonischen zerlegen lässt und die zugehörigen Amplituden berechnet werden
+können.

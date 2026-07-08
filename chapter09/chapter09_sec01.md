@@ -3,227 +3,212 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.1 Variation der Konstanten: aus einer Konstante wird eine Funktion
+# 9.1 Lineare Differentialgleichungen: Struktur erkennen und benennen
 
-In Abschnitt 8.3 haben wir die partikuläre Lösung einer inhomogenen linearen ODE durch
-den Ansatz vom Typ der rechten Seite gewonnen: Wir erraten die Form von $y_p$ aus der
-Störfunktion und bestimmen die Koeffizienten durch Vergleich. Das Verfahren ist schnell,
-aber begrenzt: Es setzt konstante Koeffizienten voraus und funktioniert nur, wenn die
-Störfunktion in die Ansatztabelle passt. Sobald der Koeffizient $f(x)$ von $x$ abhängt,
-gibt es keine Ansatztabelle mehr, die systematisch greift. Wir brauchen ein universelles
-Verfahren. Die **Variation der Konstanten** liefert es: Sie berechnet $y_p$ aus $y_h$
-heraus, ohne dass wir die Form der Lösung vorher kennen müssen, und funktioniert für
-beliebige Störfunktionen und beliebige Koeffizienten $f(x)$.
+In Kapitel 7 haben wir zwei Lösungsverfahren für ODEs 1. Ordnung kennengelernt:
+die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
+Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
+Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
+bisher nicht explizit benannt haben: **Linearität**. Die
+Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
+Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
+Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
+weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
+Klassifikation ist die Voraussetzung für die Lösungstheorie, die in den
+folgenden Abschnitten entwickelt wird.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die Notation $y_h$, $y_p$ und $y_{\text{allgemein}}$ für die Lösungen
-  einer linearen inhomogenen ODE 1. Ordnung und wissen, welche Rolle jede Lösung spielt.
-* [ ] Sie wissen, dass sich die allgemeine Lösung der inhomogenen linearen ODE
-  $y' + f(x) \cdot y = g(x)$ als Summe
-  \begin{equation*}
-  y_{\text{allgemein}}(x) = y_h(x) + y_p(x)
-  \end{equation*}
-  aus homogener Lösung und partikulärer Lösung zusammensetzt.
-* [ ] Sie beherrschen das **Verfahren der Variation der Konstanten**: Sie ersetzen die
-  Konstante $A$ in $y_h$ durch eine Funktion $A(x)$ und bestimmen $A(x)$ durch Einsetzen
-  in die ODE.
-* [ ] Sie können die allgemeine Lösungsformel
-  \begin{equation*}
-  y_{\text{allgemein}}(x) = A \cdot e^{-\int f(x)\,dx}
-    + \left[\int g(x)\,e^{\int f(x)\,dx}\,dx\right] e^{-\int f(x)\,dx}
-  \end{equation*}
-  auf eine gegebene lineare inhomogene ODE 1. Ordnung anwenden.
+* [ ] Sie wissen, wie eine **lineare gewöhnliche Differentialgleichung** definiert ist,
+  und können sie von einer nichtlinearen DGL unterscheiden.
+* [ ] Sie können eine lineare DGL als **homogen** oder **inhomogen** klassifizieren und
+  wissen, dass die Störfunktion $g(x)$ den Unterschied ausmacht.
+* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung** $y(x) = 0$
+  besitzt.
+* [ ] Sie können eine lineare DGL **mit konstanten Koeffizienten** von einer linearen DGL
+  mit variablen Koeffizienten unterscheiden.
 ```
 
-## Wann stößt der Ansatz vom Typ der rechten Seite an seine Grenzen?
+## Was bedeutet es, dass eine ODE "linear" ist?
 
-Wir betrachten die ODE
-
-\begin{equation*}
-y' + \frac{1}{x}\,y = x.
-\end{equation*}
-
-Die Störfunktion $g(x) = x$ ist ein Polynom ersten Grades; laut Ansatztabelle aus
-Abschnitt 8.3 würden wir $y_p = Ax + B$ versuchen. Wir leiten ab und setzen ein:
+Wir betrachten noch einmal die Fallschirmspringer-Gleichung in der Form, die wir in
+Abschnitt 6.1 aufgestellt haben:
 
 \begin{equation*}
-A + \frac{1}{x}(Ax + B) = A + A + \frac{B}{x} = 2A + \frac{B}{x}
-\stackrel{!}{=} x.
+\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
 \end{equation*}
 
-Ein Koeffizientenvergleich scheitert: Auf der linken Seite stehen Terme mit $x^0$ und
-$x^{-1}$, auf der rechten Seite steht $x^1$. Kein Wahl von $A$ und $B$ bringt diese
-Seiten zur Übereinstimmung. Der variable Koeffizient $1/x$ erzeugt beim Einsetzen neue
-Terme, die der Ansatz nicht vorgesehen hat.
+Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
+Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
+nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
+meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
+treten ausschließlich linear auf.
 
-*Was ist der Ausweg?* Die Idee der Variation der Konstanten: Statt die Form von $y_p$
-zu erraten, bauen wir sie systematisch aus der bereits bekannten homogenen Lösung $y_h$.
-
-## Die Idee: aus einer Konstante wird eine Funktion
-
-Als erstes bestimmen wir $y_h$. Mit $f(x) = 1/x$ und $\int \frac{1}{x}\,dx = \ln x$
-(für $x > 0$) liefert die Formel aus Abschnitt 8.2:
+*Was würde die Linearität zerstören?* Bereits eine kleine Modifikation des
+Modells reicht. Wäre der Luftwiderstand quadratisch in der Geschwindigkeit, also
+$F_L = b\,v^2$ statt $F_L = b\,v$, so würde die ODE
 
 \begin{equation*}
-y_h(x) = A\,e^{-\ln x} = \frac{A}{x}, \quad A \in \mathbb{R}.
+\dot{v} + k\,v^2 = 9.81~\text{m\,s}^{-2}
 \end{equation*}
 
-Die Funktion $y_h = A/x$ erfüllt die homogene Gleichung $y' + \frac{1}{x}y = 0$ für
-jedes konstante $A$. Der entscheidende Gedanke der Variation der Konstanten: *Darf $A$
-auch von $x$ abhängen?* Wir ersetzen die Konstante $A$ durch eine noch unbekannte
-Funktion $A(x)$ und machen den Ansatz:
+lauten. Hier erscheint $v^2$. Das ist kein linearer Term, und die Gleichung ist
+daher nichtlinear. Ebenso nichtlinear wären $\dot{v} = \sin(v)$ oder $\dot{v}
+\cdot v = 1$: im ersten Fall steckt $v$ in einer nichtlinearen Funktion, im
+zweiten Beispiel werden $\dot{v}$ und $v$ miteinander multipliziert.
+
+Die allgemeine Form einer linearen ODE $n$-ter Ordnung lautet:
 
 \begin{equation*}
-y_p(x) = \frac{A(x)}{x}.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x).
 \end{equation*}
 
-Wenn wir $A(x)$ so wählen, dass $y_p$ die inhomogene Gleichung erfüllt, haben
-wir die partikuläre Lösung gefunden. Die freie Funktion $A(x)$ übernimmt damit
-die Rolle, die in 8.3 der Ansatzkoeffizient spielte, aber jetzt ohne
-Einschränkung auf bestimmte Typen der Störfunktion.
+Jede Ableitung $y^{(k)}$ tritt genau einmal und zur ersten Potenz auf,
+multipliziert mit einem Koeffizient $a_k(x)$, der von $x$ abhängen darf, aber
+nicht von $y$. Die rechte Seite $g(x)$ hängt ebenfalls nur von $x$ ab.
 
-## Das Verfahren Schritt für Schritt
-
-**Schritt 1: $y_p$ ableiten.** Mit der Quotientenregel:
-
-\begin{equation*}
-y_p'(x) = \frac{A'(x) \cdot x - A(x) \cdot 1}{x^2}
-         = \frac{A'(x)}{x} - \frac{A(x)}{x^2}.
-\end{equation*}
-
-**Schritt 2: In die ODE einsetzen.**
-
-\begin{align*}
-y_p' + \frac{1}{x}\,y_p
-  &= \frac{A'(x)}{x} - \frac{A(x)}{x^2} + \frac{1}{x} \cdot \frac{A(x)}{x} \\
-  &= \frac{A'(x)}{x} - \frac{A(x)}{x^2} + \frac{A(x)}{x^2} \\
-  &= \frac{A'(x)}{x}.
-\end{align*}
-
-Die Terme mit $A(x)$ heben sich auf. Das ist kein Zufall: Es liegt daran, dass $A(x)/x$
-die homogene Gleichung erfüllt, also $y_h' + \frac{1}{x}y_h = 0$ gilt. Übrig bleibt
-nur der Term mit $A'(x)$.
-
-**Schritt 3: Bestimmungsgleichung für $A'(x)$ aufstellen.** Die ODE fordert:
-
-\begin{equation*}
-\frac{A'(x)}{x} \stackrel{!}{=} x
-\quad \Rightarrow \quad
-A'(x) = x^2.
-\end{equation*}
-
-**Schritt 4: $A(x)$ durch Integration bestimmen.**
-
-\begin{equation*}
-A(x) = \int x^2\,dx = \frac{x^3}{3} + C, \quad C \in \mathbb{R}.
-\end{equation*}
-
-**Schritt 5: Allgemeine Lösung aufschreiben.**
-
-<!-- markdownlint-disable -->
-\begin{equation*}
-y_{\text{allgemein}}(x) = \frac{A(x)}{x}
-  = \frac{\dfrac{x^3}{3} + C}{x}
-  = \underbrace{\frac{C}{x}}_{= \,y_h} + \underbrace{\frac{x^2}{3}}_{= \,y_p}.
-\end{equation*}
-<!-- markdownlint-enable -->
-
-Die Integrationskonstante $C$ erzeugt wieder den homogenen Anteil $y_h = C/x$; der
-verbleibende Term $y_p = x^2/3$ ist die partikuläre Lösung.
-
-**Verifikation.** Mit $y' = -C/x^2 + 2x/3$:
-
-\begin{align*}
-y' + \frac{1}{x}\,y
-  &= \left(-\frac{C}{x^2} + \frac{2x}{3}\right) +
-     \frac{1}{x}\left(\frac{C}{x} + \frac{x^2}{3}\right) \\
-  &= -\frac{C}{x^2} + \frac{2x}{3} + \frac{C}{x^2} + \frac{x}{3} \\
-  &= x. \quad \checkmark
-\end{align*}
-
-## Die allgemeine Lösungsformel
-
-Das Verfahren, das wir gerade am Beispiel durchgeführt haben, gilt für jede
-lineare ODE 1. Ordnung $y' + f(x)\,y = g(x)$. Wir setzen allgemein $y_p =
-A(x)\,e^{-\int f\,dx}$ in die ODE ein. Die Terme mit $A(x)$ heben sich stets auf
-(aus demselben Grund wie im Beispiel), und es verbleibt:
-
-\begin{equation*}
-A'(x)\,e^{-\int f\,dx} = g(x)
-\quad \Rightarrow \quad
-A'(x) = g(x)\,e^{\int f(x)\,dx}.
-\end{equation*}
-
-Integration liefert $A(x) = \int g(x)\,e^{\int f(x)\,dx}\,dx + C$.
-Einsetzen in $y_p = A(x)\,e^{-\int f\,dx}$ ergibt die allgemeine Lösung:
-
-```{admonition} Was ist ... die Lösungsformel der Variation der Konstanten?
+```{admonition} Was ist ... eine lineare ODE?
 :class: note
-Die allgemeine Lösung der linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$ lautet
+Eine **lineare ODE** $n$-ter Ordnung hat die Form
 
 \begin{equation*}
-y_{\text{allgemein}}(x)
-  = \underbrace{A\,e^{-\int f(x)\,dx}}_{y_h}
-  + \underbrace{\left[\int g(x)\,e^{\int f(x)\,dx}\,dx\right]
-    e^{-\int f(x)\,dx}}_{y_p},
-  \quad A \in \mathbb{R}.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x),
 \end{equation*}
 
-Das Verfahren heißt **Variation der Konstanten**, weil die Konstante $A$ in
-$y_h$ durch die Funktion $A(x) = \int g(x)\,e^{\int f(x)\,dx}\,dx$ ersetzt wird.
+wobei die Koeffizientenfunktionen $a_0(x), \ldots, a_{n-1}(x)$ und die rechte Seite
+$g(x)$ nur von $x$ abhängen. Die gesuchte Funktion $y$ und alle ihre Ableitungen
+erscheinen ausschließlich zur ersten Potenz und werden nicht miteinander multipliziert.
+
+Eine ODE, die diese Form nicht hat, heißt **nichtlinear**.
 ```
 
-Wir prüfen die Formel an unserem Beispiel. Mit $f(x) = 1/x$ gilt
-$e^{\int f\,dx} = e^{\ln x} = x$ und $e^{-\int f\,dx} = 1/x$. Einsetzen:
+Die Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ ist
+eine lineare ODE 1. Ordnung mit $n = 1$, $a_0(t) = k$ und $g(t) =
+9.81~\text{m\,s}^{-2}$. Die Torricellische Ausflussgleichung $\dot{h} =
+-k\sqrt{h}$ aus Abschnitt 7.3 ist hingegen nichtlinear: $\sqrt{h} = h^{1/2}$ ist
+kein linearer Term in $h$.
+
+## Homogen oder inhomogen?
+
+Innerhalb der linearen ODEs gibt es eine weitere wichtige Unterscheidung. Wir
+schauen auf die rechte Seite der allgemeinen Form, die Funktion $g(x)$.
+
+Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
+ist die rechte Seite die konstante Funktion $g(t) = 9.81~\text{m\,s}^{-2}$, die
+nirgends gleich null ist. Das physikalische Bild dahinter: Die Schwerkraft
+treibt das System ständig an, auch wenn die Geschwindigkeit null ist. Eine
+solche ODE heißt **inhomogen**.
+
+Streichen wir die Antriebskraft, ergibt sich die vereinfachte Gleichung $\dot{v}+
+k\,v = 0$. Physikalisch beschreibt das einen Körper, der ohne äußere Kraft nur
+durch Reibung gebremst wird. Hier ist $g(t) = 0$ für alle $t$. Eine solche ODE
+heißt **homogen**.
+
+```{admonition} Was ist ... eine homogene und eine inhomogene lineare ODE?
+:class: note
+Eine lineare ODE
 
 \begin{equation*}
-y_{\text{allgemein}}
-  = \frac{A}{x} + \left[\int x \cdot x\,dx\right] \cdot \frac{1}{x}
-  = \frac{A}{x} + \frac{x^3/3}{x}
-  = \frac{A}{x} + \frac{x^2}{3}.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_0(x)\,y = g(x)
 \end{equation*}
 
-Das stimmt exakt mit dem schrittweise hergeleiteten Ergebnis überein.
-
-<!-- markdownlint-disable -->
-```{dropdown} Video "Inhomogene lin. DGL 1. Ordnung" von Prof. Hielscher (TH Mannheim)
-<iframe width="815" height="517" src="https://www.youtube.com/embed/k3AZSl7wfy4?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Spezielle Lösung der inhomogenen linearen DGL 1. Ordnung" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
-```
-<!-- markdownlint-enable -->
-
-```{dropdown} Video "Differentialgleichung inhomogen lösen" von Mathematrick
-<iframe width="560" height="315" src="https://www.youtube.com/embed/AWdLkNZJZ70"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
-</iframe>
+heißt **homogen**, wenn $g(x) = 0$ für alle $x$ im Definitionsbereich gilt, und
+**inhomogen**, wenn $g(x)$ nicht identisch null ist. Die Funktion $g(x)$ auf der
+rechten Seite heißt **Störfunktion**.
 ```
 
-```{dropdown} Video "Variation der Konstanten" von Sciencebarbie
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DD8blQLaHDM"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
-</iframe>
+Die homogene Form spielt in der Lösungstheorie eine zentrale Rolle. *Warum?*
+Weil jede homogene lineare ODE eine ausgezeichnete Lösung besitzt, die wir
+sofort hinschreiben können: die **triviale Lösung** $y(x) = 0$. Einsetzen
+bestätigt das sofort, denn alle Ableitungen von $y = 0$ sind ebenfalls null:
+
+\begin{equation*}
+0^{(n)} + a_{n-1}(x)\cdot 0 + \cdots + a_0(x)\cdot 0 = 0 = g(x). \quad \checkmark
+\end{equation*}
+
+Diese triviale Lösung ist mathematisch wenig interessant, aber sie zeigt eine
+tiefe Eigenschaft linearer ODEs: Das System „ruht" immer bei $y = 0$. In der
+Schwingungslehre, die in der Technischen Mechanik vertieft wird, entspricht das
+dem ungestörten Gleichgewichtszustand. Die Störfunktion $g(x)$ beschreibt dann
+eine äußere Anregung, die das System aus diesem Gleichgewicht herausreißt.
+
+## Konstante oder variable Koeffizienten?
+
+Eine weitere Unterscheidung betrifft die Koeffizientenfunktionen $a_0(x), \ldots,
+a_{n-1}(x)$. Hängen sie wirklich von $x$ ab, oder sind sie Konstanten?
+
+Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
+ist der Koeffizient vor $v$ die Konstante $k = 0.2~\text{s}^{-1}$. Sie hängt
+nicht von $t$ ab. Das ist eine lineare ODE **mit konstanten Koeffizienten**.
+
+Betrachten wir zum Vergleich die Gleichung
+
+\begin{equation*}
+y' + \frac{1}{x}\,y = x^2.
+\end{equation*}
+
+Hier ist der Koeffizient vor $y$ die Funktion $\frac{1}{x}$, die von $x$
+abhängt. Das ist eine lineare ODE **mit variablen Koeffizienten**. Solche
+Gleichungen treten beispielsweise in der Wärmeübertragung auf, wenn der
+Wärmeübergangskoeffizient entlang einer Kühlrippe mit dem Ort variiert, oder in
+der Strukturmechanik bei Balken mit veränderlichem Querschnitt.
+
+```{admonition} Was ist ... eine lineare ODE mit konstanten Koeffizienten?
+:class: note
+Eine lineare ODE heißt **lineare ODE mit konstanten Koeffizienten**, wenn alle
+Koeffizientenfunktionen $a_0, \ldots, a_{n-1}$ konstant sind, also nicht von $x$
+abhängen. Andernfalls spricht man von einer linearen ODE mit **variablen
+Koeffizienten**.
+```
+
+Für die Lösungstheorie ist diese Unterscheidung entscheidend: Lineare ODEs mit
+konstanten Koeffizienten lassen sich vollständig und systematisch lösen, wie wir
+in den Abschnitten 8.2 und 8.3 sehen werden. Bei variablen Koeffizienten ist das
+im Allgemeinen schwieriger und gelingt nur für spezielle Typen. Kapitel 8
+konzentriert sich daher auf den Fall konstanter Koeffizienten.
+
+## Klassifikation auf einen Blick
+
+Die drei Unterscheidungen lassen sich an konkreten Beispielen direkt ablesen:
+
+| ODE | Linear? | Homogen? | Koeffizienten |
+| --- | --- | --- | --- |
+| $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ | ja | nein | konstant |
+| $\dot{v} + k\,v = 0$ | ja | ja | konstant |
+| $y' + \tfrac{1}{x}\,y = x^2$ | ja | nein | variabel |
+| $\dot{h} + k\sqrt{h} = 0$ | nein | — | — |
+| $y' = y^2$ | nein | — | — |
+
+Bei nichtlinearen ODEs entfällt die Unterscheidung in homogen und inhomogen: Sie
+ist nur für lineare ODEs definiert.
+
+```{dropdown} Video "Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung - Definition
+und Vorbetrachtung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Lineare Differentialgleichung (DGL) 1. Ordnung" von MathePeter
+<iframe width="927" height="521" src="https://www.youtube.com/embed/qwJPZHmNcIs"
+title="Lineare Differentialgleichung (DGL) 1. Ordnung | Einfach erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die Variation der Konstanten löst jede lineare ODE 1. Ordnung $y' + f(x)\,y =
-g(x)$, unabhängig davon, ob $f(x)$ konstant oder variabel ist und unabhängig von
-der Form der Störfunktion $g(x)$. Der Schlüssel ist die Ersetzung der Konstante
-$A$ in $y_h$ durch eine Funktion $A(x)$, die aus einem einzigen Integral
-bestimmt wird. Am Beispiel $y' + \frac{1}{x}\,y = x$ haben wir gesehen, wie der
-variable Koeffizient den Ansatz vom Typ der rechten Seite zum Scheitern bringt,
-während die Variation der Konstanten direkt zur Lösung $C/x + x^2/3$ führt.
+Eine lineare ODE zeichnet sich dadurch aus, dass die gesuchte Funktion und alle
+ihre Ableitungen ausschließlich zur ersten Potenz auftreten. Innerhalb dieser
+Klasse unterscheiden wir nach der Störfunktion $g(x)$: Bei $g(x) = 0$ ist die
+ODE homogen und besitzt stets die triviale Lösung $y = 0$; bei $g(x) \not\equiv
+0$ ist sie inhomogen. Eine weitere Unterscheidung betrifft die
+Koeffizientenfunktionen: Konstante Koeffizienten ermöglichen eine vollständige
+Lösungstheorie, während variable Koeffizienten den Lösungsaufwand erheblich
+steigern.
 
-In Abschnitt 9.2 kehren wir zu linearen ODEs mit konstanten Koeffizienten zurück
-und untersuchen den Resonanzfall: Wenn die Störfunktion $g(x)$ dieselbe
-Exponentialform hat wie $y_h$, versagt der Standardansatz aus Abschnitt 8.3, und
-die Variation der Konstanten liefert automatisch den richtigen modifizierten
-Ansatz $y_p = C\,x\,e^{bx}$.
+In Abschnitt 8.2 entwickeln wir das Lösungsverfahren für lineare ODEs 1. Ordnung
+mit konstanten Koeffizienten. Das Schlüsselwerkzeug ist die Variation der
+Konstanten, eine Methode, die die homogene Lösung als Ausgangspunkt nimmt und
+daraus die vollständige Lösung der inhomogenen Gleichung konstruiert.

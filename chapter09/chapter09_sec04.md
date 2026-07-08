@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 8.4 Technische Anwendungen linearer ODEs 1. Ordnung
+# 9.4 Technische Anwendungen linearer ODEs 1. Ordnung
 
 In Abschnitt 7.3 haben wir separierbare ODEs auf zwei konkrete Ingenieurprobleme
 angewandt und dabei den vollständigen Weg von der Physik zur Lösung zur Interpretation

@@ -3,246 +3,260 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 12.4 Fourierreihen berechnen: Beispiele
+# 12.4 Erzwungene Schwingungen und Resonanz
 
-In Abschnitt 12.3 haben wir die Formeln zur Bestimmung der Fourierkoeffizienten
-kennengelernt und den Mittelwert $a_0$ für ein asymmetrisches Rechtecksignal
-berechnet. Jetzt führen wir die vollständige Rechnung durch: alle Koeffizienten
-$a_n$ und $b_n$, die Fourierreihe in geschlossener Summenform und eine
-Plausibilitätsprüfung. Als Beispiel dient eine symmetrische Rechteckschwingung,
-die im Maschinenbau als Modell für Taktsignale, Schaltventile oder digitale
-Steuerbefehle auftritt.
+In Abschnitt 11.3 schwang unser Maschinenelement ohne jede äußere Kraft mit
+konstanter Amplitude: ein idealisiertes, aber physikalisch klares Bild. Jetzt
+bringen wir eine periodische Kraft ins Spiel, wie sie in der Praxis durch eine
+Unwucht in einem rotierenden Bauteil entsteht. *Was passiert, wenn die
+Drehfrequenz des Rotors genau die Eigenfrequenz des Systems trifft?* Die
+Antwort auf diese Frage ist eines der wichtigsten Entwurfskriterien im
+Maschinenbau.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die Fourierkoeffizienten $a_0$, $a_n$ und $b_n$ einer
-  stückweise definierten periodischen Funktion durch Integration berechnen.
-* [ ] Sie können das Ergebnis als vollständige **Fourierreihe** in
-  Summenform angeben.
-* [ ] Sie können eine berechnete Fourierreihe auf Plausibilität prüfen,
-  indem Sie Partialsummen an ausgewählten Stellen mit dem Funktionswert
-  vergleichen.
+
+* [ ] Sie können die inhomogene Schwingungsgleichung
+  $y'' + \omega_0^2\,y = (F_0/m)\,\sin(\Omega t)$ aufstellen und die
+  partikuläre Lösung für $\Omega \neq \omega_0$ durch den Ansatz
+  $y_p = A\,\sin(\Omega t)$ berechnen.
+* [ ] Sie kennen die **Resonanzamplitude**
+  $\hat{y}_p = \frac{F_0/m}{|\omega_0^2 - \Omega^2|}$ und verstehen,
+  warum sie für $\Omega \to \omega_0$ unbegrenzt wächst und nur für
+  $\Omega \neq \omega_0$ sinnvoll definiert ist.
+* [ ] Sie erkennen den Resonanzfall $\Omega = \omega_0$ und können erklären,
+  warum der modifizierte Ansatz eine mit $t$ linear wachsende Lösung liefert,
+  die zur **Resonanzkatastrophe** führt.
+* [ ] Sie können die **kritische Drehzahl** als diejenige Betriebsdrehzahl
+  beschreiben, bei der $\Omega = \omega_0$ gilt, und die Bedeutung dieser
+  Größe für den Maschinenbau erläutern.
 ```
 
-## Die Rechteckschwingung als Leitbeispiel
+## Wie reagiert das System auf eine periodische Erregerkraft?
 
-Wir betrachten eine symmetrische Rechteckschwingung mit der Periode
-$T = 2\pi$ und der Kreisfrequenz $\omega_0 = 1$:
-
-\begin{equation*}
-f(t) = \begin{cases}
--1, & -\pi \leq t < 0, \\
-\phantom{-}1, & \phantom{-}0 \leq t < \pi.
-\end{cases}
-\end{equation*}
-
-Die Funktion wechselt also alle halbe Periode ihr Vorzeichen. Im Maschinenbau
-entspricht das dem Taktsignal eines Zweiwege-Schaltventils, das in jeder
-Halbperiode die Strömungsrichtung umkehrt.
-
-```{figure} pics/chap12_sec04_fig01.svg
----
-name: chap12_sec04_fig01
----
-Symmetrische Rechteckschwingung mit Periode $T = 2\pi$. Die Funktion springt
-an den Stellen $t = 0, \pm\pi, \pm 2\pi, \ldots$ zwischen $+1$ und $-1$.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Die Dirichlet-Bedingungen aus Abschnitt 12.3 sind erfüllt: Auf jedem der
-beiden Teilintervalle ist $f$ konstant, also stetig und monoton, und an den
-Sprungstellen existieren beide einseitigen Grenzwerte. Die Fourierreihe
-konvergiert daher an allen Stetigkeitsstellen gegen $f(t)$ und an den
-Sprungstellen gegen den Mittelwert $0$.
-
-## Berechnung von $a_0$
-
-Wir starten mit dem Mittelwertkoeffizienten. Mit $T = 2\pi$ lautet die Formel
+Eine rotierende Welle mit kleiner Unwucht erzeugt eine Kraft, die mit der
+Drehfrequenz $\Omega$ periodisch schwankt. Wir modellieren diese Kraft als
+$F(t) = F_0\,\sin(\Omega t)$ mit $F_0 = 4~\text{N}$. Um das Resonanzphänomen
+in seiner reinsten Form zu zeigen, betrachten wir das ungedämpfte System
+($d = 0$). Mit $m = 2~\text{kg}$, $\omega_0^2 = k/m = 2~\text{s}^{-2}$ und
+$F_0/m = 2~\text{m\,s}^{-2}$ lautet die inhomogene Schwingungsgleichung:
 
 \begin{equation*}
-a_0 = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\,dt
-= \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,dt.
+y'' + 2\,y = 2\,\sin(\Omega\,t).
 \end{equation*}
 
-Wir teilen das Integral an der Sprungstelle $t = 0$ auf:
+Für $\Omega \neq \omega_0 = \sqrt{2}$ setzen wir den Ansatz
+$y_p = A\,\sin(\Omega t) + B\,\cos(\Omega t)$ an. Da die ODE keinen $y'$-Term
+enthält und die rechte Seite nur Sinus enthält, koppeln Sinus- und
+Kosinusanteile im Koeffizientenvergleich nicht. Einsetzen liefert:
 
 \begin{align*}
-a_0 &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi} 1\,dt \\
-    &= \frac{1}{\pi}\Big[-t\Big]_{-\pi}^{0}
-     + \frac{1}{\pi}\Big[t\Big]_{0}^{\pi} \\
-    &= \frac{1}{\pi}(0 - \pi)
-     + \frac{1}{\pi}(\pi - 0) = -1 + 1 = 0.
+y_p'' + 2\,y_p
+&= (2 - \Omega^2)(A\,\sin(\Omega t) + B\,\cos(\Omega t))
+\stackrel{!}{=} 2\,\sin(\Omega t).
 \end{align*}
 
-Das Ergebnis ist plausibel: Die Funktion ist antisymmetrisch um die Zeitachse,
-verbringt gleich viel Zeit bei $+1$ und bei $-1$, ihr Mittelwert ist also Null.
-
-## Berechnung von $a_n$
-
-Mit $\omega_0 = 1$ lautet die Formel für $n \geq 1$:
+Koeffizientenvergleich ergibt $B = 0$ und:
 
 \begin{equation*}
-a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\cos(nt)\,dt.
+(2 - \Omega^2)\,A = 2
+\qquad \Rightarrow \qquad
+A = \frac{2}{2 - \Omega^2}.
 \end{equation*}
 
-Wir teilen wieder an $t = 0$ auf:
-
-\begin{align*}
-a_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\cos(nt)\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\cos(nt)\,dt \\
-    &= \frac{1}{\pi}\left[-\frac{\sin(nt)}{n}\right]_{-\pi}^{0}
-     + \frac{1}{\pi}\left[\frac{\sin(nt)}{n}\right]_{0}^{\pi}.
-\end{align*}
-
-Da $n$ eine natürliche Zahl ist, gilt $\sin(0) = 0$ und $\sin(\pm n\pi) = 0$
-für alle $n \in \mathbb{N}$. Damit verschwinden beide Ausdrücke in eckigen
-Klammern vollständig, und es folgt
+In allgemeiner Schreibweise mit $\omega_0^2 = k/m$ lautet die partikuläre
+Lösung:
 
 \begin{equation*}
-a_n = 0 \quad \text{für alle } n \geq 0.
+y_p(t) = \frac{F_0/m}{\omega_0^2 - \Omega^2}\,\sin(\Omega\,t).
 \end{equation*}
 
-Die Fourierreihe enthält also gar keine Kosinusterme. _Ist das Zufall, oder
-steckt eine tiefere Ursache dahinter?_ Wir bemerken, dass $f$ antisymmetrisch
-ist: $f(-t) = -f(t)$. Eine solche Funktion heißt ungerade. Die Kosinusfunktion
-ist dagegen gerade: $\cos(-nt) = \cos(nt)$. Das Produkt einer ungeraden und
-einer geraden Funktion ist wieder ungerade, und das Integral einer ungeraden
-Funktion über ein symmetrisches Intervall ist stets null. Das Verschwinden
-aller $a_n$ ist also kein Zufall, sondern eine direkte Folge der Symmetrie von
-$f$. In Abschnitt 13.1 werden wir diesen Zusammenhang systematisch ausnutzen.
-
-## Berechnung von $b_n$
-
-Für $n \geq 1$ gilt:
-
-\begin{equation*}
-b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\,\sin(nt)\,dt.
-\end{equation*}
-
-Wir teilen erneut an $t = 0$ auf:
-
-\begin{align*}
-b_n &= \frac{1}{\pi}\int_{-\pi}^{0} (-1)\cdot\sin(nt)\,dt
-     + \frac{1}{\pi}\int_{0}^{\pi} 1\cdot\sin(nt)\,dt \\
-    &= \frac{1}{\pi}\left[\frac{\cos(nt)}{n}\right]_{-\pi}^{0}
-     + \frac{1}{\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi} \\
-    &= \frac{1}{n\pi}\Big[\cos(nt)\Big]_{-\pi}^{0}
-     - \frac{1}{n\pi}\Big[\cos(nt)\Big]_{0}^{\pi}.
-\end{align*}
-
-Wir setzen die Grenzen ein. Mit $\cos(0) = 1$ und $\cos(-n\pi) = \cos(n\pi)$
-(Kosinusfunktion ist gerade) ergibt sich:
-
-\begin{align*}
-b_n &= \frac{1}{n\pi}\bigl(\cos(0) - \cos(-n\pi)\bigr)
-     - \frac{1}{n\pi}\bigl(\cos(n\pi) - \cos(0)\bigr) \\
-    &= \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr)
-     + \frac{1}{n\pi}\bigl(1 - (-1)^n\bigr) \\
-    &= \frac{2}{n\pi}\bigl(1 - (-1)^n\bigr).
-\end{align*}
-
-Jetzt werten wir $(-1)^n$ aus. Für gerades $n$ gilt $(-1)^n = +1$,
-für ungerades $n$ gilt $(-1)^n = -1$. Damit ergibt sich:
-
-\begin{equation*}
-b_n = \begin{cases}
-0, & n \text{ gerade}, \\[4pt]
-\dfrac{4}{n\pi}, & n \text{ ungerade}.
-\end{cases}
-\end{equation*}
-
-## Die Fourierreihe der Rechteckschwingung
-
-Wir setzen alle Koeffizienten in die allgemeine Fourierreihe ein. Da alle
-$a_n = 0$ und alle $b_n$ mit geradem $n$ verschwinden, bleiben nur die ungeraden
-Terme übrig:
-
-\begin{equation*}
-f(t) = \frac{4}{\pi}\sin(t) + \frac{4}{3\pi}\sin(3t)
-      + \frac{4}{5\pi}\sin(5t) + \ldots
-\end{equation*}
-
-Um eine kompakte Summenformel zu erhalten, schreiben wir die ungeraden Zahlen
-als $2k-1$ mit $k \in \mathbb{N}$:
-
-\begin{equation*}
-f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)t\bigr)}{2k-1}.
-\end{equation*}
-
-```{admonition} Was ist ... die Fourierreihe der symmetrischen Rechteckschwingung?
+```{admonition} Was ist ... die Resonanzamplitude?
 :class: note
-Die symmetrische Rechteckschwingung
+Bei der ungedämpften erzwungenen Schwingung
+$y'' + \omega_0^2\,y = (F_0/m)\,\sin(\Omega t)$ lautet die
+**Resonanzamplitude** der partikulären Lösung:
 
 \begin{equation*}
-f(t) = \begin{cases} -1, & -\pi \leq t < 0, \\ \phantom{-}1, & 0 \leq t < \pi \end{cases}
+\hat{y}_p = \frac{F_0/m}{|\omega_0^2 - \Omega^2|}.
 \end{equation*}
 
-hat die Fourierreihe
+Diese Formel ist nur für $\Omega \neq \omega_0$ definiert: Im exakten
+Resonanzfall $\Omega = \omega_0$ existiert keine sinusförmige stationäre
+Antwort mehr; die partikuläre Lösung enthält dann einen Faktor $t$ und
+wächst im Betrag mit der Zeit.
 
-\begin{equation*}
-f(t) = \frac{4}{\pi}\sum_{k=1}^{\infty} \frac{\sin\bigl((2k-1)\,t\bigr)}{2k-1}.
-\end{equation*}
-
-Nur ungerade Oberschwingungen treten auf. Die Amplituden $4/((2k-1)\pi)$ klingen
-mit wachsendem $k$ wie $1/k$ ab.
+Für sehr langsame Erregung $\Omega \to 0$ gilt $\hat{y}_p \to F_0/k$: das
+ist die statische Auslenkung unter der Kraft $F_0$. Für $\Omega \to \omega_0$
+wächst $\hat{y}_p$ ohne Schranke. Im schwingungstechnischen Sinn bezeichnet
+man genau diesen Fall der Frequenzgleichheit von Eigenfrequenz und
+Erregerfrequenz als **Resonanz**.
 ```
 
-## Plausibilitätsprüfung der Partialsummen
-
-Wir prüfen die Formel, indem wir die Partialsumme $S_1$ an einer konkreten
-Stelle auswerten. Für $t = \pi/2$ gilt $f(\pi/2) = +1$ (wir befinden uns im
-Teilintervall $[0, \pi)$).
-
-Die erste Partialsumme ist $S_1(t) = \frac{4}{\pi}\sin(t)$. An der Stelle
-$t = \pi/2$:
+Wir berechnen die vollständige Lösung für $\Omega = 1~\text{rad\,s}^{-1}$,
+also für eine Drehzahl deutlich unterhalb der Eigenfrequenz
+$\omega_0 = \sqrt{2} \approx 1.41~\text{rad\,s}^{-1}$:
 
 \begin{equation*}
-S_1\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right)
-= \frac{4}{\pi} \approx 1.27.
+A = \frac{2}{2 - 1^2} = 2
+\qquad \Rightarrow \qquad
+y_p(t) = 2\,\sin(t).
 \end{equation*}
 
-Mit nur einem Term weicht die Approximation noch um etwa $27\,\%$ ab. Wir
-ergänzen den zweiten nichtverschwindenden Term ($k=2$, also $n=3$):
+Wir verifizieren durch Einsetzen:
+$y_p'' + 2\,y_p = -2\sin(t) + 4\sin(t) = 2\sin(t)$. $\checkmark$
+
+Für die Anfangsbedingungen $y(0) = 0$ und $y'(0) = 0$ (System startet in
+Ruhe, die Unwuchtkraft setzt bei $t = 0$ ein) ergibt sich mit der allgemeinen
+Lösung $y = C_1\cos(\sqrt{2}\,t) + C_2\sin(\sqrt{2}\,t) + 2\sin(t)$:
 
 \begin{equation*}
-S_3\!\left(\frac{\pi}{2}\right) = \frac{4}{\pi}\sin\!\left(\frac{\pi}{2}\right) +
-\frac{4}{3\pi}\sin\!\left(\frac{3\pi}{2}\right)
-= \frac{4}{\pi} - \frac{4}{3\pi}
-= \frac{8}{3\pi} \approx 0.85.
+C_1 = 0, \qquad \sqrt{2}\,C_2 + 2 = 0 \;\Rightarrow\; C_2 = -\sqrt{2}.
 \end{equation*}
 
-Mit drei Termen liegt die Partialsumme bei $0.85$ statt $+1$, die Abweichung
-beträgt jetzt noch $15\,\%$. Jeder weitere Term verbessert die Annäherung, und
-für $N \to \infty$ konvergiert die Summe gegen den exakten Wert $+1$.
+Die vollständige Lösung lautet:
 
-```{figure} pics/chap12_sec04_fig02.svg
----
-name: chap12_sec04_fig02
----
-Partialsummen $S_1$, $S_3$ und $S_9$ der Fourierreihe der Rechteckschwingung.
-An den Sprungstellen $t = 0$ und $t = \pm\pi$ ist die Überschwingung gut
-erkennbar.
+\begin{equation*}
+y(t) = -\sqrt{2}\,\sin(\sqrt{2}\,t) + 2\,\sin(t)~\text{m}.
+\end{equation*}
+
+Die Bewegung ist eine Überlagerung zweier Sinusschwingungen: die freie
+Schwingung bei $\omega_0 = \sqrt{2}$ mit Amplitude $\sqrt{2} \approx 1.41~\text{m}$
+und die erzwungene Schwingung bei $\Omega = 1$ mit Amplitude $2~\text{m}$. Beide
+Amplituden sind endlich. Da die Frequenzen nahe beieinander liegen, zeigt der
+Verlauf eine typische **Schwebung**: Die schnelle Schwingung wird von einer
+langsam veränderlichen Hüllkurve mit der Differenzfrequenz $|\omega_0 - \Omega|$
+moduliert. In der Maschinendynamik nennt man diesen Betriebszustand
+den unterkritischen Betrieb: Die Drehfrequenz liegt unterhalb der kritischen
+Drehzahl, die Schwingungen bleiben beherrschbar.
+
+## Was passiert, wenn die Erregerfrequenz die Eigenfrequenz trifft?
+
+Wir erhöhen die Drehzahl auf genau $\Omega = \omega_0 = \sqrt{2}~\text{rad\,s}^{-1}$.
+Die ODE lautet jetzt:
+
+\begin{equation*}
+y'' + 2\,y = 2\,\sin(\sqrt{2}\,t).
+\end{equation*}
+
+Der Standardansatz $y_p = A\,\sin(\sqrt{2}\,t) + B\,\cos(\sqrt{2}\,t)$ schlägt
+fehl, weil $\sin(\sqrt{2}\,t)$ und $\cos(\sqrt{2}\,t)$ Lösungen der homogenen
+ODE sind. Einsetzen würde $0 = 2\sin(\sqrt{2}\,t)$ ergeben. Wie in Abschnitt
+11.2 gezeigt, rettet ein zusätzlicher Faktor $t$ den Ansatz:
+
+\begin{equation*}
+y_p(t) = A\,t\,\sin(\sqrt{2}\,t) + B\,t\,\cos(\sqrt{2}\,t).
+\end{equation*}
+
+Wir berechnen $y_p'' + 2\,y_p$. Nach zweimaligem Ableiten und Vereinfachen
+verbleiben nur die zeitlich konstanten Vorfaktoren:
+
+\begin{equation*}
+y_p'' + 2\,y_p = 2A\,\sqrt{2}\,\cos(\sqrt{2}\,t) - 2B\,\sqrt{2}\,\sin(\sqrt{2}\,t).
+\end{equation*}
+
+Der Koeffizientenvergleich mit $2\,\sin(\sqrt{2}\,t)$ liefert:
+
+\begin{equation*}
+2A\sqrt{2} = 0 \;\Rightarrow\; A = 0,
+\qquad
+-2B\sqrt{2} = 2 \;\Rightarrow\; B = -\frac{\sqrt{2}}{2}.
+\end{equation*}
+
+Die partikuläre Lösung im Resonanzfall lautet:
+
+\begin{equation*}
+y_p(t) = -\frac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t).
+\end{equation*}
+
+Wir verifizieren durch Einsetzen. Mit $y_p'' = 2\sin(\sqrt{2}\,t) + \sqrt{2}\,t\,\cos(\sqrt{2}\,t)$
+gilt:
+
+\begin{equation*}
+y_p'' + 2\,y_p
+= 2\sin(\sqrt{2}\,t) + \sqrt{2}\,t\,\cos(\sqrt{2}\,t) -
+  \sqrt{2}\,t\,\cos(\sqrt{2}\,t)
+= 2\sin(\sqrt{2}\,t). \quad \checkmark
+\end{equation*}
+
+Für die Anfangsbedingungen $y(0) = 0$, $y'(0) = 0$ ergibt sich die vollständige
+Lösung:
+
+\begin{equation*}
+y(t) = \tfrac{1}{2}\,\sin(\sqrt{2}\,t)
+       - \tfrac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t)~\text{m}.
+\end{equation*}
+
+Der erste Term $\tfrac{1}{2}\sin(\sqrt{2}\,t)$ ist eine gewöhnliche Sinusschwingung
+mit beschränkter Amplitude. Der zweite Term $-\tfrac{\sqrt{2}}{2}\,t\,\cos(\sqrt{2}\,t)$
+ist das Kennzeichen der **Resonanzkatastrophe**: Seine Amplitude $\tfrac{\sqrt{2}}{2}\,t$
+wächst linear mit der Zeit ohne jede Schranke. Nach $t = 10~\text{s}$ beträgt
+die Amplitude bereits $\tfrac{\sqrt{2}}{2} \cdot 10 \approx 7.1~\text{m}$, nach
+$t = 100~\text{s}$ über $70~\text{m}$. Ein reales Bauteil würde bei einem
+Bruchteil dieser Werte versagen.
+
+```{figure} pics/chap11_sec04_fig01.svg
+:name: fig-chap11-sec04-resonanzkatastrophe
+
+Zeitverlauf der vollständigen Lösung im Resonanzfall $\Omega = \omega_0 = \sqrt{2}\,\text{rad\,s}^{-1}$ mit den Hüllkurven $\pm\tfrac{\sqrt{2}}{2}\,t$, die das unbegrenzte lineare Amplitudenwachstum zeigen.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-In der Abbildung fällt auf, dass die Partialsummen an den Sprungstellen stets
-überschießen, und zwar unabhängig davon, wie viele Terme wir mitnehmen. Dieses
-Verhalten hat einen Namen. In Abschnitt 13.2 werden wir sehen, dass dieses
-Überschießen selbst bei unendlich vielen Termen nicht vollständig verschwindet
-und als **Gibbssches Phänomen** bekannt ist.
+```{admonition} Merkregel: Resonanz und kritische Drehzahl
+:class: note
+Die **kritische Drehzahl** $n_{\text{krit}}$ einer Welle oder eines Rotors ist
+die Drehzahl, bei der die Erregerfrequenz $\Omega = 2\pi\,n$ mit der
+Eigenfrequenz $\omega_0 = \sqrt{k/m}$ übereinstimmt:
 
-## Zusammenfassung und Ausblick
+\begin{equation*}
+n_{\text{krit}} = \frac{\omega_0}{2\pi} = \frac{1}{2\pi}\sqrt{\frac{k}{m}}.
+\end{equation*}
 
-Die vollständige Rechnung für die Rechteckschwingung hat gezeigt, wie die
-Fourierkoeffizienten systematisch berechnet werden: Integrationsintervall
-aufteilen, Stammfunktionen bestimmen, Grenzen einsetzen, Fallunterscheidung
-nach geraden und ungeraden $n$, Ergebnis in kompakter Summenform angeben. Die
-Plausibilitätsprüfung bestätigt die Rechnung numerisch.
+Im schwingungstechnischen Sinn spricht man genau in diesem Fall
+$\Omega = \omega_0$ von **Resonanz**. Im Maschinenbau wird die kritische
+Drehzahl entweder durch gezielte Dämpfung entschärft oder durch konstruktive
+Maßnahmen so gelegt, dass der Betriebsbereich sie weit verfehlt.
+```
 
-Dabei ist aufgefallen, dass alle Kosinuskoeffizienten verschwinden, weil $f$
-eine ungerade Funktion ist. Diesen Zusammenhang zwischen Symmetrie und
-Fourierkoeffizienten werden wir in Abschnitt 13.1 systematisch ausnutzen, um
-den Rechenaufwand bei ähnlichen Beispielen deutlich zu reduzieren.
+```{figure} pics/chap11_sec04_fig02.svg
+:name: fig-chap11-sec04-amplitudenfrequenzgang
+
+Amplitudenfrequenzgang der ungedämpften erzwungenen Schwingung: Die normierte Resonanzamplitude $\hat{y}_p\,k/F_0$ divergiert bei $\Omega = \omega_0$ und nähert sich für $\Omega \to 0$ dem statischen Wert $F_0/k$ an.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+In der Ingenieurpraxis ist reiner Resonanzbetrieb ohne Dämpfung nie dauerhaft
+möglich: Jedes reale System hat eine Restdämpfung, die das unbegrenzte Anwachsen
+verhindert und die Amplitude auf einen endlichen, wenn auch sehr großen Wert
+begrenzt. Trotzdem können beim Hochlaufen eines Motors auf Betriebsdrehzahl
+oder beim Abfahren die kritischen Drehzahlen durchfahren werden. Ingenieurinnen
+und Ingenieure müssen dann sicherstellen, dass die Anlage schnell genug durch
+den Resonanzbereich geführt wird, bevor die Schwingungsamplituden gefährliche
+Werte annehmen. In der Maschinenakustik, der Schwingungslehre und der
+Rotordynamik werden Sie diese Fragen systematisch vertiefen.
+
+```{admonition} Lernkontrolle
+:class: tip
+[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec04_quiz.html)
+```
+
+## Zusammenfassung: Kapitel 11
+
+Mit Abschnitt 11.4 schließt sich der Bogen von Kapitel 11. Aus dem Newtonschen
+Gesetz haben wir die Bewegungsgleichung des Feder-Masse-Systems hergeleitet,
+mit den Methoden aus Kapitel 10 die homogene Lösung $y_h$ bestimmt und in den
+Abschnitten 11.1 bis 11.4 die partikuläre Lösung $y_p$ für alle technisch
+wichtigen Störfunktionen berechnet: abklingende Stoßkräfte, den Resonanzfall
+mit wachsendem Ansatz, und periodische Erregerkräfte bis hin zur
+Resonanzkatastrophe.
+
+Die allgemeine Lösung $y_{\text{allgemein}} = y_h + y_p$ ist damit das
+vollständige Werkzeug zur Beschreibung linearer Schwingungssysteme. Die freien
+Konstanten legen Anfangslage und Anfangsgeschwindigkeit fest, die Eigenfrequenz
+$\omega_0$ ist eine reine Systemeigenschaft, und die Resonanz tritt genau dann
+auf, wenn Erreger und System im selben Takt schwingen. Dieses Grundprinzip
+bleibt in allen späteren Lehrveranstaltungen wie der Technischen Mechanik 3,
+der Maschinendynamik und der Schwingungsmesstechnik erhalten, auch wenn die
+Systeme dort komplexer und die Methoden verfeinert sind.

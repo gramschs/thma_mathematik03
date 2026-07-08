@@ -3,267 +3,296 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 11.3 Schwingungen und Bewegungsgleichungen: DGL 2. Ordnung in der Technik
+# 11.3 Die charakteristische Gleichung: der Fall reeller Eigenwerte
 
-In den Abschnitten 11.1 und 11.2 haben wir die ODE des Feder-Masse-Dämpfer-Systems
-stets als fertige Gleichung übernommen und ihre Lösung bestimmt. Jetzt gehen
-wir einen Schritt zurück und fragen: *Wie entsteht diese Gleichung überhaupt
-aus den physikalischen Gesetzen?* Außerdem betrachten wir den Sonderfall ohne
-Dämpfung und ohne äußere Kraft. Er führt auf die reinste Form der Schwingung
-und auf eine der wichtigsten Kenngrößen der Ingenieurpraxis: die Kreisfrequenz.
+In Abschnitt 10.2 haben wir gesehen, dass die allgemeine Lösung der homogenen
+ODE 2. Ordnung die Form $y_h = C_1 y_1 + C_2 y_2$ hat, sobald $y_1$ und $y_2$
+ein Fundamentalsystem bilden. Was noch fehlt, ist ein systematisches Verfahren,
+um solche Fundamentallösungen zu finden, ohne raten zu müssen. Die Idee stammt
+aus Abschnitt 8.2: Weil die Lösung einer homogenen linearen ODE mit konstanten
+Koeffizienten stets eine Exponentialfunktion ist oder aus ihr hervorgeht, liegt
+der Exponentialansatz nahe. Bei der ODE 2. Ordnung führt er auf eine quadratische
+Gleichung, deren Lösungen direkt die Fundamentallösungen liefern.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können ein Feder-Masse-System physikalisch beschreiben, die
-  wirkenden Kräfte benennen und aus dem Newtonschen Gesetz $ma = F$ die
-  **Bewegungsgleichung** als lineare ODE 2. Ordnung aufstellen.
-* [ ] Sie erkennen die **Schwingungsgleichung** $y'' + \omega_0^2\,y = 0$ als
-  Sonderfall ohne Dämpfung und ohne äußere Kraft und können sie einem
-  gegebenen physikalischen System zuordnen.
-* [ ] Sie können die allgemeine Lösung der Schwingungsgleichung mit den
-  Fundamentallösungen $\cos(\omega_0 t)$ und $\sin(\omega_0 t)$ angeben und
-  die **Kreisfrequenz** $\omega_0 = \sqrt{k/m}$ physikalisch interpretieren.
-* [ ] Sie können aus vorgegebenen Anfangsbedingungen die Konstanten $C_1$ und
-  $C_2$ bestimmen und die Lösung als **Amplitude** und **Schwingungsdauer**
-  physikalisch deuten.
+* [ ] Sie können den **Exponentialansatz** $y(x) = e^{\lambda x}$ in die homogene
+  lineare ODE 2. Ordnung einsetzen und daraus die **charakteristische Gleichung**
+  $\lambda^2 + a\lambda + b = 0$ herleiten.
+* [ ] Sie können die Diskriminante $D = \tfrac{a^2}{4} - b$ berechnen und die
+  Fälle $D > 0$ und $D = 0$ identifizieren.
+* [ ] Sie können für $D > 0$ die zwei reellen Eigenwerte $\lambda_1 \neq \lambda_2$
+  bestimmen und das Fundamentalsystem $\{e^{\lambda_1 x},\, e^{\lambda_2 x}\}$
+  angeben.
+* [ ] Sie können für $D = 0$ den doppelten Eigenwert $\lambda$ bestimmen und das
+  Fundamentalsystem $\{e^{\lambda x},\, x\,e^{\lambda x}\}$ angeben.
+* [ ] Sie können für beide Fälle die allgemeine Lösung
+  $y_h(x) = C_1 y_1(x) + C_2 y_2(x)$ aufschreiben und an Anfangsbedingungen
+  anpassen.
 ```
 
-## Wie entsteht die Bewegungsgleichung aus dem Newtonschen Gesetz?
+## Wie führt der Exponentialansatz auf eine quadratische Gleichung?
 
-Wir betrachten unser Feder-Masse-System aus Kapitel 11: Ein Maschinenelement
-der Masse $m = 2~\text{kg}$ ist horizontal verschiebbar und über eine Feder
-mit Steifigkeit $k = 4~\text{N/m}$ am Gestell befestigt. Ein Dämpfer mit
-Konstante $d \geq 0$ wirkt parallel zur Feder. Die Auslenkung aus der Ruhelage
-zur Zeit $t$ bezeichnen wir mit $y(t)$, gemessen in Metern und positiv in
-Bewegungsrichtung.
-
-Drei Kräfte wirken auf das Element: die Federkraft $F_F = -k\,y$, die
-Dämpferkraft $F_D = -d\,y'$ sowie eine mögliche äußere Kraft $F(t)$.
-
-```{figure} pics/chap11_sec03_fig01.svg
----
-name: chap11_sec03_fig01
----
-Alle drei am Maschinenelement angreifenden Kräfte: Federkraft $F_F = -k\,y$
-(rot) und Dämpferkraft $F_D = -d\,y'$ (orange) wirken der Auslenkung entgegen,
-die äußere Kraft $F(t)$ (blau) treibt das System an.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-Das negative Vorzeichen bei $F_F$ und $F_D$ zeigt an, dass beide Kräfte der
-Auslenkung und der Bewegung entgegenwirken. Das zweite Newtonsche Gesetz $m\,a =
-F_{\text{ges}}$ liefert mit $a = y''$:
+Wir betrachten die homogene lineare ODE 2. Ordnung mit konstanten Koeffizienten:
 
 \begin{equation*}
-m\,y''(t) = -k\,y(t) - d\,y'(t) + F(t).
+y''(x) + a\,y'(x) + b\,y(x) = 0, \quad a, b \in \mathbb{R}.
 \end{equation*}
 
-Division durch $m$ und die Abkürzungen $a_D = d/m$ sowie $\omega_0^2 = k/m$
-ergeben die Standardform:
+In Abschnitt 8.2 hat der Exponentialansatz für die ODE 1. Ordnung funktioniert,
+weil Ableiten einer Exponentialfunktion wieder eine Exponentialfunktion ergibt.
+Dasselbe gilt für die zweite Ableitung. Wir setzen $y(x) = e^{\lambda x}$ an
+und berechnen:
 
 \begin{equation*}
-y''(t) + a_D\,y'(t) + \omega_0^2\,y(t) = \frac{F(t)}{m}.
+y = e^{\lambda x}, \qquad y' = \lambda\,e^{\lambda x}, \qquad
+y'' = \lambda^2\,e^{\lambda x}.
 \end{equation*}
 
-Für unsere Parameter mit $d = 6~\text{N\,s/m}$ ergibt sich $a_D = 3~\text{s}^{-1}$
-und $\omega_0^2 = 2~\text{s}^{-2}$. Das ist genau die Gleichung aus den
-Abschnitten 11.1 und 11.2. Wir sehen also: Die Koeffizienten $a_D$ und
-$\omega_0^2$ sind nicht willkürlich gewählt, sondern tragen konkrete
-physikalische Bedeutung.
+Einsetzen in die ODE ergibt:
 
-```{admonition} Was ist ... die Bewegungsgleichung eines Feder-Masse-Systems?
+\begin{equation*}
+\lambda^2\,e^{\lambda x} + a\,\lambda\,e^{\lambda x} + b\,e^{\lambda x} = 0.
+\end{equation*}
+
+Da $e^{\lambda x} > 0$ für alle $x$, dürfen wir durch $e^{\lambda x}$ dividieren
+und erhalten die charakteristische Gleichung:
+
+\begin{equation*}
+\lambda^2 + a\,\lambda + b = 0.
+\end{equation*}
+
+```{admonition} Was ist ... die charakteristische Gleichung einer ODE 2. Ordnung?
 :class: note
-Für ein Feder-Masse-Dämpfer-System mit Masse $m$, Federkonstante $k$,
-Dämpfungskonstante $d$ und äußerer Kraft $F(t)$ lautet die
-**Bewegungsgleichung**:
+Die quadratische Gleichung
 
 \begin{equation*}
-y'' + \frac{d}{m}\,y' + \frac{k}{m}\,y = \frac{F(t)}{m}.
+\lambda^2 + a\,\lambda + b = 0
 \end{equation*}
 
-Die Größe $\omega_0 = \sqrt{k/m}$ heißt **Eigenkreisfrequenz** des Systems.
-Sie hängt ausschließlich von den Systemparametern $k$ und $m$ ab, nicht von
-den Anfangsbedingungen oder der äußeren Kraft.
+heißt **charakteristische Gleichung** der homogenen linearen ODE 2. Ordnung
+$y'' + ay' + by = 0$. Ihre Lösungen $\lambda$ heißen **Eigenwerte** der ODE.
+Jeder Eigenwert $\lambda$ liefert eine Lösung $e^{\lambda x}$ der homogenen ODE.
 ```
 
-[![Schwingungsplot](../logos/app_start_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_systemparameter.html)
+Diese Gleichung begegnet uns hier nicht zum ersten Mal: In Abschnitt 4.6 haben
+wir die Eigenwerte einer $2\times 2$-Matrix als Nullstellen des charakteristischen
+Polynoms $\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ bestimmt, das für
+$2\times 2$-Matrizen ebenfalls auf eine quadratische Gleichung führt. Der
+Zusammenhang ist kein Zufall und wird in der linearen Algebra vertieft.
 
-Dieselbe Gleichungsstruktur tritt überall in der Technik auf, wo ein System
-aus einer Gleichgewichtslage ausgelenkt wird und eine rücktreibende Kraft
-wirkt. Beim Fadenpendel der Länge $L$ liefert das Newtonsche Gesetz
-(mit Kleinwinkelnäherung) $\varphi'' + (g/L)\,\varphi = 0$, also
-$\omega_0 = \sqrt{g/L}$. Bei einer Torsionswelle mit Massenträgheitsmoment
-$J$ und Torsionssteifigkeit $c$ gilt entsprechend $\theta'' + (c/J)\,\theta = 0$,
-also $\omega_0 = \sqrt{c/J}$. Alle drei Systeme führen auf dieselbe
-mathematische Form, und alle drei werden in der Technischen Mechanik und der
-Maschinendynamik mit denselben Methoden behandelt.
-
-## Was ist die Schwingungsgleichung und wie lautet ihre allgemeine Lösung?
-
-Wir betrachten jetzt den Sonderfall ohne Dämpfung ($d = 0$) und ohne äußere
-Kraft ($F = 0$). Mit unseren Parametern $m = 2~\text{kg}$ und $k = 4~\text{N/m}$
-lautet die ODE:
+Die Lösungsformel für die charakteristische Gleichung lautet mit der
+Diskriminante $D = a^2/4 - b$:
 
 \begin{equation*}
-y'' + 2\,y = 0.
+\lambda_{1,2} = -\frac{a}{2} \pm \sqrt{D}.
 \end{equation*}
 
-*Was schwingt hier eigentlich, wenn keine äußere Kraft treibt und keine
-Dämpfung Energie entzieht?* Allein die Anfangsbedingungen setzen das System
-in Bewegung, zum Beispiel eine anfängliche Auslenkung oder ein Anstoß. Das
-System schwingt dann unbegrenzt weiter, weil keine Energie dissipiert wird.
+Je nach Vorzeichen von $D$ entstehen drei strukturell verschiedene Fälle. Dieser
+Abschnitt behandelt $D > 0$ und $D = 0$; der Fall $D < 0$ folgt in Abschnitt
+10.4.
 
-```{admonition} Was ist ... die Schwingungsgleichung?
+## Der Fall $D > 0$: stark gedämpfte Schwebebahn
+
+Für $D > 0$ liefert die Lösungsformel zwei verschiedene reelle Eigenwerte
+$\lambda_1 \neq \lambda_2$. Jeder ergibt eine Lösung der homogenen ODE.
+Da $\lambda_1 \neq \lambda_2$, sind die beiden Exponentialfunktionen linear
+unabhängig. Wir rechnen das mit der Wronski-Determinante nach:
+
+\begin{align*}
+W(e^{\lambda_1 x}, e^{\lambda_2 x})
+&= e^{\lambda_1 x}\cdot\lambda_2\,e^{\lambda_2 x} -
+ e^{\lambda_2 x}\cdot\lambda_1\,e^{\lambda_1 x}
+ = (\lambda_2 - \lambda_1)\,e^{(\lambda_1+\lambda_2)x} \neq 0,
+\end{align*}
+
+denn $\lambda_1 \neq \lambda_2$ und $e^{(\lambda_1+\lambda_2)x} > 0$ für alle $x$.
+
+```{admonition} Fundamentalsystem für $D > 0$
 :class: note
-Die Gleichung
+Sind $\lambda_1 \neq \lambda_2$ zwei reelle Lösungen der charakteristischen
+Gleichung, so ist $\{e^{\lambda_1 x},\, e^{\lambda_2 x}\}$ ein Fundamentalsystem
+und die allgemeine Lösung lautet
 
 \begin{equation*}
-y''(t) + \omega_0^2\,y(t) = 0, \quad \omega_0 > 0,
+y_h(x) = C_1\,e^{\lambda_1 x} + C_2\,e^{\lambda_2 x}, \quad C_1, C_2 \in \mathbb{R}.
 \end{equation*}
-
-heißt **Schwingungsgleichung**. Sie ist der Sonderfall der linearen ODE
-2. Ordnung mit $a = 0$ (keine Dämpfung) und $g(t) = 0$ (keine äußere Kraft).
-Die Konstante $\omega_0$ heißt **Kreisfrequenz** und gibt an, wie schnell das
-System schwingt. Die Schwingungsdauer beträgt $T = 2\pi/\omega_0$.
 ```
 
-Für die allgemeine Lösung nutzen wir das Ergebnis aus Abschnitt 10.4. Die
-charakteristische Gleichung $\lambda^2 + \omega_0^2 = 0$ hat keine reellen
-Lösungen, sondern die rein imaginären Eigenwerte $\lambda_{1,2} = \pm\,i\,\omega_0$.
-Das ist der Fall $D < 0$ aus Abschnitt 10.4 mit Abklingrate $\alpha = 0$, also
-ohne Dämpfung. Das reelle Fundamentalsystem lautet:
+Wenn die Dämpfungskonstante der Schwebebahn so groß gewählt wird, dass $D > 0$
+gilt, kehrt der Fahrwagen nach einer Auslenkung ohne Schwingung in die Ruhelage
+zurück. Dieses Verhalten nennt man in der Schwingungslehre **Kriechfall** oder
+**aperiodisches Verhalten**.
+
+Wir wählen $a = 4.0~\text{s}^{-1}$ und $b = \omega_0^2 \approx 3.27~\text{s}^{-2}$.
+Die Diskriminante ist
 
 \begin{equation*}
-y_1(t) = \cos(\omega_0\,t), \qquad y_2(t) = \sin(\omega_0\,t).
+D = \frac{(4.0)^2}{4} - 3.27 = 4.00 - 3.27 = 0.73~\text{s}^{-2} > 0.
 \end{equation*}
 
-Die allgemeine Lösung der Schwingungsgleichung ist damit:
+Die Eigenwerte lauten:
 
 \begin{equation*}
-y(t) = C_1\,\cos(\omega_0\,t) + C_2\,\sin(\omega_0\,t).
+\lambda_{1,2} = -2.0 \pm \sqrt{0.73} = -2.0 \pm 0.854~\text{s}^{-1},
 \end{equation*}
 
-Wir prüfen das durch Einsetzen. Mit $y'' = -\omega_0^2\,C_1\cos(\omega_0 t) -
-\omega_0^2\,C_2\sin(\omega_0 t) = -\omega_0^2\,y$ folgt:
+also $\lambda_1 \approx -1.15~\text{s}^{-1}$ und $\lambda_2 \approx -2.85~\text{s}^{-1}$.
+Beide Eigenwerte sind negativ, sodass beide Exponentialterme für $t \to \infty$
+abklingen. Die allgemeine Lösung lautet:
 
 \begin{equation*}
-y'' + \omega_0^2\,y = -\omega_0^2\,y + \omega_0^2\,y = 0. \quad \checkmark
+\varphi_h(t) = C_1\,e^{-1.15\,t} + C_2\,e^{-2.85\,t}.
 \end{equation*}
 
-Für unser System mit $\omega_0 = \sqrt{2} \approx 1.41~\text{rad\,s}^{-1}$
-lautet die allgemeine Lösung:
+Aus den Anfangsbedingungen $\varphi(0) = 0.231$ und $\varphi'(0) = 0$ folgt das
+Gleichungssystem
+
+\begin{align*}
+C_1 + C_2 &= 0.231, \\
+-1.15\,C_1 - 2.85\,C_2 &= 0.
+\end{align*}
+
+Aus der zweiten Gleichung ergibt sich $C_1 = -2.48\,C_2$. Einsetzen in die erste:
 
 \begin{equation*}
-y(t) = C_1\,\cos\!\left(\sqrt{2}\,t\right) + C_2\,\sin\!\left(\sqrt{2}\,t\right).
+-2.48\,C_2 + C_2 = -1.48\,C_2 = 0.231
+\qquad \Rightarrow \qquad
+C_2 \approx -0.156, \quad C_1 \approx 0.387.
 \end{equation*}
 
-Die Schwingungsdauer beträgt $T = 2\pi/\sqrt{2} = \pi\sqrt{2} \approx 4.44~\text{s}$.
-Das System braucht also knapp viereinhalb Sekunden für eine vollständige
-Schwingung. Dieser Wert hängt ausschließlich von $k$ und $m$ ab, nicht von der
-Auslenkung oder der Anfangsgeschwindigkeit.
-
-## Was verrät die Lösung über Amplitude und Phase der Schwingung?
-
-Wir nehmen an, das Maschinenelement wird in einem Schwingungstest um
-$y_0 = 5~\text{mm} = 0.005~\text{m}$ aus der Ruhelage ausgelenkt und dann
-losgelassen. Die Anfangsbedingungen lauten:
+Die partikuläre Lösung des Anfangswertproblems lautet:
 
 \begin{equation*}
-y(0) = 0.005~\text{m}, \qquad y'(0) = 0~\text{m\,s}^{-1}.
+\varphi(t) = 0.387\,e^{-1.15\,t} - 0.156\,e^{-2.85\,t}.
 \end{equation*}
 
-Aus $y(0) = 0.005$ folgt:
+*Was sagt das physikalisch?* Der Wagen kehrt ohne eine einzige Schwingung
+in die Ruhelage zurück. Der schnellere Term $e^{-2.85\,t}$ bestimmt das
+Anfangsverhalten, der langsamere Term $e^{-1.15\,t}$ das Langzeitverhalten.
+Ob das für den Fahrkomfort optimal ist, wird in Kapitel 11 untersucht, wenn
+erzwungene Schwingungen durch äußere Anregung hinzukommen.
+
+## Der Fall $D = 0$: aperiodischer Grenzfall
+
+Wenn $D$ genau null ist, hat die charakteristische Gleichung einen doppelten
+Eigenwert:
 
 \begin{equation*}
-C_1\,\cos(0) + C_2\,\sin(0) = C_1 \stackrel{!}{=} 0.005.
+\lambda = -\frac{a}{2}.
 \end{equation*}
 
-Aus $y'(0) = 0$ folgt mit $y'(t) = -\sqrt{2}\,C_1\sin(\sqrt{2}\,t) +
-\sqrt{2}\,C_2\cos(\sqrt{2}\,t)$:
+Das liefert zunächst nur eine Fundamentallösung $y_1 = e^{\lambda x}$. *Woher
+kommt die zweite?* Man kann zeigen, dass $y_2(x) = x\,e^{\lambda x}$ ebenfalls
+die homogene ODE erfüllt. Wir überprüfen das durch direktes Einsetzen. Die
+Ableitungen von $y_2$ lauten:
+
+\begin{align*}
+y_2' &= e^{\lambda x} + \lambda x\,e^{\lambda x} = (1 + \lambda x)\,e^{\lambda x}, \\
+y_2'' &= \lambda\,e^{\lambda x} + \lambda\,(1 + \lambda x)\,e^{\lambda x}
+        = (2\lambda + \lambda^2 x)\,e^{\lambda x}.
+\end{align*}
+
+Einsetzen in $y'' + ay' + by$:
+
+\begin{align*}
+y_2'' + a\,y_2' + b\,y_2
+&= e^{\lambda x}\Bigl[(2\lambda + a) +
+   \underbrace{(\lambda^2 + a\lambda + b)}_{=\,0}\cdot x\Bigr]
+ = e^{\lambda x}\!\left[2\left(-\tfrac{a}{2}\right) + a\right]
+ = 0. \quad \checkmark
+\end{align*}
+
+Die Wronski-Determinante bestätigt die lineare Unabhängigkeit von $y_1$ und $y_2$:
 
 \begin{equation*}
-\sqrt{2}\,C_2 \stackrel{!}{=} 0
-\qquad \Rightarrow \qquad C_2 = 0.
+W(e^{\lambda x}, x\,e^{\lambda x})
+= e^{\lambda x}\cdot(1 + \lambda x)\,e^{\lambda x} -
+x\,e^{\lambda x}\cdot\lambda\,e^{\lambda x}
+= e^{2\lambda x}(1 + \lambda x - \lambda x)
+= e^{2\lambda x} \neq 0.
 \end{equation*}
 
-Die Lösung des Anfangswertproblems lautet:
-
-\begin{equation*}
-y(t) = 0.005\,\cos\!\left(\sqrt{2}\,t\right)~\text{m}.
-\end{equation*}
-
-Das ist eine reine Kosinusschwingung. Das Element pendelt mit konstanter
-Amplitude $\hat{y} = 5~\text{mm}$ zwischen den Extremlagen $+5~\text{mm}$
-und $-5~\text{mm}$ hin und her, ohne dass die Schwingung jemals abklingt.
-In der Praxis ist das natürlich ein idealisiertes Modell: Jedes reale System
-hat eine gewisse Dämpfung, und die Schwingung klingt schließlich ab. Die
-ungedämpfte Lösung zeigt aber, wie groß die Auslenkung im Grenzfall
-verschwindender Dämpfung werden kann.
-
-Die allgemeine Lösung lässt sich stets in die **Amplituden-Phasen-Form**
-umschreiben:
-
-\begin{equation*}
-y(t) = \hat{y}\,\cos(\omega_0\,t - \varphi),
-\end{equation*}
-
-wobei die **Amplitude** $\hat{y} = \sqrt{C_1^2 + C_2^2}$ und die
-**Phasenverschiebung** $\varphi$ mit $\tan(\varphi) = C_2 / C_1$ aus den
-Anfangsbedingungen folgen.
-
-```{figure} pics/chap11_sec03_fig02.svg
----
-name: chap11_sec03_fig02
----
-Geometrische Deutung der Amplituden-Phasen-Form: Amplitude $\hat{y} = \sqrt{C_1^2 + C_2^2}$
-(blau) ist der Betrag des Konstantenvektors $(C_1, C_2)$, die Phasenverschiebung
-$\varphi$ mit $\tan\varphi = C_2/C_1$ sein Winkel zur $C_1$-Achse; die Komponenten
-$C_1$ (rot) und $C_2$ (orange) entsprechen den Anfangsbedingungen $y(0)$ und $y'(0)/\omega_0$.
-(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
-```
-
-In unserem Fall gilt $\hat{y} = 0.005~\text{m}$ und $\varphi = 0$, weil das
-Element aus der Ruhe losgelassen wurde. Ein Anfangsanstoß (zum Beispiel $y'(0)
-\neq 0$ bei $y(0) = 0$) würde $C_1 = 0$ und $C_2 \neq 0$ ergeben, also eine
-reine Sinusschwingung mit Phasenverschiebung $\varphi = \pi/2$.
-
-```{admonition} Merkregel: Amplitude und Schwingungsdauer
+```{admonition} Fundamentalsystem für $D = 0$
 :class: note
-Für die Schwingungsgleichung $y'' + \omega_0^2\,y = 0$ gilt:
+Hat die charakteristische Gleichung den doppelten Eigenwert $\lambda = -a/2$,
+so ist $\{e^{\lambda x},\, x\,e^{\lambda x}\}$ ein Fundamentalsystem und die
+allgemeine Lösung lautet
 
-- Die **Kreisfrequenz** $\omega_0 = \sqrt{k/m}$ wird allein durch das System
-  bestimmt (Feder und Masse), nicht durch die Anfangsbedingungen.
-- Die **Amplitude** $\hat{y} = \sqrt{C_1^2 + C_2^2}$ wird allein durch die
-  Anfangsbedingungen bestimmt, nicht durch das System.
-- Die **Schwingungsdauer** $T = 2\pi / \omega_0$ ist ebenfalls eine
-  Systemeigenschaft und ändert sich nicht, wenn man das System stärker auslenkt.
+\begin{equation*}
+y_h(x) = (C_1 + C_2\,x)\,e^{\lambda x}, \quad C_1, C_2 \in \mathbb{R}.
+\end{equation*}
 ```
 
-[![Schwingungsplot](pics/chap11_sec03_schwingung_preview.png)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_schwingung.html)
+Den Fall $D = 0$ nennt man in der Schwingungslehre den **aperiodischen
+Grenzfall**: Es ist genau die Grenze zwischen schwingendem und kriechendem
+Verhalten. Die zugehörige Dämpfungskonstante heißt **kritische Dämpfung**.
 
-In der Maschinendynamik ist die Kreisfrequenz $\omega_0$ eine der wichtigsten
-Entwurfsgrößen: Liegt die Erregerfrequenz einer äußeren Kraft in der Nähe von
-$\omega_0$, so kann es zu Resonanz kommen. Was das konkret bedeutet und wie
-stark das System dann antwortet, untersucht Abschnitt 11.4.
+Für die Schwebebahn tritt kritische Dämpfung bei $a = 2\omega_0$ auf. Mit
+$\omega_0 \approx 1.81~\text{s}^{-1}$ ist $a = 3.62~\text{s}^{-1}$.
+Probe: $D = (3.62)^2/4 - 3.27 = 3.27 - 3.27 = 0$. Der doppelte Eigenwert
+ist $\lambda = -1.81~\text{s}^{-1}$, und die allgemeine Lösung lautet
 
-[![Logo](../logos/quiz_play_badge.svg)](https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter11/chap11_sec03_quiz.html)
+\begin{equation*}
+\varphi_h(t) = (C_1 + C_2\,t)\,e^{-1.81\,t}.
+\end{equation*}
+
+Die Anfangsbedingungen $\varphi(0) = 0.231$ und $\varphi'(0) = 0$ ergeben:
+
+\begin{align*}
+\varphi(0) &= C_1 \stackrel{!}{=} 0.231, \\
+\varphi'(0) &= C_2 - 1.81\cdot C_1 = C_2 - 0.418 \stackrel{!}{=} 0
+\quad \Rightarrow \quad C_2 = 0.418.
+\end{align*}
+
+Die partikuläre Lösung lautet:
+
+\begin{equation*}
+\varphi(t) = (0.231 + 0.418\,t)\,e^{-1.81\,t}.
+\end{equation*}
+
+Der Wagen kehrt ohne Schwingung und dabei schnellstmöglich in die Ruhelage
+zurück. In der Regelungstechnik und im Fahrzeugbau ist die kritische Dämpfung
+daher ein häufiges Auslegungsziel.
+
+```{dropdown} Video "Allgemeine Lösung" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/ofiDXMH428k?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Allgemeine Lösung Teil 2" von Prof. Hielscher (TH Mannheim)
+<iframe width="1106" height="702" src="https://www.youtube.com/embed/kAshQrZljU4?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösungen der homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten - Teil 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Homogene Differentialgleichung 2. Ordnung (Teil 1)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/S-3obH19RDo" title="Wie löse
+ich eine homogene Differentialgleichung 2. Ordnung? | reelle  homogene Lösung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Homogene Differentialgleichung 2. Ordnung (Teil 2)" von lernflix
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/d8DJ4UkQMnQ?list=PLjVetqThgyWUzbQ8KdoaCGLwT7F2LUIVA" title="Wie löse ich eine homogene Differentialgleichung 2.Ordnung? | doppelte homogene Lösung | DGL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Lineare DGL 2. Ordnung" von Mathe mit Nina
+<iframe width="1129" height="635" src="https://www.youtube.com/embed/MZxec3G6AUI"
+title="Lineare DGL 2. Ordnung - homogene Lösung Fallunterscheidung - schnell und einfach erklärt" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
 
 ## Zusammenfassung und Ausblick
 
-Aus dem Newtonschen Gesetz folgt die Bewegungsgleichung des
-Feder-Masse-Systems direkt und systematisch. Der Sonderfall ohne Dämpfung und
-ohne äußere Kraft führt auf die Schwingungsgleichung, deren Lösung eine
-harmonische Schwingung mit der Kreisfrequenz $\omega_0 = \sqrt{k/m}$ ist.
-Amplitude und Phase hängen von den Anfangsbedingungen ab, die Schwingungsdauer
-dagegen ausschließlich von den Systemparametern.
+Der Exponentialansatz $y = e^{\lambda x}$ reduziert die homogene ODE 2. Ordnung
+auf die charakteristische Gleichung $\lambda^2 + a\lambda + b = 0$. Für $D > 0$
+liefern zwei verschiedene reelle Eigenwerte direkt das Fundamentalsystem; für
+$D = 0$ ergänzt das Produkt $x\,e^{\lambda x}$ die einzige Exponentiallösung zu
+einem vollständigen Fundamentalsystem. In beiden Fällen klingen die Lösungen
+monoton ab, sofern die Eigenwerte negativ sind.
 
-Bisher haben wir die äußere Kraft stets als exponentiell abklingende Stoßkraft
-modelliert. In Abschnitt 11.4 kommt ein technisch besonders wichtiger Fall
-hinzu: eine periodische Kraft $F(t) = F_0\,\sin(\Omega\,t)$, wie sie etwa
-durch eine Unwucht in einem rotierenden Bauteil entsteht. Wenn die
-Erregerfrequenz $\Omega$ nahe an $\omega_0$ liegt, tritt das Phänomen der
-Resonanz auf, das in der Ingenieursgeschichte spektakuläre Schadensfälle
-verursacht hat und das wir in der Maschinenakustik und Schwingungslehre
-sorgfältig vermeiden müssen.
+Noch nicht behandelt ist der Fall $D < 0$: Die charakteristische Gleichung hat
+dann keine reellen Lösungen, und der Exponentialansatz liefert zunächst komplexe
+Ausdrücke. Abschnitt 10.4 zeigt, wie die Euler-Formel diese in reelle Kosinus-
+und Sinusfunktionen umschreibt, und erklärt damit, warum die ungedämpfte
+Schwebebahn aus Abschnitt 10.1 mit $\cos(\omega_0 t)$ und $\sin(\omega_0 t)$
+schwingt.
