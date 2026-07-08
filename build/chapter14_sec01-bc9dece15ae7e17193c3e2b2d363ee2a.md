@@ -1,0 +1,291 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 14.1 Symmetrie nutzen: Kosinus- und Sinusreihen
+
+Wir kehren zu unserer Kurbelwelle aus den Abschnitten 12.1 und 12.2 zurück und
+geben dem Leitbeispiel dieses Kapitels seine physikalische Gestalt: Die Kraft
+auf das Pleuellager wechselt idealisiert mit jeder halben Umdrehung ihr
+Vorzeichen, von Zug auf Druck und zurück. Mit der Kraftamplitude $F_0$ und der
+auf $T = 2\pi$ normierten Periode lautet unser Modell $F(t) = F_0 \cdot f(t)$,
+wobei $f$ genau die symmetrische Rechteckschwingung aus Abschnitt 12.4 ist.
+Bei deren Fourieranalyse hatten wir festgestellt, dass alle
+Kosinuskoeffizienten $a_n$ verschwinden. Der Grund war nicht Zufall, sondern
+Symmetrie: Die Rechteckschwingung ist punktsymmetrisch zum Ursprung, und das
+Integral des Produkts aus einer solchen Funktion mit einer Kosinusfunktion
+über ein symmetrisches Intervall ist stets null. Jetzt machen wir diese
+Beobachtung zur Methode. *Können wir vor der Rechnung erkennen, welche
+Koeffizienten verschwinden werden, und so den Integrationsaufwand halbieren?*
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können erkennen, ob eine gegebene Funktion **gerade** oder
+  **ungerade** ist, und die Definition beider Begriffe angeben.
+* [ ] Sie wissen, dass bei einer geraden Funktion alle $b_n = 0$ und bei
+  einer ungeraden Funktion alle $a_n = 0$ gelten, und können dieses
+  Ergebnis begründen.
+* [ ] Sie können die Symmetrieeigenschaft einer Funktion gezielt nutzen, um
+  den Integrationsaufwand bei der Berechnung der Fourierkoeffizienten zu
+  reduzieren.
+* [ ] Sie können eine gegebene Funktion vor der Rechnung auf Symmetrie
+  prüfen und den Lösungsweg entsprechend anpassen.
+```
+
+## Was sind gerade und ungerade Funktionen?
+
+Wir kennen bereits zwei Paradebeispiele aus den Abschnitten 12.1 und 12.2: Die
+Kosinusfunktion hat einen symmetrischen Graphen bezüglich der $y$-Achse, die
+Sinusfunktion ist punktsymmetrisch zum Ursprung. Diese Eigenschaften haben
+eigene Namen.
+
+```{admonition} Was sind ... gerade und ungerade Funktionen?
+:class: note
+Eine Funktion $f$ heißt **gerade**, wenn für alle $t$ gilt:
+
+\begin{equation*}
+f(-t) = f(t).
+\end{equation*}
+
+Eine Funktion $f$ heißt **ungerade**, wenn für alle $t$ gilt:
+
+\begin{equation*}
+f(-t) = -f(t).
+\end{equation*}
+
+Gerade Funktionen sind spiegelsymmetrisch zur $y$-Achse. Ungerade Funktionen
+sind punktsymmetrisch zum Ursprung.
+```
+
+Im Maschinenbau begegnen uns beide Typen regelmäßig. Ein symmetrisches
+Nockenprofil, das in beide Drehrichtungen gleich wirkt, liefert eine gerade
+Funktion. Ein Steuersignal, das in der positiven Halbperiode genauso aussieht
+wie in der negativen, aber mit umgekehrtem Vorzeichen, ist ungerade. Unsere
+Rechteck-Lagerkraft aus Abschnitt 12.4 ist ungerade, denn sie verbringt die
+negative Halbperiode bei $-1$ und die positive bei $+1$.
+
+Für die Praxis ist die folgende Merkregel hilfreich. Das Produkt zweier
+Funktionen erbt die Symmetrie nach denselben Regeln wie das Produkt von
+Vorzeichen:
+
+```{admonition} Merkregel: Produkte gerader und ungerader Funktionen
+:class: note
+- gerade $\times$ gerade $=$ gerade
+- ungerade $\times$ ungerade $=$ gerade
+- gerade $\times$ ungerade $=$ ungerade
+
+Das Integral einer **ungeraden** Funktion über ein symmetrisches Intervall
+$[-T/2,\, T/2]$ ist stets null.
+```
+
+Diese letzte Eigenschaft ist der eigentliche Schlüssel: Wenn das Produkt
+$f(t)\cdot\cos(n\omega_0 t)$ oder $f(t)\cdot\sin(n\omega_0 t)$ eine ungerade
+Funktion ergibt, verschwindet das zugehörige Integral und damit der
+Fourierkoeffizient automatisch, ohne dass wir rechnen müssen.
+
+## Welche Fourierkoeffizienten verschwinden bei Symmetrie?
+
+Wir wenden die Merkregel auf die Euler-Fourier-Formeln an.
+
+Die Kosinusfunktion $\cos(n\omega_0 t)$ ist gerade. Ist $f$ ebenfalls
+**gerade**, so ist das Produkt $f(t)\cdot\cos(n\omega_0 t)$ gerade, und das
+Integral liefert einen von null verschiedenen Wert. Die Sinusfunktion
+$\sin(n\omega_0 t)$ ist ungerade. Das Produkt $f(t)\cdot\sin(n\omega_0 t)$ ist
+dann gerade $\times$ ungerade $=$ ungerade, das Integral über das symmetrische
+Intervall verschwindet. Damit gilt $b_n = 0$ für alle $n$.
+
+Außerdem können wir die Symmetrie ausnutzen, um das Integrationsintervall zu
+halbieren: Das Integral einer geraden Funktion über $[-T/2, T/2]$ ist doppelt
+so groß wie das Integral über $[0, T/2]$.
+
+```{admonition} Fourierreihe einer geraden Funktion
+:class: note
+Ist $f$ eine **gerade** periodische Funktion mit Periode $T$ und
+$\omega_0 = 2\pi/T$, so gilt $b_n = 0$ für alle $n \geq 1$. Die Fourierreihe
+ist eine reine **Kosinusreihe**:
+
+\begin{equation*}
+f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} a_n\,\cos(n\,\omega_0\,t),
+\end{equation*}
+
+mit den vereinfachten Formeln
+
+\begin{equation*}
+a_n = \frac{4}{T}\int_{0}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt,
+\quad n = 0, 1, 2, \ldots
+\end{equation*}
+```
+
+Für ungerade Funktionen läuft die Argumentation spiegelverkehrt. Die
+Kosinusfunktion ist gerade, das Produkt $f(t)\cdot\cos(n\omega_0 t)$ ist
+ungerade $\times$ gerade $=$ ungerade, das Integral verschwindet, also $a_n =
+0$. Das Produkt $f(t)\cdot\sin(n\omega_0 t)$ ist ungerade $\times$ ungerade
+$=$ gerade, das Integral liefert einen Beitrag.
+
+```{admonition} Fourierreihe einer ungeraden Funktion
+:class: note
+Ist $f$ eine **ungerade** periodische Funktion mit Periode $T$ und
+$\omega_0 = 2\pi/T$, so gilt $a_n = 0$ für alle $n \geq 0$. Die Fourierreihe
+ist eine reine **Sinusreihe**:
+
+\begin{equation*}
+f(t) = \sum_{n=1}^{\infty} b_n\,\sin(n\,\omega_0\,t),
+\end{equation*}
+
+mit den vereinfachten Formeln
+
+\begin{equation*}
+b_n = \frac{4}{T}\int_{0}^{T/2} f(t)\,\sin(n\,\omega_0\,t)\,dt,
+\quad n = 1, 2, \ldots
+\end{equation*}
+```
+
+**Verifikation am Leitbeispiel.** Die Rechteck-Lagerkraft aus Abschnitt 12.4
+erfüllt $f(-t) = -f(t)$, sie ist ungerade. Die Symmetrieregel sagt: alle
+$a_n = 0$, und die Reihe ist eine reine Sinusreihe. In Abschnitt 12.4 haben
+wir genau das durch explizite Integration bestätigt. $\checkmark$
+
+## Fourierreihe der Dreiecksschwingung
+
+Als Anwendung berechnen wir die Fourierreihe einer Funktion, die uns im
+Ventiltrieb desselben Motors begegnet: Der Hub eines symmetrischen Nockens
+steigt über eine halbe Periode linear an und fällt anschließend linear ab.
+Mathematisch ist das die Dreiecksschwingung mit Periode $T = 2\pi$:
+
+\begin{equation*}
+f(t) = \begin{cases}
+t + \pi, & -\pi \leq t < 0, \\
+-t + \pi, & \phantom{-}0 \leq t < \pi.
+\end{cases}
+\end{equation*}
+
+Die Funktion oszilliert zwischen $0$ und $\pi$ und hat bei $t = 0$ ihr Maximum.
+*Ist sie gerade oder ungerade?* Wir prüfen: $f(-t) = -(-t) + \pi = t + \pi =
+f(t)$ für $t \in [0, \pi)$. Die Funktion ist **gerade**, wir dürfen also die
+vereinfachten Kosinusformeln verwenden.
+
+```{figure} pics/chap13_sec01_fig01.svg
+---
+name: chap13_sec01_fig01
+---
+Dreiecksschwingung mit Periode $T = 2\pi$. Die Funktion ist gerade:
+ihr Graph ist spiegelsymmetrisch zur $y$-Achse.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+**Berechnung von $a_0$.** Mit $T = 2\pi$ und der vereinfachten Formel gilt:
+
+\begin{align*}
+a_0 &= \frac{4}{T}\int_{0}^{T/2} f(t)\,dt
+= \frac{2}{\pi}\int_{0}^{\pi} (-t + \pi)\,dt \\
+&= \frac{2}{\pi}\left[-\frac{t^2}{2} + \pi t\right]_{0}^{\pi}
+= \frac{2}{\pi}\left(-\frac{\pi^2}{2} + \pi^2\right)
+= \frac{2}{\pi}\cdot\frac{\pi^2}{2} = \pi.
+\end{align*}
+
+Der Mittelwert von $f$ beträgt $a_0/2 = \pi/2$. Das ist plausibel: Die
+Dreiecksschwingung läuft linear von $0$ auf $\pi$ und wieder zurück, ihr
+Mittelwert über eine Halbperiode ist tatsächlich $\pi/2$.
+
+**Berechnung von $a_n$ für $n \geq 1$.** Wir integrieren nur über $[0, \pi]$:
+
+\begin{align*}
+a_n &= \frac{4}{T}\int_{0}^{T/2} f(t)\,\cos(n\,\omega_0\,t)\,dt
+= \frac{2}{\pi}\int_{0}^{\pi} (-t + \pi)\,\cos(nt)\,dt.
+\end{align*}
+
+Wir integrieren durch Teile mit $u = -t + \pi$ und $v' = \cos(nt)$, also
+$u' = -1$ und $v = \sin(nt)/n$:
+
+<!-- markdownlint-disable -->
+\begin{align*}
+a_n &= \frac{2}{\pi}\left(
+\left[(-t + \pi)\,\frac{\sin(nt)}{n}\right]_{0}^{\pi} +
+\int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
+\right).
+\end{align*}
+<!-- markdownlint-enable -->
+
+Der erste Term verschwindet: An der Stelle $t = \pi$ gilt $-\pi + \pi = 0$, an
+der Stelle $t = 0$ gilt $\sin(0) = 0$. Es bleibt:
+
+\begin{align*}
+a_n &= \frac{2}{\pi}\int_{0}^{\pi}\frac{\sin(nt)}{n}\,dt
+= \frac{2}{n\pi}\left[-\frac{\cos(nt)}{n}\right]_{0}^{\pi}
+= \frac{2}{n^2\pi}\bigl(1 - \cos(n\pi)\bigr).
+\end{align*}
+
+Wir werten $\cos(n\pi)$ aus: Für gerades $n$ gilt $\cos(n\pi) = +1$, für
+ungerades $n$ gilt $\cos(n\pi) = -1$. Damit ergibt sich:
+
+\begin{equation*}
+a_n = \begin{cases}
+0, & n \text{ gerade}, \\[4pt]
+\dfrac{4}{n^2\pi}, & n \text{ ungerade}.
+\end{cases}
+\end{equation*}
+
+**Die Fourierreihe.** Da $b_n = 0$ (gerade Funktion) und $a_n = 0$ für gerades
+$n$, ergibt sich mit der Darstellung $n = 2k-1$ für ungerade Zahlen:
+
+\begin{equation*}
+f(t) = \frac{\pi}{2} + \frac{4}{\pi}\sum_{k=1}^{\infty}
+\frac{\cos\bigl((2k-1)\,t\bigr)}{(2k-1)^2}.
+\end{equation*}
+
+Die Amplituden klingen jetzt wie $1/n^2$ ab, also deutlich schneller als bei
+der Rechteck-Lagerkraft, wo sie nur wie $1/n$ abnahmen. Das liegt daran, dass
+die Dreiecksschwingung keine Sprungstellen hat, sondern nur Knickstellen.
+
+**Plausibilitätsprüfung.** Wir werten $S_1$ an der Stelle $t = 0$ aus. Dort
+hat $f$ ihr Maximum: $f(0) = \pi$. Die erste Partialsumme liefert:
+
+\begin{equation*}
+S_1(0) = \frac{\pi}{2} + \frac{4}{\pi}\cos(0) = \frac{\pi}{2} + \frac{4}{\pi}
+\approx 1.571 + 1.273 = 2.844.
+\end{equation*}
+
+Der exakte Wert ist $\pi \approx 3.142$. Die Abweichung beträgt etwa $9\,\%$.
+Mit dem zweiten nichtverschwindenden Term ($k=2$, also $n=3$):
+
+\begin{equation*}
+S_3(0) = \frac{\pi}{2} + \frac{4}{\pi} + \frac{4}{9\pi}
+\approx 1.571 + 1.273 + 0.141 = 2.985.
+\end{equation*}
+
+Die Abweichung ist auf $5\,\%$ gesunken. Die Partialsummen konvergieren sichtbar
+schneller als bei der Rechteck-Lagerkraft, was die schnellere $1/n^2$-Abnahme
+der Koeffizienten widerspiegelt.
+
+```{figure} pics/chap13_sec01_fig02.svg
+---
+name: chap13_sec01_fig02
+---
+Partialsummen $S_1$, $S_3$ und $S_7$ der Fourierreihe der Dreiecksschwingung.
+Die Annäherung ist gleichmäßig und ohne Überschwingen.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+An den Knickstellen bei $t = \pm\pi$ runden die Partialsummen die scharfe Spitze
+sichtbar ab, schwingen dabei aber nicht über den Wertebereich der Funktion
+hinaus. Das ist ein bemerkenswerter Unterschied zur Rechteck-Lagerkraft aus
+Abschnitt 12.4, deren Partialsummen an den Sprungstellen deutlich überschossen.
+*Liegt das daran, dass die Dreiecksschwingung stetig ist?* Genau dieser Frage
+gehen wir in Abschnitt 13.2 nach, wo wir das Gibbssche Phänomen kennenlernen,
+das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
+verschwindet.
+
+## Zusammenfassung und Ausblick
+
+Eine Symmetrieprüfung vor der Rechnung lohnt sich stets: Bei geraden Funktionen
+entfallen alle $b_n$, bei ungeraden alle $a_n$, und das Integrationsintervall
+halbiert sich auf $[0, T/2]$. Der Rechenaufwand sinkt auf die Hälfte. Das
+Beispiel der Dreiecksschwingung hat außerdem gezeigt, dass die Koeffizienten
+bei Funktionen ohne Sprungstellen schneller abklingen als bei der
+Rechteck-Lagerkraft unserer Kurbelwelle. In Abschnitt 13.2 untersuchen wir
+dieses Konvergenzverhalten genauer und lernen das Gibbssche Phänomen kennen,
+das an echten Sprungstellen auftritt und auch bei sehr vielen Termen nicht
+verschwindet.
