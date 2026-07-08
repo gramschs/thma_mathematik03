@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.2 Konstante Koeffizienten und der Resonanzfall
+# 10.2 Konstante Koeffizienten und der Resonanzfall
 
 In Abschnitt 9.1 haben wir die Variation der Konstanten als universelles Lösungsverfahren
 für lineare ODEs 1. Ordnung kennengelernt. Es funktioniert für beliebige Koeffizienten

@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.4 Erzwungene Schwingung mit periodischer Erregung
+# 14.4 Erzwungene Schwingung mit periodischer Erregung
 
 In Abschnitt 13.3 haben wir das Amplitudenspektrum der Lagerkraft unserer
 Kurbelwelle berechnet: Neben der Grundschwingung bei $25~\text{Hz}$ enthält

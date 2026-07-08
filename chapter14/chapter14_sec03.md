@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.3 Die komplexe Fourierreihe
+# 14.3 Die komplexe Fourierreihe
 
 In Abschnitt 13.2 haben wir gesehen, dass die Fourierkoeffizienten der
 Lagerkraft wie $1/n$ abklingen und damit auch hohe Frequenzen noch spürbar

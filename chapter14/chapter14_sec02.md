@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.2 Konvergenzgeschwindigkeit und Gibbssches Phänomen
+# 14.2 Konvergenzgeschwindigkeit und Gibbssches Phänomen
 
 In Abschnitt 12.4 haben wir beobachtet, dass die Partialsummen der
 Rechteck-Lagerkraft an den Sprungstellen stets überschießen, egal wie viele

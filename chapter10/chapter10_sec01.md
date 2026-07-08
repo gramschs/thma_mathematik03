@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.1 Variation der Konstanten: aus einer Konstante wird eine Funktion
+# 10.1 Variation der Konstanten: aus einer Konstante wird eine Funktion
 
 In Abschnitt 8.3 haben wir die partikuläre Lösung einer inhomogenen linearen ODE durch
 den Ansatz vom Typ der rechten Seite gewonnen: Wir erraten die Form von $y_p$ aus der

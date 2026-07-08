@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 13.1 Symmetrie nutzen: Kosinus- und Sinusreihen
+# 14.1 Symmetrie nutzen: Kosinus- und Sinusreihen
 
 Wir kehren zu unserer Kurbelwelle aus den Abschnitten 12.1 und 12.2 zurück und
 geben dem Leitbeispiel dieses Kapitels seine physikalische Gestalt: Die Kraft

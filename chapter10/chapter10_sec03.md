@@ -3,7 +3,7 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.3 Welches Verfahren für welche ODE? Orientierung im Methodenüberblick
+# 10.3 Welches Verfahren für welche ODE? Orientierung im Methodenüberblick
 
 Mit Kapitel 9.2 ist der Block über gewöhnliche Differentialgleichungen 1. Ordnung
 abgeschlossen. In den Kapiteln 7 bis 9 haben wir sechs Verfahren kennengelernt, die
