@@ -20,31 +20,16 @@
     <loc>http://localhost:3000/chapter01-sec04</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter01-sec05</loc>
+    <loc>http://localhost:3000/chapter02-sec01</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter01-sec06</loc>
+    <loc>http://localhost:3000/chapter02-sec02</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter01-sec07</loc>
+    <loc>http://localhost:3000/chapter02-sec03</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter01-sec08</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter01-sec09</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter01-sec10</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter01-sec11</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter01-sec12</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter01-sec13</loc>
+    <loc>http://localhost:3000/chapter02-sec04</loc>
   </url>
   <url>
     <loc>http://localhost:3000/chapter03-sec01</loc>
@@ -59,12 +44,6 @@
     <loc>http://localhost:3000/chapter03-sec04</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter03-sec05</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter03-sec06</loc>
-  </url>
-  <url>
     <loc>http://localhost:3000/chapter04-sec01</loc>
   </url>
   <url>
@@ -75,15 +54,6 @@
   </url>
   <url>
     <loc>http://localhost:3000/chapter04-sec04</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter04-sec05</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter04-sec06</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter04-sec07</loc>
   </url>
   <url>
     <loc>http://localhost:3000/chapter05-sec01</loc>
@@ -110,6 +80,12 @@
     <loc>http://localhost:3000/chapter06-sec03</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/chapter06-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter06-sec05</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/chapter07-sec01</loc>
   </url>
   <url>
@@ -128,9 +104,6 @@
     <loc>http://localhost:3000/chapter08-sec03</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter08-sec04</loc>
-  </url>
-  <url>
     <loc>http://localhost:3000/chapter09-sec01</loc>
   </url>
   <url>
@@ -140,6 +113,9 @@
     <loc>http://localhost:3000/chapter09-sec03</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/chapter09-sec04</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/chapter10-sec01</loc>
   </url>
   <url>
@@ -147,9 +123,6 @@
   </url>
   <url>
     <loc>http://localhost:3000/chapter10-sec03</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter10-sec04</loc>
   </url>
   <url>
     <loc>http://localhost:3000/chapter11-sec01</loc>
@@ -186,5 +159,17 @@
   </url>
   <url>
     <loc>http://localhost:3000/chapter13-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter14-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter14-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter14-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter14-sec04</loc>
   </url>
 </urlset>
