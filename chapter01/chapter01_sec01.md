@@ -28,8 +28,8 @@ Im Alltag werden häufig Tabellen benutzt, um Daten zu erfassen. Vor allem im
 Profisport ist es mittlerweile Standard, möglichst viele Daten im Training und
 im Wettkampf zu erfassen, um die Leistungen der Sportlerinnen und Sportler zu
 optimieren. Im Folgenden werden wir 3x3-Basketball betrachten, das seit 2020
-olympisch ist. Zwei Basketballteams mit drei Spielern treten gegeneinander an.
-Anders als beim klassischen Basketball wird nur auf einen Korb geworfen.
+olympisch ist. Zwei Basketballteams mit drei Feldspielern treten gegeneinander
+an. Anders als beim klassischen Basketball wird nur auf einen Korb geworfen.
 
 Wir möchten nun das Passspiel der Spieler analysieren und legen dazu eine Tabelle an.
 
@@ -40,7 +40,7 @@ Wir möchten nun das Passspiel der Spieler analysieren und legen dazu eine Tabel
 | **Spieler 3** | | | |
 
 Die Pässe werden wie folgt mitprotokolliert. Passt Spieler 1 den Ball zu Spieler
-3, dann machen wir in dem Feld in der erste Zeile (Spieler 1) und der dritten
+3, dann machen wir in dem Feld in der ersten Zeile (Spieler 1) und der dritten
 Spalte (Spieler 3) einen Strich.
 
 | | Spieler 1 | Spieler 2 | Spieler 3 |
@@ -124,7 +124,7 @@ Einträge in der Matrix sind reelle Zahlen. Wir schreiben daher
 und sagen, dass diese Matrix eine $3\times 3$-Matrix ist (sprich: 3 Kreuz 3).
 Die kombinierte Angabe der Zeilen- und Spaltenanzahl nennen wir **Dimension
 der Matrix**. Bei der Angabe der Dimension kommt immer die Anzahl der Zeilen
-zuerst und die Angabe der Spalten als zweites. In der Finite-Elemente-Methode
+zuerst und die Angabe der Spalten als Zweites. In der Finite-Elemente-Methode
 bestimmt beispielsweise die Anzahl der Freiheitsgrade eines Bauteils die
 Dimension der zugehörigen Steifigkeitsmatrix, ein Zusammenhang, dem wir in der
 Technischen Mechanik wieder begegnen werden.
@@ -175,8 +175,8 @@ Zwei Matrizen $\mathbf{A}$ und $\mathbf{B}$ sind **gleich**, wenn sie dieselbe
 Dimension haben und für alle Indizes $i,j$ gilt: $a_{ij} = b_{ij}$.
 ```
 
-Schneiden wir aus der Matrix eine ganze Zeile aus, z.B. die 2. Zeile, erhalten
-wir einen Vektor
+Schneiden wir aus der Matrix eine ganze Zeile aus, beispielsweise die 2. Zeile,
+erhalten wir einen Vektor
 
 \begin{equation*}
 \vec{z}_{2} = \begin{pmatrix} 2 & 0 & 0\end{pmatrix}.
@@ -254,7 +254,7 @@ Bauteils mit gleich vielen Kraft- und Verschiebungsfreiheitsgraden.
 
 Um zu verstehen, wann eine Matrix nicht
 quadratisch ist, betrachten wir ein anderes Beispiel aus dem Alltag: ein
-Haushaltsbuch. Protokollieren wir Eingaben und Ausgaben im ersten Quartal, so
+Haushaltsbuch. Protokollieren wir Einnahmen und Ausgaben im ersten Quartal, so
 haben wir drei Spalten (Monate) und mehr als drei Zeilen (Posten) wie in dem
 folgenden Beispiel:
 

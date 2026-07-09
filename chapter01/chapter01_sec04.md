@@ -201,7 +201,7 @@ clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
 
 ## Gilt das Kommutativgesetz auch hier?
 
-Bei der Vektoraddition und der Skalarmultiplikation aus Kapitel 1.3 haben sich
+Bei der Matrizenaddition und der Skalarmultiplikation aus Kapitel 1.3 haben sich
 die Rechenregeln der reellen Zahlen direkt auf die Matrizenoperationen
 übertragen, da diese elementweise ausgeführt werden. Bei der
 Matrizenmultiplikation ist das anders, denn hier wird nicht elementweise

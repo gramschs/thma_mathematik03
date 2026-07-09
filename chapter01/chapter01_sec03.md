@@ -122,11 +122,6 @@ Wir überprüfen die Definition an unserem Passbeispiel. Zum Beispiel ergibt sic
 der Eintrag in Zeile 3, Spalte 1 als $17 + 7 = 24$ ✓, wie wir oben berechnet
 haben.
 
-In der Finite-Elemente-Methode werden die Steifigkeitsmatrizen einzelner
-Bauelemente elementweise zur globalen Steifigkeitsmatrix aufaddiert. Die
-Rechenoperation ist dieselbe, die wir gerade am Passbeispiel gesehen haben, nur
-mit größeren Matrizen.
-
 ```{dropdown} Video "Addition von Matrizen" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1LQbgBPYflM"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
@@ -207,10 +202,11 @@ Wir verifizieren die Definition an unserem Trainingsbeispiel. Der Eintrag in
 Zeile 3, Spalte 2 von $2\mathbf{B}$ ist $2 \cdot b_{32} = 2 \cdot 5 = 10$ ✓.
 Das stimmt mit der berechneten Matrix überein.
 
-In der Technischen Mechanik wird die Skalarmultiplikation eingesetzt, wenn
-Lastmatrizen mit einem Sicherheitsbeiwert multipliziert werden, um die
-bemessungsrelevante Beanspruchung zu erhalten. Auch die Kalibrierung von
-Messdaten durch einen Korrekturfaktor ist im Kern eine Skalarmultiplikation.
+Im Maschinenbau werden Messwerte mehrerer Sensoren oft in einer Matrix
+gespeichert, wobei jede Zeile einen Messzeitpunkt und jede Spalte einen Sensor
+beschreibt. Müssen alle Messwerte wegen einer Kalibrierung mit demselben
+Korrekturfaktor angepasst werden, so wird die gesamte Messdatenmatrix mit diesem
+Skalar multipliziert. Auch das ist eine Skalarmultiplikation.
 
 ```{dropdown} Video "Skalarmultiplikation" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1fIxfjWammQ"
@@ -328,10 +324,11 @@ clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
 ## Zusammenfassung und Ausblick
 
 In diesem Kapitel haben wir die Addition, die Skalarmultiplikation und die
-Subtraktion von Matrizen kennengelernt. Alle drei Operationen werden elementweise
-ausgeführt und setzen voraus, dass alle beteiligten Matrizen dieselbe Dimension
-haben. Die vertrauten Rechengesetze der reellen Zahlen übertragen sich
-vollständig auf diese Operationen.
+Subtraktion von Matrizen kennengelernt. Addition und Subtraktion werden
+elementweise ausgeführt und setzen gleiches Format voraus. Bei der
+Skalarmultiplikation wird jeder Eintrag einer Matrix mit einem Skalar
+multipliziert. Für Matrizenaddition und Skalarmultiplikation gelten analoge
+Rechengesetze wie für reelle Zahlen.
 
 Im nächsten Kapitel begegnet uns eine ganz andere Art der Multiplikation: die
 Matrizenmultiplikation, bei der zwei Matrizen miteinander multipliziert werden.

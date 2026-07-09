@@ -258,8 +258,8 @@ $$\mathbf{B} =
 5 & 0 & \sqrt{2} & 0 \\
 \end{pmatrix}.$$
 
-Eine solche Matrix nennen wir **strikte untere Dreiecksmatrix** oder **echte
-untere Dreiecksmatrix**.
+Eine solche Matrix nennen wir eine **strikte untere Dreiecksmatrix** oder eine
+**echte untere Dreiecksmatrix**.
 
 Analog zu diesen Begriffen werden obere Dreiecksmatrizen definiert. Eine **obere
 Dreiecksmatrix** ist eine *quadratische* Matrix, bei der alle Elemente unterhalb
@@ -311,6 +311,7 @@ clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
 In diesem Kapitel haben wir vier Typen von Matrizen kennengelernt: Nullmatrix,
 Diagonalmatrix, Einheitsmatrix und Dreiecksmatrix. Diese unterscheiden sich
 durch die Position ihrer Null- und Eins-Einträge. Es gibt noch mehr Matrizen,
-die einen besonderen Aufbau haben wie etwa transponierte oder symmetrische
-Matrizen. Diese lernen wir in einem späteren Kapitel kennen. Zunächst
-beschäftigen wir uns mit der Addition von Matrizen.
+die einen besonderen Aufbau haben wie etwa symmetrische Matrizen. Diese lernen
+wir in einem späteren Kapitel kennen. Zunächst beschäftigen wir uns mit der
+Addition von Matrizen und lernen, wie Matrizen mit einem Skalar multipliziert
+werden.

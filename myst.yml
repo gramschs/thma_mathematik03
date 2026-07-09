@@ -24,6 +24,7 @@ project:
       - file: chapter01/chapter01_sec02.md
       - file: chapter01/chapter01_sec03.md
       - file: chapter01/chapter01_sec04.md
+      - file: chapter01/chapter01_uebungen.md
     - title: 2. Inverse Matrizen und lineare Gleichungssysteme
       children:
       - file: chapter02/chapter02_sec01.md
