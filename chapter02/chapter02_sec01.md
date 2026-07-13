@@ -9,18 +9,24 @@ transponierte Matrix und die symmetrische Matrix.
 ```{admonition} Lernziele
 :class: attention
 * [ ] Sie wissen, was eine **transponierte Matrix** ist und können zu einer
-  gegebenen Matrix die transponierte Matrix berechnen.
+  gegebenen Matrix die transponierte Matrix berechnen (**Transponieren**.
 * [ ] Sie kennen die **Rechenregeln für transponierte Matrizen**.
-* [ ] Sie können überprüfen, ob eine Matrix **symmetrisch** oder
-  **antisymmetrisch/schiefsymmetrisch** oder nichts davon ist.
-* [ ] Sie können eine Matrix in einen symmetrischen und antisymmetrischen Teil
-  zerlegen.
+* [ ] Sie können überprüfen, ob eine Matrix **symmetrisch** ist.
 ```
 
 ## Transponierte Matrix
 
+Wo taucht Transponieren im Ingenieuralltag auf? Ein typischer Fall: Ein Sensor
+zeichnet Messwerte zeilenweise auf, jede Zeile ein Messzeitpunkt, jede Spalte
+ein Messkanal. Für die weitere Auswertung, etwa um Mittelwerte je Kanal zu
+bilden oder die Daten mit einer anderen Formel weiterzuverarbeiten, ist es oft
+zweckmäßiger, wenn stattdessen jede Zeile einen Kanal repräsentiert. Genau das
+leistet die Transponierte: Sie ändert nicht die Daten selbst, sondern nur deren
+Anordnung.
+
 Eine **transponierte Matrix** entsteht, indem man die Zeilen und die Spalten
-einer Matrix vertauscht. Gegeben sei beispielsweise die Matrix
+einer Matrix vertauscht. Gegeben sei beispielsweise eine (stark vereinfachte)
+Messreihe mit drei Zeitpunkten und zwei Kanälen:
 
 \begin{equation*}
 \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{pmatrix}.
@@ -33,15 +39,14 @@ zur dritten Spalte. Insgesamt erhalten wir für die transponierte Matrix den
 Ausdruck
 
 \begin{equation*}
-\mathbf{A}^{T} = \begin{pmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{pmatrix}.
+\mathbf{A}^{\top} = \begin{pmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{pmatrix}.
 \end{equation*}
 
-Die transponierte Matrix von $\mathbf{A}$ wird mit einem großen "T" bezeichnet,
-also als $\mathbf{A}^{T}$. Manchmal wird auch ein kleines "t" verwendet, also
-$\mathbf{A}^{t}$. Der Vorgang des Zeilen-Spalten-Tauschens wird
-**Transponieren** genannt.
+Die transponierte Matrix von $\mathbf{A}$ wird mit einem großen "$\top$"
+bezeichnet, also als $\mathbf{A}^{\top}$. Der Vorgang des
+Zeilen-Spalten-Tauschens wird **Transponieren** genannt.
 
-Transponieren wir $\mathbf{A}^{T}$ erneut, erhalten wir die ursprüngliche Matrix
+Transponieren wir $\mathbf{A}^{\top}$ erneut, erhalten wir die ursprüngliche Matrix
 $\mathbf{A}$, wie die folgende Animation zeigt.
 
 ```{figure} pics/matrix_transpose.gif
@@ -55,52 +60,144 @@ Lizenz: gemeinfrei)
 ```
 
 ```{dropdown} Video "Transponierte Matrizen" von Mathematische Methoden
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EOFrZaEdUzc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EOFrZaEdUzc"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
 ## Rechenregeln für transponierte Matrizen
 
-Eine Rechenregel für das zweifache Transponieren einer Matrix haben wir oben
-schon als Animation gesehen. Wir halten fest: wird eine Matrix zweimal
-transponiert, so ist das Ergebnis die ursprüngliche Matrix, also
+Eine Rechenregel für das zweifache Transponieren einer Matrix haben wir
+oben schon als Animation gesehen. Wir halten fest: wird eine Matrix
+zweimal transponiert, so ist das Ergebnis die ursprüngliche Matrix, also
+
+\begin{equation*}\left( \mathbf{A}^{\top} \right)^{\top} = \mathbf{A}.\end{equation*}
+
+Auch für die Matrizenaddition, die Skalarmultiplikation und die
+Matrizenmultiplikation lassen sich Rechenregeln für das Transponieren angeben.
+Wir betrachten diese anhand von zwei festen Beispielmatrizen, an denen wir alle
+Regeln direkt nachrechnen können:
 
 \begin{equation*}
-\left( \mathbf{A}^{T} \right)^{T} = \mathbf{A}.
+\mathbf{A} = \begin{pmatrix} 1 & 2 \\ 4 & 3 \end{pmatrix}, \quad
+\mathbf{B} = \begin{pmatrix} 0 & 5 \\ 2 & 1 \end{pmatrix}.
 \end{equation*}
 
-Als nächstes betrachten wir die Matrizenaddition und die Skalarmultiplikation in
-Verbindung mit dem Transponieren. Transponieren wir eine Summe von Matrizen,
-können wir auch erst die Matrizen einzeln transponieren und dann die Summe
-berechnen. In Formelschreibweise gilt also
+### Addition
+
+Transponieren wir eine Summe von Matrizen, können wir auch erst die Matrizen
+einzeln transponieren und dann die Summe berechnen. In Formelschreibweise gilt
+also
 
 \begin{equation*}
-\left(\mathbf{A}+\mathbf{B}\right)^{T} = \mathbf{A}^{T} + \mathbf{B}^{T}.
+\left(\mathbf{A}+\mathbf{B}\right)^{\top} = \mathbf{A}^{\top} + \mathbf{B}^{\top}.
 \end{equation*}
+
+Nachgerechnet an unserem Beispiel ist
+
+$$\mathbf{A}+\mathbf{B} = \begin{pmatrix} 1 & 7 \\ 6 & 4 \end{pmatrix} \Rightarrow
+\left(\mathbf{A}+\mathbf{B}\right)^{\top} =
+\begin{pmatrix} 1 & 6 \\ 7 & 4 \end{pmatrix}.$$
+
+Andererseits ist $\mathbf{A}^{\top} = \begin{pmatrix} 1 & 4 \\ 2 & 3 \end{pmatrix}$ und
+$\mathbf{B}^{\top} = \begin{pmatrix} 0 & 2 \\ 5 & 1 \end{pmatrix}$, und deren Summe
+
+$$\mathbf{A}^{\top}+\mathbf{B}^{\top} = \begin{pmatrix} 1 & 6 \\ 7 & 4 \end{pmatrix}$$
+
+liefert dasselbe Ergebnis.
+
+### Skalarmultiplikation
 
 Auch bei der Skalarmultiplikation ist es irrelevant, ob von dem Ergebnis nach
 der Skalarmultiplikation die transponierte Matrix berechnet wird oder vor der
 Skalarmultiplikation:
 
 \begin{equation*}
-\left(s\cdot\mathbf{A}\right)^{T} = s\cdot \mathbf{A}^{T}.
+\left(s\cdot\mathbf{A}\right)^{\top} = s\cdot \mathbf{A}^{\top}.
 \end{equation*}
+
+Für $s=2$ ergibt sich
+
+$$s\cdot\mathbf{A} = \begin{pmatrix} 2 & 4 \\ 8 & 6 \end{pmatrix} \Rightarrow
+\left(s\cdot\mathbf{A}\right)^{\top} = \begin{pmatrix} 2 & 8 \\ 4 & 6 \end{pmatrix}.$$
+
+Das stimmt mit
+
+$$s\cdot\mathbf{A}^{\top} = 2\cdot\begin{pmatrix} 1 & 4 \\ 2 & 3 \end{pmatrix} =
+\begin{pmatrix} 2 & 8 \\ 4 & 6 \end{pmatrix}$$
+
+überein.
+
+### Multiplikation
 
 Wiederum ist es die Matrizenmultiplikation, die sich besonders verhält. Bei der
 Matrizenmultiplikation ändert sich die Reihenfolge beim Multiplizieren:
 
 \begin{equation*}
-\left(\mathbf{A}\cdot\mathbf{B}\right)^{T}=\mathbf{B}^{T}\cdot\mathbf{A}^{T}.
+\left(\mathbf{A}\cdot\mathbf{B}\right)^{\top}=\mathbf{B}^{\top}\cdot\mathbf{A}^{\top}.
 \end{equation*}
 
-## Symmetrische und antisymmetrische Matrizen
+An unserem Beispiel ist
 
-Eine weitere besondere Matrix ist die **symmetrische Matrix**. Man nennt eine
-quadratische Matrix $\mathbf{A}$ symmetrisch, wenn das Element $a_{ij}$ der
-i-ten Zeile und der j-ten Spalte mit dem Element $a_{ji}$ der j-ten Zeile und
-der i-ten Spalte übereinstimmt. Eine symmetrische Matrix ist also
-spiegelsymmetrisch bezüglich der Hauptdiagonalen. Beispielsweise ist die
-folgende Matrix symmetrisch:
+$$\mathbf{A}\cdot\mathbf{B} = \begin{pmatrix} 4 & 7 \\ 6 & 23 \end{pmatrix} \Rightarrow
+\left(\mathbf{A}\cdot\mathbf{B}\right)^{\top} = \begin{pmatrix} 4 & 6 \\ 7 & 23 \end{pmatrix}.$$
+
+Berechnen wir
+
+$$\mathbf{B}^{\top}\cdot\mathbf{A}^{\top} = \begin{pmatrix} 4 & 6 \\ 7 & 23 \end{pmatrix},$$
+
+erhalten wir ebenfalls dasselbe Ergebnis, die Regel stimmt also. Wichtig ist,
+dass die Reihenfolge tatsächlich entscheidend ist: Vertauschen wir sie nicht und
+berechnen stattdessen
+
+$$\mathbf{A}^{\top}\cdot\mathbf{B}^{\top} = \begin{pmatrix} 20 & 6 \\ 15 & 7 \end{pmatrix},$$
+
+erhalten wir ein anderes Ergebnis.
+
+Warum sich die Reihenfolge zwingend umdrehen muss, zeigt sich unabhängig von den
+konkreten Zahlen bereits an den Dimensionen der Matrizen. Ist $\mathbf{A}$ eine
+$m\times n$ Matrix und $\mathbf{B}$ eine $n\times p$ Matrix, damit
+$\mathbf{A}\cdot\mathbf{B}$ überhaupt definiert ist, dann hat
+$\mathbf{A}\cdot\mathbf{B}$ die Dimension $m\times p$ und somit
+$\left(\mathbf{A}\cdot\mathbf{B}\right)^{\top}$ die Dimension $p\times m$. Die
+transponierte Matrix $\mathbf{A}^{\top}$ hat die Dimension $n\times m$ und
+$\mathbf{B}^{\top}$ die Dimension $p\times n$. Das Produkt
+$\mathbf{A}^{\top}\cdot\mathbf{B}^{\top}$ ist damit im Allgemeinen gar nicht
+definiert, da die inneren Dimensionen $m$ und $p$ nicht zusammenpassen (in
+unserem $2\times2$ Beispiel zufällig doch definiert, aber eben mit einem
+falschen Ergebnis, wie wir oben gesehen haben). Das Produkt
+$\mathbf{B}^{\top}\cdot\mathbf{A}^{\top}$ dagegen hat die Dimensionen $p\times n$
+mal $n\times m$ und ist damit stets definiert, mit dem passenden Ergebnis
+$p\times m$. Die Reihenfolge muss sich also zwingend umdrehen, damit das Produkt
+überhaupt existiert.
+
+```{dropdown} Video "Transposition und Multiplikation" von Prof. Hoever
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BzQBlWwhIp8?si=D5KYoDXD9uADJuES"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Symmetrische Matrizen
+
+Auch die symmetrische Matrix hat eine anschauliche Entsprechung im
+Ingenieuralltag. Sind auf einer Bauteilplatte mehrere Bohrungen positioniert,
+lässt sich für jedes Paar von Bohrungen der Abstand notieren. Bezeichnet
+$d_{ij}$ den Abstand zwischen Bohrung $i$ und Bohrung $j$, dann ergibt sich für
+vier Bohrungen eine $4\times4$ Matrix $\mathbf{D}$ mit diesen Abständen. Da der
+Abstand von Bohrung $i$ zu Bohrung $j$ derselbe ist wie von Bohrung $j$ zu
+Bohrung $i$, gilt automatisch $d_{ij}=d_{ji}$: die Matrix ist symmetrisch, ganz
+ohne dass wir dies eigens fordern müssten.
+
+Allgemein nennt man eine quadratische Matrix $\mathbf{A}$ symmetrisch, wenn das
+Element $a_{ij}$ der i-ten Zeile und der j-ten Spalte mit dem Element $a_{ji}$
+der j-ten Zeile und der i-ten Spalte übereinstimmt. Eine symmetrische Matrix ist
+also spiegelsymmetrisch bezüglich der Hauptdiagonalen. Anders als bei der
+Abstandsmatrix $\mathbf{D}$, deren Einträge stets nicht-negativ sind und deren
+Diagonale nur Nullen enthält, dürfen die Einträge einer symmetrischen Matrix im
+Allgemeinen beliebige Werte annehmen, auch negative Zahlen oder von Null
+verschiedene Diagonaleinträge. Beispielsweise ist die folgende Matrix
+symmetrisch:
 
 \begin{equation*}
 \begin{pmatrix} 2 & 3.5 & -1 \\ 3.5 & 4 & 0 \\ -1 & 0 & 17 \end{pmatrix}.
@@ -113,18 +210,18 @@ Matrix auch folgendermaßen spezifizieren.
 :class: note
 Eine quadratische Matrix $\mathbf{A}$ ist symmetrisch, wenn
 
-$$\mathbf{A}^{T} = \mathbf{A}$$
+$$\mathbf{A}^{\top} = \mathbf{A}$$
 
-gilt, wobei $\mathbf{A}^{T}$ die transponierte Matrix von $\mathbf{A}$ bezeichnet.
+gilt, wobei $\mathbf{A}^{\top}$ die transponierte Matrix von $\mathbf{A}$ bezeichnet.
 ```
 
-Oder anders ausgedrückt: der Prozess des Transponieren ändert die Matrix nicht.
+Oder anders ausgedrückt: der Prozess des Transponierens ändert die Matrix nicht.
 
 Sind zwei Matrizen symmetrisch, dann ist auch ihre Summe wieder symmetrisch,
 denn es gilt
 
 \begin{equation*}
-\left(\mathbf{A}+\mathbf{B}\right)^{T} = \mathbf{A}^{T} + \mathbf{B}^{T} =
+\left(\mathbf{A}+\mathbf{B}\right)^{\top} = \mathbf{A}^{\top} + \mathbf{B}^{\top} =
 \mathbf{A} + \mathbf{B}.
 \end{equation*}
 
@@ -135,13 +232,13 @@ einmal aus, wenn wir die Matrizenmultiplikation betrachten.
 Im Allgemeinen gilt für symmetrische Matrizen
 
 \begin{equation*}
-\left(\mathbf{A}\cdot\mathbf{B}\right)^{T} = \mathbf{B}^{T}\cdot\mathbf{A}^{T}=
+\left(\mathbf{A}\cdot\mathbf{B}\right)^{\top} = \mathbf{B}^{\top}\cdot\mathbf{A}^{\top}=
 \mathbf{B}\cdot\mathbf{A} \overset{i.Allg.}{\neq} \mathbf{A}\cdot\mathbf{B}.
 \end{equation*}
 
-Nur wenn für die beiden Matrizen $\mathbf{A}$ und $\mathbf{B}$ *zufälligerweise*
-$\mathbf{A}\cdot\mathbf{B} = \mathbf{B}\cdot\mathbf{A}$ gilt, ist auch die
-Produktmatrix symmetrisch.
+Genau dann, wenn für die beiden Matrizen $\mathbf{A}$ und $\mathbf{B}$
+*zufälligerweise* $\mathbf{A}\cdot\mathbf{B} = \mathbf{B}\cdot\mathbf{A}$ gilt,
+ist auch die Produktmatrix symmetrisch.
 
 ```{dropdown} Video "Symmetrische Matrizen" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w7VBdqbWobk"
@@ -149,79 +246,10 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
-Der Gegenpart zu einer symmetrischen Matrix ist die **antisymmetrische
-Matrix**. Eine Matrix wird antisymmetrisch genannt, wenn die Eigenschaft
-
-\begin{equation*}
-\mathbf{A}^{T} = - \mathbf{A}
-\end{equation*}
-
-erfüllt ist. Für alle Elemente der Matrix gilt also $a_{ij} = - a_{ji}$.
-Manchmal wird eine solche Matrix auch **schiefsymmetrische Matrix** genannt.
-
-Ein Beispiel für eine schiefsymmetrische Matrix ist die Matrix
-
-\begin{equation*}
-\begin{pmatrix} 2 & 3.5 & -1 \\ -3.5 & 4 & 0 \\ 1 & 0 & 17 \end{pmatrix}.
-\end{equation*}
-
-## Zerlegung in symmetrische und antisymmetrische Matrix
-
-Für quadratische Matrizen können wir eine Zerlegung der Matrix in ihren
-symmetrischen Anteil und ihren antisymmetrischen Anteil vornehmen. Zunächst aber
-halten wir fest: wird eine quadratische Matrix $\mathbf{A}$ zu ihrer eigenen
-Transponierten addiert, dann ist das Ergebnis eine symmetrische Matrix. In
-Formeln notieren wir Folgendes: Wenn $\mathbf{A}$ eine quadratische Matrix ist,
-dann ist $\mathbf{A}+\mathbf{A}^{T}$ eine symmetrische Matrix.
-
-Dass diese Aussage wahr ist, können wir folgendermaßen zeigen. Wir starten mit
-dem Ausdruck $(\mathbf{A}+\mathbf{A}^{T})^{T}$ und vereinfachen ihn gemäß der
-obigen Rechenregeln:
-
-\begin{equation*}
-\left(\mathbf{A}+\mathbf{A}^{T}\right)^{T}
-= \mathbf{A}^{T} + \left(\mathbf{A}^{T}\right)^{T} = \mathbf{A}^{T} + \mathbf{A} =
-\mathbf{A} + \mathbf{A}^{T}.
-\end{equation*}
-
-Das ist aber genau die Eigenschaft, die eine quadratische Matrix zu einer
-symmetrischen Matrix macht.
-
-Analog dazu können wir zeigen, dass $\mathbf{A} - \mathbf{A}^{T}$ eine
-antisymmetrische Matrix ist:
-
-\begin{equation*}
-\left(\mathbf{A}-\mathbf{A}^{T}\right)^{T}
-= \mathbf{A}^{T} - \left(\mathbf{A}^{T}\right)^{T} = \mathbf{A}^{T} - \mathbf{A} =
--\left(\mathbf{A}-\mathbf{A}^{T}\right).
-\end{equation*}
-
-Wir wissen also, dass $\mathbf{A}+\mathbf{A}^{T}$ eine symmetrische Matrix und
-$\mathbf{A}-\mathbf{A}^{T}$ eine antisymmetrische Matrix ist. Addieren wir die
-beiden, erhalten wir
-
-\begin{equation*}
-\left(\mathbf{A}+\mathbf{A}^{T}\right) + \left(\mathbf{A}-\mathbf{A}^{T}\right) =
-2\cdot\mathbf{A}.
-\end{equation*}
-
-Teilen wir auf beiden Seiten der Gleichung durch 2 erhalten wir
-
-<!-- markdownlint-disable MD049 -->
-\begin{equation*}
-\mathbf{A} =
-\underbrace{\frac{1}{2}\left(\mathbf{A}+\mathbf{A}^{T}\right)}_{\text{symmetrisch}} +
-\underbrace{\frac{1}{2}\left(\mathbf{A}-\mathbf{A}^{T}\right)}_{\text{antisymmetrisch}}
-\end{equation*}
-<!-- markdownlint-enable MD049 -->
-
-und haben so die quadratische Matrix $\mathbf{A}$ in eine symmetrischen und
-einen antisymmetrischen Teil zerlegt.
-
 ## Zusammenfassung und Ausblick
 
 In diesem Kapitel haben wir symmetrische Matrizen kennengelernt, die sich beim
 Transponieren nicht verändern. Symmetrische Matrizen sind eines der wichtigsten
-Hilfsmittel der Linearen Algebra und werden uns aber auch in der Analysis wieder
+Hilfsmittel der Linearen Algebra und werden uns auch in der Analysis wieder
 begegnen, wenn es um die Bestimmung von Extrema zweidimensionaler reellwertiger
 Funktionen gehen wird.
