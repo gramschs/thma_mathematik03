@@ -9,7 +9,7 @@ transponierte Matrix und die symmetrische Matrix.
 ```{admonition} Lernziele
 :class: attention
 * [ ] Sie wissen, was eine **transponierte Matrix** ist und können zu einer
-  gegebenen Matrix die transponierte Matrix berechnen (**Transponieren**.
+  gegebenen Matrix die transponierte Matrix berechnen (**Transponieren**).
 * [ ] Sie kennen die **Rechenregeln für transponierte Matrizen**.
 * [ ] Sie können überprüfen, ob eine Matrix **symmetrisch** ist.
 ```
