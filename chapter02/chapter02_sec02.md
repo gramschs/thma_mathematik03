@@ -1,7 +1,7 @@
 # 2.2 Inverse Matrizen
 
 Bisher haben wir die Addition, Subtraktion und Multiplikation von Matrizen
-kennengelernt. Gibt es eine Division? Ein Division wie wir sie von den reellen
+kennengelernt. Gibt es eine Division? Eine Division wie wir sie von den reellen
 Zahlen kennen, gibt es nicht. Aber für quadratische Matrizen können wir manchmal
 die sogenannte inverse Matrix bilden. Die inverse Matrix ist vergleichbar mit
 dem Kehrwert einer Zahl und hat wichtige Anwendungen.
@@ -15,7 +15,8 @@ dem Kehrwert einer Zahl und hat wichtige Anwendungen.
 * [ ] Sie kennen den Fachbegriff **invertierbar**.
 * [ ] Sie können die **Inverse einer $2\times 2$-Matrix** berechnen.
 * [ ] Sie können die **Inverse einer Diagonalmatrix** angeben und berechnen.
-* [ ] Sie können die **Inverse einer $n\times n$-Matrix** für $n>2$ berechnen.
+* [ ] Sie können die **Inverse einer $n\times n$-Matrix** auch für $n>2$ mit dem
+  **Gauß-Jordan-Algorithmus** berechnen.
 ```
 
 ## Inverse Matrix von $2\times 2$-Matrizen
@@ -34,7 +35,7 @@ Wenn der Ausdruck $a\cdot d - c\cdot b$ *ungleich Null* ist, also
 a\cdot d - c\cdot b \textcolor{red}{\neq} 0
 \end{equation*}
 
-gilt, dann können wir die Inverse $\mathbf{A}^{-1}$ mit der Definition
+gilt, dann können wir die Inverse $\mathbf{A}^{-1}$ mit der Formel
 
 \begin{equation*}
 \mathbf{A}^{-1}=
@@ -90,7 +91,7 @@ ebenfalls eine quadratische Matrix, die die Einheitsmatrix $\mathbf{E}$ ergibt,
 wenn sie mit der ursprünglichen Matrix $\mathbf{A}$ multipliziert wird:
 
 \begin{equation*}
-\mathbf{A}^{-1}\cdot \mathbf{A} = \mathbf{E}.
+\mathbf{A}^{-1}\cdot \mathbf{A} = \mathbf{A}\cdot\mathbf{A}^{-1}=\mathbf{E}.
 \end{equation*}
 
 Eine Matrix, die eine inverse Matrix besitzt, wird **invertierbar** genannt.
@@ -99,13 +100,15 @@ Eine Matrix, die eine inverse Matrix besitzt, wird **invertierbar** genannt.
 ```{dropdown} Video "Inverse Matrix, Definition" von Mathematische Methoden
 <iframe width="1020" height="574" src="https://www.youtube.com/embed/S6bH3c7IALE"
 title="0146 Inverse Matrix, Definition" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ```{dropdown} Video "Inverse Matrix, 2x2-Matrix" von Mathematische Methoden
 <iframe width="1020" height="574" src="https://www.youtube.com/embed/SVfCsB5qjHE"
 title="0147 Inverse Matrix, Berechnung 2x2" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Inverse von Diagonalmatrizen
@@ -133,7 +136,7 @@ Wir raten die inverse Matrix
 \end{equation*}
 
 und überprüfen durch Matrixmultiplikation, ob unsere Vermutung stimmt und die
-Einheitsmatrix $E$ das Ergebnis der Multiplikation ist:
+Einheitsmatrix $\mathbf{E}$ das Ergebnis der Multiplikation ist:
 
 \begin{equation*}
 \mathbf{D}\cdot \mathbf{D}^{-1} =
@@ -175,8 +178,11 @@ gegeben, dann ist ihre inverse Matrix
 0 & \frac{1}{d_{22}} & \ldots & 0\\
 \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & \ldots & \frac{1}{d_{nn}}\\
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation*}
+
+Das gilt natürlich nur, wenn jedes Diagonalelement $d_{11}$ bis $d_{nn}$
+ungleich Null ist. Sonst ist die Matrix nicht invertierbar.
 
 Die inverse Matrix einer $2\times 2$-Matrix und einer Diagonalmatrix lässt sich
 sehr leicht bestimmen. Komplizierter wird es, wenn die Matrix keine
@@ -185,17 +191,16 @@ Diagonalmatrix ist und vor allem, wenn sie mehr als zwei Zeilen/Spalten hat.
 ## Inverse Matrix von $n \times n$-Matrizen
 
 Die obige Definition einer inversen Matrix ist für alle quadratischen Matrizen
-gültig. Auch bei einer quadratischen $n\times n$-Matrix $\mathbf{A}$ ist also
-die inverse Matrix $\mathbf{A}^{-1}$ diejenige Matrix, für die dann
-$\mathbf{A}^{-1}\cdot\mathbf{A}=\mathbf{E}$ gilt. Leider gibt es keine so schöne
-einfache Formel zur Berechnung der Inversen. Auch gibt es keinen einfachen Test,
-ob die Inverse überhaupt existiert. Die Berechnung der Inversen einer $n \times
-n$-Matrix ist aufwändiger als bei $2 \times 2$-Matrizen und erfordert in der
-Regel eine systematische Methode. Eines der bekanntesten Verfahren ist der
-Gauß-Algorithmus, den wir auch schon zur Lösung eines linearen Gleichungssystems
-kennengelernt haben.
+gültig. Auch bei einer quadratischen $n\times n$-Matrix $\mathbf{A}$ mit $n > 2$
+ist also die inverse Matrix $\mathbf{A}^{-1}$ diejenige Matrix, für die dann
+$\mathbf{A}^{-1}\cdot\mathbf{A}=\mathbf{A}\cdot\mathbf{A}^{-1}=\mathbf{E}$ gilt.
+Leider gibt es keine so schöne einfache Formel zur Berechnung der Inversen. Die
+Berechnung der Inversen einer $n \times n$-Matrix ist aufwändiger als bei $2
+\times 2$-Matrizen und erfordert in der Regel eine systematische Methode. Eines
+der bekanntesten Verfahren zur Berechnung der inversen Matrix ist der
+Gauß-Jordan-Algorithmus.
 
-Das Gauß-Verfahren funktioniert durch das Anwenden von elementaren
+Der **Gauß-Jordan-Algorithmus** funktioniert durch das Anwenden von elementaren
 Zeilenumformungen auf die Matrix $\mathbf{A}$, bis sie in die Einheitsmatrix
 $\mathbf{E}$ umgewandelt ist. Dieselben Umformungen werden parallel auf eine
 Einheitsmatrix der gleichen Dimension angewendet, um schließlich die Inverse zu
@@ -211,29 +216,156 @@ erhalten. Der Algorithmus verläuft in den folgenden Schritten:
    dann ist die ursprüngliche Einheitsmatrix rechts daneben nun die gesuchte
    inverse Matrix.
 
-Am einfachsten ist es, sich den Gauß-Algorithmus im folgenden Video anzusehen.
+Bei Schritt 3 sind drei Arten von elementaren Zeilenumformungen erlaubt: das
+Vertauschen zweier Zeilen, das Multiplizieren einer Zeile mit einem Skalar
+ungleich Null und das Addieren eines Vielfachen einer Zeile zu einer anderen
+Zeile. Lässt sich die linke Matrix $\mathbf{A}$ nicht zur Einheitsmatrix
+umformen, ist $\mathbf{A}$ nicht invertierbar.
 
-```{dropdown} Video "INVERSE MATRIX 3x3 berechnen" von Mathematrick
-<iframe width="560" height="315" src="https://www.youtube.com/embed/usya1zz-skM?si=TfW-HC43dbkEjoog"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+Wir wenden diese fünf Schritte nun vollständig auf ein konkretes
+Beispiel an, in dem alle drei Umformungen vorkommen, und betrachten die Matrix
 
-```{dropdown} Video "Inverse Matrix, nxn-Matrix" von Mathematische Methoden
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/9DuDN_sJil8"
-title="0148 Inverse Matrix, Berechnung nxn" frameborder="0" allow="accelerometer; autoplay;
-clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix}
+0 & 1 & 4 \\
+2 & 4 & 6 \\
+5 & 6 & 0 \\
+\end{pmatrix}.
+\end{equation*}
 
-```{dropdown} Video "Inverse Matrix, Gauß-Jordan-Verfahren" von Mathematische Methoden
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/uBXDo-X9X8M"
-title="0149 Inverse Matrix, Berechnung: warum das Gauß-Jordan-Verfahren funktioniert"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
+Zunächst schreiben wir die Einheitsmatrix $\mathbf{E}_3$ rechts neben
+$\mathbf{A}$ (Schritt 1 und 2):
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+0 & 1 & 4 & 1 & 0 & 0 \\
+2 & 4 & 6 & 0 & 1 & 0 \\
+5 & 6 & 0 & 0 & 0 & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Das Element $a_{11}=0$ kann nicht als Pivotelement dienen, denn wir dürfen
+später nicht durch Null teilen. Deshalb vertauschen wir zunächst $Z_1$ und
+$Z_2$:
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+2 & 4 & 6 & 0 & 1 & 0 \\
+0 & 1 & 4 & 1 & 0 & 0 \\
+5 & 6 & 0 & 0 & 0 & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Jetzt steht an Position $a_{11}$ eine 2. Damit dort eine 1 steht, skalieren
+wir $Z_1$ mit dem Faktor $\frac{1}{2}$, also $Z_1 \to \frac{1}{2}\cdot Z_1$:
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+\boxed{1} & 2 & 3 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & 4 & 1 & 0 & 0 \\
+5 & 6 & 0 & 0 & 0 & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Erst jetzt können wir mithilfe des Pivotelements $\boxed{a_{11}=1}$ Nullen
+unterhalb davon in der ersten Spalte erzeugen. Dazu ersetzen wir $Z_3$ durch
+$Z_3 - 5 \cdot Z_1$. Der Eintrag $a_{21}$ ist bereits Null und bleibt bei dieser
+Umformung unverändert:
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+\boxed{1} & 2 & 3 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & 4 & 1 & 0 & 0 \\
+\textcolor{red}{0} & -4 & -15 & 0 & \frac{-5}{2} & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Als nächstes nutzen wir das Pivotelement $\boxed{a_{22}=1}$, um in der zweiten
+Spalte sowohl oberhalb als auch unterhalb eine Null zu erzeugen. Wir ersetzen
+dazu $Z_1$ durch $Z_1 - 2 \cdot Z_2$ und $Z_3$ durch $Z_3 + 4 \cdot Z_2$:
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+1 & \textcolor{red}{0} & -5 & -2 & \frac{1}{2} & 0 \\
+0 & \boxed{1} & 4 & 1 & 0 & 0 \\
+0 & \textcolor{red}{0} & 1 & 4 & \frac{-5}{2} & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Zuletzt nutzen wir das Pivotelement $\boxed{a_{33}=1}$, um in der dritten
+Spalte oberhalb Nullen zu erzeugen. Wir ersetzen dazu $Z_1$ durch $Z_1 + 5
+\cdot Z_3$ und $Z_2$ durch $Z_2 - 4 \cdot Z_3$:
+
+\begin{equation*}
+\left(\begin{array}{ccc|ccc}
+1 & 0 & \textcolor{red}{0} & 18 & -12 & 5 \\
+0 & 1 & \textcolor{red}{0} & -15 & 10 & -4 \\
+0 & 0 & \boxed{1} & 4 & \frac{-5}{2} & 1 \\
+\end{array}\right)
+\end{equation*}
+
+Auf der linken Seite steht jetzt die Einheitsmatrix $\mathbf{E}_3$. Damit ist
+der Algorithmus abgeschlossen, und auf der rechten Seite können wir die
+gesuchte inverse Matrix ablesen (Schritt 5):
+
+\begin{equation*}
+\mathbf{A}^{-1} = \begin{pmatrix}
+18 & -12 & 5 \\
+-15 & 10 & -4 \\
+4 & \frac{-5}{2} & 1 \\
+\end{pmatrix}.
+\end{equation*}
+
+Wie in den vorherigen Abschnitten überprüfen wir das Ergebnis durch
+Matrizenmultiplikation. Es muss $\mathbf{A}\cdot\mathbf{A}^{-1} =
+\mathbf{A}^{-1}\cdot\mathbf{A}=\mathbf{E}_3$ gelten:
+
+\begin{equation*}
+\begin{pmatrix}
+0 & 1 & 4 \\
+2 & 4 & 6 \\
+5 & 6 & 0 \\
+\end{pmatrix} \cdot
+\begin{pmatrix}
+18 & -12 & 5 \\
+-15 & 10 & -4 \\
+4 & \frac{-5}{2} & 1 \\
+\end{pmatrix} =
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{pmatrix} = \mathbf{E}_3.
+\end{equation*}
+
+Zur Kontrolle rechnen wir den Eintrag in Zeile 1, Spalte 1 nach: $0\cdot 18 +
+1\cdot(-15) + 4\cdot 4 = -15+16 = 1$ ✓. Ebenso erhalten wir
+
+\begin{equation*}
+\begin{pmatrix}
+18 & -12 & 5 \\
+-15 & 10 & -4 \\
+4 & \frac{-5}{2} & 1 \\
+\end{pmatrix} \cdot
+\begin{pmatrix}
+0 & 1 & 4 \\
+2 & 4 & 6 \\
+5 & 6 & 0 \\
+\end{pmatrix}=
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{pmatrix} = \mathbf{E}_3.
+\end{equation*}
+
+Zur Kontrolle rechnen wir auch hier den Eintrag in Zeile 1, Spalte 1 nach:
+$18\cdot 0 + (-12)\cdot 2 + 5\cdot 5 = -24+25 = 1$ ✓.
 
 ```{dropdown} Video "Matrix invertieren mit Gauß-Jordan-Verfahren" von MathePeter
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/jGHTVeJ0xto?list=PLvBnQVOJXCUEqznry7PU0wsseLh-dXR4k" title="Matrix invertieren mit Gauß-Jordan-Verfahren
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/jGHTVeJ0xto?list=PLvBnQVOJXCUEqznry7PU0wsseLh-dXR4k"
+title="Matrix invertieren mit Gauß-Jordan-Verfahren
 Einfach Erklärt + Beispiel" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
 encrypted-media; gyroscope; picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
