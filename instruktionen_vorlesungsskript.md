@@ -13,39 +13,37 @@ Das Skript wird mit **Jupyter Book Version 2 (MyST Markdown)** erstellt und als
 HTML auf **GitHub Pages** gehostet. Alle Dateien sind `.md`-Dateien im
 MyST-Format.
 
-Das Skript ist in Kapitel (`chapter0X`) und Sektionen (`chapter0X_secYY.md`)
-aufgeteilt. Beispiel: `chapter03_sec01.md`, `chapter03_sec02.md`, usw.
-
 ---
 
 ## Dateistruktur und Datei-Header
 
-Jede Sektion ist eine eigenständige `.md`-Datei (ca. 150 bis 300 Zeilen). Jede
+Jedes Kapitel ist eine eigenständige `.md`-Datei (ca. 150 bis 300 Zeilen). Jede
 Datei beginnt mit einem YAML-Front-Matter-Block:
 
 ```markdown
 ---
 authors:
-  - name:n Simone Gramsch
+  - name: Simone Gramsch
 ---
 ```
 
-Unmittelbar danach folgt der H1-Titel der Sektion. Unterabschnitte verwenden
+Unmittelbar danach folgt der H1-Titel des Kapitels. Unterabschnitte verwenden
 H2-Überschriften.
 
 ---
 
-## Pflichtstruktur jeder Sektion
+## Pflichtstruktur jedes Kapitels
 
-Jede Sektion folgt **exakt** diesem narrativen Bogen, ohne Abweichung:
+Jedes Kapitel folgt **exakt** diesem narrativen Bogen, ohne Abweichung:
 
 ```markdown
-# Titel der Sektion
+# Titel des Kapitels
 
-Einleitungsabsatz (2-4 Sätze): Anknüpfung an die vorherige Sektion,
-Einführung eines konkreten physikalischen oder technischen Szenarios,
-das das neue Konzept motiviert. Niemals mit einer Definition oder
-einer Formel beginnen.
+Einleitungsabsatz (2-4 Sätze): Anknüpfung an das vorherige Kapitel und
+ein kurzer Hinweis (1-2 Sätze), wo das neue Konzept im Maschinenbau
+gebraucht wird. Der Hinweis nennt Begriffe aus anderen Fächern höchstens,
+erklärt sie aber nicht. Niemals mit einer Definition oder einer Formel
+beginnen.
 
 ## Lernziele
 
@@ -62,7 +60,7 @@ Definitionsbox, siehe Prinzip "Erst Beispiel, dann abstrakt"]
 
 ## Zusammenfassung und Ausblick
 
-Kurzer Rückblick (2-4 Sätze). Vorschau auf die nächste Sektion.
+Kurzer Rückblick (2-4 Sätze). Vorschau auf das nächste Kapitel.
 Konkreter Vorwärtsverweis auf ein späteres Thema im Kurs.
 ```
 
@@ -72,10 +70,10 @@ Dies ist das wichtigste inhaltliche Gestaltungsprinzip des gesamten Skripts.
 Jeder neue Begriff und jede neue Formel wird nach dem folgenden Dreischritt
 eingeführt:
 
-1. **Konkretes Beispiel zuerst.** Wir beobachten ein physikalisches oder
-   technisches Phänomen oder ein Beispiel aus dem Alltag von Studierenden und
-   beschreiben es in Alltagssprache. Die Studierenden sollen das Gefühl haben,
-   dass die Mathematik eine Antwort auf eine echte Frage ist.
+1. **Konkretes Beispiel zuerst.** Wir rechnen ein einfaches Zahlenbeispiel
+   durch oder knüpfen an Bekanntes an, etwa an die Rechenregeln für reelle
+   Zahlen, und beobachten, was passiert. Die Studierenden sollen das Gefühl
+   haben, dass die Mathematik eine Antwort auf eine echte Frage ist.
 2. **Informelle Beschreibung.** Wir benennen das Muster, das wir im Beispiel
    sehen, und formulieren es noch ohne formale Notation.
 3. **Formale Definition (Definitionsbox).** Erst jetzt schreiben wir die
@@ -98,27 +96,30 @@ eine Inverse besitzt. Matrizen mit dieser Eigenschaft nennen wir ..."*
 
 ## Storytelling: Das durchgehende Beispiel
 
-Jede Sektion (und wenn möglich das gesamte Kapitel) soll ein **einziges
-durchgehendes Beispiel** verwenden, das in der Einleitung eingeführt und in
-jedem Abschnitt weiterentwickelt wird. Dieses Beispiel ist der narrative rote
-Faden.
+Jedes Kapitel sollte ein **durchgehendes Beispiel** verwenden, das im ersten
+Abschnitt eingeführt und in jedem weiteren Abschnitt wieder aufgegriffen wird.
+Dieses Beispiel ist der rote Faden.
 
 Regeln für das durchgehende Beispiel:
 
-- Es muss **physikalisch konkret** und für den Maschinenbau relevant sein oder
-  es muss aus dem Alltag stammen.
-- Wenn eine neue Konfiguration des Beispiels eingeführt wird, beschreiben wir
-  sie erst physikalisch, wählen dann Koordinaten oder Parameter und schreiben
-  schließlich die Gleichung oder Matrix auf. Diese Reihenfolge ist verbindlich.
-- Parameterwerte werden so gewählt, dass Zwischenergebnisse interpretierbar
-  sind. Wir vermeiden trivial runde Zahlen ebenso wie Zahlen, die so
-  unübersichtlich sind, dass sie vom Inhalt ablenken.
-- Am Ende der Sektion soll das Beispiel vollständig abgeschlossen sein. Keine
+- Es ist **mathematisch einfach**: wenige feste Objekte (etwa zwei
+  $2\times 2$-Matrizen mit ganzzahligen Einträgen), die mit bereits bekannten
+  Methoden nachgerechnet werden können.
+- Es setzt **kein Vorwissen aus anderen Lehrveranstaltungen** voraus
+  (Technische Mechanik, Physik über Schulniveau hinaus). Anwendungen aus dem
+  Maschinenbau stehen nur als kurzer Hinweis in der Einleitung, nicht in den
+  inhaltlichen Abschnitten. So bleibt die kognitive Last gering und der Fokus
+  liegt auf der Mathematik.
+- Zahlenwerte werden so gewählt, dass Zwischenergebnisse übersichtlich
+  bleiben. Wir vermeiden Sonderfälle, die das Ergebnis verfälschen (etwa
+  Diagonalmatrizen, bei denen die Reihenfolge der Multiplikation keine Rolle
+  spielt), ebenso wie Zahlen, die so unübersichtlich sind, dass sie vom Inhalt
+  ablenken.
+- Am Ende des Kapitels soll das Beispiel vollständig abgeschlossen sein. Keine
   offenen Fragen, die nie beantwortet werden.
-
-Für ein ganzes Kapitel empfiehlt sich ein **kapitelweites Leitbeispiel**, das
-in der ersten Sektion eingeführt und in den folgenden Sektionen immer wieder
-aufgegriffen wird.
+- Objekte aus einem Kapitel dürfen in späteren Kapiteln wieder aufgegriffen
+  werden (etwa eine Matrix, deren Inverse bereits bekannt ist). Das schafft
+  Rückverweise und spart Rechenaufwand.
 
 ---
 
@@ -158,12 +159,8 @@ Regeln:
 
 - Jedes Lernziel beginnt mit `* [ ]` (Checkbox-Syntax).
 - Schlüsselbegriffe werden **fettgedruckt**.
-- Lernziele beginnen mit "Sie wissen", "Sie können", "Sie kennen" oder
-  "Sie verstehen".
-- Anzahl: 3 bis 6 Lernziele pro Sektion.
+- Anzahl: 3 bis 6 Lernziele pro Kapitel.
 - Keine Unteraufzählungen innerhalb eines Lernziels.
-- Der Lernziele-Block erscheint **unmittelbar nach dem H1-Titel**, vor dem
-  ersten Fließtextabsatz.
 
 ---
 
@@ -184,6 +181,11 @@ Regeln:
 - Unmittelbar nach jeder Definitionsbox folgt die Anwendung auf das
   durchgehende Beispiel mit konkreten Zahlen.
 - Für wichtige Merkregeln oder Zusammenfassungen ebenfalls `:class: note`.
+- Für Warnungen vor typischen Fehlern (Stolperfallen) wird `:class: danger`
+  verwendet, nicht `warning`. Im MyST-Theme haben `attention`, `warning` und
+  `caution` dieselbe gelbe Farbe, und Gelb ist für die Lernziele reserviert.
+  So gilt durchgehend: Lernziele gelb (`attention`), Definitionen und
+  Merkregeln blau (`note`), Stolperfallen rot (`danger`).
 
 ---
 
@@ -210,15 +212,14 @@ Regeln:
 
 ## Rückverweise und Vorwärtsverweise
 
-Jede Sektion soll enthalten:
+Jedes Kapitel soll enthalten:
 
-- Mindestens einen **Rückverweis** auf ein Konzept aus einer früheren
-  Sektion. Dieser zeigt den Studierenden, dass das Skript einen kohärenten
+- Mindestens einen **Rückverweis** auf ein Konzept aus einem früheren
+  Kapitel. Dieser zeigt den Studierenden, dass das Skript einen kohärenten
   Faden hat.
-- Mindestens einen **Vorwärtsverweis** auf ein späteres Thema, entweder im
-  gleichen Kapitel oder in einem späteren Kapitel. Vorwärtsverweise sollen
-  konkret genug sein, um echte Neugier zu wecken, aber vage genug, um nicht
-  die Antwort vorwegzunehmen.
+- Mindestens einen **Vorwärtsverweis** auf ein späteres Thema. Vorwärtsverweise
+  sollen konkret genug sein, um echte Neugier zu wecken, aber vage genug, um
+  nicht die Antwort vorwegzunehmen.
 
 Gute Stellen für Vorwärtsverweise:
 
@@ -246,12 +247,12 @@ Regeln:
 
 - Videos werden **direkt nach dem Unterabschnitt** eingebettet, in dem das
   entsprechende Konzept eingeführt wurde. Nicht alle Videos am Ende der
-  Sektion sammeln.
+  Kapitels sammeln.
 - Videos sind eine Vertiefung, kein Ersatz für den Fließtext.
 - Bevorzugte Kanäle: **MathePeter**, **Mathematische Methoden**,
   **3Blue1Brown**.
 - Video-URLs sind Platzhalter, sofern keine konkreten Links bekannt sind.
-- Pro Sektion 1 bis 2 Videos.
+- Pro Kapitel 1 bis 2 Videos.
 
 ---
 
@@ -267,43 +268,6 @@ Regeln:
 - Jede abgesetzte Formel wird im anschließenden Satz erklärt: Was bedeuten
   die Symbole im Kontext des laufenden Beispiels?
 - Physikalische Einheiten erscheinen direkt in Formeln als `~\text{Einheit}`.
-
----
-
-## Maschinenbau-Bezüge (zentrale Anforderung)
-
-**Jede Sektion muss Maschinenbau-Bezüge enthalten**, nicht nur in der
-Einleitung, sondern verteilt im Fließtext. Ziel: Die Studierenden sollen
-verstehen, wozu sie die Mathematik brauchen, weil sie die Werkzeuge für
-konkrete Ingenieurprobleme liefert.
-
-### Regeln für MB-Bezüge
-
-1. MB-Bezüge werden **direkt in den Fließtext eingebaut**, nicht als
-   separate Box.
-2. MB-Bezüge motivieren die Mathematik, sie illustrieren sie nicht nur
-   nachträglich. Der Bezug soll am Anfang eines Abschnitts stehen und die
-   Frage aufwerfen, die die Mathematik dann beantwortet.
-3. Wenn möglich, wird auf spätere Lehrveranstaltungen verwiesen ("In der
-   Technischen Mechanik werden Sie ...").
-4. Vorwärtsverweise innerhalb des Skripts sind ausdrücklich erwünscht
-   ("Den mathematischen Apparat dafür lernen wir im Kapitel über
-   Eigenwerte").
-
----
-
-## Tabellen mit Maschinenbau-Spalte
-
-Übersichtstabellen sollen, wo sinnvoll, eine Spalte "Beispiel im
-Maschinenbau" enthalten:
-
-```markdown
-| Transformation | Matrix $\mathbf{A}$ | $\det(\mathbf{A})$ | Beispiel im Maschinenbau |
-| --- | --- | --- | --- |
-| Gleichm. Streckung um $s$ | $\begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}$ | $s^2$ | Maßstabsänderung in CAD |
-```
-
----
 
 ## TikZ-Abbildungen
 
@@ -443,18 +407,18 @@ wiederholen, die bereits im umgebenden Text stehen.
 ### Dateinamen
 
 Dateinamen beschreibend und in Kleinbuchstaben mit Unterstrichen. Kein
-Kapitel- oder Sektionsnummer im Dateinamen. Das Sprachkürzel `_DE` oder
+Kapitelnummer im Dateinamen. Das Sprachkürzel `_DE` oder
 `_EN` nur anhängen, wenn zwei Sprachversionen derselben Abbildung existieren.
 
 ---
 
 ## Qualitätskriterien vor dem Abliefern
 
-Vor dem Ausgeben einer Sektion prüfen:
+Vor dem Ausgeben eines Kapitels prüfen:
 
 - [ ] YAML-Front-Matter-Block vorhanden?
-- [ ] Einleitung beginnt mit einem konkreten Szenario, nicht mit einer
-  Definition?
+- [ ] Einleitung knüpft an das vorherige Kapitel an, enthält einen kurzen
+  MB-Hinweis und beginnt nicht mit einer Definition?
 - [ ] Lernziele mit `* [ ]` formatiert.
 - [ ] Prinzip "Erst Beispiel, dann abstrakt" in jedem Abschnitt eingehalten?
 - [ ] Durchgehendes Beispiel mit konkreten Zahlen vorhanden und am Ende
@@ -465,12 +429,13 @@ Vor dem Ausgeben einer Sektion prüfen:
 - [ ] Unterabschnittsüberschriften als Fragen oder natürliche Aussagen
   formuliert?
 - [ ] Mindestens eine rhetorische Frage im Fließtext, kursiv gesetzt?
-- [ ] Mindestens 2 MB-Bezüge im Fließtext (nicht nur in der Einleitung)?
-- [ ] Mindestens 1 Rückverweis auf eine frühere Sektion?
+- [ ] MB-Bezug nur als kurzer Hinweis in der Einleitung, Abschnitte ohne
+  Vorwissen aus anderen Fächern verständlich?
+- [ ] Mindestens 1 Rückverweis auf ein früheres Kapitel?
 - [ ] Mindestens 1 Vorwärtsverweis auf ein späteres Kapitel oder eine
   spätere Lehrveranstaltung?
 - [ ] Kein Gedankenstrich im Fließtext?
 - [ ] Kein Fettdruck außer bei der Ersteinführung eines Fachbegriffs?
 - [ ] Videos direkt nach dem jeweiligen Unterabschnitt eingebettet?
-- [ ] Zusammenfassung mit konkretem Ausblick auf die nächste Sektion?
+- [ ] Zusammenfassung mit konkretem Ausblick auf das nächste Kapitel?
 - [ ] TikZ-Dateien konform mit Präambel, Farbpalette und Hintergrundpanel?

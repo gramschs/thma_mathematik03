@@ -117,10 +117,12 @@ hat und Steifigkeitsmatrizen nicht mehr invertierbar wären.
 
 ## Determinante und Lösbarkeit linearer Gleichungssysteme
 
-Im vorigen Kapitel haben wir lineare Gleichungssysteme der Form
-$\mathbf{A}\vec{x} = \vec{b}$ mit Hilfe der inversen Matrix gelöst. Dabei war
-die Bedingung $\det(\mathbf{A}) \neq 0$ notwendig, um die Inverse überhaupt
-berechnen zu können. Dieser Zusammenhang ist kein Zufall.
+In Kapitel 2.4 haben wir lineare Gleichungssysteme der Form
+$\mathbf{A}\vec{x} = \vec{b}$ mit Hilfe der inversen Matrix gelöst. Dabei
+mussten wir voraussetzen, dass die Koeffizientenmatrix invertierbar ist. Bei
+$2\times 2$-Matrizen stand in der Formel für die Inverse der Ausdruck $a \cdot
+d - c \cdot b$ im Nenner, und das ist genau die Determinante. Dieser
+Zusammenhang ist kein Zufall.
 
 ```{admonition} Determinante und eindeutige Lösbarkeit
 :class: note

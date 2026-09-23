@@ -1,65 +1,219 @@
-# 2.3 Rechenregeln inverse Matrizen
+---
+authors:
+  - name: Simone Gramsch
+---
 
-Was eine inverse Matrix ist und wie sie berechnet wird, haben wir im letzten
-Kapitel gelernt. In diesem Kapitel werden wir uns damit beschäftigen,
-Rechenregeln für inverse Matrizen zu nutzen. Die Rechnregeln helfen uns,
-Rechnungen mit inversen Matrizen zu vereinfachen.
+# 2.3 Rechenregeln für inverse Matrizen
+
+Im letzten Kapitel haben wir gelernt, wie wir die Inverse einer Matrix
+berechnen. Im Maschinenbau wird sie zum Beispiel in der Technischen Mechanik
+gebraucht: Die Steifigkeitsmatrix eines Bauteils beschreibt, welche Kräfte für
+bestimmte Verformungen nötig sind, und ihre Inverse liefert umgekehrt die
+Verformungen zu gegebenen Kräften. *Müssen wir die Inverse jedes Mal von Grund
+auf neu berechnen, wenn sich das Bauteil ändert, etwa durch ein steiferes
+Material?* In diesem Kapitel lernen wir Rechenregeln kennen, mit denen wir die
+neue Inverse direkt aus der bekannten Inversen gewinnen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-Sie kennen die **Rechenregeln für inverse Matrizen** und können sie anwenden:
-
-* [ ] $\mathbf{E}^{-1} = \mathbf{E}$,
-* [ ] $\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot
-  \mathbf{A}^{-1}$,
-* [ ] $\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}$,
-* [ ] $\left(\mathbf{A}^T\right)^{-1} = (\mathbf{A}^{-1})^T$,
-* [ ] $(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}, \quad s
-  \neq 0$.
-
-Darüber hinaus gilt: Die Inverse einer symmetrischen Matrix ist wieder
-symmetrisch.
-
-* [ ] Sie können **Matrizengleichungen** der Form $\mathbf{A}\mathbf{X} =
-  \mathbf{B}$ und $\mathbf{X}\mathbf{A} = \mathbf{B}$ mit Hilfe der inversen
-  Matrix nach $\mathbf{X}$ auflösen und kennen den Unterschied zur gewöhnlichen
-  Algebra.
+* [ ] Sie kennen die Rechenregeln für die **Inverse der Inversen** und die
+  **Inverse eines skalaren Vielfachen** und können sie anwenden.
+* [ ] Sie wissen, dass es für die **Inverse einer Summe** keine vergleichbare
+  Rechenregel gibt.
+* [ ] Sie können die **Inverse eines Produkts** bilden und wissen, warum sich
+  dabei die Reihenfolge umkehrt.
+* [ ] Sie wissen, dass **Invertieren und Transponieren** vertauschbar sind und
+  dass die Inverse einer **symmetrischen Matrix** wieder symmetrisch ist.
 ```
 
-Gehen wir die Rechenregeln einzeln durch und erläutern wir sie.
+## Was hat die Inverse mit dem Kehrwert gemeinsam?
 
-## Eigenschaften und Rechenregeln für inverse Matrizen
-
-Die Inverse einer Matrix hat mehrere nützliche Eigenschaften, die häufig in der
-linearen Algebra und in Anwendungen wie der Lösung von linearen
-Gleichungssystemen verwendet werden. Im Folgenden listen wir die wichtigsten
-Eigenschaften der Inversen einer Matrix auf.
-
-### Inverse der Einheitsmatrix
-
-Die Einheitsmatrix $\mathbf{E}$ ist immer invertierbar, und ihre Inverse ist sie
-selbst:
+Bei reellen Zahlen kennen wir den Kehrwert gut. Für $x \neq 0$ gilt $1/(1/x) =
+x$, der Kehrwert von 1 ist wieder 1, und für $s \neq 0$ ist $1/(s \cdot x) =
+\frac{1}{s} \cdot \frac{1}{x}$. Da die inverse Matrix das Gegenstück zum
+Kehrwert ist, liegt die Frage nahe: *Gelten diese Regeln auch für Matrizen?*
+Wir probieren es an der Matrix
 
 \begin{equation*}
-\mathbf{E}^{-1} = \mathbf{E}.
+\mathbf{A} = \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix}
 \end{equation*}
 
-Dies gilt für jede quadratische Einheitsmatrix beliebiger Dimension.
-
-### Inverse des Produkts zweier Matrizen
-
-Wenn $\mathbf{A}$ und $\mathbf{B}$ zwei invertierbare Matrizen der gleichen
-Dimension sind, dann ist auch das Produkt $\mathbf{A} \cdot \mathbf{B}$
-invertierbar, und es gilt:
+aus. Mit der Formel aus dem letzten Kapitel und $a \cdot d - c \cdot b = 3 \cdot
+1 - (-1) \cdot (-1) = 2$ erhalten wir
 
 \begin{equation*}
-\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot \mathbf{A}^{-1}.
+\mathbf{A}^{-1} = \frac{1}{2} \cdot
+\begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix}.
 \end{equation*}
 
-Die Reihenfolge wird bei der Multiplikation der Inversen umgekehrt. Eine
-Eselsbrücke für diese Rechenregel wird in dem folgenden Video gezeigt.
+Invertieren wir $\mathbf{A}^{-1}$ noch einmal, ergibt sich mit $a \cdot d - c
+\cdot b = \frac{1}{2} \cdot \frac{3}{2} - \frac{1}{2} \cdot \frac{1}{2} =
+\frac{1}{2}$ die Matrix
+
+\begin{equation*}
+\left(\mathbf{A}^{-1}\right)^{-1} = 2 \cdot \begin{pmatrix} \frac{3}{2} &
+-\frac{1}{2} \\ -\frac{1}{2} & \frac{1}{2} \end{pmatrix} = \begin{pmatrix} 3 &
+-1 \\ -1 & 1 \end{pmatrix} = \mathbf{A}.
+\end{equation*}
+
+Wie beim Kehrwert führt zweimaliges Invertieren also zur Ausgangsmatrix zurück.
+Als Nächstes verdoppeln wir die Matrix. Für
+
+\begin{equation*}
+2 \cdot \mathbf{A} = \begin{pmatrix} 6 & -2 \\ -2 & 2 \end{pmatrix}
+\end{equation*}
+
+ist $a \cdot d - c \cdot b = 12 - 4 = 8$, und wir erhalten
+
+\begin{equation*}
+\left(2 \cdot \mathbf{A}\right)^{-1} = \frac{1}{8} \cdot \begin{pmatrix} 2 & 2 \\ 2 & 6
+\end{pmatrix} = \frac{1}{4} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} =
+\frac{1}{2} \cdot \mathbf{A}^{-1}.
+\end{equation*}
+
+Auch das entspricht dem Kehrwert, denn der Faktor 2 wird als Kehrwert
+$\frac{1}{2}$ herausgezogen. Beide Beobachtungen sind kein Zufall. Wegen
+$\mathbf{A}^{-1} \cdot \mathbf{A} = \mathbf{E}$ ist $\mathbf{A}$ genau die
+Matrix, die mit $\mathbf{A}^{-1}$ multipliziert die Einheitsmatrix ergibt, also die Inverse von
+$\mathbf{A}^{-1}$. Für einen Skalar $s \neq 0$ bestätigt die Probe $(s \cdot
+\mathbf{A}) \cdot (\frac{1}{s} \cdot \mathbf{A}^{-1}) = (s \cdot \frac{1}{s})
+\cdot \mathbf{A} \cdot \mathbf{A}^{-1} = \mathbf{E}$ die Vermutung. Die
+Einheitsmatrix spielt dabei die Rolle der Zahl 1, denn wegen $\mathbf{E} \cdot
+\mathbf{E} = \mathbf{E}$ ist sie ihre eigene Inverse.
+
+```{admonition} Welche Rechenregeln hat die Inverse mit dem Kehrwert gemeinsam?
+:class: note
+Für eine invertierbare $n\times n$-Matrix $\mathbf{A}$ und einen Skalar $s \in
+\mathbb{R}$ mit $s \neq 0$ gilt
+
+\begin{equation*}
+\mathbf{E}^{-1} = \mathbf{E}, \qquad
+\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}, \qquad
+(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}.
+\end{equation*}
+```
+
+Kennen wir $\mathbf{A}^{-1}$ bereits, brauchen wir für Vielfache von
+$\mathbf{A}$ die Formel aus dem letzten Kapitel nicht mehr. Für die Matrix
+$\frac{1}{2} \cdot \mathbf{A}$ erhalten wir sofort
+
+\begin{equation*}
+\left(\frac{1}{2} \cdot \mathbf{A}\right)^{-1} =
+2 \cdot \mathbf{A}^{-1} = \begin{pmatrix} 1 & 1 \\ 1 & 3
+\end{pmatrix}.
+\end{equation*}
+
+Die Probe bestätigt das Ergebnis:
+
+\begin{equation*}
+\frac{1}{2} \cdot \mathbf{A} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix}
+= \frac{1}{2} \cdot \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix} \cdot
+\begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} = \frac{1}{2} \cdot \begin{pmatrix} 2 & 0
+\\ 0 & 2 \end{pmatrix} = \mathbf{E}.
+\end{equation*}
+
+*Gilt dann auch für Summen eine Regel wie beim Kehrwert?* Schon bei Zahlen ist
+das nicht so, denn $1/(2+3) = \frac{1}{5}$, aber $\frac{1}{2} + \frac{1}{3} =
+\frac{5}{6}$. Bei Matrizen sehen wir es an der Summe $\mathbf{A} + \mathbf{A} =
+2 \cdot \mathbf{A}$. Nach der Regel für skalare Vielfache ist $(\mathbf{A} + \mathbf{A})^{-1} =
+\frac{1}{2} \cdot \mathbf{A}^{-1}$, die Summe der Inversen ist dagegen
+$\mathbf{A}^{-1} + \mathbf{A}^{-1} = 2 \cdot \mathbf{A}^{-1}$. Die beiden
+Ergebnisse unterscheiden sich um den Faktor 4.
+
+```{admonition} Gibt es eine Rechenregel für Summen?
+:class: danger
+Im Allgemeinen gilt
+
+\begin{equation*}
+\left(\mathbf{A} + \mathbf{B}\right)^{-1} \neq \mathbf{A}^{-1} + \mathbf{B}^{-1}.
+\end{equation*}
+
+Die Summe zweier invertierbarer Matrizen muss nicht einmal invertierbar sein.
+Für $\mathbf{B} = -\mathbf{A}$ ist $\mathbf{A} + \mathbf{B}$ die Nullmatrix.
+```
+
+## Warum dreht sich beim Produkt die Reihenfolge um?
+
+Bei reellen Zahlen $x, y \neq 0$ ist $1/(x \cdot y) = \frac{1}{x} \cdot
+\frac{1}{y}$, und die Reihenfolge der Faktoren spielt keine Rolle. Bei Matrizen wissen wir dagegen
+bereits, dass es bei der Multiplikation auf die Reihenfolge ankommt. *Welche
+Reihenfolge ist beim Invertieren eines Produkts die richtige?* Um das
+herauszufinden, nehmen wir zu $\mathbf{A}$ noch die Matrix
+
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}
+\quad \text{mit} \quad
+\mathbf{B}^{-1} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}
+\end{equation*}
+
+hinzu. Das Produkt ist
+
+\begin{equation*}
+\mathbf{A} \cdot \mathbf{B} =
+\begin{pmatrix} 3 & -4 \\ -1 & 2 \end{pmatrix},
+\end{equation*}
+
+und mit $a \cdot d - c \cdot b = 6 - 4 = 2$ liefert die Formel
+
+\begin{equation*}
+\left(\mathbf{A}\cdot \mathbf{B}\right)^{-1} =
+\frac{1}{2} \cdot \begin{pmatrix} 2 & 4 \\ 1 & 3 \end{pmatrix}.
+\end{equation*}
+
+Nun vergleichen wir mit den beiden möglichen Produkten der einzelnen Inversen:
+
+\begin{align*}
+\mathbf{A}^{-1} \cdot \mathbf{B}^{-1} &= \frac{1}{2} \cdot \begin{pmatrix} 1 & 1 \\ 1
+& 3 \end{pmatrix} \cdot \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} =
+\frac{1}{2} \cdot \begin{pmatrix} 1 & 2 \\ 1 & 4 \end{pmatrix}, \\
+\mathbf{B}^{-1} \cdot \mathbf{A}^{-1} &= \begin{pmatrix} 1 & 1 \\ 0 & 1
+\end{pmatrix} \cdot \frac{1}{2} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} =
+\frac{1}{2} \cdot \begin{pmatrix} 2 & 4 \\ 1 & 3 \end{pmatrix}.
+\end{align*}
+
+Nur das Produkt in umgekehrter Reihenfolge $\mathbf{B}^{-1} \cdot
+\mathbf{A}^{-1}$ stimmt mit $(\mathbf{A} \cdot \mathbf{B})^{-1}$ überein. Merken
+können wir uns das mit dem An- und Ausziehen. Morgens ziehen wir erst die Socken
+und dann die Schuhe an, abends erst die Schuhe und dann die Socken aus. Was
+zuletzt ausgeführt wurde, wird zuerst rückgängig gemacht.
+
+```{admonition} Wie wird die Inverse eines Produkts berechnet?
+:class: note
+Sind $\mathbf{A}$ und $\mathbf{B}$ invertierbare $n\times n$-Matrizen, dann ist
+auch $\mathbf{A} \cdot \mathbf{B}$ invertierbar, und es gilt
+
+\begin{equation*}
+\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot
+\mathbf{A}^{-1}.
+\end{equation*}
+```
+
+Die Probe zeigt, warum diese Reihenfolge funktioniert. Es gilt
+
+\begin{equation*}
+(\mathbf{A} \cdot \mathbf{B}) \cdot (\mathbf{B}^{-1} \cdot \mathbf{A}^{-1}) =
+\mathbf{A} \cdot \mathbf{E} \cdot \mathbf{A}^{-1} = \mathbf{E},
+\end{equation*}
+
+weil $\mathbf{B}$ und $\mathbf{B}^{-1}$ direkt nebeneinanderstehen. Dieselbe
+Umkehr kennen wir aus Kapitel 2.1 vom Transponieren, denn dort galt $(\mathbf{A}
+\cdot \mathbf{B})^{\top} = \mathbf{B}^{\top} \cdot \mathbf{A}^{\top}$. Im
+Kapitel über lineare Abbildungen werden wir Matrizen als Abbildungen deuten, die
+nacheinander ausgeführt werden, und dann wird die Umkehr besonders anschaulich.
+
+Die Regel erklärt auch, was die andere Matrix $\frac{1}{2} \cdot \begin{pmatrix} 1 & 2
+\\ 1 & 4 \end{pmatrix}$ von oben ist. Sie ist die Inverse des Produkts in
+umgekehrter Reihenfolge, denn $(\mathbf{B} \cdot \mathbf{A})^{-1} =
+\mathbf{A}^{-1} \cdot \mathbf{B}^{-1}$. Die Probe mit $\mathbf{B} \cdot
+\mathbf{A} = \begin{pmatrix} 4 & -2 \\ -1 & 1 \end{pmatrix}$ bestätigt das:
+
+\begin{equation*}
+\begin{pmatrix} 4 & -2 \\ -1 & 1 \end{pmatrix} \cdot \frac{1}{2} \cdot
+\begin{pmatrix} 1 & 2 \\ 1 & 4 \end{pmatrix} = \frac{1}{2} \cdot \begin{pmatrix} 2 & 0
+\\ 0 & 2 \end{pmatrix} = \mathbf{E}.
+\end{equation*}
 
 ```{dropdown} Video "Inverse Matrix, Rechenregeln I" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/t1K_B1pPqmc?si=TMRR6UnIpu5mmEn4"
@@ -67,45 +221,97 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-### Inverse der inversen Matrix
+## Dürfen wir Invertieren und Transponieren vertauschen?
 
-Die Inverse einer Matrix ist eindeutig, und die Inverse der inversen Matrix ist
-die ursprüngliche Matrix:
-
-\begin{equation*}
-\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}.
-\end{equation*}
-
-### Inverse der Transponierten
-
-Die Inverse der transponierten Matrix $\mathbf{A}^T$ ist die Transponierte der
-Inversen von $\mathbf{A}$:
+Aus Kapitel 2.1 kennen wir die Transponierte einer Matrix. *Was passiert, wenn
+wir eine Matrix erst transponieren und dann invertieren?* Wir probieren es an
+der Matrix $\mathbf{B}$ aus. Ihre Transponierte ist
 
 \begin{equation*}
-\left(\mathbf{A}^T\right)^{-1} = (\mathbf{A}^{-1})^T.
+\mathbf{B}^{\top} =
+\begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix},
 \end{equation*}
 
-Das bedeutet, dass die Operationen der Inversion und der Transposition
-miteinander vertauschbar sind.
-
-### Inverse bei Skalarmultiplikation
-
-Ist $s$ ein Skalar und $\mathbf{A}$ eine $n \times n$-Matrix, dann gilt für die
-Inverse des Produkts von $s$ und $\mathbf{A}$:
+und mit $a \cdot d - c \cdot b = 1$ liefert die Formel
 
 \begin{equation*}
-(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}, \quad s \neq 0.
+\left(\mathbf{B}^{\top}\right)^{-1} =
+\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}.
 \end{equation*}
 
-Das bedeutet, dass wenn der Skalar $s$ aus der Inversenoperation herausgezogen
-wird, mit dem Kehrwert multipliziert werden muss. Dazu muss der Skalar ungleich
-Null sein.
+Transponieren wir stattdessen die bereits bekannte Inverse $\mathbf{B}^{-1}$,
+erhalten wir
 
-### Inverse bei symmetrischen Matrizen
+\begin{equation*}
+\left(\mathbf{B}^{-1}\right)^{\top} = \begin{pmatrix} 1 & 1 \\ 0 & 1
+\end{pmatrix}^{\top} = \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}.
+\end{equation*}
 
-Ist eine Matrix symmetrisch, ist ihre inverse Matrix ebenfalls symmetrisch.
+Das ist dieselbe Matrix. Es spielt also keine Rolle, ob wir erst transponieren
+und dann invertieren oder erst invertieren und dann transponieren.
 
-Die oben genannten Rechenregeln werden auch in dem folgenden Video erläutert.
+```{admonition} Wie wird die Inverse der Transponierten berechnet?
+:class: note
+Ist $\mathbf{A}$ eine invertierbare $n\times n$-Matrix, dann ist auch
+$\mathbf{A}^{\top}$ invertierbar, und es gilt
+
+\begin{equation*}
+\left(\mathbf{A}^{\top}\right)^{-1} = \left(\mathbf{A}^{-1}\right)^{\top}.
+\end{equation*}
+```
+
+Zur Begründung nutzen wir die Transpositionsregel für Produkte aus Kapitel 2.1.
+Es gilt $\mathbf{A}^{\top} \cdot (\mathbf{A}^{-1})^{\top} = (\mathbf{A}^{-1}
+\cdot \mathbf{A})^{\top} = \mathbf{E}^{\top} = \mathbf{E}$. Wenden wir die
+Regel auf das Produkt $\mathbf{A} \cdot \mathbf{B}$ aus dem letzten Abschnitt
+an, müssen wir $(\mathbf{A} \cdot \mathbf{B})^{\top} = \begin{pmatrix} 3 & -1 \\
+-4 & 2 \end{pmatrix}$ nicht neu invertieren. Wir transponieren einfach die
+bekannte Inverse:
+
+\begin{equation*}
+\left(\left(\mathbf{A} \cdot \mathbf{B}\right)^{\top}\right)^{-1} =
+\left(\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1}\right)^{\top} = \frac{1}{2} \cdot
+\begin{pmatrix} 2 & 4 \\ 1 & 3 \end{pmatrix}^{\top} = \frac{1}{2} \cdot
+\begin{pmatrix} 2 & 1 \\ 4 & 3 \end{pmatrix}.
+\end{equation*}
+
+Die Probe bestätigt das Ergebnis:
+
+\begin{equation*}
+\begin{pmatrix} 3 & -1 \\ -4 & 2 \end{pmatrix} \cdot \frac{1}{2} \cdot
+\begin{pmatrix} 2 & 1 \\ 4 & 3 \end{pmatrix} = \frac{1}{2} \cdot \begin{pmatrix} 2 & 0
+\\ 0 & 2 \end{pmatrix} = \mathbf{E}.
+\end{equation*}
+
+Zum Schluss werfen wir noch einmal einen Blick auf $\mathbf{A}$ und
+$\mathbf{A}^{-1} = \frac{1}{2} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix}$.
+Beide Matrizen sind symmetrisch. *Ist das Zufall?* Nein, denn ist $\mathbf{A}$
+symmetrisch, also $\mathbf{A}^{\top} = \mathbf{A}$, dann folgt mit der gerade
+gezeigten Regel $(\mathbf{A}^{-1})^{\top} = (\mathbf{A}^{\top})^{-1} =
+\mathbf{A}^{-1}$.
+
+```{admonition} Bleibt die Inverse einer symmetrischen Matrix symmetrisch?
+:class: note
+Ist $\mathbf{A}$ eine invertierbare symmetrische Matrix, dann ist auch ihre
+Inverse $\mathbf{A}^{-1}$ symmetrisch.
+```
+
+Auch $2 \cdot \mathbf{A}$ ist symmetrisch, und tatsächlich ist die im ersten
+Abschnitt berechnete Inverse
+
+\begin{equation*}
+\left(2 \cdot \mathbf{A}\right)^{-1} =
+\frac{1}{4} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix}
+\end{equation*}
+
+wieder symmetrisch. Bei der nicht symmetrischen Matrix $\mathbf{B}$ ist dagegen
+auch die Inverse
+
+\begin{equation*}
+\mathbf{B}^{-1} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}
+\end{equation*}
+
+nicht symmetrisch.
 
 ```{dropdown} Video "Inverse Matrix, Rechenregeln II" von Mathematische Methoden
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6JHgy82gwiI?si=EPTgIjTOjyCvW2qp"
@@ -113,107 +319,13 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-## Matrizengleichungen lösen
-
-Eine wichtige Anwendung der inversen Matrix ist das Lösen von
-**Matrizengleichungen**. Das sind Gleichungen, bei denen die Unbekannte selbst
-eine Matrix ist, die wir hier $\mathbf{X}$ nennen.
-
-### Gleichung der Form $\mathbf{A}\mathbf{X} = \mathbf{B}$
-
-Ist $\mathbf{A}$ eine invertierbare Matrix, so können wir die Gleichung
-
-\begin{equation*}
-\mathbf{A}\mathbf{X} = \mathbf{B}
-\end{equation*}
-
-nach $\mathbf{X}$ auflösen, indem wir **von links** mit $\mathbf{A}^{-1}$
-multiplizieren:
-
-\begin{equation*}
-\mathbf{A}^{-1} \cdot \mathbf{A}\mathbf{X} = \mathbf{A}^{-1} \cdot \mathbf{B}
-\quad \Rightarrow \quad
-\mathbf{E}\mathbf{X} = \mathbf{A}^{-1}\mathbf{B}
-\quad \Rightarrow \quad
-\mathbf{X} = \mathbf{A}^{-1}\mathbf{B}.
-\end{equation*}
-
-### Gleichung der Form $\mathbf{X}\mathbf{A} = \mathbf{B}$
-
-Steht die Unbekannte $\mathbf{X}$ hingegen auf der linken Seite des Produkts,
-also
-
-\begin{equation*}
-\mathbf{X}\mathbf{A} = \mathbf{B},
-\end{equation*}
-
-so multiplizieren wir **von rechts** mit $\mathbf{A}^{-1}$:
-
-\begin{equation*}
-\mathbf{X}\mathbf{A} \cdot \mathbf{A}^{-1} = \mathbf{B} \cdot \mathbf{A}^{-1}
-\quad \Rightarrow \quad
-\mathbf{X}\mathbf{E} = \mathbf{B}\mathbf{A}^{-1}
-\quad \Rightarrow \quad
-\mathbf{X} = \mathbf{B}\mathbf{A}^{-1}.
-\end{equation*}
-
-```{admonition} Achtung: Reihenfolge beachten!
-:class: warning
-Im Gegensatz zur gewöhnlichen Algebra mit reellen Zahlen ist die Reihenfolge
-bei der Matrizenmultiplikation entscheidend. Es gilt im Allgemeinen
-
-\begin{equation*}
-\mathbf{A}^{-1}\mathbf{B} \neq \mathbf{B}\mathbf{A}^{-1}.
-\end{equation*}
-
-Daher muss man genau beachten, ob $\mathbf{A}^{-1}$ von links oder von rechts
-multipliziert wird. Die Faustregel lautet: Die inverse Matrix wird auf der
-**gleichen Seite** multipliziert, auf der $\mathbf{A}$ in der ursprünglichen
-Gleichung steht.
-```
-
-### Beispiel
-
-Gegeben seien die Matrizen
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}
-\quad \text{und} \quad
-\mathbf{B} = \begin{pmatrix} 3 & 5 \\ 1 & 3 \end{pmatrix}.
-\end{equation*}
-
-**Aufgabe:** Bestimme $\mathbf{X}$ aus $\mathbf{A}\mathbf{X} = \mathbf{B}$.
-
-Zunächst berechnen wir die Inverse von $\mathbf{A}$. Mit $\det(\mathbf{A}) =
-2\cdot 1 - 1\cdot 1 = 1$ ergibt sich:
-
-\begin{equation*}
-\mathbf{A}^{-1} = \frac{1}{1}\begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}
-= \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}.
-\end{equation*}
-
-Da $\mathbf{A}$ links steht, multiplizieren wir von links mit $\mathbf{A}^{-1}$:
-
-\begin{equation*}
-\mathbf{X} = \mathbf{A}^{-1}\mathbf{B} =
-\begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}
-\begin{pmatrix} 3 & 5 \\ 1 & 3 \end{pmatrix} =
-\begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix}.
-\end{equation*}
-
-Die Probe bestätigt das Ergebnis:
-
-\begin{equation*}
-\mathbf{A}\mathbf{X} =
-\begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}
-\begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix} =
-\begin{pmatrix} 3 & 5 \\ 1 & 3 \end{pmatrix} = \mathbf{B}. \checkmark
-\end{equation*}
-
 ## Zusammenfassung und Ausblick
 
-Die Rechenregeln für inverse Matrizen vereinfachen so manche Rechnung. Besonders
-beim Lösen von Matrizengleichungen ist zu beachten, dass die inverse Matrix stets
-auf der richtigen Seite multipliziert werden muss, da die Matrizenmultiplikation
-nicht kommutativ ist. In den nächsten Kapiteln werden wir uns mit einer sehr
-wichtigen Eigenschaft einer Matrix beschäftigen, der sogenannten Determinante.
+Die Inverse verhält sich in vielen Situationen wie der Kehrwert einer Zahl, für
+Summen gibt es aber keine Rechenregel. Beim Produkt kehrt sich die Reihenfolge
+um, und Invertieren und Transponieren dürfen wir vertauschen. Im nächsten
+Kapitel nutzen wir die Inverse, um lineare Gleichungssysteme und sogar
+Gleichungen mit einer unbekannten Matrix zu lösen. Den Ausdruck $a \cdot d - c
+\cdot b$, der in allen unseren Rechnungen aufgetaucht ist, treffen wir im
+Kapitel über Determinanten wieder und verstehen dort, warum er über die
+Invertierbarkeit entscheidet.

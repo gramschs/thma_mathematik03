@@ -23,7 +23,7 @@ Die Determinante gibt es nur für quadratische Matrizen. Für eine $2\times
 \mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}
 \end{equation*}
 
-wird die Determinante durch den Ausdruck $a\cdot d - c\cdot b$ berechnet.Die
+wird die Determinante durch den Ausdruck $a\cdot d - c\cdot b$ berechnet. Die
 Determinante ordnet jeder quadratischen Matrix eine reelle Zahl zu. Diese
 Eigenschaft ist also eine Funktion und wird in der Regel mit $\det$ abgekürzt.
 Es gilt also

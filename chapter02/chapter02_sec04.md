@@ -1,217 +1,184 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
 # 2.4 Lineare Gleichungssysteme mit Matrizenrechnung lösen
 
-In diesem Kapitel lernen wir, wie lineare Gleichungssysteme durch die Anwendung
-von Matrizen und deren Inversen gelöst werden können.
+In den letzten Kapiteln haben wir gelernt, wie wir die Inverse einer Matrix
+berechnen und mit ihr rechnen. Im Maschinenbau führen viele Berechnungen auf
+lineare Gleichungssysteme, in der Finite-Elemente-Methode zum Beispiel mit
+Hunderttausenden von Unbekannten. Diese Gleichungssysteme müssen oft für
+mehrere Lastfälle gelöst werden. *Können wir die Inverse nutzen, um solche
+Gleichungssysteme zu lösen?* In diesem Kapitel schreiben wir lineare
+Gleichungssysteme in Matrixschreibweise und lösen sie mit der Inversen, sogar
+für mehrere rechte Seiten auf einmal.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie verstehen, wie lineare Gleichungssysteme mit Hilfe von Matrizen
-  dargestellt werden können.
-* [ ] Sie können eine inverse Matrix dazu benutzen, ein lineares
-  Gleichungssystem zu lösen.
-* [ ] Sie können den **Gauß-Algorithmus in Matrix-Darstellung** zur Lösung von
-  linearen Gleichungssystemen anwenden.
+* [ ] Sie können ein lineares Gleichungssystem in **Matrixschreibweise**
+  darstellen und kennen die Begriffe **Koeffizientenmatrix**, **Vektor der
+  Unbekannten** und **rechte Seite**.
+* [ ] Sie können ein lineares Gleichungssystem mit Hilfe der **inversen
+  Matrix** lösen und wissen, wann sich dieser Weg lohnt.
+* [ ] Sie können **Matrizengleichungen** der Form $\mathbf{A} \cdot \mathbf{X} =
+  \mathbf{B}$ und $\mathbf{X} \cdot \mathbf{A} = \mathbf{B}$ mit Hilfe der
+  inversen Matrix lösen.
 ```
 
-## Matrixdarstellung eines linearen Gleichungssystems
+## Wie schreiben wir ein Gleichungssystem als Matrix?
 
-Ein lineares Gleichungssystem kann kompakt in Matrixform dargestellt werden.
-Betrachten wir ein allgemeines lineares Gleichungssystem mit $n$ Gleichungen und
-$n$ Unbekannten:
+Wir betrachten das lineare Gleichungssystem
 
 \begin{align*}
-a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n &= b_1 \\
-a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n &= b_2 \\
-\vdots \\
-a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nn}x_n &= b_n.
+3 x_1 - x_2 &= 1, \\
+-x_1 + x_2 &= 1
 \end{align*}
 
-Dies lässt sich in kompakter Matrixschreibweise darstellen als:
+mit den beiden Unbekannten $x_1$ und $x_2$. Fassen wir die Zahlen vor den
+Unbekannten zu einer Matrix und die Unbekannten zu einem Vektor zusammen,
+erhalten wir die Matrix $\mathbf{A}$ aus Kapitel 2.3. *Liefert das Produkt aus
+Matrix und Vektor tatsächlich die linken Seiten?* Wir rechnen es nach:
 
 \begin{equation*}
-\mathbf{A} \vec{x} = \vec{b},
+\begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix} \cdot
+\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} =
+\begin{pmatrix} 3 x_1 - x_2 \\ -x_1 + x_2 \end{pmatrix}.
 \end{equation*}
 
-wobei $\mathbf{A} \in \mathbb{R}^{n \times n}$ die **Koeffizientenmatrix**
-  
+Die erste Zeile des Ergebnisses ist genau die linke Seite der ersten Gleichung,
+die zweite Zeile die linke Seite der zweiten Gleichung. Fassen wir auch die
+rechten Seiten zu einem Vektor zusammen, können wir das ganze Gleichungssystem
+in einer einzigen Zeile schreiben:
+
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-a_{11} & a_{12} & \dots & a_{1n} \\
-a_{21} & a_{22} & \dots & a_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_{n1} & a_{n2} & \dots & a_{nn}
-\end{pmatrix}
+\begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix} \cdot
+\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} =
+\begin{pmatrix} 1 \\ 1 \end{pmatrix}.
 \end{equation*}
 
-ist und $\vec{x} \in \mathbb{R}^n$ der **Vektor der Unbekannten** mit
+Dasselbe funktioniert für jedes lineare Gleichungssystem, egal wie viele
+Gleichungen und Unbekannte es hat.
 
-\begin{equation*}
-\vec{x} = \begin{pmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_n
-\end{pmatrix}.
-\end{equation*}
+```{admonition} Was ist ... die Matrixschreibweise eines linearen Gleichungssystems?
+:class: note
+Ein lineares Gleichungssystem mit $n$ Gleichungen und $n$ Unbekannten
 
-Die rechte Seite des linearen Gleichungssystems wird im **Ergebnisvektor**
-$\vec{b} \in \mathbb{R}^n $ zusammengefasst:
-
-\begin{equation*}
-\vec{b} = \begin{pmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_n
-\end{pmatrix}.
-\end{equation*}
-
-Betrachten wir das folgende lineare Gleichungssystem:
-
-\begin{equation*}
 \begin{align*}
-3x_1 - 4x_2 - 4x_3 &= -4  \\
-6x_1 - 6x_2 - 7x_3 &= -11 \\
--3x_1 + 6x_2 + 7x_3 &= 11 \\
+a_{11} x_1 + a_{12} x_2 + \dots + a_{1n} x_n &= b_1, \\
+\vdots \qquad & \\
+a_{n1} x_1 + a_{n2} x_2 + \dots + a_{nn} x_n &= b_n
 \end{align*}
-\end{equation*}
 
-Dieses Gleichungssystem können wir in Matrixform darstellen. Die
-Koeffizientenmatrix $\mathbf{A}$ ist:
+lässt sich in **Matrixschreibweise** als $\mathbf{A} \cdot \vec{x} = \vec{b}$
+schreiben mit
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-3 & -4 & -4 \\
-6 & -6 & -7 \\
--3 & 6 & 7
+\mathbf{A} = \begin{pmatrix} a_{11} & \dots & a_{1n} \\ \vdots & \ddots &
+\vdots \\ a_{n1} & \dots & a_{nn} \end{pmatrix}, \quad
+\vec{x} = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix}, \quad
+\vec{b} = \begin{pmatrix} b_1 \\ \vdots \\ b_n \end{pmatrix}.
+\end{equation*}
+
+Die Matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ heißt
+**Koeffizientenmatrix**, $\vec{x} \in \mathbb{R}^n$ heißt **Vektor der
+Unbekannten** und $\vec{b} \in \mathbb{R}^n$ heißt **rechte Seite**.
+```
+
+In unserem Beispiel ist also
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix}
+\end{equation*}
+
+die Koeffizientenmatrix und $\vec{b} = (1, 1)^{\top}$ die rechte Seite.
+
+## Wie hilft uns die Inverse beim Lösen?
+
+Eine Gleichung wie $3 \cdot x = 6$ lösen wir, indem wir beide Seiten mit dem
+Kehrwert $\frac{1}{3}$ multiplizieren und $x = 2$ erhalten. *Funktioniert das
+auch mit Matrizen?* Die Inverse ist das Gegenstück zum Kehrwert, also
+multiplizieren wir $\mathbf{A} \cdot \vec{x} = \vec{b}$ auf beiden Seiten von
+links mit $\mathbf{A}^{-1}$. Links bleibt
+
+\begin{equation*}
+\mathbf{A}^{-1} \cdot \mathbf{A} \cdot \vec{x} =
+\mathbf{E} \cdot \vec{x} = \vec{x}
+\end{equation*}
+
+stehen, und wir erhalten $\vec{x} = \mathbf{A}^{-1} \cdot \vec{b}$. Wichtig ist,
+dass wir von links multiplizieren, denn nur dort steht $\mathbf{A}^{-1}$ neben
+$\mathbf{A}$.
+
+Für unser Beispiel kennen wir die Inverse bereits aus Kapitel 2.3 und erhalten
+
+\begin{equation*}
+\vec{x} = \mathbf{A}^{-1} \cdot \vec{b} = \frac{1}{2} \cdot \begin{pmatrix} 1 &
+1 \\ 1 & 3 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 1 \end{pmatrix} =
+\frac{1}{2} \cdot \begin{pmatrix} 2 \\ 4 \end{pmatrix} = \begin{pmatrix} 1 \\ 2
 \end{pmatrix}.
 \end{equation*}
 
-Der Vektor der Unbekannten $\vec{x}$ ist:
+Die Lösung ist also $x_1 = 1$ und $x_2 = 2$. Die Probe in den ursprünglichen
+Gleichungen bestätigt das Ergebnis, denn $3 \cdot 1 - 2 = 1$ und $-1 + 2 = 1$.
+
+```{admonition} Wie lösen wir ein lineares Gleichungssystem mit der Inversen?
+:class: note
+Ist die Koeffizientenmatrix $\mathbf{A}$ invertierbar, dann hat das lineare
+Gleichungssystem $\mathbf{A} \cdot \vec{x} = \vec{b}$ für jede rechte Seite
+$\vec{b}$ genau eine Lösung, nämlich
 
 \begin{equation*}
-\vec{x} = \begin{pmatrix}
-x_1 \\
-x_2 \\
-x_3
-\end{pmatrix}
+\vec{x} = \mathbf{A}^{-1} \cdot \vec{b}.
 \end{equation*}
+```
 
-und der Ergebnisvektor $\vec{b}$ ist:
+Der große Vorteil zeigt sich, wenn sich die rechte Seite ändert. Für $\vec{b} =
+(2, 0)^{\top}$ müssen wir die Inverse nicht neu berechnen, sondern nur noch
+einmal multiplizieren:
 
 \begin{equation*}
-\vec{b} = \begin{pmatrix}
--4 \\
--11 \\
-11
-\end{pmatrix}.
+\vec{x} = \frac{1}{2} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} \cdot
+\begin{pmatrix} 2 \\ 0 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
 \end{equation*}
 
-Das gesamte lineare Gleichungssystem lässt sich nun in Matrixform schreiben als
-$\mathbf{A} \vec{x} = \vec{b}$, also
+Auch hier bestätigt die Probe das Ergebnis, denn $3 \cdot 1 - 1 = 2$ und $-1 +
+1 = 0$.
+
+*Und was passiert, wenn die Koeffizientenmatrix nicht invertierbar ist?* Dann
+können wir das Gleichungssystem nicht mit der Inversen lösen. Das heißt aber
+nicht, dass es keine Lösung gibt. Betrachten wir die Matrix
 
 \begin{equation*}
-\begin{pmatrix}
-3 & -4 & -4 \\
-6 & -6 & -7 \\
--3 & 6 & 7
-\end{pmatrix}
-\begin{pmatrix}
-x_1 \\
-x_2 \\
-x_3
-\end{pmatrix}
-= \begin{pmatrix}
--4 \\
--11 \\
-11
-\end{pmatrix}.
+\mathbf{S} = \begin{pmatrix} 1 & 1 \\ 2 & 2 \end{pmatrix}.
 \end{equation*}
 
-## Lösung des linearen Gleichungssystems mit Hilfe der inversen Matrix
+Wegen $a \cdot d - c \cdot b = 1 \cdot 2 - 2 \cdot 1 = 0$ ist $\mathbf{S}$ nach
+Kapitel 2.2 nicht invertierbar, eine solche Matrix heißt auch **singulär**. Für
+die rechte Seite $(1, 2)^{\top}$ ist die zweite Gleichung $2 x_1 + 2 x_2 = 2$
+nur das Doppelte der ersten Gleichung $x_1 + x_2 = 1$, und jedes Paar mit
+$x_1 + x_2 = 1$ ist eine Lösung. Für die rechte Seite $(1, 3)^{\top}$ verlangt die
+zweite Gleichung dagegen $x_1 + x_2 = 1{,}5$, und es gibt keine Lösung.
 
-Um das zuvor dargestellte lineare Gleichungssystem zu lösen, können wir die
-Inverse der Koeffizientenmatrix $ \mathbf{A}$ berechnen, sofern
-$\det(\mathbf{A})\neq 0$ ist. Die Lösung eines linearen Gleichungssystems der
-Form
+```{admonition} Hat ein Gleichungssystem mit singulärer Matrix keine Lösung?
+:class: danger
+Nicht unbedingt. Ist die Koeffizientenmatrix $\mathbf{A}$ nicht invertierbar,
+dann hat das Gleichungssystem $\mathbf{A} \cdot \vec{x} = \vec{b}$ je nach
+rechter Seite $\vec{b}$ entweder keine Lösung oder unendlich viele Lösungen.
+Genau eine Lösung gibt es nur, wenn $\mathbf{A}$ invertierbar ist.
+```
 
-\begin{equation*}
-\mathbf{A} \vec{x} = \vec{b}
-\end{equation*}
-
-kann dann durch die folgende Gleichung bestimmt werden:
-
-\begin{equation*}
-\vec{x} = \mathbf{A}^{-1} \vec{b}.
-\end{equation*}
-
-Diese Rechnung führen wir nun für das Beispiel aus.
-
-Zuerst überprüfen wir, ob die Matrix $\mathbf{A}$ eine Inverse besitzt, indem
-wir ihre Determinante berechnen. Die Determinante von $\mathbf{A}$ berechnet
-sich wie folgt:
-
-\begin{equation*}
-\det(\mathbf{A}) = 3 \cdot \det\begin{pmatrix} -6 & -7 \\ 6 & 7 \end{pmatrix} - (-4) \cdot
-\det\begin{pmatrix} 6 & -7 \\ -3 & 7 \end{pmatrix} - 4 \cdot
-\det\begin{pmatrix} 6 & -6 \\ -3 & 6 \end{pmatrix}.
-\end{equation*}
-
-Dies ergibt:
-
-\begin{equation*}
-\det(\mathbf{A}) = 3 \cdot (-42 + 42) + 4 \cdot (42 - 21) - 4 \cdot (36 - 18)
-= 12.
-\end{equation*}
-
-Da $\det(\mathbf{A}) \neq 0$ gilt, hat die Koeffizientenmatrix eine Inverse. Wir
-rechnen die inverse Matrix $\mathbf{A}^{-1}$ mit dem Gauß-Algorithmus aus und
-erhalten
-
-\begin{equation*}
-\mathbf{A}^{-1} = \frac{1}{12}\cdot
-\begin{pmatrix}
-0 & 4 & 4 \\
--21 & 9 & -3 \\
-18 & -6 & 6 \\
-\end{pmatrix}.
-\end{equation*}
-
-Die gesuchte Lösung des linearen Gleichungssystems erhalten wir nun, indem wir
-die Inverse mit dem Ergebnisvektor multiplizieren:
-
-\begin{equation*}
-\vec{x}=\mathbf{A}^{-1}\cdot\vec{b}=
-\frac{1}{12}\cdot
-\begin{pmatrix}
-0 & 4 & 4 \\
--21 & 9 & -3 \\
-18 & -6 & 6 \\
-\end{pmatrix} \cdot
-\begin{pmatrix}
--4 \\
--11 \\
-11
-\end{pmatrix} =
-\begin{pmatrix}
-0 \\ -4 \\ 5
-\end{pmatrix}.
-\end{equation*}
-
-Die gesuchte Lösung ist also $x_1 = 0$, $x_2 = -4$ und $x_3 = 5$.
-
-Haben wir einmal die inverse Marix bestimmt, können wir sie immer wieder
-benutzen. Sollte nun ein anderes Gleichungssystem gelöst werden, bei dem die
-Koeffizientenmatrix gleich bleibt, sich aber der Ergebnisvektor ändert, brauchen
-wir nur die Inverse mit dem neuen Ergebnisvektor zu multiplizieren.
-
-Sollten wir sicher sein, dass wir nur für einen einzigen Ergebnisvektor das
-lineare Gleichungssystem lösen wollen, können wir den Gauß-Algorithmus auch
-direkt mit der Koeffizientenmatrix und dem Ergebnisvektor durchführen. Diese
-Kurzschreibweise nennt man **erweiterte Koeffizientenmatrix**. Sie wird in dem
-folgenden Video vorgestellt.
+*Lohnt sich die Inverse also immer?* Nein, denn ihre Berechnung ist aufwändig.
+Für $2 \times 2$-Matrizen haben wir die Formel aus Kapitel 2.2, für größere
+Matrizen brauchen wir den Gauß-Jordan-Algorithmus, den wir ebenfalls in
+Kapitel 2.2 kennengelernt haben. Müssen wir ein
+Gleichungssystem nur für eine einzige rechte Seite lösen, ist es schneller, den
+Gauß-Algorithmus direkt auf die Koeffizientenmatrix mit der rechten Seite
+anzuwenden. Diese sogenannte erweiterte Koeffizientenmatrix wird im folgenden
+Video vorgestellt. Die Inverse lohnt sich dagegen, wenn wir dasselbe
+Gleichungssystem für viele rechte Seiten lösen müssen.
 
 ```{dropdown} Video "Lineare Gleichungssysteme (LGS) lösen - Gauß Verfahren" von MathePeter
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ac8r-E5h9FI?si=kStQbW4DMKyP7odg"
@@ -219,11 +186,121 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
+## Wie lösen wir mehrere Gleichungssysteme auf einmal?
+
+Bisher haben wir zwei Gleichungssysteme mit derselben Koeffizientenmatrix
+$\mathbf{A}$ nacheinander gelöst. Zu den rechten Seiten $\vec{b}_1 = (1,
+1)^{\top}$ und $\vec{b}_2 = (2, 0)^{\top}$ nehmen wir nun eine dritte rechte
+Seite $\vec{b}_3 = (0, 2)^{\top}$ hinzu. *Müssen wir jedes Gleichungssystem einzeln
+lösen?* Statt drei einzelne Gleichungssysteme aufzuschreiben, stellen wir die
+drei rechten Seiten als Spalten nebeneinander:
+
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 1 & 2 & 0 \\ 1 & 0 & 2 \end{pmatrix}.
+\end{equation*}
+
+Die gesuchten Lösungsvektoren stehen dann ebenfalls als Spalten in einer Matrix
+$\mathbf{X}$, und alle drei Gleichungssysteme zusammen lauten $\mathbf{A} \cdot
+\mathbf{X} = \mathbf{B}$. Die Unbekannte ist jetzt kein Vektor mehr, sondern
+eine ganze Matrix. Um sie zu bestimmen, multiplizieren wir wie beim einzelnen
+Gleichungssystem beide Seiten von links mit $\mathbf{A}^{-1}$:
+
+\begin{equation*}
+\mathbf{X} = \mathbf{A}^{-1} \cdot \mathbf{B} = \frac{1}{2} \cdot
+\begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} \cdot \begin{pmatrix} 1 & 2 & 0 \\
+1 & 0 & 2 \end{pmatrix} = \begin{pmatrix} 1 & 1 & 1 \\ 2 & 1 & 3
+\end{pmatrix}.
+\end{equation*}
+
+Die ersten beiden Spalten sind genau die Lösungen, die wir im letzten Abschnitt
+einzeln berechnet haben. Die dritte Spalte ist die Lösung für $\vec{b}_3$. Die
+Probe bestätigt alle drei Lösungen auf einmal:
+
+\begin{equation*}
+\mathbf{A} \cdot \mathbf{X} = \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix}
+\cdot \begin{pmatrix} 1 & 1 & 1 \\ 2 & 1 & 3 \end{pmatrix} = \begin{pmatrix} 1 &
+2 & 0 \\ 1 & 0 & 2 \end{pmatrix} = \mathbf{B}.
+\end{equation*}
+
+*Und wenn die Unbekannte links von $\mathbf{A}$ steht?* Betrachten wir die
+Gleichung $\mathbf{X} \cdot \mathbf{A} = \mathbf{C}$ mit
+
+\begin{equation*}
+\mathbf{C} = \begin{pmatrix} 0 & 2 \\ 2 & 0 \end{pmatrix}.
+\end{equation*}
+
+Jetzt müssen wir von rechts mit $\mathbf{A}^{-1}$ multiplizieren, damit
+$\mathbf{A}$ und $\mathbf{A}^{-1}$ nebeneinanderstehen. Rechts von $\mathbf{X}$
+bleibt dann $\mathbf{A} \cdot \mathbf{A}^{-1} = \mathbf{E}$ stehen.
+
+```{admonition} Was ist ... eine Matrizengleichung?
+:class: note
+Eine Gleichung, in der die Unbekannte eine Matrix $\mathbf{X}$ ist, heißt
+**Matrizengleichung**. Ist $\mathbf{A}$ eine invertierbare Matrix, dann gilt
+
+\begin{align*}
+\mathbf{A} \cdot \mathbf{X} = \mathbf{B} \quad &\Rightarrow \quad \mathbf{X} =
+\mathbf{A}^{-1} \cdot \mathbf{B}, \\
+\mathbf{X} \cdot \mathbf{A} = \mathbf{B} \quad &\Rightarrow \quad \mathbf{X} =
+\mathbf{B} \cdot \mathbf{A}^{-1}.
+\end{align*}
+
+Die inverse Matrix wird dabei immer auf der Seite multipliziert, auf der
+$\mathbf{A}$ in der ursprünglichen Gleichung steht.
+```
+
+Für die Gleichung $\mathbf{X} \cdot \mathbf{A} = \mathbf{C}$ erhalten wir
+
+\begin{equation*}
+\mathbf{X} = \mathbf{C} \cdot \mathbf{A}^{-1} = \begin{pmatrix} 0 & 2 \\ 2 & 0
+\end{pmatrix} \cdot \frac{1}{2} \cdot \begin{pmatrix} 1 & 1 \\ 1 & 3
+\end{pmatrix} = \begin{pmatrix} 1 & 3 \\ 1 & 1 \end{pmatrix}.
+\end{equation*}
+
+Die Probe
+
+\begin{equation*}
+\mathbf{X} \cdot \mathbf{A} = \begin{pmatrix} 1 & 3 \\ 1 & 1
+\end{pmatrix} \cdot \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix} =
+\begin{pmatrix} 0 & 2 \\ 2 & 0 \end{pmatrix}
+\end{equation*}
+
+bestätigt das Ergebnis. Multiplizieren wir dagegen versehentlich von links,
+erhalten wir
+
+\begin{equation*}
+\mathbf{A}^{-1} \cdot \mathbf{C} = \begin{pmatrix} 1 & 1 \\ 3 & 1
+\end{pmatrix}
+\end{equation*}
+
+erhalten. Die Probe wäre dann gescheitert, denn
+
+\begin{equation*}
+\begin{pmatrix}
+1 & 1 \\ 3 & 1 \end{pmatrix} \cdot \mathbf{A} = \begin{pmatrix} 2 & 0 \\ 8 & -2
+\end{pmatrix} \neq \mathbf{C}.
+\end{equation*}
+
+```{admonition} Spielt es eine Rolle, von welcher Seite wir multiplizieren?
+:class: danger
+Ja, denn die Matrizenmultiplikation ist nicht kommutativ. Im Allgemeinen gilt
+
+\begin{equation*}
+\mathbf{A}^{-1} \cdot \mathbf{B} \neq \mathbf{B} \cdot \mathbf{A}^{-1}.
+\end{equation*}
+
+Bei den drei Gleichungssystemen von oben ist das falsche Produkt $\mathbf{B}
+\cdot \mathbf{A}^{-1}$ nicht einmal definiert, denn eine $2\times 3$-Matrix
+lässt sich nicht mit einer $2\times 2$-Matrix multiplizieren.
+```
+
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir eine alternative Darstellung kennengelernt, lineare
-Gleichungssysteme mit Matrizen zu lösen. Insbesondere Computerprogramme und
-Verfahren der Künstlichen Intelligenz nutzen diese kompakte und effiziente Art
-und Weise, Informationen darzustellen und zu verarbeiten. Im nächsten Kapitel
-werden wir Eigenschaften von Matrizen lernen, die zur Beschreibung von
-schwingenden Systemen essentiell sind.
+Ein lineares Gleichungssystem lässt sich kompakt als $\mathbf{A} \cdot \vec{x}
+= \vec{b}$ schreiben. Ist die Koeffizientenmatrix invertierbar, erhalten wir die
+eindeutige Lösung $\vec{x} = \mathbf{A}^{-1} \cdot \vec{b}$, und mit
+Matrizengleichungen sogar die Lösungen für mehrere rechte Seiten auf einmal.
+Offen ist noch die Frage, wie wir einer Matrix ohne lange Rechnung ansehen, ob
+sie überhaupt invertierbar ist. Die Antwort liefert die Determinante, mit der
+wir uns im nächsten Kapitel beschäftigen und die wir für $2 \times 2$-Matrizen
+schon als Ausdruck $a \cdot d - c \cdot b$ kennen.
