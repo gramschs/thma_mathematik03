@@ -1,0 +1,328 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 2.3 Rechenregeln für inverse Matrizen
+
+Im letzten Kapitel haben wir gelernt, wie wir die Inverse einer Matrix
+berechnen. In der Praxis ändert sich ein technisches System aber ständig, etwa
+wenn Federn gegen steifere getauscht werden oder Aktoren hinzukommen. *Müssen
+wir die Inverse dann jedes Mal von Grund auf neu berechnen?* In diesem Kapitel
+lernen wir anhand einer einfachen Federkette Rechenregeln kennen, mit denen wir
+die neue Inverse direkt aus der bekannten Inversen gewinnen.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie kennen die Rechenregeln für die **Inverse der Inversen** und die
+  **Inverse eines skalaren Vielfachen** und können sie anwenden.
+* [ ] Sie wissen, dass es für die **Inverse einer Summe** keine vergleichbare
+  Rechenregel gibt.
+* [ ] Sie können die **Inverse eines Produkts** bilden und wissen, warum sich
+  dabei die Reihenfolge umkehrt.
+* [ ] Sie wissen, dass **Invertieren und Transponieren** vertauschbar sind und
+  dass die Inverse einer **symmetrischen Matrix** wieder symmetrisch ist.
+```
+
+## Was hat die Inverse mit dem Kehrwert gemeinsam?
+
+Wir betrachten zwei Massen, die über zwei Schraubenfedern hintereinander an einer
+festen Wand hängen. Die erste Feder verbindet die Wand mit Masse 1, die zweite
+Feder verbindet Masse 1 mit Masse 2. Greifen an den Massen Kräfte an, verschieben
+sich die Massen so weit, bis die Federkräfte die äußeren Kräfte ausgleichen.
+Solche Federketten sind mehr als ein Spielzeugmodell. In der
+Finite-Elemente-Methode, die Sie in der Technischen Mechanik kennenlernen werden,
+zerlegen wir ein Bauteil gedanklich in viele kleine federnde Abschnitte und
+rechnen genau so.
+
+Die erste Feder hat die Federsteifigkeit $k_1 = 2~\text{kN/mm}$, die zweite die
+Federsteifigkeit $k_2 = 1~\text{kN/mm}$. Die Verschiebungen der Massen aus der
+Ruhelage bezeichnen wir mit $u_1$ und $u_2$, die äußeren Kräfte mit $F_1$ und
+$F_2$. Feder 1 wird um $u_1$ gedehnt, Feder 2 um die Differenz $u_2 - u_1$. Im
+Gleichgewicht gilt daher
+
+\begin{align*}
+F_1 &= k_1 u_1 - k_2 (u_2 - u_1) = (k_1 + k_2)\, u_1 - k_2\, u_2, \\
+F_2 &= k_2 (u_2 - u_1) = -k_2\, u_1 + k_2\, u_2.
+\end{align*}
+
+An Masse 1 muss die äußere Kraft die Rückstellkraft $k_1 u_1$ der ersten Feder
+aufbringen, wird dabei aber von der zweiten Feder mit $k_2(u_2 - u_1)$
+unterstützt. An Masse 2 zieht nur die zweite Feder. In Matrixschreibweise
+lautet das Gleichungssystem $\vec{F} = \mathbf{K} \cdot \vec{u}$ mit
+
+\begin{equation*}
+\mathbf{K} = \begin{pmatrix} k_1 + k_2 & -k_2 \\ -k_2 & k_2 \end{pmatrix}
+= \begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix}~\text{kN/mm}.
+\end{equation*}
+
+Die Matrix $\mathbf{K}$ heißt **Steifigkeitsmatrix**. Sie beantwortet die Frage,
+welche Kräfte wir aufbringen müssen, um bestimmte Verschiebungen zu erzeugen. Im
+Versuch ist die Frage aber meist umgekehrt. *Wie weit verschieben sich die
+Massen, wenn wir an Masse 2 mit $1~\text{kN}$ ziehen?* Dazu brauchen wir die
+Inverse. Mit der Formel aus dem letzten Kapitel und $a \cdot d - c \cdot b = 3
+\cdot 1 - (-1) \cdot (-1) = 2$ erhalten wir
+
+\begin{equation*}
+\mathbf{K}^{-1} = \frac{1}{2} \begin{pmatrix} 1 & 1 \\ 1 & 3
+\end{pmatrix}~\text{mm/kN}.
+\end{equation*}
+
+Die Matrix $\mathbf{K}^{-1}$ heißt **Nachgiebigkeitsmatrix**. Mit ihr gilt
+$\vec{u} = \mathbf{K}^{-1} \cdot \vec{F}$, und für $\vec{F} = (0, 1)^{\top}~\text{kN}$
+ergibt sich
+
+\begin{equation*}
+\vec{u} = \frac{1}{2} \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} \cdot
+\begin{pmatrix} 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0{,}5 \\ 1{,}5
+\end{pmatrix}~\text{mm}.
+\end{equation*}
+
+Masse 1 verschiebt sich um $0{,}5~\text{mm}$, weil die volle Kraft von
+$1~\text{kN}$ durch Feder 1 läuft. Masse 2 verschiebt sich zusätzlich um die
+Dehnung von Feder 2, also um weitere $1~\text{mm}$. Die Probe bestätigt das
+Ergebnis, denn es gilt $\mathbf{K} \cdot \vec{u} = (3 \cdot 0{,}5 - 1{,}5, \,
+-0{,}5 + 1{,}5)^{\top} = (0, 1)^{\top}$.
+
+Bei einer einzelnen Feder ist die Nachgiebigkeit einfach der Kehrwert $1/k$ der
+Steifigkeit. Die Nachgiebigkeitsmatrix ist das Gegenstück dieses Kehrwerts für
+ein ganzes System. Kennen wir die Nachgiebigkeitsmatrix und wollen zurück zur
+Steifigkeitsmatrix, invertieren wir erneut, genauso wie $1/(1/k) = k$ gilt. Das
+funktioniert, weil $\mathbf{K}^{-1} \cdot \mathbf{K} = \mathbf{E}$ bedeutet,
+dass $\mathbf{K}$ die Inverse von $\mathbf{K}^{-1}$ ist. Die Einheitsmatrix
+spielt dabei die Rolle der Zahl 1. Wegen $\mathbf{E} \cdot \mathbf{E} =
+\mathbf{E}$ ist sie ihre eigene Inverse, so wie $1/1 = 1$ ist.
+
+*Was passiert, wenn wir beide Federn gegen doppelt so steife Federn
+austauschen?* Physikalisch erwarten wir, dass sich die Massen bei gleicher Kraft
+nur noch halb so weit verschieben. Die neue Steifigkeitsmatrix ist $2 \cdot
+\mathbf{K}$, und ihre Inverse sollte daher $\frac{1}{2} \cdot \mathbf{K}^{-1}$
+sein. Auch das entspricht dem Kehrwert, denn $1/(2k) = \frac{1}{2} \cdot 1/k$.
+Allgemein bestätigt die Probe $(s \cdot \mathbf{K}) \cdot (\frac{1}{s} \cdot
+\mathbf{K}^{-1}) = (s \cdot \frac{1}{s}) \cdot \mathbf{K} \cdot \mathbf{K}^{-1}
+= \mathbf{E}$ diese Vermutung für jeden Skalar $s \neq 0$.
+
+```{admonition} Rechenregeln: Inverse und Kehrwert
+:class: note
+Für eine invertierbare $n\times n$-Matrix $\mathbf{A}$ und einen Skalar $s \in
+\mathbb{R}$ mit $s \neq 0$ gilt
+
+\begin{equation*}
+\mathbf{E}^{-1} = \mathbf{E}, \qquad
+\left(\mathbf{A}^{-1}\right)^{-1} = \mathbf{A}, \qquad
+(s \cdot \mathbf{A})^{-1} = \frac{1}{s} \cdot \mathbf{A}^{-1}.
+\end{equation*}
+```
+
+Wir prüfen die Skalarregel an der Federkette mit doppelt so steifen Federn. Für
+$2 \cdot \mathbf{K}$ liefert die Formel aus dem letzten Kapitel mit $6 \cdot 2 -
+(-2) \cdot (-2) = 8$ die Inverse
+
+\begin{equation*}
+\left(2 \cdot \mathbf{K}\right)^{-1} = \frac{1}{8} \begin{pmatrix} 2 & 2 \\ 2 & 6
+\end{pmatrix} = \frac{1}{4} \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} =
+\frac{1}{2} \cdot \mathbf{K}^{-1}.
+\end{equation*}
+
+Die Formel liefert also dasselbe Ergebnis wie die Rechenregel, nur mit deutlich
+mehr Aufwand. Ziehen wir wieder mit $1~\text{kN}$ an Masse 2, verschieben sich
+die Massen jetzt um $0{,}25~\text{mm}$ und $0{,}75~\text{mm}$, also genau um die
+Hälfte.
+
+*Gilt dann auch für Summen eine Regel wie beim Kehrwert?* Die Antwort ist nein,
+und schon bei Zahlen ist $1/(2+3) \neq 1/2 + 1/3$. Mechanisch sehen wir das an
+zwei baugleichen Federketten, die wir parallel zwischen Wand und Massen
+einbauen. Ihre Steifigkeiten addieren sich zu $\mathbf{K} + \mathbf{K} = 2 \cdot
+\mathbf{K}$, und nach der Skalarregel halbieren sich die Verschiebungen. Würden
+wir stattdessen die Nachgiebigkeiten addieren, ergäbe sich $\mathbf{K}^{-1} +
+\mathbf{K}^{-1} = 2 \cdot \mathbf{K}^{-1}$, also die doppelte Verschiebung,
+obwohl das System steifer geworden ist. In der Technischen Mechanik begegnet uns
+dieser Unterschied als Parallel- und Reihenschaltung: Bei der Parallelschaltung
+addieren sich die Steifigkeiten, bei der Reihenschaltung die Nachgiebigkeiten.
+
+```{admonition} Achtung: Keine Rechenregel für Summen
+:class: warning
+Im Allgemeinen gilt
+
+\begin{equation*}
+\left(\mathbf{A} + \mathbf{B}\right)^{-1} \neq \mathbf{A}^{-1} + \mathbf{B}^{-1}.
+\end{equation*}
+
+Die Summe zweier invertierbarer Matrizen muss nicht einmal invertierbar sein.
+Für $\mathbf{B} = -\mathbf{A}$ ist $\mathbf{A} + \mathbf{B}$ die Nullmatrix.
+```
+
+## Warum dreht sich beim Produkt die Reihenfolge um?
+
+Im Prüfstand wollen wir die Massen nicht von Hand ziehen, sondern mit zwei
+Linearaktoren gezielt verschieben. Aktor 1 sitzt zwischen Wand und Masse 1 und
+drückt Masse 1 von der Wand weg. Aktor 2 sitzt zwischen den beiden Massen und
+drückt sie auseinander. Wir geben die Stellkräfte $s_1$ und $s_2$ der Aktoren
+vor und wollen wissen, wie weit sich die Massen verschieben.
+
+Aktor 1 bringt die Kraft $s_1$ auf Masse 1 auf. Aktor 2 drückt mit $s_2$ auf
+Masse 2 und nach dem Wechselwirkungsprinzip mit derselben Kraft in
+Gegenrichtung auf Masse 1. Für die Kräfte an den Massen gilt also $F_1 = s_1 -
+s_2$ und $F_2 = s_2$, in Matrixschreibweise $\vec{F} = \mathbf{H} \cdot \vec{s}$
+mit
+
+\begin{equation*}
+\mathbf{H} = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Die Verschiebungen entstehen damit in zwei Schritten. Zuerst übersetzt
+$\mathbf{H}$ die Stellkräfte in Kräfte an den Massen, dann übersetzt
+$\mathbf{K}^{-1}$ diese Kräfte in Verschiebungen. Insgesamt gilt
+
+\begin{equation*}
+\vec{u} = \mathbf{K}^{-1} \cdot \mathbf{H} \cdot \vec{s} = \frac{1}{2}
+\begin{pmatrix} 1 & 0 \\ 1 & 2 \end{pmatrix}~\text{mm/kN} \cdot \vec{s}.
+\end{equation*}
+
+Die zweite Spalte zeigt, was Aktor 2 allein bewirkt. Bei $1~\text{kN}$ bleibt
+Masse 1 stehen, weil sich die beiden Kräfte des Aktors auf Masse 1 und Feder 2
+gegenseitig aufheben, und Masse 2 bewegt sich um $1~\text{mm}$. Für den
+Versuch interessiert uns aber wieder die umgekehrte Frage. *Welche Stellkräfte
+müssen wir einstellen, damit sich die Massen um vorgegebene Wege verschieben?*
+
+Wir könnten die Matrix $\mathbf{K}^{-1} \cdot \mathbf{H}$ direkt invertieren.
+Anschaulicher ist es, die Wirkungskette rückwärts zu durchlaufen. Aus den
+gewünschten Verschiebungen berechnen wir mit $\mathbf{K}$ die nötigen Kräfte an
+den Massen, und aus diesen Kräften berechnen wir mit $\mathbf{H}^{-1}$ die
+Stellkräfte. Der Schritt, der auf dem Hinweg zuletzt kam, wird also als erster
+rückgängig gemacht. Das kennen wir aus dem Alltag: Morgens ziehen wir erst die
+Socken und dann die Schuhe an, abends erst die Schuhe und dann die Socken aus.
+
+```{admonition} Rechenregel: Inverse eines Produkts
+:class: note
+Sind $\mathbf{A}$ und $\mathbf{B}$ invertierbare $n\times n$-Matrizen, dann ist
+auch $\mathbf{A} \cdot \mathbf{B}$ invertierbar, und es gilt
+
+\begin{equation*}
+\left(\mathbf{A} \cdot \mathbf{B}\right)^{-1} = \mathbf{B}^{-1} \cdot
+\mathbf{A}^{-1}.
+\end{equation*}
+```
+
+Die Probe zeigt, warum nur diese Reihenfolge funktioniert. Es gilt
+$(\mathbf{A} \cdot \mathbf{B}) \cdot (\mathbf{B}^{-1} \cdot \mathbf{A}^{-1}) =
+\mathbf{A} \cdot \mathbf{E} \cdot \mathbf{A}^{-1} = \mathbf{E}$, weil
+$\mathbf{B}$ und $\mathbf{B}^{-1}$ direkt nebeneinanderstehen. Dieselbe Umkehr
+kennen wir aus Kapitel 2.1 vom Transponieren, denn dort galt $(\mathbf{A} \cdot
+\mathbf{B})^{\top} = \mathbf{B}^{\top} \cdot \mathbf{A}^{\top}$. Im Kapitel über
+lineare Abbildungen werden wir Matrizen als Abbildungen deuten, die
+nacheinander ausgeführt werden, und dann wird die Umkehr besonders anschaulich.
+
+Für die Aktoren brauchen wir noch $\mathbf{H}^{-1}$. Wegen $1 \cdot 1 - 0 \cdot
+(-1) = 1$ ist $\mathbf{H}^{-1} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$.
+Mit der Produktregel und der Regel für die Inverse der Inversen erhalten wir
+
+\begin{equation*}
+\left(\mathbf{K}^{-1} \cdot \mathbf{H}\right)^{-1} = \mathbf{H}^{-1} \cdot
+\mathbf{K} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} \cdot
+\begin{pmatrix} 3 & -1 \\ -1 & 1 \end{pmatrix} = \begin{pmatrix} 2 & 0 \\ -1 & 1
+\end{pmatrix}~\text{kN/mm}.
+\end{equation*}
+
+Sollen sich die Massen um $\vec{u} = (1, 2)^{\top}~\text{mm}$ verschieben,
+brauchen wir die Stellkräfte $\vec{s} = (2 \cdot 1, \, -1 + 2)^{\top} = (2,
+1)^{\top}~\text{kN}$. Das ist physikalisch einleuchtend. Aktor 1 hält Feder 1
+um $1~\text{mm}$ gedehnt und braucht dafür $2~\text{kN}$, Aktor 2 hält Feder 2
+um $u_2 - u_1 = 1~\text{mm}$ gedehnt und braucht dafür $1~\text{kN}$. Die Probe
+bestätigt das Ergebnis, denn $\frac{1}{2} \cdot (1 \cdot 2 + 0 \cdot 1, \, 1
+\cdot 2 + 2 \cdot 1)^{\top} = (1, 2)^{\top}$. Hätten wir die Reihenfolge nicht
+umgedreht, hätten wir mit $\mathbf{K} \cdot \mathbf{H}^{-1}$ die unsinnigen
+Stellkräfte $(7, -1)^{\top}~\text{kN}$ erhalten.
+
+Diese Idee, von der gewünschten Wirkung rückwärts auf die nötige Stellgröße zu
+schließen, werden Sie in der Regelungstechnik als Vorsteuerung wiedertreffen.
+
+```{dropdown} Video "Inverse Matrix, Rechenregeln I" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/t1K_B1pPqmc?si=TMRR6UnIpu5mmEn4"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Dürfen wir Invertieren und Transponieren vertauschen?
+
+Linearaktoren haben einen begrenzten Stellweg. *Wie weit muss jeder Aktor
+ausfahren, wenn sich die Massen um $u_1$ und $u_2$ verschieben?* Aktor 1 fährt
+genau um $u_1$ aus. Aktor 2 sitzt zwischen den Massen und fährt deshalb um die
+Differenz $u_2 - u_1$ aus. Für die Aktorwege $d_1$ und $d_2$ gilt also
+
+\begin{equation*}
+\vec{d} = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix} \cdot \vec{u} =
+\mathbf{H}^{\top} \cdot \vec{u}.
+\end{equation*}
+
+Die Matrix, die Verschiebungen in Aktorwege übersetzt, ist genau die
+Transponierte der Matrix $\mathbf{H}$, die Stellkräfte in Kräfte übersetzt. Das
+ist kein Zufall, sondern eine Folge der Energieerhaltung, die Sie in der
+Technischen Mechanik als Prinzip der virtuellen Arbeit kennenlernen werden.
+Auch hier interessiert uns die umgekehrte Frage. *Welche Verschiebungen ergeben
+sich, wenn wir die Aktorwege vorgeben?*
+
+Dazu brauchen wir $(\mathbf{H}^{\top})^{-1}$. Die Inverse $\mathbf{H}^{-1}$
+kennen wir bereits, und es liegt nahe, sie einfach zu transponieren. Wir
+vermuten also $(\mathbf{H}^{\top})^{-1} = (\mathbf{H}^{-1})^{\top} =
+\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$. Physikalisch passt das, denn es
+bedeutet $u_1 = d_1$ und $u_2 = d_1 + d_2$. Masse 2 verschiebt sich um die
+Summe beider Aktorwege.
+
+```{admonition} Rechenregel: Inverse der Transponierten
+:class: note
+Ist $\mathbf{A}$ eine invertierbare $n\times n$-Matrix, dann ist auch
+$\mathbf{A}^{\top}$ invertierbar, und es gilt
+
+\begin{equation*}
+\left(\mathbf{A}^{\top}\right)^{-1} = \left(\mathbf{A}^{-1}\right)^{\top}.
+\end{equation*}
+```
+
+Zur Begründung nutzen wir die Transpositionsregel für Produkte aus Kapitel 2.1.
+Es gilt $\mathbf{A}^{\top} \cdot (\mathbf{A}^{-1})^{\top} = (\mathbf{A}^{-1}
+\cdot \mathbf{A})^{\top} = \mathbf{E}^{\top} = \mathbf{E}$. Für die Aktoren
+bedeutet das: Fahren beide Aktoren um $\vec{d} = (1, 1)^{\top}~\text{mm}$ aus,
+verschieben sich die Massen um $\vec{u} = (1, 1 + 1)^{\top} = (1,
+2)^{\top}~\text{mm}$. Das ist genau die Verschiebung aus dem letzten Abschnitt,
+und die Probe $\mathbf{H}^{\top} \cdot \vec{u} = (1, \, -1 + 2)^{\top} = (1,
+1)^{\top}$ bestätigt das Ergebnis.
+
+Zum Schluss werfen wir noch einmal einen Blick auf die Nachgiebigkeitsmatrix
+$\mathbf{K}^{-1}$. Sie ist symmetrisch, genau wie $\mathbf{K}$. Physikalisch
+bedeutet das: Eine Kraft von $1~\text{kN}$ an Masse 1 verschiebt Masse 2 um
+genau $0{,}5~\text{mm}$, und eine Kraft von $1~\text{kN}$ an Masse 2 verschiebt
+Masse 1 ebenfalls um $0{,}5~\text{mm}$. *Ist das Zufall?* Nein, denn für jede
+symmetrische invertierbare Matrix folgt mit der gerade gezeigten Regel
+$(\mathbf{K}^{-1})^{\top} = (\mathbf{K}^{\top})^{-1} = \mathbf{K}^{-1}$.
+
+```{admonition} Rechenregel: Inverse einer symmetrischen Matrix
+:class: note
+Ist $\mathbf{A}$ eine invertierbare symmetrische Matrix, dann ist auch ihre
+Inverse $\mathbf{A}^{-1}$ symmetrisch.
+```
+
+In der Technischen Mechanik heißt diese Aussage Satz von Maxwell-Betti. Er gilt
+für jedes linear elastische Bauteil, nicht nur für unsere Federkette.
+Finite-Elemente-Programme nutzen die Symmetrie aus und speichern von der
+Steifigkeitsmatrix nur die Hälfte, was bei Millionen von Unbekannten viel
+Speicherplatz spart.
+
+```{dropdown} Video "Inverse Matrix, Rechenregeln II" von Mathematische Methoden
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6JHgy82gwiI?si=EPTgIjTOjyCvW2qp"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Zusammenfassung und Ausblick
+
+Die Inverse verhält sich in vielen Situationen wie der Kehrwert einer Zahl,
+aber für Summen gibt es keine Rechenregel. Beim Produkt kehrt sich die
+Reihenfolge um, und Invertieren und Transponieren dürfen wir vertauschen. Im
+nächsten Kapitel lösen wir lineare Gleichungssysteme mit der Inversen und
+berechnen die Federkette für mehrere Lastfälle in einem einzigen Schritt. Den
+Ausdruck $a \cdot d - c \cdot b$ aus der Formel für die Inverse treffen wir im
+Kapitel über Determinanten wieder und verstehen dort, warum er über die
+Invertierbarkeit entscheidet.
