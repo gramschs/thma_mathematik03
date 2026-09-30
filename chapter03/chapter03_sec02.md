@@ -1,94 +1,102 @@
 ---
 authors:
-  - name: "Simone Gramsch"
+  - name: Simone Gramsch
 ---
 
 # 3.2 Laplacescher Entwicklungssatz
 
-Im letzten Kapitel haben wir mit der Regel von Sarrus gelernt, wie wir die
-Determinante einer $3\times 3$-Matrix berechnen. Die Regel ist anschaulich und
-lässt sich gut merken. *Aber was tun wir, wenn die Matrix größer ist?* Die
-Sarrus-Regel gilt ausschließlich für $3\times 3$-Matrizen und lässt sich nicht
-auf höhere Dimensionen übertragen. Wir brauchen also ein allgemeineres Verfahren,
-das für jede quadratische Matrix funktioniert.
+In Kapitel 3.1 haben wir Determinanten von $2\times 2$- und
+$3\times 3$-Matrizen berechnet. *Aber was tun wir, wenn die Matrix größer ist?*
+Die Regel von Sarrus hilft dann nicht weiter, und wir brauchen ein Verfahren,
+das für jede quadratische Matrix funktioniert. Im Maschinenbau sind große
+Matrizen der Normalfall, etwa wenn ein Bauteil mit der Finite-Elemente-Methode
+(FEM) in viele kleine Elemente zerlegt wird.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, warum die Regel von Sarrus auf Matrizen der Dimension $n > 3$
-  nicht anwendbar ist.
-* [ ] Sie können zu einem Element $a_{ij}$ die zugehörige **Untermatrix**
-  $\mathbf{A}_{ij}$ bestimmen.
+* [ ] Sie können zu einem Eintrag $m_{ij}$ die zugehörige **Untermatrix**
+  $\mathbf{M}_{ij}$ bestimmen.
+* [ ] Sie kennen das **Vorzeichenschema** des Entwicklungssatzes.
 * [ ] Sie können die Determinante einer $n\times n$-Matrix mit dem
   **Laplaceschen Entwicklungssatz** nach einer beliebigen Zeile oder Spalte
   berechnen.
-* [ ] Sie wählen die Entwicklungszeile oder -spalte strategisch aus, um den
-  Rechenaufwand zu minimieren.
+* [ ] Sie wählen die Entwicklungszeile oder -spalte so, dass möglichst wenig
+  Rechenaufwand entsteht.
 ```
 
-## Warum reicht die Sarrus-Regel nicht aus?
+## Wie zerlegen wir eine $3\times 3$-Determinante?
 
-Die Determinante einer $n\times n$-Matrix ist als Summe über alle $n!$
-Permutationen der Spaltenindizes definiert. Für $n = 3$ sind das $3! = 6$ Terme,
-und die Sarrus-Regel liefert genau diese 6 Diagonalprodukte. Das ist kein
-allgemeines Prinzip, sondern ein glücklicher Spezialfall: Nur bei $n = 3$
-stimmt die Anzahl der Diagonalen mit der Anzahl der Determinantenterme überein.
-Für $n = 4$ hingegen hat die Determinante $4! = 24$ Terme. Ein
-Diagonalverfahren kann das nicht abbilden.
-
-Die Grundidee des **Laplaceschen Entwicklungssatzes** ist stattdessen folgende:
-Wir zerlegen das $n\times n$-Problem rekursiv in mehrere
-$(n-1)\times(n-1)$-Probleme. Eine $4\times 4$-Determinante wird so auf
-$3\times 3$-Determinanten zurückgeführt, die wir mit Sarrus lösen können.
-
-## Was ist eine Untermatrix?
-
-Bevor wir die Formel aufschreiben, führen wir einen neuen Begriff ein. Die
-**Untermatrix** $\mathbf{A}_{ij}$ entsteht, indem wir aus der Matrix
-$\mathbf{A}$ die $i$-te Zeile und die $j$-te Spalte vollständig streichen. Das
-Ergebnis hat eine Zeile und eine Spalte weniger als die ursprüngliche Matrix.
-
-Als Beispiel betrachten wir die $4\times 4$-Matrix
+Wir greifen die Matrix aus Kapitel 3.1 wieder auf:
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix}
-1 & 2 & 0 & 3 \\
-4 & 5 & 1 & 0 \\
-0 & 3 & 2 & 1 \\
-2 & 0 & 4 & 1
-\end{pmatrix}.
+\mathbf{A} =
+\begin{pmatrix}
+2 & 1 & 3 \\
+0 & -1 & 4 \\
+5 & 2 & -2
+\end{pmatrix},
+\qquad \det(\mathbf{A}) = 23.
 \end{equation*}
 
-Die Untermatrix $\mathbf{A}_{12}$ ergibt sich, indem wir die erste Zeile und die
-zweite Spalte streichen:
+Jedes der sechs Sarrus-Produkte enthält genau einen Eintrag aus der ersten
+Zeile. Wir sortieren die Produkte deshalb danach, ob sie den Eintrag $2$, $1$
+oder $3$ enthalten, und klammern diesen Eintrag aus:
+
+\begin{align*}
+\det(\mathbf{A})
+&= 2\cdot\big((-1)\cdot(-2) - 2\cdot 4\big) -
+1\cdot\big(0\cdot(-2) - 5\cdot 4\big) +
+3\cdot\big(0\cdot 2 - 5\cdot(-1)\big) \\
+&= 2\cdot(-6) - 1\cdot(-20) + 3\cdot 5 = 23.
+\end{align*}
+
+In jeder Klammer steht die Determinante einer $2\times 2$-Matrix. Es ist genau
+die Matrix, die übrig bleibt, wenn wir in $\mathbf{A}$ die erste Zeile und die
+Spalte des ausgeklammerten Eintrags streichen. Beim Eintrag $1$ in der zweiten
+Spalte bleibt zum Beispiel
 
 \begin{equation*}
-\mathbf{A}_{12} = \begin{pmatrix}
-4 & 1 & 0 \\
-0 & 2 & 1 \\
-2 & 4 & 1
-\end{pmatrix}.
+\begin{pmatrix} 0 & 4 \\ 5 & -2 \end{pmatrix}
+\quad\text{mit der Determinante}\quad
+0\cdot(-2) - 5\cdot 4 = -20.
 \end{equation*}
+
+Die $3\times 3$-Determinante zerfällt also in drei $2\times 2$-Determinanten,
+und die Vorzeichen davor wechseln zwischen $+$, $-$ und $+$. Die kleinen
+Matrizen, die beim Streichen entstehen, bekommen einen eigenen Namen.
 
 ```{admonition} Was ist ... eine Untermatrix?
 :class: note
-Die **Untermatrix** $\mathbf{A}_{ij}$ einer $n\times n$-Matrix $\mathbf{A}$
-entsteht durch Streichen der $i$-ten Zeile und der $j$-ten Spalte. Sie hat die
-Dimension $(n-1)\times(n-1)$.
+Die **Untermatrix** $\mathbf{M}_{ij}$ einer $n\times n$-Matrix $\mathbf{M}$
+entsteht, indem wir die $i$-te Zeile und die $j$-te Spalte von $\mathbf{M}$
+streichen. Sie hat die Dimension $(n-1)\times(n-1)$. Ihre Determinante
+$\det(\mathbf{M}_{ij})$ heißt **Unterdeterminante**. In anderen Büchern wird
+die Untermatrix auch **Streichmatrix** genannt.
 ```
+
+Mit diesem Begriff schreiben wir die Rechnung von oben kompakt:
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+\det(\mathbf{A}) = 2\cdot\det(\mathbf{A}_{11}) - 1\cdot\det(\mathbf{A}_{12}) +
+3\cdot\det(\mathbf{A}_{13}) = 2\cdot(-6) - 1\cdot(-20) + 3\cdot 5 = 23.
+\end{equation*}
+<!-- markdownlint-enable -->
+
+Jeder Eintrag der ersten Zeile wird mit seiner Unterdeterminante multipliziert.
+Dabei ist $\mathbf{A}_{12}$ die $2\times 2$-Matrix mit der Determinante $-20$,
+die wir gerade betrachtet haben.
 
 ## Wie lautet der Laplacesche Entwicklungssatz?
 
-Wir entwickeln die Determinante nach der $i$-ten Zeile:
-
-\begin{equation*}
-\det(\mathbf{A}) = \sum_{j=1}^{n} (-1)^{i+j}\cdot a_{ij}\cdot\det(\mathbf{A}_{ij}).
-\end{equation*}
-
-Jedes Element $a_{ij}$ der gewählten Zeile wird mit der Determinante seiner
-Untermatrix multipliziert. Das Vorzeichen $(-1)^{i+j}$ wechselt schachbrettartig
-zwischen $+$ und $-$. Für eine $4\times 4$-Matrix sieht dieses Muster so aus:
+*Ist die erste Zeile etwas Besonderes?* Nein. Wir dürfen nach jeder Zeile und
+nach jeder Spalte zerlegen, müssen aber auf die Vorzeichen achten. Das
+Vorzeichen hängt nur davon ab, wo der Eintrag $a_{ij}$ in der Matrix steht. Ist
+die Summe $i + j$ aus Zeilen- und Spaltennummer gerade, ist es $+$, sonst $-$.
+Kurz geschrieben ist das der Faktor $(-1)^{i+j}$. Für eine $4\times 4$-Matrix
+ergibt sich ein Vorzeichenschema, das wie ein Schachbrett aussieht:
 
 <!-- markdownlint-disable -->
 \begin{equation*}
@@ -101,14 +109,44 @@ zwischen $+$ und $-$. Für eine $4\times 4$-Matrix sieht dieses Muster so aus:
 \end{equation*}
 <!-- markdownlint-enable -->
 
-Analog entwickeln wir nach der $j$-ten Spalte:
+Die erste Zeile beginnt mit $+$, deshalb haben wir bei $\mathbf{A}$ die
+Vorzeichen $+$, $-$ und $+$ gefunden.
+
+```{admonition} Was ist ... der Laplacesche Entwicklungssatz?
+:class: note
+Die Determinante einer $n\times n$-Matrix $\mathbf{M}$ lässt sich nach einer
+beliebigen Zeile $i$ entwickeln,
 
 \begin{equation*}
-\det(\mathbf{A}) = \sum_{i=1}^{n} (-1)^{i+j}\cdot a_{ij}\cdot\det(\mathbf{A}_{ij}).
+\det(\mathbf{M}) = \sum_{j=1}^{n} (-1)^{i+j}\cdot m_{ij}\cdot\det(\mathbf{M}_{ij}),
 \end{equation*}
 
-Das Ergebnis ist in beiden Fällen dasselbe. Wir dürfen also frei wählen,
-nach welcher Zeile oder Spalte wir entwickeln.
+oder nach einer beliebigen Spalte $j$,
+
+\begin{equation*}
+\det(\mathbf{M}) = \sum_{i=1}^{n} (-1)^{i+j}\cdot m_{ij}\cdot\det(\mathbf{M}_{ij}).
+\end{equation*}
+
+Diese Aussage heißt **Laplacescher Entwicklungssatz**. Das Ergebnis hängt nicht
+davon ab, welche Zeile oder Spalte wir wählen. Den Ausdruck
+$(-1)^{i+j}\cdot\det(\mathbf{M}_{ij})$ nennt man auch **Kofaktor** des Eintrags
+$m_{ij}$.
+```
+
+Wir prüfen den Satz an $\mathbf{A}$ und entwickeln diesmal nach der ersten
+Spalte, also nach den Einträgen $2$, $0$ und $5$ mit den Vorzeichen $+$, $-$
+und $+$:
+
+\begin{align*}
+\det(\mathbf{A})
+&= 2\cdot\det\begin{pmatrix} -1 & 4 \\ 2 & -2 \end{pmatrix} -
+0\cdot\det\begin{pmatrix} 1 & 3 \\ 2 & -2 \end{pmatrix} +
+5\cdot\det\begin{pmatrix} 1 & 3 \\ -1 & 4 \end{pmatrix} \\
+&= 2\cdot(-6) - 0 + 5\cdot 7 = 23.
+\end{align*}
+
+Wir erhalten wieder $23$. Weil $a_{21} = 0$ ist, fällt der mittlere Summand
+weg, und wir mussten nur zwei Unterdeterminanten ausrechnen statt drei.
 
 ```{dropdown} Video "Determinante - Laplace Entwicklungssatz" von Mathematrick
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3cG0HWdmHLI?si=UT5KjVo88k9dNPoj"
@@ -117,82 +155,82 @@ encrypted-media; gyroscope; picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-## Wie wählen wir die Entwicklungszeile geschickt?
+```{dropdown} Video "Determinante berechnen (Laplace)" von MathePeter
+<iframe width="1018" height="572"
+src="https://www.youtube.com/embed/5TprkT5tHPo" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
+web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+```
 
-*Welche Zeile oder Spalte wählen wir am besten?* Wir suchen diejenige mit den
-meisten Nullen. Jede Null setzt einen ganzen Summanden auf Null und spart uns
-eine vollständige $3\times 3$-Rechnung. In unserer Matrix enthält die erste
-Zeile an Position $a_{13} = 0$ eine Null. Wir entwickeln daher nach der ersten
-Zeile.
+## Wie wählen wir die Entwicklungszeile oder -spalte geschickt?
 
-Mit dem Vorzeichenmuster $+, -, +, -$ ergibt sich:
+Die Beobachtung mit der Null nutzen wir jetzt bei einer $4\times 4$-Matrix:
 
-<!-- markdownlint-disable -->
-\begin{align*}
-\det(\mathbf{A})
-&= (+1)\cdot 1 \cdot\det(\mathbf{A}_{11}) +
-(-1)\cdot 2 \cdot\det(\mathbf{A}_{12}) +
-(+1)\cdot 0 \cdot\det(\mathbf{A}_{13}) +
-(-1)\cdot 3 \cdot\det(\mathbf{A}_{14}).
-\end{align*}
-<!-- markdownlint-enable -->
-
-Da $a_{13} = 0$ ist, fällt der dritte Summand sofort weg. Wir benötigen nur
-drei Untermatrizen:
-
-<!-- markdownlint-disable -->
 \begin{equation*}
-\mathbf{A}_{11} = \begin{pmatrix}
-5 & 1 & 0 \\
-3 & 2 & 1 \\
-0 & 4 & 1
-\end{pmatrix}, \quad
-\mathbf{A}_{12} = \begin{pmatrix}
-4 & 1 & 0 \\
-0 & 2 & 1 \\
-2 & 4 & 1
-\end{pmatrix}, \quad
-\mathbf{A}_{14} = \begin{pmatrix}
-4 & 5 & 1 \\
-0 & 3 & 2 \\
-2 & 0 & 4
+\mathbf{B} = \begin{pmatrix}
+1 & 2 & 0 & 3 \\
+2 & 1 & 1 & 4 \\
+3 & 1 & 0 & 2 \\
+1 & 3 & 2 & 1
 \end{pmatrix}.
 \end{equation*}
+
+*Welche Zeile oder Spalte wählen wir am besten?* Jede Null spart uns eine
+vollständige $3\times 3$-Rechnung. Die erste und die dritte Zeile enthalten je
+eine Null, die dritte Spalte dagegen zwei ($b_{13} = 0$ und $b_{33} = 0$). Wir
+entwickeln daher nach der dritten Spalte mit den Vorzeichen $+$, $-$, $+$ und
+$-$:
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+\det(\mathbf{B})
+= 0 - 1\cdot\det(\mathbf{B}_{23}) + 0 - 2\cdot\det(\mathbf{B}_{43}).
+\end{equation*}
 <!-- markdownlint-enable -->
 
-Wir berechnen die drei $3\times 3$-Determinanten mit der Sarrus-Regel:
+Für $\mathbf{B}_{23}$ streichen wir die zweite Zeile und die dritte Spalte, für
+$\mathbf{B}_{43}$ die vierte Zeile und die dritte Spalte. Beide
+$3\times 3$-Determinanten berechnen wir mit Sarrus, die Produkte der blauen
+Pfeile stehen jeweils in der Klammer:
 
 <!-- markdownlint-disable -->
 \begin{align*}
-\det(\mathbf{A}_{11})
-&= 5\cdot 2\cdot 1 + 1\cdot 1\cdot 0 + 0\cdot 3\cdot 4 -
- \left(0\cdot 2\cdot 0 + 4\cdot 1\cdot 5 + 1\cdot 3\cdot 1\right)
-= 10 - 23 = -13,\\
-\det(\mathbf{A}_{12})
-&= 4\cdot 2\cdot 1 + 1\cdot 1\cdot 2 + 0\cdot 0\cdot 4 -
- \left(2\cdot 2\cdot 0 + 4\cdot 1\cdot 4 + 1\cdot 0\cdot 1\right)
-= 10 - 16 = -6,\\
-\det(\mathbf{A}_{14})
-&= 4\cdot 3\cdot 4 + 5\cdot 2\cdot 2 + 1\cdot 0\cdot 0 -
- \left(2\cdot 3\cdot 1 + 0\cdot 2\cdot 4 + 4\cdot 0\cdot 5\right)
-= 68 - 6 = 62.
+\det(\mathbf{B}_{23})
+&= \det\begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \\ 1 & 3 & 1 \end{pmatrix}
+= 1 + 4 + 27 - (3 + 6 + 6) = 17, \\
+\det(\mathbf{B}_{43})
+&= \det\begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 4 \\ 3 & 1 & 2 \end{pmatrix}
+= 2 + 24 + 6 - (9 + 4 + 8) = 11.
 \end{align*}
 <!-- markdownlint-enable -->
 
-Einsetzen in den Entwicklungssatz liefert:
+Damit ist $\det(\mathbf{B}) = -17 - 2\cdot 11 = -39$. Hätten wir nach der
+ersten Zeile entwickelt, wären drei $3\times 3$-Determinanten nötig gewesen.
+Genau diese Rechnung dient als Probe.
 
-\begin{equation*}
-\det(\mathbf{A})
-= 1\cdot(-13) - 2\cdot(-6) + 0 - 3\cdot 62
-= -13 + 12 - 186 = -187.
-\end{equation*}
+Mit den Vorzeichen $+$, $-$, $+$ und $-$ und $b_{13} = 0$ gilt
 
-Als Probe entwickeln wir nach der dritten Zeile, die ebenfalls eine Null enthält
-($a_{31} = 0$), und erhalten erneut $\det(\mathbf{A}) = -187$. Das bestätigt,
-dass das Ergebnis unabhängig von der Wahl der Entwicklungszeile ist.
+\begin{align*}
+\det(\mathbf{B})
+&= 1\cdot\det\begin{pmatrix} 1 & 1 & 4 \\ 1 & 0 & 2 \\ 3 & 2 & 1 \end{pmatrix} -
+2\cdot\det\begin{pmatrix} 2 & 1 & 4 \\ 3 & 0 & 2 \\ 1 & 2 & 1 \end{pmatrix} -
+3\cdot\det\begin{pmatrix} 2 & 1 & 1 \\ 3 & 1 & 0 \\ 1 & 3 & 2 \end{pmatrix} \\
+&= 1\cdot 9 - 2\cdot 15 - 3\cdot 6 = -39.
+\end{align*}
+
+Die drei Unterdeterminanten ergeben sich mit Sarrus aus $14 - 5 = 9$,
+$26 - 11 = 15$ und $13 - 7 = 6$.
+
+Der Entwicklungssatz funktioniert für jede Größe, wird aber schnell aufwendig.
+Man kann zeigen, dass die vollständig entwickelte Determinante einer
+$n\times n$-Matrix aus $n!$ Produkten besteht. Für $n = 10$ sind das bereits
+$3\,628\,800$ Produkte. Der Satz lohnt sich also vor allem dann, wenn die Matrix
+viele Nullen enthält.
 
 ```{admonition} Übung: Berechnung von Determinanten
 :class: tip
+:class: dropdown
 Gehen Sie auf die Internetseite
 
 > [https://matex.mint-kolleg.kit.edu/MATeX/browse.php](https://matex.mint-kolleg.kit.edu/MATeX/browse.php)
@@ -203,14 +241,17 @@ hintereinander eine Aufgabe korrekt gelöst haben, gehen Sie zu Stufe 2 weiter.
 Sobald Sie auf Stufe 2 dreimal hintereinander eine Aufgabe gelöst haben, gehen
 Sie weiter zu Stufe 3.
 
-Hinweis: Die Frage nach der Invertierbarkeit können Sie vorerst ignorieren.
+Hinweis: Die Frage nach der Invertierbarkeit können Sie mit der Determinante
+beantworten. Eine Matrix ist genau dann invertierbar, wenn ihre Determinante
+ungleich null ist.
 ```
 
 ## Zusammenfassung und Ausblick
 
-Mit dem Laplaceschen Entwicklungssatz können wir Determinanten beliebig großer
-quadratischer Matrizen berechnen, indem wir das Problem schrittweise auf kleinere
-Untermatrizen reduzieren. Den Rechenaufwand halten wir gering, indem wir immer
-nach der Zeile oder Spalte mit den meisten Nullen entwickeln. Im nächsten Kapitel
-lernen wir Rechenregeln kennen, die es erlauben, gezielt Nullen in eine Matrix
-einzufügen, und die Determinantenberechnung damit erheblich beschleunigen.
+Der Laplacesche Entwicklungssatz führt eine $n\times n$-Determinante auf
+Unterdeterminanten der Dimension $(n-1)\times(n-1)$ zurück. Die Vorzeichen
+folgen dem Schachbrettmuster $(-1)^{i+j}$, und am wenigsten rechnen wir, wenn
+wir nach der Zeile oder Spalte mit den meisten Nullen entwickeln. *Können wir
+solche Nullen vielleicht selbst erzeugen?* In Kapitel 3.3 bringen wir diese
+$4\times 4$-Matrix mit Zeilenumformungen in eine Form mit vielen Nullen und
+erhalten ihre Determinante mit deutlich weniger Aufwand.

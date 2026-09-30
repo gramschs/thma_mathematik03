@@ -194,7 +194,7 @@ T(t) = 28\,e^{-0.5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
 **Verifikation:** Mit $\dot{T} = -14\,e^{-0.5\,t} + 8\sin(t) + 4\cos(t)$:
 
 \begin{align*}
-\dot{T} + 0{,}5\,T
+\dot{T} + 0.5\,T
   &= \bigl(-14\,e^{-0.5\,t} + 8\sin t + 4\cos t\bigr) +
      0.5\bigl(28\,e^{-0.5\,t} - 8\cos t + 4\sin t\bigr) \\
   &= (-14 + 14)\,e^{-0.5\,t} + (8 + 2)\sin t + (4 - 4)\cos t \\

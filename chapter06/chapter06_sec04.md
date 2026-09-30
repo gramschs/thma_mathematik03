@@ -33,7 +33,7 @@ Diagonalmatrix, in der die Eigenwerte direkt ablesbar sind.
   $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ berechnen.
 * [ ] Sie kennen den **Spektralsatz**: Jede symmetrische Matrix ist
   diagonalisierbar, und $\mathbf{V}$ kann als orthogonale Matrix $\mathbf{Q}$
-  mit $\mathbf{Q}^{-1} = \mathbf{Q}^T$ gewählt werden.
+  mit $\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$ gewählt werden.
 ```
 
 ## Warum sind Eigenvektoren symmetrischer Matrizen orthogonal?
@@ -47,22 +47,22 @@ sicherstellt, ist eine der wichtigsten Eigenschaften symmetrischer Matrizen.
 Seien $\lambda_1 \neq \lambda_2$ zwei Eigenwerte einer symmetrischen Matrix
 $\mathbf{A}$ mit Eigenvektoren $\vec{v}_1$ und $\vec{v}_2$. Wir multiplizieren
 die Gleichung $\mathbf{A}\vec{v}_1 = \lambda_1 \vec{v}_1$ von links mit
-$\vec{v}_2^T$ und nutzen $\mathbf{A}^T = \mathbf{A}$:
+$\vec{v}_2^{\top}$ und nutzen $\mathbf{A}^{\top} = \mathbf{A}$:
 
 \begin{align*}
-\vec{v}_2^T \mathbf{A} \vec{v}_1 &= \lambda_1\, \vec{v}_2^T \vec{v}_1, \\
-(\mathbf{A} \vec{v}_2)^T \vec{v}_1 &= \lambda_1\, \vec{v}_2^T \vec{v}_1, \\
-\lambda_2\, \vec{v}_2^T \vec{v}_1 &= \lambda_1\, \vec{v}_2^T \vec{v}_1.
+\vec{v}_2^{\top} \mathbf{A} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1, \\
+(\mathbf{A} \vec{v}_2)^{\top} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1, \\
+\lambda_2\, \vec{v}_2^{\top} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1.
 \end{align*}
 
-Umstellen liefert $(\lambda_2 - \lambda_1)\,\vec{v}_2^T \vec{v}_1 = 0$. Da
-$\lambda_1 \neq \lambda_2$ vorausgesetzt ist, muss $\vec{v}_2^T \vec{v}_1 = 0$
+Umstellen liefert $(\lambda_2 - \lambda_1)\,\vec{v}_2^{\top} \vec{v}_1 = 0$. Da
+$\lambda_1 \neq \lambda_2$ vorausgesetzt ist, muss $\vec{v}_2^{\top} \vec{v}_1 = 0$
 gelten. Die Orthogonalität folgt zwingend aus der Symmetrie.
 
 ```{admonition} Eigenwerte und Eigenvektoren symmetrischer Matrizen
 :class: note
 Sei $\mathbf{A} \in \mathbb{R}^{n \times n}$ eine symmetrische Matrix
-($\mathbf{A}^T = \mathbf{A}$). Dann gilt:
+($\mathbf{A}^{\top} = \mathbf{A}$). Dann gilt:
 
 1. Alle Eigenwerte von $\mathbf{A}$ sind **reell**.
 2. Eigenvektoren zu verschiedenen Eigenwerten sind **orthogonal**:
@@ -161,9 +161,9 @@ können sie auf Länge Eins normieren. Die normierte Eigenvektormatrix
 \mathbf{Q} = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
 \end{equation*}
 
-ist orthogonal im Sinne von Abschnitt 5.1: Es gilt $\mathbf{Q}^{-1} = \mathbf{Q}^T$.
+ist orthogonal im Sinne von Abschnitt 5.1: Es gilt $\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$.
 Die Diagonalisierung nimmt damit die besonders einfache Form
-$\mathbf{D} = \mathbf{Q}^T\mathbf{A}\mathbf{Q}$ an, ohne dass eine
+$\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}$ an, ohne dass eine
 Matrixinverse explizit berechnet werden muss.
 
 ```{dropdown} Video "Matrix diagonalisieren" von MathePeter
@@ -192,12 +192,12 @@ Jede symmetrische Matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ ist
 diagonalisierbar. Die Transformationsmatrix $\mathbf{V}$ kann stets so gewählt
 werden, dass ihre Spalten paarweise orthonormal sind. In diesem Fall ist
 $\mathbf{V} = \mathbf{Q}$ eine orthogonale Matrix mit
-$\mathbf{Q}^{-1} = \mathbf{Q}^T$, und es gilt:
+$\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$, und es gilt:
 
 \begin{equation*}
-\mathbf{D} = \mathbf{Q}^T\mathbf{A}\mathbf{Q},
+\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q},
 \qquad
-\mathbf{A} = \mathbf{Q}\mathbf{D}\mathbf{Q}^T.
+\mathbf{A} = \mathbf{Q}\mathbf{D}\mathbf{Q}^{\top}.
 \end{equation*}
 ```
 
@@ -212,7 +212,7 @@ der Diagonalen abgelesen werden können.
 Symmetrische Matrizen haben zwei außergewöhnliche Eigenschaften: Alle
 Eigenwerte sind reell, und Eigenvektoren zu verschiedenen Eigenwerten stehen
 stets senkrecht aufeinander. Diese Symmetrieeigenschaft ist die Grundlage der
-Diagonalisierung: Durch die Transformation $\mathbf{D} = \mathbf{Q}^T\mathbf{A}\mathbf{Q}$
+Diagonalisierung: Durch die Transformation $\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}$
 mit der orthogonalen Eigenvektormatrix $\mathbf{Q}$ wird jede symmetrische
 Matrix auf Diagonalgestalt gebracht. Der Spektralsatz garantiert, dass das
 für alle physikalischen Tensoren im Maschinenbau immer gelingt. Im nächsten

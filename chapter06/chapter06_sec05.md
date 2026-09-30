@@ -139,7 +139,7 @@ Die Eigenwerte sind $\lambda_1 = 4$ und $\lambda_2 = 2$. Die zugehörigen
 \begin{equation*}
 \omega_1 = \sqrt{\lambda_1} = 2~\frac{\text{rad}}{\text{s}}
 \quad \text{und} \quad
-\omega_2 = \sqrt{\lambda_2} = \sqrt{2}~\frac{\text{rad}}{\text{s}} \approx 1{,}41~\frac{\text{rad}}{\text{s}}.
+\omega_2 = \sqrt{\lambda_2} = \sqrt{2}~\frac{\text{rad}}{\text{s}} \approx 1.41~\frac{\text{rad}}{\text{s}}.
 \end{equation*}
 
 Jetzt berechnen wir die Eigenvektoren. Für $\lambda_1 = 4$:

@@ -18,9 +18,9 @@ Anwendungsmöglichkeiten erläutert.
 Eine quadratische Matrix $\mathbf{Q}\in\mathbb{R}^{n\times n}$ heißt orthogonal,
 wenn sie die Bedingung erfüllt:
 
-$$\mathbf{Q}^{T}\cdot\mathbf{Q} = \mathbf{Q}\cdot\mathbf{Q}^{T} = \mathbf{E},$$
+$$\mathbf{Q}^{\top}\cdot\mathbf{Q} = \mathbf{Q}\cdot\mathbf{Q}^{\top} = \mathbf{E},$$
 
-wobei $\mathbf{Q}^{T}$ die Transponierte von $\mathbf{Q}$ ist. Mit $\mathbf{E}$
+wobei $\mathbf{Q}^{\top}$ die Transponierte von $\mathbf{Q}$ ist. Mit $\mathbf{E}$
 bezeichnen wir wie üblich die Einheitsmatrix.
 
 Eine orthogonale Matrix hat die Eigenschaft, dass ihre Zeilen- und
@@ -32,19 +32,19 @@ Ein Beispiel für eine orthogonale Matrix ist
 $$\mathbf{A} = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.$$
 
 Um zu überprüfen, ob $\mathbf{A}$ orthogonal ist, müssen wir die Definition
-anwenden und zeigen, dass $\mathbf{A}^{T}\cdot\mathbf{A}=\mathbf{E}$ gilt. Wir
+anwenden und zeigen, dass $\mathbf{A}^{\top}\cdot\mathbf{A}=\mathbf{E}$ gilt. Wir
 berechnen zunächst die transponierte Matrix:
 
-$$\mathbf{A}^T = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.$$
+$$\mathbf{A}^{\top} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.$$
 
-Dann multiplizieren wir $\mathbf{A}^{T}$ mit $\mathbf{A}$:
+Dann multiplizieren wir $\mathbf{A}^{\top}$ mit $\mathbf{A}$:
 
-$$\mathbf{A}^{T}\cdot\mathbf{A} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
+$$\mathbf{A}^{\top}\cdot\mathbf{A} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
 \cdot \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}.$$
 
 Das ergibt
 
-$$\mathbf{A}^T \cdot\mathbf{A} =
+$$\mathbf{A}^{\top} \cdot\mathbf{A} =
 \begin{pmatrix} (0 \cdot 0 + (-1) \cdot (-1)) & (0 \cdot 1 + (-1) \cdot 0) \\
 (1 \cdot 0 + 0 \cdot (-1)) & (1 \cdot 1 + 0 \cdot 0) \end{pmatrix}
 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.$$
@@ -57,12 +57,12 @@ $$\mathbf{R}(\varphi) =
 
 die für jeden Winkel $\varphi$ orthogonal ist. Wir bilden zuerst die Transponierte:
 
-$$\mathbf{R}^T(\varphi) =
+$$\mathbf{R}^{\top}(\varphi) =
 \begin{pmatrix} \cos(\varphi) & \sin(\varphi) \\ -\sin(\varphi) & \cos(\varphi) \end{pmatrix}.$$
 
 Das ergibt
 
-$$\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) =
+$$\mathbf{R}^{\top}(\varphi)\cdot \mathbf{R}(\varphi) =
 \begin{pmatrix} \cos^2(\varphi) + \sin^2(\varphi) & \cos(\varphi)(-\sin(\varphi))
 + \sin(\varphi) \cos(\varphi) \\ (-\sin(\varphi))\cos(\varphi) + \cos(\varphi)\sin(\varphi)
 & \sin^2(\varphi) + \cos^2(\varphi) \end{pmatrix}.$$
@@ -76,7 +76,7 @@ Die trigonometrischen Terme können weiter vereinfacht werden, denn es gelten:
 
 Somit erhalten wir erneut die $2\times 2$-Einheitsmatrix
 
-$$\mathbf{R}^T(\varphi)\cdot \mathbf{R}(\varphi) =
+$$\mathbf{R}^{\top}(\varphi)\cdot \mathbf{R}(\varphi) =
 \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}.$$
 
 ## Eigenschaften von orthogonalen Matrizen
@@ -108,7 +108,7 @@ eine Spiegelung hinweist.
 Jede orthogonale Matrix ist invertierbar, und ihre Inverse ist gleich ihrer
 Transponierten:
 
-   $$\mathbf{A}^{-1} = \mathbf{A}^{T}.$$
+   $$\mathbf{A}^{-1} = \mathbf{A}^{\top}.$$
 
 Diese Eigenschaft und auch die anderen werden in dem folgenden Video demonstriert.
 

@@ -1,218 +1,293 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
 # 3.3 Eigenschaften von Determinanten
 
-Die Determinante ist eine Eigenschaft von quadratischen Matrizen, aber sie
-selbst hat auch wiederum Eigenschaften und Besonderheiten, die wir hier
-notieren. Diese Eigenschaften helfen uns vor allem, die Berechnung von
-Determinanten zu vereinfachen.
+In Kapitel 3.2 haben wir gesehen, dass der Laplacesche Entwicklungssatz umso
+weniger Arbeit macht, je mehr Nullen eine Matrix enthält. In diesem Kapitel
+lernen wir, bei welchen Matrizen wir die Determinante sofort ablesen können und
+wie wir mit Zeilenumformungen gezielt Nullen erzeugen, ohne dass sich die
+Determinante unkontrolliert verändert. Auf genau diesem Weg berechnen auch
+Simulationsprogramme im Maschinenbau die Determinanten großer Matrizen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die in diesem Kapitel aufgelisteten Eigenschaften von
-  Determinanten und können die Rechenregeln anwenden.
+* [ ] Sie können die Determinante einer **Dreiecksmatrix** ohne Rechnung
+  angeben.
+* [ ] Sie wissen, wie sich die Determinante bei **elementaren
+  Zeilenumformungen** verändert.
+* [ ] Sie erkennen, dass die Determinante null ist, wenn sich eine Zeile aus
+  den anderen Zeilen kombinieren lässt.
+* [ ] Sie können die Determinante einer großen Matrix mit Zeilenumformungen
+  berechnen.
+* [ ] Sie kennen die **Produktregel** für Determinanten und typische Fehler im
+  Umgang mit Determinanten.
 ```
 
-## Determinante Null
+## Welche Determinanten können wir sofort ablesen?
 
-* Hat die Matrix eine Zeile oder eine Spalte, die komplett aus Nullen besteht,
-  dann ist die Determinante Null.
-  
-  Beispiel:
-  \begin{align*}
-  \mathbf{A} &= \begin{pmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 4 & 5 & 6 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{A}) &\overset{\text{Sarrus}}{=} 1\cdot 0\cdot 6 + 2\cdot 0 \cdot 4 + 3\cdot 0\cdot 5 -
-  \left(4\cdot 0\cdot 3 + 5\cdot 0\cdot 1 + 6\cdot 0\cdot 2\right)\\
-  & = 0\\
-  \end{align*}
+Wir betrachten die Matrix
 
-* Sind zwei Zeilen der Matrix gleich, ist die Determinante Null.
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{B} = \begin{pmatrix} 2 & 3 \\ 2 & 3 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{B}) = 2 \cdot 3 - 2 \cdot 3 = 0
-  \end{equation*}
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix}
+3 & 1 & 2 \\
+0 & 2 & 5 \\
+0 & 0 & -1
+\end{pmatrix}.
+\end{equation*}
 
-* Sind zwei Spalten der Matrix gleich, ist die Determinante Null.
-  
-  Beispiel:
-  \begin{align*}
-  \mathbf{C} &= \begin{pmatrix} 1 & 1 & 5 \\ 2 & 2 & 6 \\ 3 & 3 & 7 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{C}) &= 1\cdot 2\cdot 7 + 1\cdot 6\cdot 3 + 5\cdot 2\cdot 3 -
-  \left(3\cdot 2\cdot 5 + 3\cdot 6\cdot 1 + 7\cdot 2\cdot 1\right)\\
-  &= 14 + 18 + 30 -(30 + 18 + 14) = 0\\
-  \end{align*}
+Unterhalb der Hauptdiagonalen stehen nur Nullen, $\mathbf{A}$ ist also eine
+obere Dreiecksmatrix, wie wir sie in Kapitel 1.2 kennengelernt haben.
+*Müssen wir hier wirklich alle sechs Sarrus-Produkte ausrechnen?* Wir
+entwickeln nach der ersten Spalte. Dort ist nur der Eintrag $3$ ungleich null,
+also bleibt nur ein Summand übrig:
 
-* Gibt es in der Matrix eine Zeile, die ein Vielfaches einer anderen Zeile ist,
-  ist die Determinante Null.
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{D} = \begin{pmatrix} 1 & 2 \\ 3 & 6 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{D}) = 1 \cdot 6 - 3 \cdot 2 = 0
-  \end{equation*}
-  (Die zweite Zeile ist das Dreifache der ersten Zeile.)
+\begin{equation*}
+\det(\mathbf{A})
+= 3\cdot\det\begin{pmatrix} 2 & 5 \\ 0 & -1 \end{pmatrix}
+= 3\cdot\big(2\cdot(-1) - 0\cdot 5\big)
+= 3\cdot 2\cdot(-1) = -6.
+\end{equation*}
 
-* Gibt es in der Matrix eine Spalte, die ein Vielfaches einer anderen Spalte
-  ist, ist die Determinante Null.
-  
-  Beispiel:
-  \begin{align*}
-  \mathbf{E} &= \begin{pmatrix} 2 & 4 & 1 \\ 3 & 6 & 5 \\ 1 & 2 & 7 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{E}) &= 2\cdot 6\cdot 7 + 4\cdot 5\cdot 1+1\cdot 3\cdot 2 -
-  \left(1\cdot 6\cdot 1 + 2\cdot 5\cdot 2 + 7\cdot 3\cdot 4\right)\\
-  &= 84 + 20 + 6 - (6 + 20 + 84) = 0\\
-  \end{align*}
-  (Die zweite Spalte ist das Doppelte der ersten Spalte.)
+Die Determinante ist also einfach das Produkt der Einträge auf der
+Hauptdiagonalen. Zur Probe schauen wir auf die Regel von Sarrus. Jedes der
+sechs Produkte außer dem Produkt der Hauptdiagonalen enthält mindestens eine
+Null, und so bleibt auch dort nur $3\cdot 2\cdot(-1) = -6$ übrig. Das
+funktioniert bei jeder Größe. Entwickeln wir nach der ersten Spalte, bleibt
+eine kleinere Matrix übrig, unter deren Hauptdiagonale wieder nur Nullen stehen,
+und wir entwickeln erneut.
 
-## Determinante Dreiecks- oder Diagonalmatrizen
+```{admonition} Was ist ... die Determinante einer Dreiecksmatrix?
+:class: note
+Die Determinante einer oberen oder unteren Dreiecksmatrix $\mathbf{M}$ ist das
+Produkt der Einträge auf der Hauptdiagonalen:
 
-* Die Determinante der Einheitsmatrix ist Eins.
-  
-  Beispiel:
-  \begin{align*}
-  \mathbf{I} &= \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{I}) &= 1\cdot 1\cdot 1 + 0\cdot 0\cdot 0 + 0\cdot 0\cdot 0 -
-  0\cdot 1\cdot0 + 0\cdot 0\cdot 1 + 1\cdot 0\cdot 0)\\
-  &= 1.
-  \end{align*}
+\begin{equation*}
+\det(\mathbf{M}) = m_{11}\cdot m_{22}\cdot\ldots\cdot m_{nn}.
+\end{equation*}
 
-* Die Determinante einer Diagonalmatrix ist das Produkt der Elemente in der
-  Diagonalen.
-  
-  Beispiel:
-  \begin{align*}
-  \mathbf{F} &= \begin{pmatrix} 2 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 4 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{F}) &= 2 \cdot (-3) \cdot 4 + 0\cdot 0\cdot 0  + 0\cdot 0\cdot 0 -
-  \left(0\cdot (-3)\cdot 0 + 0\cdot 0\cdot 2 + 4\cdot 0\cdot 0\right)\\
-  &= 2\cdot (-3)\cdot 4 = -24.
-  \end{align*}
+Insbesondere gilt $\det(\mathbf{E}) = 1$.
+```
 
-* Die Determinante einer unteren oder oberen Dreiecksmatrix ist das Produkt der
-  Elemente in der Diagonalen.
-  
-  Beispiel (obere Dreiecksmatrix):
-  \begin{align*}
-  \mathbf{G} &= \begin{pmatrix} 3 & 1 & 2 \\ 0 & 2 & 5 \\ 0 & 0 & -1 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{G}) &= 3 \cdot 2 \cdot (-1) + 1\cdot 5\cdot 0 + 2\cdot 0\cdot 0 -
-  \left( 0\cdot 2\cdot 2 + 0\cdot 5\cdot 3 + (-1)\cdot 0\cdot 1\right)\\
-  &= 3\cdot 2 \cdot (-1) = -6.
-  \end{align*}
-  
-  Beispiel (untere Dreiecksmatrix):
-  \begin{align*}
-  \mathbf{H} &= \begin{pmatrix} 2 & 0 & 0 \\ 4 & 3 & 0 \\ 1 & 5 & -2 \end{pmatrix}\\
-  \Rightarrow \det(\mathbf{H}) &= 2 \cdot 3 \cdot (-2) + 0\cdot 0\cdot 1 + 0\cdot 4\cdot 5-
-  \left(1\cdot 3\cdot 0 + 5\cdot 0\cdot 2 + (-2)\cdot 4\cdot 0 \right)\\
-  &=2\cdot 3\cdot (-2) = -12.
-  \end{align*}
+Für $\mathbf{A}$ lesen wir damit $\det(\mathbf{A}) = 3\cdot 2\cdot(-1) = -6$
+direkt ab, ohne eine einzige Unterdeterminante zu berechnen. Bei einer unteren
+Dreiecksmatrix entwickeln wir statt nach der ersten Spalte nach der ersten Zeile
+und kommen zum selben Ergebnis. Mit einer ähnlichen Überlegung erkennen wir noch
+einen zweiten Fall sofort. Enthält eine Matrix eine Zeile, die nur aus Nullen
+besteht, entwickeln wir nach genau dieser Zeile. Jeder Summand enthält dann den
+Faktor $0$, und die Determinante ist null.
 
-## Rechenregeln
+## Wie verändern Zeilenumformungen die Determinante?
 
-Die folgenden Rechenregeln für Determinanten gelten für quadratische Matrizen,
-d.h. $\mathbf{A}\in\mathbb{R}^{n\times n}$ und $\mathbf{B}\in\mathbb{R}^{n\times
-n}$.
+Beim Gauß-Jordan-Algorithmus in Kapitel 2.2 haben wir drei elementare
+Zeilenumformungen benutzt. Wir haben zwei Zeilen vertauscht, eine Zeile mit
+einer Zahl multipliziert und ein Vielfaches einer Zeile zu einer anderen Zeile
+addiert. *Was passiert dabei mit der Determinante?* Wir probieren alle drei
+Umformungen an der Matrix
 
-* Die Determinante der transponierten Matrix ist gleich der Determinanten der
-  ursprünglichen Matrix. Es gilt also:
-  \begin{equation*} \det(\mathbf{A}^{T}) = \det(\mathbf{A}). \end{equation*}
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
-  \mathbf{A}^{T} = \begin{pmatrix} 1 & 3 \\ 2 & 4 \end{pmatrix}
-  \end{equation*}
-  \begin{equation*}
-  \det(\mathbf{A}) = 1 \cdot 4 - 3 \cdot 2 = -2, \quad
-  \det(\mathbf{A}^{T}) = 1 \cdot 4 - 2 \cdot 3 = -2
-  \end{equation*}
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+\end{equation*}
 
-* Die Determinante eines Produkts von quadratischen Matrizen ist gleich dem
-  Produkt der Determinanten der einzelnen Matrizen. Es gilt also:
-  \begin{equation*}
-  \det(\mathbf{A}\cdot\mathbf{B}) = \det(\mathbf{A})\cdot\det(\mathbf{B}).
-  \end{equation*}
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}, \quad
-  \mathbf{B} = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}
-  \end{equation*}
-  \begin{equation*}
-  \det(\mathbf{A}) = 6, \quad \det(\mathbf{B}) = 1
-  \end{equation*}
-  \begin{equation*}
-  \mathbf{A}\cdot\mathbf{B} = \begin{pmatrix} 2 & 4 \\ 0 & 3 \end{pmatrix}
-  \quad \Rightarrow \quad \det(\mathbf{A}\cdot\mathbf{B}) = 6 = 6 \cdot 1
-  \end{equation*}
+aus. Ihre Determinante haben wir in Kapitel 3.1 berechnet, sie ist
+$\det(\mathbf{B}) = 2\cdot 5 - 1\cdot 3 = 7$. Die drei Umformungen liefern:
 
-* Multipliziert man *eine* Zeile (oder *eine* Spalte) der Matrix mit einem Skalar,
-  so wird auch die Determinante mit diesem Skalar multipliziert. Multipliziert
-  man die gesamte Matrix mit diesem Skalar $s$, dann erhalten wir
-  \begin{equation*} \det(s\cdot\mathbf{A}) = s^{n}\cdot\det(\mathbf{A}), \quad
-  s\in\mathbb{R}. \end{equation*}
-  
-  Beispiel (eine Zeile multiplizieren, hier die erste):
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
-  \mathbf{A}' = \begin{pmatrix} 2 & 4 \\ 3 & 4 \end{pmatrix}
-  \end{equation*}
-  \begin{align*}
-  &\det(\mathbf{A}) = 1\cdot 4 - 3\cdot 2 = -2, \\
-  &\det(\mathbf{A}') = 2 \cdot 4 - 4 \cdot 3 = -4 = 2 \cdot (-2) = 2\cdot\det(\mathbf{A})\\
-  \end{align*}
-  
-  Beispiel (gesamte Matrix multiplizieren):
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
-  3\cdot\mathbf{A} = \begin{pmatrix} 3 & 6 \\ 9 & 12 \end{pmatrix}
-  \end{equation*}
-  \begin{equation*}
-  \det(3\cdot\mathbf{A}) = 3 \cdot 12 - 6 \cdot 9 = -18 = 3^{2} \cdot (-2) = 9 \cdot \det(\mathbf{A})
-  \end{equation*}
+\begin{align*}
+Z_1 \leftrightarrow Z_2&: &
+\det\begin{pmatrix} 1 & 5 \\ 2 & 3 \end{pmatrix} &= 1\cdot 3 - 2\cdot 5 = -7, \\
+Z_1 \to 3\cdot Z_1&: &
+\det\begin{pmatrix} 6 & 9 \\ 1 & 5 \end{pmatrix} &= 6\cdot 5 - 1\cdot 9 = 21, \\
+Z_1 \to Z_1 - 2\cdot Z_2&: &
+\det\begin{pmatrix} 0 & -7 \\ 1 & 5 \end{pmatrix} &= 0\cdot 5 - 1\cdot(-7) = 7.
+\end{align*}
 
-* Vertauscht man zwei Zeilen (oder zwei Spalten), dann wechselt das Vorzeichen
-  der Determinante.
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
-  \mathbf{A}' = \begin{pmatrix} 3 & 4 \\ 1 & 2 \end{pmatrix}
-  \end{equation*}
-  \begin{equation*}
-  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 3 \cdot 2 - 4 \cdot 1 = 2 = -\det(\mathbf{A})
-  \end{equation*}
+Das Vertauschen der beiden Zeilen hat das Vorzeichen umgedreht. Das
+Multiplizieren der ersten Zeile mit $3$ hat die Determinante verdreifacht. Die
+dritte Umformung hat eine Null erzeugt, die Determinante aber nicht verändert.
+Genau diese dritte Umformung ist also das Werkzeug, mit dem wir Nullen erzeugen
+können, ohne etwas nachrechnen zu müssen.
 
-* Addiert man das Vielfache einer Zeile zu einer anderen Zeile, dann ändert sich
-  die Determinante nicht. Das gilt sinngemäß auch für Spalten. Das kann man
-  ausnutzen, um die Determinante einer Matrix beispielsweise mit dem
-  Gauß-Algorithmus zu berechnen oder viele Nullen in der Matrix zu erzeugen.
-  
-  Beispiel:
-  \begin{equation*}
-  \mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
-  \mathbf{A}' = \begin{pmatrix} 1 & 2 \\ 0 & -2 \end{pmatrix}
-  \end{equation*}
-  (Die zweite Zeile wurde ersetzt durch: Zeile 2 - 3·Zeile 1)
-  \begin{equation*}
-  \det(\mathbf{A}) = -2, \quad \det(\mathbf{A}') = 1 \cdot (-2) - 2 \cdot 0 = -2
-  \end{equation*}
+```{admonition} Wie verändern Zeilenumformungen die Determinante?
+:class: note
+Für eine quadratische Matrix $\mathbf{M}$ gilt:
 
-Diese und weitere Rechenregeln werden auch in dem folgenden Video erläutert.
+* Vertauschen wir zwei Zeilen, ändert die Determinante ihr Vorzeichen.
+* Multiplizieren wir eine Zeile mit einer Zahl $s$, wird auch die Determinante
+  mit $s$ multipliziert.
+* Addieren wir ein Vielfaches einer Zeile zu einer anderen Zeile, bleibt die
+  Determinante gleich.
+
+Wegen $\det(\mathbf{M}^{\top}) = \det(\mathbf{M})$ gelten dieselben Regeln auch
+für Spalten.
+```
+
+Die Aussage über die Transponierte prüfen wir an $\mathbf{B}$ nach:
+
+\begin{equation*}
+\det(\mathbf{B}^{\top})
+= \det\begin{pmatrix} 2 & 1 \\ 3 & 5 \end{pmatrix}
+= 2\cdot 5 - 3\cdot 1 = 7 = \det(\mathbf{B}).
+\end{equation*}
+
+Jetzt verstehen wir auch, warum die Matrix $\mathbf{C}$ aus Kapitel 3.1 die
+Determinante null hat. Ihre zweite Zeile ist doppelt so groß wie die erste.
+Mit $Z_2 \to Z_2 - 2\cdot Z_1$ erhalten wir, ohne die Determinante zu
+verändern,
+
+\begin{equation*}
+\det(\mathbf{C})
+= \det\begin{pmatrix} 2 & 3 \\ 4 & 6 \end{pmatrix}
+= \det\begin{pmatrix} 2 & 3 \\ 0 & 0 \end{pmatrix}
+= 0.
+\end{equation*}
+
+Es entsteht eine Nullzeile, und die Determinante ist null. Dasselbe passiert
+immer, wenn sich eine Zeile aus Vielfachen der anderen Zeilen zusammensetzen
+lässt, zum Beispiel wenn zwei Zeilen gleich sind oder die dritte Zeile die
+Summe der ersten beiden ist. Aus Mathematik 1 kennen wir dafür den Begriff
+linear abhängig. Sind die Zeilen einer quadratischen Matrix linear abhängig,
+ist ihre Determinante null. In Kapitel 3.4 sehen wir, dass auch die Umkehrung
+gilt.
+
+```{admonition} Gilt $\det(s\cdot\mathbf{M}) = s\cdot\det(\mathbf{M})$?
+:class: danger
+Nein. Bei $s\cdot\mathbf{M}$ wird nicht nur eine Zeile, sondern jede der $n$
+Zeilen mit $s$ multipliziert. Deshalb gilt
+$\det(s\cdot\mathbf{M}) = s^n\cdot\det(\mathbf{M})$. Für unsere
+$2\times 2$-Matrix $\mathbf{B}$ ist
+$\det(3\cdot\mathbf{B}) = 6\cdot 15 - 3\cdot 9 = 63 = 3^2\cdot 7$ und nicht
+$3\cdot 7 = 21$.
+```
 
 ```{dropdown} Video "Rechenregeln für Determinanten" von MathePeter
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jDerrYHsLcY?si=NQI8V8OeTT034bKN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
+## Wie berechnen wir große Determinanten geschickt?
+
+Wir greifen die $4\times 4$-Matrix aus Kapitel 3.2 wieder auf und nennen sie
+hier $\mathbf{D}$. Ihre Determinante haben wir dort mit dem Entwicklungssatz zu
+$-39$ berechnet. Diesmal erzeugen wir zuerst Nullen. Mit $Z_2 \to Z_2 - 2\cdot Z_1$,
+$Z_3 \to Z_3 - 3\cdot Z_1$ und $Z_4 \to Z_4 - Z_1$ räumen wir die erste Spalte
+unterhalb der $1$ leer. Die Determinante ändert sich dabei nicht:
+
+\begin{equation*}
+\det(\mathbf{D})
+= \det\begin{pmatrix}
+1 & 2 & 0 & 3 \\
+2 & 1 & 1 & 4 \\
+3 & 1 & 0 & 2 \\
+1 & 3 & 2 & 1
+\end{pmatrix}
+= \det\begin{pmatrix}
+1 & 2 & 0 & 3 \\
+0 & -3 & 1 & -2 \\
+0 & -5 & 0 & -7 \\
+0 & 1 & 2 & -2
+\end{pmatrix}.
+\end{equation*}
+
+In der zweiten Spalte hätten wir gern eine $1$ auf der Hauptdiagonalen, damit
+wir ohne Brüche weiterrechnen können. Deshalb vertauschen wir $Z_2$ und $Z_4$.
+Das kostet uns ein Minuszeichen. Danach räumen wir mit
+$Z_3 \to Z_3 + 5\cdot Z_2$ und $Z_4 \to Z_4 + 3\cdot Z_2$ die zweite Spalte
+unterhalb der Hauptdiagonalen leer:
+
+\begin{equation*}
+\det(\mathbf{D})
+= -\det\begin{pmatrix}
+1 & 2 & 0 & 3 \\
+0 & 1 & 2 & -2 \\
+0 & -5 & 0 & -7 \\
+0 & -3 & 1 & -2
+\end{pmatrix}
+= -\det\begin{pmatrix}
+1 & 2 & 0 & 3 \\
+0 & 1 & 2 & -2 \\
+0 & 0 & 10 & -17 \\
+0 & 0 & 7 & -8
+\end{pmatrix}.
+\end{equation*}
+
+Jetzt entwickeln wir zweimal nach der ersten Spalte, genau wie bei der
+Dreiecksmatrix $\mathbf{A}$. Die beiden Einsen auf der Hauptdiagonalen bleiben
+als Faktoren stehen, und übrig bleibt eine $2\times 2$-Determinante:
+
+\begin{equation*}
+\det(\mathbf{D})
+= -1\cdot 1\cdot\det\begin{pmatrix} 10 & -17 \\ 7 & -8 \end{pmatrix}
+= -\big(10\cdot(-8) - 7\cdot(-17)\big)
+= -(-80 + 119) = -39.
+\end{equation*}
+
+Das ist dasselbe Ergebnis wie in Kapitel 3.2, diesmal aber ohne eine einzige
+$3\times 3$-Determinante.
+
+Zum Schluss betrachten wir noch Produkte von Matrizen. Für die Matrix
+$\mathbf{B}$ gilt
+
+\begin{equation*}
+\mathbf{B}\cdot\mathbf{B}
+= \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+\begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+= \begin{pmatrix} 7 & 21 \\ 7 & 28 \end{pmatrix},
+\qquad
+\det(\mathbf{B}\cdot\mathbf{B}) = 7\cdot 28 - 7\cdot 21 = 49.
+\end{equation*}
+
+Das ist genau $7\cdot 7 = \det(\mathbf{B})\cdot\det(\mathbf{B})$. Auch das ist
+kein Zufall.
+
+```{admonition} Was besagt die Produktregel für Determinanten?
+:class: note
+Für zwei quadratische Matrizen $\mathbf{M}$ und $\mathbf{N}$ derselben Größe
+gilt die **Produktregel**
+
+\begin{equation*}
+\det(\mathbf{M}\cdot\mathbf{N}) = \det(\mathbf{M})\cdot\det(\mathbf{N}).
+\end{equation*}
+
+Daraus folgt $\det(\mathbf{M}^k) = \big(\det(\mathbf{M})\big)^k$ für jede
+natürliche Zahl $k$. Ist $\mathbf{M}$ invertierbar, gilt außerdem
+$\det(\mathbf{M}^{-1}) = \frac{1}{\det(\mathbf{M})}$.
+```
+
+Die Folgerung für die Inverse sehen wir so: Aus
+$\mathbf{B}\cdot\mathbf{B}^{-1} = \mathbf{E}$ folgt mit der Produktregel
+$\det(\mathbf{B})\cdot\det(\mathbf{B}^{-1}) = \det(\mathbf{E}) = 1$. Für unser
+Beispiel prüfen wir das mit der Inversen aus Kapitel 3.1 nach:
+
+\begin{equation*}
+\det(\mathbf{B}^{-1})
+= \det\begin{pmatrix} \frac{5}{7} & -\frac{3}{7} \\ -\frac{1}{7} & \frac{2}{7} \end{pmatrix}
+= \frac{10}{49} - \frac{3}{49} = \frac{7}{49} = \frac{1}{7}.
+\end{equation*}
+
+```{admonition} Ist die Determinante einer Summe die Summe der Determinanten?
+:class: danger
+Nein, für Summen gibt es keine solche Regel. Für die beiden Matrizen
+$\mathbf{B}$ und $\mathbf{C}$ ist
+$\det(\mathbf{B}) + \det(\mathbf{C}) = 7 + 0 = 7$, aber
+
+\begin{equation*}
+\det(\mathbf{B}+\mathbf{C})
+= \det\begin{pmatrix} 4 & 6 \\ 5 & 11 \end{pmatrix}
+= 4\cdot 11 - 5\cdot 6 = 14.
+\end{equation*}
+```
+
 ## Zusammenfassung und Ausblick
 
-Die Rechenregeln für Determinanten vereinfachen die Berechnung erheblich:
-Nullzeilen, gleiche oder proportionale Zeilen lassen die Determinante sofort
-auf Null fallen, ohne dass man rechnen muss; Dreiecks- und Diagonalmatrizen
-erlauben eine direkte Ablesung als Produkt der Diagonalelemente. Diese
-Eigenschaften deuten bereits an, dass die Determinante mehr ist als ein reines
-Rechenwerkzeug. Im nächsten Kapitel sehen wir, was eine Determinante von Null
-über die Struktur einer Matrix aussagt: Sie entscheidet über die lineare
-Abhängigkeit von Vektoren, über die eindeutige Lösbarkeit linearer
-Gleichungssysteme und steht im Kern des Spatprodukts sowie des Vektorprodukts.
+Bei Dreiecksmatrizen ist die Determinante das Produkt der Einträge auf der
+Hauptdiagonalen. Zeilenumformungen verändern die Determinante auf
+vorhersagbare Weise, und das Addieren von Vielfachen einer Zeile lässt sie
+sogar unverändert. Damit bringen wir auch große Matrizen mit wenig Aufwand in
+eine Form, an der wir die Determinante ablesen können. In Kapitel 3.4 nutzen
+wir die Determinante, um zu entscheiden, ob Vektoren linear abhängig sind und
+ob ein Gleichungssystem eindeutig lösbar ist. Mit der Produktregel werden wir
+außerdem in Kapitel 5 verstehen, warum orthogonale Matrizen nur die
+Determinante $1$ oder $-1$ haben können.

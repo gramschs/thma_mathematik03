@@ -139,7 +139,7 @@ Die spezielle Lösung des AWP lautet:
 
 \begin{equation*}
 v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49{,}05\,\bigl(1 - e^{-0{,}2\,t}\bigr)~\text{m\,s}^{-1}.
+     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
 \end{equation*}
 
 Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen

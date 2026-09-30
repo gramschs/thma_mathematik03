@@ -1,41 +1,35 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
 # 3.4 Anwendungen von Determinanten
 
-Die Determinante ist nicht nur eine rechnerische Eigenschaft quadratischer
-Matrizen, sondern liefert auch wichtige Informationen über die Struktur von
-Gleichungssystemen und Vektoren. In diesem Kapitel nutzen wir die Determinante,
-um lineare Abhängigkeit zu untersuchen, die Lösbarkeit linearer
-Gleichungssysteme zu beurteilen und den Zusammenhang mit dem Spatprodukt und
-dem Vektorprodukt herzustellen.
+In den Kapiteln 3.1 bis 3.3 haben wir gelernt, Determinanten geschickt zu
+berechnen. Jetzt nutzen wir sie, um zu entscheiden, ob drei Vektoren einen
+Körper aufspannen und ob ein Gleichungssystem eindeutig lösbar ist. Außerdem
+sehen wir, dass sich Vektorprodukt und Spatprodukt als Determinanten schreiben
+lassen. Im Maschinenbau brauchen wir diese Werkzeuge zum Beispiel beim
+Berechnen von Drehmomenten oder bei der Prüfung, ob die Elemente eines
+FEM-Netzes ein echtes Volumen haben.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können mit Hilfe der **Determinante** entscheiden, ob drei Vektoren
-  $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ **linear abhängig** sind
-  beziehungsweise in einer gemeinsamen Ebene liegen:
-  \begin{equation*}
-  \vec{a}, \vec{b}, \vec{c} \text{ linear abhängig}
-  \quad \Longleftrightarrow \quad
-  \det\!\left(\vec{a}\ \vec{b}\ \vec{c}\right)^T = 0.
-  \end{equation*}
-* [ ] Sie können mit Hilfe der Determinante der Koeffizientenmatrix $\mathbf{A}$
-  vorhersagen, ob ein **lineares Gleichungssystem** $\mathbf{A}\vec{x} =
-  \vec{b}$ eine **eindeutige Lösung** besitzt:
-  \begin{equation*}
-  \mathbf{A}\vec{x} = \vec{b} \text{ hat eine eindeutige Lösung}
-  \quad \Longleftrightarrow \quad \det(\mathbf{A}) \neq 0.
-  \end{equation*}
-* [ ] Sie kennen den Zusammenhang zwischen der Determinante und dem
-  **Spatprodukt** sowie zwischen der Determinante und dem **Vektorprodukt**.
+* [ ] Sie können mit der Determinante entscheiden, ob drei Vektoren im
+  $\mathbb{R}^3$ **linear abhängig** sind.
+* [ ] Sie können mit der Determinante vorhersagen, ob ein lineares
+  Gleichungssystem eine **eindeutige Lösung** besitzt.
+* [ ] Sie können das **Vektorprodukt** zweier Vektoren mit einer Determinante
+  berechnen.
+* [ ] Sie kennen den Zusammenhang zwischen dem **Spatprodukt** und der
+  Determinante.
 ```
 
-## Volumen-Elemente
+## Wann spannen drei Vektoren einen Körper auf?
 
-In der Finite-Elemente-Methode (FEM) wird ein Bauteil in viele
-kleine Volumenelemente zerlegt. Jedes dieser Elemente wird durch drei
-Kantenvektoren beschrieben, die von einem gemeinsamen Eckpunkt ausgehen. Wir
-betrachten ein konkretes Beispiel mit den drei Kantenvektoren
+Wir betrachten die drei Vektoren
 
 \begin{equation*}
 \vec{a} = \begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix}, \quad
@@ -43,258 +37,210 @@ betrachten ein konkretes Beispiel mit den drei Kantenvektoren
 \vec{c} = \begin{pmatrix} 1 \\ 1 \\ 4 \end{pmatrix}.
 \end{equation*}
 
+Gehen sie alle vom selben Punkt aus, spannen sie einen schiefen Körper auf, der
+**Spat** oder **Parallelepiped** heißt. Er wird von sechs Parallelogrammen
+begrenzt, von denen je zwei gegenüberliegende parallel und deckungsgleich sind.
+
 ```{figure} pics/fig01_parallelepiped.svg
 ---
 class: responsive-figure-50
 name: fig01_parallelepiped.svg
 ---
-Das von den Kantenvektoren $\vec{a}$, $\vec{b}$ und $\vec{c}$ aufgespannte
-Parallelepiped als finites Volumenelement. Die gestrichelten Kanten liegen dem
-Betrachter abgewandt.
+Darstellung des von den Vektoren $\vec{a}$, $\vec{b}$ und $\vec{c}$
+aufgespannten Spats. Die gestrichelten Kanten liegen dem Betrachter abgewandt.
 (Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
 
-Diese drei Vektoren spannen ein schiefes **Parallelepiped** auf, also einen
-räumlichen Körper, dessen sechs Seiten aus je zwei parallelen Parallelogrammen
-bestehen. In der FEM entspricht ein solches Volumenelement etwa einem
-hexaedrischen Element. Die Frage, ob die drei Kantenvektoren überhaupt einen
-echten dreidimensionalen Körper aufspannen oder zufällig in einer gemeinsamen
-Ebene liegen, werden wir mit der Determinante beantworten. Dieses Beispiel
-begleitet uns durch das gesamte Kapitel.
-
-## Determinante und lineare Abhängigkeit
-
-Drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ können entweder einen
-dreidimensionalen Körper aufspannen oder sie liegen sämtlich in einer
-gemeinsamen Ebene. Im letzteren Fall sagen wir, die Vektoren sind **linear
-abhängig**. Eine präzise Definition der linearen Abhängigkeit haben wir in
-Mathematik 1 kennengelernt. Für drei Vektoren im $\mathbb{R}^3$ gibt uns die
-Determinante eine einfache Entscheidungsregel: Wir schreiben die drei Vektoren
-als Zeilen (oder Spalten) in eine $3\times 3$-Matrix und berechnen ihre
-Determinante.
-
-```{admonition} Wann sind drei Vektoren linear abhängig?
-:class: note
-Drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$ sind genau dann
-**linear abhängig**, wenn
+*Spannen drei Vektoren immer einen Körper auf?* Nein. Ersetzen wir $\vec{c}$
+durch
 
 \begin{equation*}
-\det\begin{pmatrix}
-a_1 & a_2 & a_3 \\
-b_1 & b_2 & b_3 \\
-c_1 & c_2 & c_3
-\end{pmatrix} = 0.
+\vec{d} = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}
+= \frac{1}{2}\,\vec{a} + \frac{1}{3}\,\vec{b},
 \end{equation*}
 
-Ist die Determinante ungleich Null, sind die drei Vektoren **linear unabhängig**
-und spannen den gesamten $\mathbb{R}^3$ auf.
+dann liegen alle drei Vektoren in der $xy$-Ebene, und der Spat ist flach
+gedrückt. Der Vektor $\vec{d}$ lässt sich aus $\vec{a}$ und $\vec{b}$
+kombinieren, die drei Vektoren sind also linear abhängig. Wir schreiben beide
+Varianten als Spalten in eine Matrix:
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 2 & 0 & 1 \\ 0 & 3 & 1 \\ 0 & 0 & 4 \end{pmatrix},
+\qquad
+\mathbf{B} = \begin{pmatrix} 2 & 0 & 1 \\ 0 & 3 & 1 \\ 0 & 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Beide Matrizen sind obere Dreiecksmatrizen. Nach Kapitel 3.3 ist
+$\det(\mathbf{A}) = 2\cdot 3\cdot 4 = 24$ und $\det(\mathbf{B}) = 2\cdot 3\cdot 0
+= 0$. Die flache Variante hat also die Determinante null.
+
+Das ist kein Zufall. Mit Zeilenvertauschungen und dem Addieren von Vielfachen
+einer Zeile zu einer anderen (Kapitel 3.3) bringen wir jede quadratische Matrix
+in eine obere Dreiecksmatrix. Dabei ändert die Determinante höchstens ihr
+Vorzeichen. Steht auf der Hauptdiagonalen eine
+Null, ist die Determinante null, und beim weiteren Umformen entsteht eine
+Nullzeile wie bei $\mathbf{B}$. Andernfalls können wir jedes Gleichungssystem
+durch Rückwärtseinsetzen eindeutig lösen.
+
+```{admonition} Was verrät die Determinante über eine quadratische Matrix?
+:class: note
+Für eine quadratische Matrix $\mathbf{M}$ sind die folgenden Aussagen
+gleichwertig:
+
+* $\det(\mathbf{M}) \neq 0$.
+* Die Spalten von $\mathbf{M}$ sind linear unabhängig. Wegen
+  $\det(\mathbf{M}^{\top}) = \det(\mathbf{M})$ gilt dasselbe für die Zeilen.
+* $\mathbf{M}$ ist invertierbar.
+* Das Gleichungssystem $\mathbf{M}\vec{x} = \vec{r}$ hat für jede rechte Seite
+  $\vec{r}$ genau eine Lösung.
+
+Ist dagegen $\det(\mathbf{M}) = 0$, hat $\mathbf{M}\vec{x} = \vec{r}$ entweder
+keine oder unendlich viele Lösungen.
 ```
 
-Wir überprüfen dies für unsere Kantenvektoren. Die Matrix aus den drei
-Zeilenvektoren lautet
+Wir wenden das auf die rechte Seite $\vec{r} = (5, 7, 4)^{\top}$ an. Wegen
+$\det(\mathbf{A}) = 24 \neq 0$ hat $\mathbf{A}\vec{x} = \vec{r}$ genau eine
+Lösung. Wir finden sie durch Rückwärtseinsetzen. Aus der dritten Zeile
+$4x_3 = 4$ folgt $x_3 = 1$, aus der zweiten Zeile $3x_2 + 1 = 7$ folgt
+$x_2 = 2$, und aus der ersten Zeile $2x_1 + 1 = 5$ folgt $x_1 = 2$. Zur Probe
+setzen wir die Lösung ein:
 
 \begin{equation*}
-\mathbf{M} =
-\begin{pmatrix}
-2 & 0 & 0 \\
-0 & 3 & 0 \\
-1 & 1 & 4
-\end{pmatrix}.
+2\,\vec{a} + 2\,\vec{b} + 1\,\vec{c}
+= \begin{pmatrix} 4 \\ 0 \\ 0 \end{pmatrix} +
+\begin{pmatrix} 0 \\ 6 \\ 0 \end{pmatrix} +
+\begin{pmatrix} 1 \\ 1 \\ 4 \end{pmatrix}
+= \begin{pmatrix} 5 \\ 7 \\ 4 \end{pmatrix} = \vec{r}.
 \end{equation*}
 
-Da $\mathbf{M}$ eine untere Dreiecksmatrix ist, können wir die Determinante
-direkt als Produkt der Diagonalelemente ablesen:
+Bei $\mathbf{B}$ lautet die dritte Zeile dagegen $0 = 4$. Das Gleichungssystem
+$\mathbf{B}\vec{x} = \vec{r}$ hat keine Lösung. Geometrisch ist das klar: Mit
+drei Vektoren aus der $xy$-Ebene erreichen wir keinen Punkt mit der
+$z$-Koordinate $4$.
+
+## Was hat das Vektorprodukt mit Determinanten zu tun?
+
+Zur Erinnerung: Das Vektorprodukt zweier Vektoren im $\mathbb{R}^3$ ist wieder
+ein Vektor. Er steht senkrecht auf beiden Vektoren, und sein Betrag ist der
+Flächeninhalt des Parallelogramms, das die beiden Vektoren aufspannen. Für
+$\vec{a}$ und $\vec{b}$ erhalten wir mit der Komponentenformel, die in der Box
+am Ende dieses Abschnitts noch einmal allgemein steht,
 
 \begin{equation*}
-\det(\mathbf{M}) = 2 \cdot 3 \cdot 4 = 24 \neq 0.
-\end{equation*}
-
-Die drei Kantenvektoren sind also linear unabhängig und spannen tatsächlich
-einen dreidimensionalen Körper auf. Das Volumenelement ist nicht entartet. Ein
-entartetes Element, bei dem die Determinante Null wäre, würde in einer
-FEM-Simulation zu numerischen Problemen führen, weil das Element kein Volumen
-hat und Steifigkeitsmatrizen nicht mehr invertierbar wären.
-
-## Determinante und Lösbarkeit linearer Gleichungssysteme
-
-In Kapitel 2.4 haben wir lineare Gleichungssysteme der Form
-$\mathbf{A}\vec{x} = \vec{b}$ mit Hilfe der inversen Matrix gelöst. Dabei
-mussten wir voraussetzen, dass die Koeffizientenmatrix invertierbar ist. Bei
-$2\times 2$-Matrizen stand in der Formel für die Inverse der Ausdruck $a \cdot
-d - c \cdot b$ im Nenner, und das ist genau die Determinante. Dieser
-Zusammenhang ist kein Zufall.
-
-```{admonition} Determinante und eindeutige Lösbarkeit
-:class: note
-Ein lineares Gleichungssystem $\mathbf{A}\vec{x} = \vec{b}$ mit einer
-quadratischen Koeffizientenmatrix $\mathbf{A}$ besitzt genau dann eine
-**eindeutige Lösung**, wenn
-
-\begin{equation*}
-\det(\mathbf{A}) \neq 0.
-\end{equation*}
-
-Ist $\det(\mathbf{A}) = 0$, so hat das Gleichungssystem entweder keine Lösung
-oder unendlich viele Lösungen.
-```
-
-In unserem Beispiel betrachten wir die Gleichgewichtsbedingung eines finiten
-Elements. Jeder Knotenfreiheitsgrad des Elements gehorcht einer Gleichung der
-Form $\mathbf{A}\vec{x} = \vec{b}$, wobei $\mathbf{A}$ die lokale
-Steifigkeitsmatrix, $\vec{x}$ der Vektor der unbekannten Knotenverschiebungen
-und $\vec{b}$ der Vektor der äußeren Knotenlasten ist. Als vereinfachtes Modell
-nehmen wir an, dass die Steifigkeitsmatrix unseres Elements gerade durch die
-Matrix $\mathbf{M}$ von oben gegeben ist. Da wir $\det(\mathbf{M}) = 24 \neq 0$
-bereits berechnet haben, wissen wir sofort, dass das Gleichungssystem für jede
-rechte Seite $\vec{b}$ eine eindeutige Lösung besitzt. Das heißt, das Element
-reagiert auf jede Belastung mit einer eindeutig bestimmten Verschiebung.
-
-Zur Veranschaulichung lösen wir das Gleichungssystem
-
-\begin{equation*}
-\mathbf{M}\vec{x} =
-\begin{pmatrix}
-2 & 0 & 0 \\
-0 & 3 & 0 \\
-1 & 1 & 4
+\vec{a}\times\vec{b}
+= \begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix} \times
+\begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix}
+= \begin{pmatrix}
+0\cdot 0 - 0\cdot 3 \\
+0\cdot 0 - 2\cdot 0 \\
+2\cdot 3 - 0\cdot 0
 \end{pmatrix}
-\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} =
-\begin{pmatrix} 4 \\ 6 \\ 9 \end{pmatrix}.
+= \begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}.
 \end{equation*}
 
-Da $\mathbf{M}$ eine untere Dreiecksmatrix ist, können wir das Gleichungssystem
-durch einfaches Vorwärtseinsetzen lösen. Aus der ersten Gleichung folgt
-$x_1 = 2$, aus der zweiten $x_2 = 2$. Einsetzen in die dritte Gleichung liefert
-$1\cdot 2 + 1\cdot 2 + 4\cdot x_3 = 9$, also $x_3 = \frac{5}{4}$.
+Der Vektor zeigt in $z$-Richtung und steht damit senkrecht auf $\vec{a}$ und
+$\vec{b}$. Seine Länge $6$ ist der Flächeninhalt des Rechtecks mit den
+Seitenlängen $2$ und $3$. *Lässt sich die Komponentenformel leichter merken?*
+Wir schreiben die Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und $\vec{e}_3$ in
+die erste Zeile einer Matrix, darunter $\vec{a}$ und $\vec{b}$, und entwickeln
+wie in Kapitel 3.2 nach der ersten Zeile:
 
-## Spatprodukt
+\begin{align*}
+\det\begin{pmatrix} \vec{e}_1 & \vec{e}_2 & \vec{e}_3 \\ 2 & 0 & 0 \\ 0 & 3 & 0
+\end{pmatrix}
+&= \vec{e}_1\cdot\det\begin{pmatrix} 0 & 0 \\ 3 & 0 \end{pmatrix} -
+\vec{e}_2\cdot\det\begin{pmatrix} 2 & 0 \\ 0 & 0 \end{pmatrix} +
+\vec{e}_3\cdot\det\begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \\
+&= 0\cdot\vec{e}_1 - 0\cdot\vec{e}_2 + 6\cdot\vec{e}_3
+= \begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}.
+\end{align*}
 
-Das Volumen des Parallelepipeds, das von drei Vektoren $\vec{a}$, $\vec{b}$ und
-$\vec{c}$ aufgespannt wird, lässt sich direkt mit der Determinante berechnen. In
-der Vektorrechnung wird dieser Zusammenhang durch das **Spatprodukt** beschrieben.
+Wir erhalten dasselbe Ergebnis. Das gilt für beliebige Vektoren, denn die drei
+$2\times 2$-Unterdeterminanten sind mit ihren Vorzeichen genau die drei
+Komponenten der Komponentenformel.
 
-```{admonition} Was ist ... das Spatprodukt?
+```{admonition} Wie berechnen wir das Vektorprodukt mit einer Determinante?
 :class: note
-Das **Spatprodukt** der drei Vektoren $\vec{a}, \vec{b}, \vec{c} \in \mathbb{R}^3$
-ist definiert als
+Für zwei Vektoren $\vec{u}, \vec{v} \in \mathbb{R}^3$ gilt
 
 \begin{equation*}
-[\vec{a}, \vec{b}, \vec{c}] =
-\det\begin{pmatrix}
-a_1 & a_2 & a_3 \\
-b_1 & b_2 & b_3 \\
-c_1 & c_2 & c_3
+\vec{u} \times \vec{v}
+= \det\begin{pmatrix} \vec{e}_1 & \vec{e}_2 & \vec{e}_3 \\
+u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3 \end{pmatrix}
+= \begin{pmatrix}
+u_2 v_3 - u_3 v_2 \\
+u_3 v_1 - u_1 v_3 \\
+u_1 v_2 - u_2 v_1
 \end{pmatrix}.
 \end{equation*}
 
-Der Betrag des Spatprodukts gibt das **Volumen** des von den drei Vektoren
-aufgespannten Parallelepipeds an:
-
-\begin{equation*}
-V = \left| [\vec{a}, \vec{b}, \vec{c}] \right|.
-\end{equation*}
+Weil die erste Zeile Vektoren statt Zahlen enthält, ist das streng genommen
+keine Determinante, sondern eine Merkhilfe.
 ```
 
-Für unser Volumenelement berechnen wir das Volumen direkt aus der bereits
-bekannten Determinante:
+## Was hat das Spatprodukt mit Determinanten zu tun?
+
+Das Spatprodukt dreier Vektoren ist die Zahl $(\vec{a}\times\vec{b})\cdot\vec{c}$.
+Ihr Betrag ist das Volumen des Spats. Das sehen wir an unserem Beispiel. Das
+Volumen ist Grundfläche mal Höhe. Die Grundfläche ist das Parallelogramm aus
+$\vec{a}$ und $\vec{b}$ mit dem Flächeninhalt $|\vec{a}\times\vec{b}| = 6$. Die
+Höhe messen wir senkrecht zur Grundfläche, also in Richtung von
+$\vec{a}\times\vec{b}$ und nicht entlang von $\vec{c}$. Hier zeigt
+$\vec{a}\times\vec{b}$ in $z$-Richtung, die Höhe ist also die $z$-Koordinate von
+$\vec{c}$, nämlich $h = 4$. Das Skalarprodukt liefert genau dieses Produkt:
 
 \begin{equation*}
-V = \left| \det(\mathbf{M}) \right| = |24| = 24.
+(\vec{a}\times\vec{b})\cdot\vec{c}
+= \begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}\cdot
+\begin{pmatrix} 1 \\ 1 \\ 4 \end{pmatrix}
+= 6\cdot 4 = 24.
 \end{equation*}
 
-Das Parallelepiped, das von den drei Kantenvektoren $\vec{a}$, $\vec{b}$ und
-$\vec{c}$ aufgespannt wird, hat also das Volumen $24$. Dieses Ergebnis ist in
-der FEM von großer praktischer Bedeutung: Das Volumen eines Elements geht
-direkt in die Berechnung der Steifigkeitsmatrix ein. Elemente mit sehr kleinem
-Volumen (also einer Determinante nahe Null) gelten als numerisch problematisch
-und sollten bei der Vernetzung eines Bauteils vermieden werden.
+*Kommt uns die Zahl $24$ bekannt vor?* Sie ist genau $\det(\mathbf{A})$. Das ist
+kein Zufall. Wir entwickeln die Determinante der Matrix mit den Zeilen
+$\vec{a}$, $\vec{b}$ und $\vec{c}$ nach der dritten Zeile, wo die Vorzeichen
+$+$, $-$ und $+$ sind:
 
-## Vektorprodukt
+\begin{align*}
+\det\begin{pmatrix} a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3
+\end{pmatrix}
+&= c_1\,(a_2 b_3 - a_3 b_2) - c_2\,(a_1 b_3 - a_3 b_1) +
+c_3\,(a_1 b_2 - a_2 b_1) \\
+&= (\vec{a}\times\vec{b})\cdot\vec{c}.
+\end{align*}
 
-Das Spatprodukt verknüpft die Determinante mit dem Volumen eines
-Parallelepipeds. Für Flächen im Raum gibt es eine eng verwandte Operation, das
-**Vektorprodukt** (auch **Kreuzprodukt** genannt). Das Vektorprodukt zweier
-Vektoren liefert einen neuen Vektor, der senkrecht auf beiden ursprünglichen
-Vektoren steht, und sein Betrag gibt den Flächeninhalt des von den beiden
-Vektoren aufgespannten Parallelogramms an.
+Die drei Klammern sind mit ihren Vorzeichen genau die Komponenten von
+$\vec{a}\times\vec{b}$, und mit $c_1$, $c_2$ und $c_3$ multipliziert ergibt
+sich das Skalarprodukt. Die Matrix
+mit den Zeilen $\vec{a}$, $\vec{b}$, $\vec{c}$ ist die Transponierte von
+$\mathbf{A}$ und hat nach Kapitel 3.3 dieselbe Determinante.
 
-```{admonition} Was ist ... das Vektorprodukt?
+```{admonition} Wie berechnen wir das Spatprodukt mit einer Determinante?
 :class: note
-Das **Vektorprodukt** (Kreuzprodukt) zweier Vektoren
-$\vec{a}, \vec{b} \in \mathbb{R}^3$ ist definiert als
+Für drei Vektoren $\vec{u}, \vec{v}, \vec{w} \in \mathbb{R}^3$ gilt
 
 \begin{equation*}
-\vec{a} \times \vec{b} =
-\begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
-\times
-\begin{pmatrix} b_1 \\ b_2 \\ b_3 \end{pmatrix}
-=
-\begin{pmatrix}
-a_2 b_3 - a_3 b_2 \\
-a_3 b_1 - a_1 b_3 \\
-a_1 b_2 - a_2 b_1
+(\vec{u}\times\vec{v})\cdot\vec{w}
+= \det\begin{pmatrix} u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3 \\ w_1 & w_2 & w_3
 \end{pmatrix}.
 \end{equation*}
 
-Der Betrag $|\vec{a} \times \vec{b}|$ gibt den **Flächeninhalt** des von
-$\vec{a}$ und $\vec{b}$ aufgespannten Parallelogramms an. Der resultierende
-Vektor steht senkrecht auf der von $\vec{a}$ und $\vec{b}$ aufgespannten Ebene.
+Der Betrag ist das Volumen des von $\vec{u}$, $\vec{v}$ und $\vec{w}$
+aufgespannten Spats.
 ```
 
-Den Zusammenhang zur Determinante sehen wir, wenn wir die Komponentenformel des
-Vektorprodukts mit Hilfe der Entwicklung nach der ersten Zeile schreiben.
-Führen wir dazu einen formalen Hilfsvektor mit den Einheitsvektoren
-$\vec{e}_1$, $\vec{e}_2$, $\vec{e}_3$ ein, so ergibt sich
-
-\begin{equation*}
-\vec{a} \times \vec{b} =
-\det\begin{pmatrix}
-\vec{e}_1 & \vec{e}_2 & \vec{e}_3 \\
-a_1 & a_2 & a_3 \\
-b_1 & b_2 & b_3
-\end{pmatrix}.
-\end{equation*}
-
-Diese Schreibweise ist eine praktische Merkhilfe, kein eigenständiger
-Determinantenausdruck, da die erste Zeile Vektoren und keine Skalare enthält.
-Das Vektorprodukt hat unmittelbare Bedeutung im Maschinenbau: In der
-Kontinuumsmechanik und der FEM wird die Normale auf einer Elementfläche durch
-das Kreuzprodukt zweier Kantenvektoren berechnet, um Flächenlasten korrekt in
-Knotenlasten umzurechnen.
-
-Als Beispiel berechnen wir das Vektorprodukt der ersten beiden Kantenvektoren
-unseres Volumenelements:
-
-\begin{equation*}
-\vec{a} \times \vec{b} =
-\begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix}
-\times
-\begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix} =
-\begin{pmatrix}
-0 \cdot 0 - 0 \cdot 3 \\
-0 \cdot 0 - 2 \cdot 0 \\
-2 \cdot 3 - 0 \cdot 0
-\end{pmatrix} =
-\begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}.
-\end{equation*}
-
-Das Ergebnis zeigt: Der Normalenvektor der von $\vec{a}$ und $\vec{b}$
-aufgespannten Grundfläche zeigt in $z$-Richtung, was geometrisch einleuchtet,
-da $\vec{a}$ und $\vec{b}$ in der $xy$-Ebene liegen. Der Betrag
-$|\vec{a}\times\vec{b}| = 6$ gibt den Flächeninhalt der Grundfläche an.
-Schließlich können wir das Volumen des Parallelepipeds auch als
-$V = |\vec{a}\times\vec{b}| \cdot h$ interpretieren, wobei $h$ die Höhe in
-Richtung des dritten Kantenvektors $\vec{c}$ ist.
+Für den flachen Spat aus dem ersten Abschnitt ist
+$(\vec{a}\times\vec{b})\cdot\vec{d} = 6\cdot 0 = 0$, weil
+$\vec{d}$ in der Grundfläche liegt und die Höhe null ist. Das passt zu
+$\det(\mathbf{B}) = 0$. Ein Volumen von null bedeutet also dasselbe wie lineare
+Abhängigkeit.
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir die Determinante über das reine Rechenwerkzeug
-hinaus als strukturelles Hilfsmittel kennengelernt. Sie entscheidet, ob
-Vektoren linear abhängig sind, ob ein Gleichungssystem eine eindeutige Lösung
-besitzt und sie steht im Kern des Spatprodukts sowie des Vektorprodukts.
-Besonders im Maschinenbau, etwa bei der Qualitätsprüfung von FEM-Netzen oder
-bei der Berechnung von Flächennormalen in der Strukturmechanik, sind diese
-Zusammenhänge unverzichtbar. Im nächsten Kapitel vertiefen wir den Begriff der
-linearen Abhängigkeit und führen die Konzepte Rang, Kern und Bild einer Matrix
-ein, die die Lösbarkeit linearer Gleichungssysteme noch allgemeiner beschreiben
-und in der Regelungstechnik sowie der Robotik eine zentrale Rolle spielen.
+Die Determinante entscheidet, ob Vektoren linear abhängig sind, ob eine Matrix
+invertierbar ist und ob ein Gleichungssystem eindeutig lösbar ist. Vektorprodukt
+und Spatprodukt lassen sich beide als Determinante schreiben, und das
+Spatprodukt misst das Volumen eines Spats. In Kapitel 4 betrachten wir Matrizen
+als Abbildungen, die Vektoren strecken, drehen und spiegeln. Dort sehen wir,
+dass der Betrag der Determinante angibt, um welchen Faktor eine solche Abbildung
+Flächen und Volumina verändert.

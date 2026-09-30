@@ -160,7 +160,7 @@ Kapitel 2.2 nicht invertierbar, eine solche Matrix heißt auch **singulär**. F�
 die rechte Seite $(1, 2)^{\top}$ ist die zweite Gleichung $2 x_1 + 2 x_2 = 2$
 nur das Doppelte der ersten Gleichung $x_1 + x_2 = 1$, und jedes Paar mit
 $x_1 + x_2 = 1$ ist eine Lösung. Für die rechte Seite $(1, 3)^{\top}$ verlangt die
-zweite Gleichung dagegen $x_1 + x_2 = 1{,}5$, und es gibt keine Lösung.
+zweite Gleichung dagegen $x_1 + x_2 = 1.5$, und es gibt keine Lösung.
 
 ```{admonition} Hat ein Gleichungssystem mit singulärer Matrix keine Lösung?
 :class: danger

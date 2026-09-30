@@ -44,7 +44,7 @@ $45°$ zur $x$-Achse. In Koordinaten ausgedrückt:
 \begin{equation*}
 \vec{p}' = \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} =
 \begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{5}{\sqrt{2}} \end{pmatrix} \approx
-\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
+\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
 \end{equation*}
 
 Die geometrische Überlegung funktioniert, solange wir wissen, in welchem Winkel
@@ -97,7 +97,7 @@ und $\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}$ ergibt sich:
 \begin{pmatrix} \cos 45° & -\sin 45° \\ \sin 45° & \cos 45° \end{pmatrix}
 \begin{pmatrix} 5 \\ 0 \end{pmatrix} =
 \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} \approx
-\begin{pmatrix} 3{,}54 \\ 3{,}54 \end{pmatrix}~\text{cm}.
+\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
 \end{equation*}
 
 Das stimmt mit unserem geometrischen Ergebnis von oben überein.
