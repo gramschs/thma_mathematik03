@@ -1,267 +1,417 @@
-# 4.1 Lineare Abbildungen 2D und 3D
+---
+authors:
+  - name: Simone Gramsch
+---
 
-Matrizen beschreiben geometrische Transformationen. In diesem Kapitel lernen wir,
-wie eine Matrix einen Vektor in einen neuen Vektor umwandelt, zunächst in der Ebene
-und dann im Raum. An konkreten Beispielen aus dem Maschinenbau sehen wir, warum
-dieses Konzept in der Ingenieurpraxis unverzichtbar ist.
+# 4.1 Lineare Abbildungen in 2D und 3D
+
+In Kapitel 2.4 haben wir Gleichungssysteme in der Form
+$\mathbf{A}\vec{x} = \vec{b}$ geschrieben und den Vektor $\vec{x}$ gesucht.
+Jetzt drehen wir die Blickrichtung um: Wir geben einen Vektor vor,
+multiplizieren ihn mit einer Matrix und fragen, wo der neue Vektor liegt. So
+wird jede Matrix zu einer Vorschrift, die jeden Punkt der Ebene oder des Raums
+auf einen neuen Punkt abbildet. Im Maschinenbau stecken solche Abbildungen
+zum Beispiel hinter dem Drehen, Spiegeln und Skalieren von Bauteilen im CAD-Programm
+oder hinter der Darstellung verformter Bauteile in einer FEM-Simulation.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie verstehen, dass eine Matrix eine **lineare Abbildung** beschreibt, die
-  einen Vektor $\vec{v}$ auf einen neuen Vektor $\vec{w}$ abbildet, und kennen die
-  **Matrix-Vektor-Schreibweise**:
-  \begin{equation*}
-  F_{\mathbf{A}}(\vec{v}) = \mathbf{A} \cdot \vec{v} = \vec{w}.
-  \end{equation*}
-* [ ] Sie können die Wirkung einer $2\times 2$-Matrix geometrisch interpretieren,
-  insbesondere für **gleichmäßige Streckung**, **Spiegelung** und **Scherung**.
-* [ ] Sie können die Wirkung einer $3\times 3$-Matrix geometrisch interpretieren,
-  insbesondere für **Streckung im Raum**, **Projektion auf eine Koordinatenebene**
-  und **Spiegelung an einer Koordinatenebene**.
-* [ ] Sie können lineare Abbildungen zwischen Räumen verschiedener Dimension
-  beschreiben, also mit $m\times n$-Matrizen mit $m \neq n$.
-* [ ] Sie kennen den Zusammenhang zwischen der **Determinante** einer
-  Abbildungsmatrix und der Änderung von **Flächeninhalt** bzw. **Volumen**.
+* [ ] Sie können eine Matrix als **lineare Abbildung**
+  $F_{\mathbf{A}}(\vec{v}) = \mathbf{A}\vec{v}$ auffassen und Bildvektoren
+  berechnen.
+* [ ] Sie wissen, dass die Spalten einer Matrix die Bilder der
+  **Einheitsvektoren** sind, und können damit zu einer geometrischen
+  Beschreibung die passende Matrix aufstellen.
+* [ ] Sie können **Streckung**, **Spiegelung**, **Scherung**, **Drehung**
+  und **Projektion** in der Ebene und im Raum an ihrer Matrix erkennen.
+* [ ] Sie können mit der Determinante angeben, wie eine Abbildung
+  Flächeninhalt oder Volumen und die **Orientierung** verändert.
+* [ ] Sie können die **Hintereinanderausführung** zweier Abbildungen als
+  Matrixprodukt schreiben und wissen, dass es dabei auf die Reihenfolge
+  ankommt.
+* [ ] Sie wissen, dass eine $m\times n$-Matrix eine Abbildung vom
+  $\mathbb{R}^n$ in den $\mathbb{R}^m$ beschreibt.
 ```
 
-## Matrizen als geometrische Transformationen
+## Was macht eine Matrix mit einem Vektor?
 
-In CAD-Programmen lassen sich Bauteile verschieben, drehen, spiegeln und
-skalieren. Was auf dem Bildschirm wie ein einfacher Mausklick aussieht, ist im
-Hintergrund eine mathematische Operation: die Multiplikation einer Matrix mit
-einem Vektor. Auch in der Finite-Elemente-Methode werden Verschiebungen von
-Knoten durch Matrix-Vektor-Produkte berechnet. Das Ergebnis einer
-FEM-Simulation, das als farbige Verformungsgrafik erscheint, basiert auf
-Milliarden solcher Operationen.
-
-Betrachten wir zunächst ein einfaches ebenes Bauteilprofil, das durch eine Menge
-von Punkten im $\mathbb{R}^2$ beschrieben wird. Jeder Punkt wird durch einen
-Ortsvektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ dargestellt. Eine
-**lineare Abbildung** transformiert jeden solchen Punkt durch die Multiplikation
-mit einer festen Matrix $\mathbf{A}$:
+In Kapitel 3.1 haben wir die Matrix
 
 \begin{equation*}
-F_{\mathbf{A}}\!\left(\underbrace{\vec{v}}_{\text{Input}}\right)
-= \mathbf{A} \cdot \vec{v}
-= \underbrace{\vec{w}}_{\text{Output}}.
+\mathbf{A} = \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
 \end{equation*}
 
-Der Eingabevektor $\vec{v}$ beschreibt die ursprüngliche Position, der
-Ausgabevektor $\vec{w}$ die transformierte Position. Die Matrix $\mathbf{A}$ legt
-vollständig fest, welche Transformation durchgeführt wird.
-
-Um die Wirkung einer Matrix systematisch zu verstehen, genügt es, die
-**Standardbasisvektoren** durch die Abbildung zu schicken. Im $\mathbb{R}^2$ sind
-das $\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ und
-$\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$, im $\mathbb{R}^3$ kommt
-$\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ hinzu. Jeder beliebige
-Vektor lässt sich als Linearkombination dieser Basisvektoren darstellen. Die Bilder
-der Standardbasisvektoren sind nichts anderes als die **Spalten** der Matrix
-$\mathbf{A}$.
-
-## Transformationen im $\mathbb{R}^2$
-
-### Gleichmäßige Streckung
-
-Das einfachste Beispiel ist die gleichmäßige Streckung: Jeder Punkt des Profils
-wird um den gleichen Faktor $s > 0$ von der Mitte weg verschoben. In einem
-CAD-System entspricht das dem maßstäblichen Vergrößern eines Bauteils in alle
-Richtungen gleichmäßig, zum Beispiel wenn ein Normteil in einem anderen Maßstab
-wiederverwendet werden soll. Die zugehörige Abbildungsmatrix ist
+untersucht und ihre Determinante $\det(\mathbf{A}) = 7$ berechnet. Jetzt
+multiplizieren wir $\mathbf{A}$ mit dem Vektor $\vec{v} = (1, 1)^{\top}$:
 
 \begin{equation*}
-\mathbf{A}_{\text{Streckung}} = \begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}.
+\mathbf{A}\vec{v}
+= \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+\begin{pmatrix} 1 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 2 + 3 \\ 1 + 5 \end{pmatrix}
+= \begin{pmatrix} 5 \\ 6 \end{pmatrix}.
 \end{equation*}
 
-Für den Streckungsfaktor $s = 2$ verfolgen wir, was mit den Standardbasisvektoren
-und einem allgemeinen Vektor passiert:
+Geometrisch gelesen wandert der Punkt $(1, 1)$ an die Stelle $(5, 6)$.
+*Können wir vorhersagen, wohin ein beliebiger Vektor wandert, ohne jedes Mal
+neu zu rechnen?* Dazu probieren wir die Einheitsvektoren
+$\vec{e}_1 = (1, 0)^{\top}$ und $\vec{e}_2 = (0, 1)^{\top}$ aus, die Spalten
+der Einheitsmatrix $\mathbf{E}$ aus Kapitel 1.2:
 
 \begin{equation*}
-\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 0 \end{pmatrix}
-= \begin{pmatrix} 2 \\ 0 \end{pmatrix}, \quad
-\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}
-= \begin{pmatrix} 0 \\ 2 \end{pmatrix}, \quad
-\begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
-= 2 \cdot \begin{pmatrix} x \\ y \end{pmatrix}.
+\mathbf{A}\vec{e}_1
+= \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+\begin{pmatrix} 1 \\ 0 \end{pmatrix}
+= \begin{pmatrix} 2 \\ 1 \end{pmatrix},
+\qquad
+\mathbf{A}\vec{e}_2
+= \begin{pmatrix} 2 & 3 \\ 1 & 5 \end{pmatrix}
+\begin{pmatrix} 0 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 3 \\ 5 \end{pmatrix}.
 \end{equation*}
 
-Das Einheitsquadrat mit Flächeninhalt $1$ wird auf ein Quadrat mit Flächeninhalt $4$
-abgebildet. Diesen Skalierungsfaktor liefert die Determinante:
-$\det(\mathbf{A}) = 2 \cdot 2 = 4$. In der Kontinuumsmechanik wird diese Eigenschaft
-genutzt, um zu beschreiben, wie sich das Volumen eines Materialelements unter
-Deformation verändert. Die Determinante des Deformationsgradienten, den Sie in der
-Höheren Technischen Mechanik kennenlernen werden, gibt direkt das Volumenverhältnis
-zwischen verformtem und unverformtem Zustand an.
-
-### Spiegelung an der Winkelhalbierenden
-
-In der Bauteilkonstruktion entstehen häufig spiegelsymmetrische Teile wie linke und
-rechte Lagerschalen oder gespiegelte Halterungen. Anstatt das gespiegelte Bauteil
-neu zu modellieren, wendet das CAD-System eine Spiegelmatrix auf alle Punkte des
-Originals an. Die Spiegelung an der Winkelhalbierenden $y = x$ vertauscht die
-$x$- und $y$-Koordinate jedes Punktes:
+Heraus kommen genau die beiden Spalten von $\mathbf{A}$, die wir ab jetzt
+$\vec{a}_1$ und $\vec{a}_2$ nennen. Das ist kein Zufall, denn beim
+Multiplizieren mit $\vec{e}_1$ wird die erste Spalte mit $1$ und die zweite
+mit $0$ gewichtet. Für einen allgemeinen Vektor $\vec{v} = (x, y)^{\top}$
+sortieren wir das Ergebnis nach $x$ und $y$:
 
 \begin{equation*}
-\mathbf{A}_{\text{Spiegelung}} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
-\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
-= \begin{pmatrix} y \\ x \end{pmatrix}.
+\mathbf{A}\begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} 2x + 3y \\ x + 5y \end{pmatrix}
+= x\begin{pmatrix} 2 \\ 1 \end{pmatrix} + y\begin{pmatrix} 3 \\ 5 \end{pmatrix}
+= x\,\vec{a}_1 + y\,\vec{a}_2.
 \end{equation*}
 
-Die Determinante ist $\det(\mathbf{A}_{\text{Spiegelung}}) = -1$. Der Betrag $1$
-zeigt, dass der Flächeninhalt erhalten bleibt. Das negative Vorzeichen zeigt an,
-dass die Orientierung umgekehrt wird: Ein ursprünglich gegen den Uhrzeigersinn
-beschriebenes Profil wird nach der Abbildung im Uhrzeigersinn beschrieben.
-
-### Scherung
-
-Eine **Scherung** verschiebt Punkte parallel zu einer Achse, proportional zu ihrer
-Entfernung von dieser Achse. In der Festigkeitslehre beschreibt sie die Verformung
-eines Querschnitts unter Schubbelastung: Ein ursprünglich rechteckiger Querschnitt
-verformt sich zu einem Parallelogramm, wenn eine Schubspannung $\tau$ angreift. In
-der Werkstoffkunde beschreibt die Scherung die Verschiebung von Gitterebenen bei der
-plastischen Verformung von Metallen beim Walzen oder Ziehen.
-
-\begin{equation*}
-\mathbf{A}_{\text{Scherung}} = \begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}, \quad
-\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix}
-= \begin{pmatrix} x + ky \\ y \end{pmatrix}.
-\end{equation*}
-
-Die Determinante ist $\det(\mathbf{A}_{\text{Scherung}}) = 1$: Der Flächeninhalt
-bleibt erhalten. Das erklärt, warum reine Scherverformungen in der Festigkeitslehre
-keine Volumenänderung des Materials bewirken, sondern nur eine Formänderung.
-
-```{admonition} Determinante und Flächen- bzw. Volumenskalierung
-:class: note
-Der **Betrag der Determinante** einer Abbildungsmatrix gibt an, um welchen Faktor
-sich der Flächeninhalt ($2\times 2$) bzw. das Volumen ($3\times 3$) unter der
-Abbildung ändert.
-
-* $|\det(\mathbf{A})| > 1$: Fläche bzw. Volumen nehmen zu.
-* $|\det(\mathbf{A})| = 1$: Fläche bzw. Volumen bleiben erhalten.
-* $|\det(\mathbf{A})| < 1$: Fläche bzw. Volumen nehmen ab.
-* $\det(\mathbf{A}) < 0$: zusätzlich Umkehrung der Orientierung.
-* $\det(\mathbf{A}) = 0$: Dimensionsverlust, das Gebiet wird auf eine Linie,
-  eine Fläche oder einen Punkt abgebildet.
-```
-
-## Transformationen im $\mathbb{R}^3$
-
-Bauteile im Maschinenbau sind dreidimensionale Objekte. Das Prinzip bleibt dasselbe
-wie im $\mathbb{R}^2$: Die drei Spalten einer $3\times 3$-Matrix geben an, wohin die
-Standardbasisvektoren $\vec{e}_1$, $\vec{e}_2$, $\vec{e}_3$ abgebildet werden.
-
-### Gleichmäßige Streckung im Raum
-
-In einem CAD-System soll ein räumliches Bauteil gleichmäßig um den Faktor $s$
-vergrößert werden, zum Beispiel beim Erstellen von Produktfamilien, bei denen
-dasselbe Bauteil in verschiedenen Größen gefertigt wird:
-
-\begin{equation*}
-\mathbf{A}_{\text{Streckung}} = \begin{pmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & s \end{pmatrix}, \quad
-\begin{pmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & s \end{pmatrix}
-\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= s \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}.
-\end{equation*}
-
-Der Einheitswürfel mit dem Volumen $1$ wird auf einen Würfel mit dem Volumen $s^3$
-abgebildet. Die Determinante liefert genau diesen Volumenskalierungsfaktor:
-$\det(\mathbf{A}_{\text{Streckung}}) = s^3$.
-
-### Projektion auf eine Koordinatenebene
-
-Eine Projektion entspricht dem Erstellen einer technischen Zeichnung, bei der ein
-räumliches Bauteil aus einer bestimmten Richtung auf Papier dargestellt wird.
-Dieselbe Operation führen Messkameras in industriellen Bildverarbeitungssystemen
-durch. Die Projektion auf die $xy$-Ebene setzt die $z$-Koordinate auf null:
-
-\begin{equation*}
-\mathbf{A}_{\text{Proj},xy} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}, \quad
-\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}
-\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}.
-\end{equation*}
-
-Die Determinante ist null: Das Volumen eines dreidimensionalen Körpers wird auf null
-reduziert. Wann immer eine Abbildung die Dimension reduziert, ist die Determinante
-der zugehörigen Matrix gleich null.
-
-### Spiegelung an einer Koordinatenebene
-
-Im Maschinenbau gibt es häufig spiegelsymmetrische Baugruppen: Motorblöcke mit zwei
-Zylinderbänken, symmetrische Fahrwerkskomponenten oder gespiegelte
-Werkzeugaufnahmen. Die Spiegelung an der $xy$-Ebene kehrt das Vorzeichen der
-$z$-Koordinate um:
-
-\begin{equation*}
-\mathbf{A}_{\text{Spieg},xy} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}, \quad
-\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}
-\cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \\ -z \end{pmatrix}.
-\end{equation*}
-
-Das Volumen bleibt erhalten ($|\det(\mathbf{A})| = 1$), die Raumorientierung wird
-jedoch umgekehrt: Ein rechtshändiges Koordinatensystem wird zu einem linkshändigen.
-In der Robotik ist dieser Orientierungswechsel wichtig, wenn zwischen dem
-Koordinatensystem des Roboters und dem des Werkstücks gewechselt wird.
-
-## Abbildungen zwischen Räumen verschiedener Dimension
-
-Im Maschinenbau kommt es häufig vor, dass ein Sensor im Raum $\mathbb{R}^3$ misst
-und die Daten in einer zweidimensionalen Darstellung aufgezeichnet werden.
-Industrielle Bildverarbeitungssysteme projizieren dreidimensionale Objekte auf den
-zweidimensionalen Bildsensor einer Kamera. Die Abbildungsvorschrift ist dann eine
-$2\times 3$-Matrix. Umgekehrt werden in der Robotik ebene Trajektorien durch eine
-$3\times 2$-Matrix in den dreidimensionalen Arbeitsraum transformiert.
-
-Die allgemeine lineare Abbildung $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$
-wird durch eine $m\times n$-Matrix beschrieben: $m$ Zeilen für die Dimension des
-Ausgaberaums, $n$ Spalten für die Dimension des Eingaberaums. Als konkretes
-Beispiel bildet die folgende $2\times 3$-Matrix einen Raumpunkt auf seine
-$xy$-Koordinaten ab:
-
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}, \quad
-\mathbf{A} \cdot \begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \end{pmatrix}.
-\end{equation*}
-
-## Übersicht: Wichtige Abbildungsmatrizen
-
-| Transformation | Matrix $\mathbf{A}$ | $\det(\mathbf{A})$ | Beispiel im Maschinenbau |
-| --- | --- | --- | --- |
-| Streckung um $s$ (2D) | $\begin{pmatrix} s & 0 \\ 0 & s \end{pmatrix}$ | $s^2$ | Maßstabsänderung in CAD |
-| Spiegelung an $y = x$ | $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ | $-1$ | Spiegelteile in CAD |
-| Spiegelung an $x$-Achse | $\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ | $-1$ | Koordinatensystemwechsel |
-| Scherung (2D) | $\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}$ | $1$ | Schubverformung |
-| Streckung um $s$ (3D) | $\begin{pmatrix} s&0&0\\0&s&0\\0&0&s \end{pmatrix}$ | $s^3$ | Produktfamilien in CAD |
-| Projektion auf $xy$-Ebene | $\begin{pmatrix} 1&0&0\\0&1&0\\0&0&0 \end{pmatrix}$ | $0$ | Technische Zeichnung, Kamera |
-| Spiegelung an $xy$-Ebene | $\begin{pmatrix} 1&0&0\\0&1&0\\0&0&-1 \end{pmatrix}$ | $-1$ | Spiegelbauteile, Robotik |
+Im Bild ersetzen wir also in $\vec{v} = x\,\vec{e}_1 + y\,\vec{e}_2$ die
+Einheitsvektoren durch die Spalten. Wenn wir wissen, wohin die
+Einheitsvektoren abgebildet werden, kennen wir die ganze Abbildung, und das
+gilt für jede quadratische Matrix.
 
 ```{admonition} Was ist ... eine lineare Abbildung?
 :class: note
-Eine **lineare Abbildung** $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ wird
-durch eine $m\times n$-Matrix $\mathbf{A}$ beschrieben. Sie ordnet jedem Vektor
-$\vec{v} \in \mathbb{R}^n$ eindeutig einen Bildvektor
-$\vec{w} = \mathbf{A} \cdot \vec{v} \in \mathbb{R}^m$ zu.
+Eine quadratische Matrix $\mathbf{M}$ mit $n$ Zeilen und $n$ Spalten ordnet
+jedem Vektor $\vec{v} \in \mathbb{R}^n$ den **Bildvektor**
+$\vec{w} = \mathbf{M}\vec{v}$ zu. Diese Zuordnung heißt **lineare Abbildung**
+und wird als
 
-Die geometrische Wirkung der Abbildung lässt sich vollständig aus den Bildern der
-Standardbasisvektoren ablesen. Diese entsprechen den **Spalten** der Matrix
-$\mathbf{A}$. Der Betrag der Determinante gibt an, um welchen Faktor sich der
-Flächen- bzw. Rauminhalt unter der Abbildung ändert.
+\begin{equation*}
+F_{\mathbf{M}}: \mathbb{R}^n \to \mathbb{R}^n, \quad
+F_{\mathbf{M}}(\vec{v}) = \mathbf{M}\vec{v} = \vec{w}
+\end{equation*}
+
+geschrieben. Die Angabe $\mathbb{R}^n \to \mathbb{R}^n$ besagt, dass die
+Eingabevektoren und die Bildvektoren beide im $\mathbb{R}^n$ liegen. Die
+$j$-te Spalte von $\mathbf{M}$ ist das Bild $F_{\mathbf{M}}(\vec{e}_j)$ des
+$j$-ten Einheitsvektors.
 ```
+
+Warum diese Abbildungen linear heißen, klären wir in Kapitel 4.2. Weil die
+Spalten von $\mathbf{A}$ die Bilder der Einheitsvektoren sind, können wir das
+Bild von $\vec{u} = (2, -1)^{\top} = 2\,\vec{e}_1 - \vec{e}_2$ ohne Zeile mal
+Spalte berechnen. Wir ersetzen einfach $\vec{e}_1$ durch $\vec{a}_1$ und
+$\vec{e}_2$ durch $\vec{a}_2$:
+
+\begin{equation*}
+F_{\mathbf{A}}(\vec{u})
+= 2\,\vec{a}_1 - 1\,\vec{a}_2
+= \begin{pmatrix} 4 \\ 2 \end{pmatrix} - \begin{pmatrix} 3 \\ 5 \end{pmatrix}
+= \begin{pmatrix} 1 \\ -3 \end{pmatrix}.
+\end{equation*}
+
+Die Probe mit Zeile mal Spalte liefert dasselbe, nämlich
+$2\cdot 2 + 3\cdot(-1) = 1$ und $1\cdot 2 + 5\cdot(-1) = -3$.
+
+```{dropdown} Video "Linear transformations and matrices" von 3Blue1Brown
+<iframe width="1018" height="572" src="https://www.youtube.com/embed/kYB8IZa5AuE" title="Linear transformations and matrices | Chapter 3, Essence of linear algebra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Wie verändern Matrizen die Ebene?
+
+Jetzt schicken wir eine ganze Fläche durch die Abbildung, nämlich das
+**Einheitsquadrat** aus allen Punkten $x\,\vec{e}_1 + y\,\vec{e}_2$ mit
+$0 \leq x \leq 1$ und $0 \leq y \leq 1$. Unter $F_{\mathbf{A}}$ landet jeder
+dieser Punkte bei $x\,\vec{a}_1 + y\,\vec{a}_2$. Das Bild des
+Einheitsquadrats ist also das Parallelogramm, das die Spalten von $\mathbf{A}$
+aufspannen.
+
+```{figure} pics/einheitsquadrat_parallelogramm.svg
+---
+class: responsive-figure-50
+name: einheitsquadrat_parallelogramm
+---
+Darstellung des Einheitsquadrats (gelb) und seines Bildes unter
+$F_{\mathbf{A}}$, des von $\vec{a}_1$ und $\vec{a}_2$ aufgespannten
+Parallelogramms (blau).
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Nach Kapitel 3.1 hat dieses Parallelogramm den Flächeninhalt
+$|\det(\mathbf{A})| = 7$. *Wächst jede Fläche um diesen Faktor?* Das Rechteck
+mit den Kanten $2\,\vec{e}_1$ und $\vec{e}_2$ und dem Flächeninhalt $2$ wird
+zum Parallelogramm aus $2\,\vec{a}_1 = (4, 2)^{\top}$ und
+$\vec{a}_2 = (3, 5)^{\top}$ mit dem Flächeninhalt
+$|4\cdot 5 - 2\cdot 3| = 14 = 7\cdot 2$. Weil sich jede Figur aus kleinen
+Quadraten zusammensetzen lässt, gilt der Faktor $7$ für jede Fläche.
+
+$F_{\mathbf{A}}$ hat noch eine zweite Eigenschaft. Von $\vec{e}_1$ aus
+erreichen wir $\vec{e}_2$ durch eine Drehung gegen den Uhrzeigersinn, und
+auf dem kürzesten Weg gilt dasselbe für $\vec{a}_1$ und $\vec{a}_2$, wie die
+grauen Bögen in der Grafik zeigen. Wir sagen, dass $F_{\mathbf{A}}$ die
+**Orientierung** erhält. *Kann eine Abbildung die Orientierung auch umkehren?*
+Um das zu klären, gehen wir umgekehrt vor und setzen zu einer gewünschten
+Wirkung die Matrix aus den Bildern der Einheitsvektoren zusammen.
+
+Bei einer **Streckung** um den Faktor $2$ wandern $\vec{e}_1$ und $\vec{e}_2$
+auf ihr Doppeltes. Bei der **Spiegelung** an der Winkelhalbierenden $y = x$
+tauschen sie ihre Plätze. Bei einer **Scherung** bleibt $\vec{e}_1$ liegen,
+und $\vec{e}_2$ kippt wie bei Kursivschrift nach $(1, 1)^{\top}$. Bei einer
+**Drehung** um $90^\circ$ gegen den Uhrzeigersinn wandert $\vec{e}_1$ auf
+$\vec{e}_2$ und $\vec{e}_2$ auf $-\vec{e}_1$. Bei der **Projektion** auf die
+$x$-Achse bleibt $\vec{e}_1$ liegen, und $\vec{e}_2$ fällt auf den
+Nullvektor. Als Spalten geschrieben ergeben sich die Matrizen
+
+\begin{align*}
+\mathbf{B} &= \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}, &
+\mathbf{C} &= \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, &
+\mathbf{D} &= \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}, \\
+\mathbf{R} &= \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}, &
+\mathbf{P} &= \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}
+\end{align*}
+
+für Streckung, Spiegelung, Scherung, Drehung und Projektion. Die folgende
+Grafik zeigt, was sie aus dem Einheitsquadrat machen.
+
+```{figure} pics/abbildungen_einheitsquadrat.svg
+---
+class: responsive-figure-50
+name: abbildungen_einheitsquadrat
+---
+Darstellung des Einheitsquadrats (gestrichelt) und seiner Bilder unter
+Streckung, Spiegelung, Scherung, Drehung und Projektion.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Die Determinanten passen zu den Bildern. Die Streckung verdoppelt beide
+Seiten, und der Flächeninhalt wächst auf $\det(\mathbf{B}) = 4$. Die Scherung
+lässt Grundseite und Höhe gleich, passend zu $\det(\mathbf{D}) = 1$, und die
+Drehung bewegt das Quadrat nur um den Ursprung herum, passend zu
+$\det(\mathbf{R}) = 0\cdot 0 - (-1)\cdot 1 = 1$. Die Projektion drückt das
+Quadrat auf eine Strecke zusammen, passend zu $\det(\mathbf{P}) = 0$. Bei der
+Spiegelung bleibt das Quadrat an seinem Platz, aber der Bogen von
+$\mathbf{C}\vec{e}_1 = \vec{e}_2$ nach $\mathbf{C}\vec{e}_2 = \vec{e}_1$ läuft
+im Uhrzeigersinn. Die Orientierung kehrt sich um, und genau das zeigt
+$\det(\mathbf{C}) = 0\cdot 0 - 1\cdot 1 = -1$ an.
+
+```{admonition} Was verrät die Determinante über eine Abbildung?
+:class: note
+Für eine lineare Abbildung $F_{\mathbf{M}}$ der Ebene mit einer
+$2\times 2$-Matrix $\mathbf{M}$ gilt:
+
+* Flächeninhalte ändern sich um den Faktor $|\det(\mathbf{M})|$.
+* Ist $\det(\mathbf{M}) > 0$, bleibt die Orientierung erhalten. Ist
+  $\det(\mathbf{M}) < 0$, kehrt sie sich um.
+* Ist $\det(\mathbf{M}) = 0$, fällt jede Fläche auf eine Strecke oder einen
+  Punkt zusammen.
+```
+
+Für unser Beispiel bedeutet das: $F_{\mathbf{A}}$ vergrößert jeden
+Flächeninhalt um den Faktor $7$ und erhält die Orientierung. *Was passiert,
+wenn wir zwei Abbildungen nacheinander ausführen?* Wir scheren zuerst mit
+$\mathbf{D}$ und spiegeln dann mit $\mathbf{C}$. Dabei bleibt $\vec{e}_1$
+zunächst liegen und wird dann auf $(0, 1)^{\top}$ gespiegelt, während
+$\vec{e}_2$ nach $(1, 1)^{\top}$ kippt und dort bleibt, weil dieser Punkt auf
+der Winkelhalbierenden liegt. Diese beiden Bilder sind die Spalten der
+Gesamtmatrix, und genau diese Matrix liefert das Matrixprodukt aus Kapitel
+1.4:
+
+\begin{equation*}
+\mathbf{C}\mathbf{D}
+= \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
+\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}
+= \begin{pmatrix} 0 & 1 \\ 1 & 1 \end{pmatrix}.
+\end{equation*}
+
+Die zuerst ausgeführte Matrix steht rechts, denn nach dem Assoziativgesetz aus
+Kapitel 1.4 ist $\mathbf{C}(\mathbf{D}\vec{v}) = (\mathbf{C}\mathbf{D})\vec{v}$.
+*Kommt es auf die Reihenfolge an?* Erst spiegeln und dann scheren ergibt
+
+\begin{equation*}
+\mathbf{D}\mathbf{C}
+= \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}
+\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
+= \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}
+\end{equation*}
+
+und damit eine andere Matrix, weil das Kommutativgesetz für Matrizen nicht
+gilt. Zur Probe schicken wir $\vec{u} = (2, -1)^{\top}$ schrittweise durch:
+Über $\mathbf{D}\vec{u} = (1, -1)^{\top}$ landet er bei $(-1, 1)^{\top}$, über
+$\mathbf{C}\vec{u} = (-1, 2)^{\top}$ dagegen bei $(1, 2)^{\top}$. Die
+Produktmatrizen liefern dasselbe in einem Schritt, etwa
+$\mathbf{C}\mathbf{D}\vec{u} = (0\cdot 2 + 1\cdot(-1),\ 1\cdot 2 + 1\cdot(-1))^{\top} = (-1, 1)^{\top}$.
+Gemeinsam ist beiden Reihenfolgen die Determinante, denn
+$\det(\mathbf{C}\mathbf{D}) = 0\cdot 1 - 1\cdot 1 = -1$ und
+$\det(\mathbf{D}\mathbf{C}) = 1\cdot 0 - 1\cdot 1 = -1$. Das ist die
+Produktregel $\det(\mathbf{C})\cdot\det(\mathbf{D}) = (-1)\cdot 1$ aus Kapitel
+3.3, anschaulich gelesen: Die Flächenfaktoren multiplizieren sich, und die
+Orientierung kehrt sich genau einmal um.
+
+```{admonition} Was ist ... die Hintereinanderausführung zweier Abbildungen?
+:class: note
+Führen wir erst $F_{\mathbf{M}}$ und danach $F_{\mathbf{N}}$ aus, so ist diese
+**Hintereinanderausführung** wieder eine lineare Abbildung, und zwar die mit
+der Produktmatrix $\mathbf{N}\mathbf{M}$:
+
+\begin{equation*}
+F_{\mathbf{N}}\big(F_{\mathbf{M}}(\vec{v})\big)
+= \mathbf{N}(\mathbf{M}\vec{v})
+= (\mathbf{N}\mathbf{M})\vec{v}.
+\end{equation*}
+
+Die zuerst ausgeführte Matrix steht rechts, und im Allgemeinen ist
+$\mathbf{N}\mathbf{M} \neq \mathbf{M}\mathbf{N}$. Bei quadratischen Matrizen
+multiplizieren sich wegen
+$\det(\mathbf{N}\mathbf{M}) = \det(\mathbf{N})\cdot\det(\mathbf{M})$ die
+Faktoren, um die sich Flächeninhalte oder Volumina ändern.
+```
+
+Auch die Inverse $\mathbf{A}^{-1}$ aus Kapitel 3.1 bekommt so eine
+geometrische Bedeutung. Erst $F_{\mathbf{A}}$ und dann $F_{\mathbf{A}^{-1}}$
+ergibt die Matrix $\mathbf{A}^{-1}\mathbf{A} = \mathbf{E}$, die Inverse macht
+die Abbildung also rückgängig. Zur Probe landet
+$F_{\mathbf{A}}(\vec{v}) = (5, 6)^{\top}$ wegen
+$\frac{1}{7}(5\cdot 5 - 3\cdot 6,\ -1\cdot 5 + 2\cdot 6)^{\top} = (1, 1)^{\top}$
+wieder bei $\vec{v}$, und die Flächenfaktoren heben sich mit
+$\frac{1}{7}\cdot 7 = 1$ auf. Die Projektion dagegen lässt sich nicht
+umkehren, denn $(1, 0)^{\top}$ und $(1, 5)^{\top}$ landen beide bei
+$(1, 0)^{\top}$.
+
+```{admonition} Bleibt die Form einer Figur erhalten, wenn $|\det(\mathbf{M})| = 1$ ist?
+:class: danger
+Nicht unbedingt. Die Drehung $\mathbf{R}$ und die Scherung $\mathbf{D}$ haben
+beide die Determinante $1$. Die Drehung verändert nur die Lage des Quadrats,
+die Scherung macht daraus ein schiefes Parallelogramm. Ob Längen und Winkel
+erhalten bleiben, verrät die Determinante nicht. Matrizen mit dieser
+Eigenschaft lernen wir in Kapitel 5.2 als orthogonale Matrizen kennen, und die
+Drehmatrix für einen beliebigen Winkel stellen wir in Kapitel 5.4 auf.
+```
+
+```{dropdown} Video "The determinant" von 3Blue1Brown
+<iframe width="1018" height="572" src="https://www.youtube.com/embed/Ip3X9LOh2dk" title="The determinant | Chapter 6, Essence of linear algebra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Matrix multiplication as composition" von 3Blue1Brown
+<iframe width="1018" height="572" src="https://www.youtube.com/embed/XkY2DOUCWMU" title="Matrix multiplication as composition | Chapter 4, Essence of linear algebra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Was ändert sich im Raum?
+
+Im Raum bildet eine $3\times 3$-Matrix die drei Einheitsvektoren
+$\vec{e}_1$, $\vec{e}_2$ und $\vec{e}_3$ auf ihre drei Spalten ab. So wie das
+Einheitsquadrat unter $F_{\mathbf{A}}$ zum Parallelogramm wurde, wird der
+**Einheitswürfel** zum Spat aus den drei Spalten. Nach Kapitel 3.4 ist dessen
+Volumen der Betrag der Determinante, die Merkregel gilt also auch im Raum,
+mit Volumen statt Flächeninhalt.
+
+Die Gegenstücke der ebenen Abbildungen stellen wir wieder über die Bilder der
+Einheitsvektoren auf. Bei der Streckung um den Faktor $2$ wandern alle drei
+Einheitsvektoren auf ihr Doppeltes. Bei der Spiegelung an der $xy$-Ebene
+klappt $\vec{e}_3$ nach unten auf $-\vec{e}_3$, und bei der Projektion auf die
+$xy$-Ebene fällt $\vec{e}_3$ auf den Nullvektor. Das ergibt die drei Matrizen
+
+\begin{equation*}
+\begin{pmatrix} 2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 2 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}, \quad
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Als Diagonalmatrizen haben sie nach Kapitel 3.3 das Produkt der
+Diagonaleinträge als Determinante. Die Streckung vergrößert das Volumen auf
+$2^3 = 8$, und die Projektion drückt den Würfel mit der Determinante $0$ auf
+das Einheitsquadrat in der $xy$-Ebene platt. Die Spiegelung mit der
+Determinante $-1$ lässt das Volumen gleich, macht aber aus einem Rechtssystem,
+wie es Daumen, Zeigefinger und Mittelfinger der rechten Hand bilden, ein
+Linkssystem.
+
+*Muss eine Abbildung eigentlich im selben Raum bleiben?* Die Projektion auf die
+$xy$-Ebene liefert Vektoren $(x, y, 0)^{\top}$, deren dritte Komponente keine
+Information trägt. Lassen wir die dritte Zeile der Matrix weg, erhalten wir
+
+\begin{equation*}
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}
+\begin{pmatrix} x \\ y \\ z \end{pmatrix}
+= \begin{pmatrix} x \\ y \end{pmatrix}.
+\end{equation*}
+
+Diese $2\times 3$-Matrix nimmt Vektoren aus dem $\mathbb{R}^3$ entgegen und
+liefert Vektoren aus dem $\mathbb{R}^2$, etwa den Schatten $(1, 1)^{\top}$ des
+Vektors $(1, 1, 4)^{\top}$ bei Licht senkrecht von oben. Die Multiplikation
+ist nach Kapitel 1.4 erlaubt, weil die Matrix drei Spalten und der Vektor drei
+Einträge hat. Die Spalten sind wieder die
+Bilder von $\vec{e}_1$, $\vec{e}_2$ und $\vec{e}_3$, nur liegen sie jetzt in
+der Ebene.
+
+```{admonition} Welche Räume verbindet eine $m\times n$-Matrix?
+:class: note
+Eine Matrix $\mathbf{M}$ mit $m$ Zeilen und $n$ Spalten beschreibt die
+lineare Abbildung
+
+\begin{equation*}
+F_{\mathbf{M}}: \mathbb{R}^n \to \mathbb{R}^m, \quad
+F_{\mathbf{M}}(\vec{v}) = \mathbf{M}\vec{v}.
+\end{equation*}
+
+Die Anzahl $n$ der Spalten ist die Dimension des Raums, aus dem die
+Eingabevektoren stammen. Die Anzahl $m$ der Zeilen ist die Dimension des
+Raums, in dem die Bildvektoren liegen. Die $j$-te Spalte von $\mathbf{M}$ ist
+das Bild des $j$-ten Einheitsvektors des $\mathbb{R}^n$.
+```
+
+Für die $2\times 3$-Matrix ist $n = 3$ und $m = 2$, für $\mathbf{A}$ ist
+$m = n = 2$. Eine Determinante gibt es nur im quadratischen Fall. Einen Faktor
+zwischen einem Volumen im $\mathbb{R}^3$ und einem Flächeninhalt im
+$\mathbb{R}^2$ könnten wir auch gar nicht sinnvoll angeben.
+
+```{admonition} Bildet eine $2\times 3$-Matrix vom $\mathbb{R}^2$ in den $\mathbb{R}^3$ ab?
+:class: danger
+Nein, genau umgekehrt. Die erste Zahl in $2\times 3$ nennt die Zeilen und
+damit die Dimension der Bildvektoren, die zweite nennt die Spalten und damit
+die Dimension der Eingabevektoren.
+```
+
+Zum Abschluss stellen wir die Abbildungen aus diesem Kapitel zusammen. Statt
+der festen Zahlen aus den Beispielen verwenden wir einen allgemeinen
+Scherfaktor $k$ und für jede Achse einen eigenen Streckfaktor
+$s_1, s_2, s_3 > 0$, denn $\vec{e}_1$ wandert dann auf $s_1\vec{e}_1$,
+$\vec{e}_2$ auf $s_2\vec{e}_2$ und $\vec{e}_3$ auf $s_3\vec{e}_3$. Sind alle
+Faktoren gleich, ist die Streckung gleichmäßig wie bei $\mathbf{B}$.
+
+| Abbildung | Matrix | Determinante | Wirkung |
+| --- | --- | --- | --- |
+| Streckung in der Ebene | $\begin{pmatrix} s_1 & 0 \\ 0 & s_2 \end{pmatrix}$ | $s_1 s_2$ | Flächeninhalt wird mit $s_1 s_2$ multipliziert |
+| Spiegelung an $y = x$ | $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ | $-1$ | Flächeninhalt bleibt, Orientierung kehrt sich um |
+| Scherung | $\begin{pmatrix} 1 & k \\ 0 & 1 \end{pmatrix}$ | $1$ | Flächeninhalt bleibt, Form ändert sich |
+| Drehung um $90^\circ$ | $\begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$ | $1$ | Flächeninhalt, Orientierung und Form bleiben |
+| Projektion auf die $x$-Achse | $\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ | $0$ | Fläche fällt auf eine Strecke |
+| Streckung im Raum | $\begin{pmatrix} s_1 & 0 & 0 \\ 0 & s_2 & 0 \\ 0 & 0 & s_3 \end{pmatrix}$ | $s_1 s_2 s_3$ | Volumen wird mit $s_1 s_2 s_3$ multipliziert |
+| Spiegelung an der $xy$-Ebene | $\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix}$ | $-1$ | Volumen bleibt, Orientierung kehrt sich um |
+| Projektion auf die $xy$-Ebene | $\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ | $0$ | Körper fällt auf eine Fläche |
+| Projektion vom $\mathbb{R}^3$ in den $\mathbb{R}^2$ | $\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}$ | keine | liefert die Koordinaten $(x, y)^{\top}$ |
 
 ## Zusammenfassung und Ausblick
 
-In diesem Kapitel haben wir gesehen, wie Matrizen geometrische Transformationen in
-der Ebene und im Raum beschreiben. Strecken, Spiegeln, Scheren und Projizieren sind
-allesamt lineare Abbildungen der Form $\vec{w} = \mathbf{A} \cdot \vec{v}$. Diese
-Operationen bilden das mathematische Fundament von CAD-Systemen, der
-Finite-Elemente-Methode, der Messtechnik und der Robotik. Die Determinante liefert
-dabei eine wichtige Zusatzinformation über die Änderung von Fläche und Volumen sowie
-die Orientierung. Im nächsten Kapitel führen wir die formale Definition einer
-linearen Abbildung ein und lernen ihre wesentlichen Eigenschaften kennen, insbesondere
-das Superpositionsprinzip, das in der Strukturmechanik und Regelungstechnik
-allgegenwärtig ist.
+Eine Matrix ordnet jedem Vektor einen Bildvektor zu, und ihre Spalten
+verraten, wohin die Einheitsvektoren abgebildet werden. Der Betrag der
+Determinante gibt an, um welchen Faktor sich Flächeninhalte und Volumina
+ändern, und ihr Vorzeichen, ob die Orientierung erhalten bleibt. Führen wir
+zwei Abbildungen nacheinander aus, multiplizieren wir ihre Matrizen, wobei die
+zuerst ausgeführte rechts steht. In Kapitel 4.2 sehen wir, welche zwei
+Rechenregeln hinter dem Namen lineare Abbildung stecken, warum ausgerechnet
+das Verschieben aller Punkte nicht dazugehört und wie es mit einem Trick
+trotzdem zum Matrixprodukt wird.
+Bei der Spiegelung $\mathbf{C}$ bleibt übrigens jeder Vektor auf der
+Winkelhalbierenden an seinem Platz. Solche Vektoren, deren Richtung sich nicht
+ändert, werden in Kapitel 6 als Eigenvektoren zum wichtigsten Werkzeug, um
+eine Matrix zu verstehen.

@@ -5,160 +5,107 @@ authors:
 
 # 4.4 Bild, Rang und Dimensionsformel
 
-Im vorigen Abschnitt haben wir den Kern einer Matrix untersucht: die Menge aller
-Eingabevektoren, die durch die Abbildung auf den Nullvektor fallen. Nun drehen wir
-die Perspektive um und fragen: Welche Vektoren können überhaupt als Ergebnis einer
-linearen Abbildung auftreten? Diese Frage führt auf zwei eng verwandte Begriffe,
-das Bild und den Rang, die bestimmen, ob ein Kräftegleichgewicht in der
-Strukturmechanik existiert, ob ein Reglerauftrag erfüllbar ist und ob ein
-FEM-System eine Lösung besitzt.
+In Kapitel 4.3 haben wir untersucht, welche Eingabevektoren eine Matrix auf
+den Nullvektor abbildet. Jetzt schauen wir auf die andere Seite der Abbildung
+und fragen, welche Vektoren als Ergebnis überhaupt vorkommen. Beide Fragen
+hängen über eine einfache Formel zusammen, und gemeinsam beantworten sie, wann
+ein Gleichungssystem lösbar ist und wie viele Lösungen es hat. Im Maschinenbau
+entscheidet genau das zum Beispiel darüber, ob ein Tragwerk statisch bestimmt
+ist oder ob das Gleichungssystem einer FEM-Rechnung eine eindeutige Lösung
+besitzt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die Definition des **Bildes** einer Matrix und können es
-  geometrisch interpretieren.
-* [ ] Sie wissen, dass das Bild einer Matrix durch die **Spalten der Matrix**
-  aufgespannt wird.
-* [ ] Sie kennen die Definition des **Rangs** als Dimension des Bildes und
-  können ihn durch Auszählen linear unabhängiger Spalten bestimmen.
-* [ ] Sie kennen die **Dimensionsformel** und können sie anwenden:
-  \begin{equation*}
-  \dim(\text{Kern}(\mathbf{A})) + \text{Rang}(\mathbf{A}) = n.
-  \end{equation*}
-* [ ] Sie können die Lösbarkeit eines linearen Gleichungssystems
-  $\mathbf{A}\vec{x} = \vec{b}$ mit dem Kriterium $\vec{b} \in \text{Bild}(\mathbf{A})$
-  beurteilen.
+* [ ] Sie wissen, was das **Bild** einer Matrix ist, und können es als
+  **lineare Hülle** der Spalten angeben.
+* [ ] Sie können die **Dimension** von Kern und Bild angeben.
+* [ ] Sie können den **Rang** einer Matrix mit dem Gauß-Algorithmus
+  bestimmen.
+* [ ] Sie kennen die **Dimensionsformel**
+  $\dim(\text{Kern}(\mathbf{M})) + \text{Rang}(\mathbf{M}) = n$ und können
+  damit eine der beiden Größen aus der anderen berechnen.
+* [ ] Sie können mit dem Kriterium $\vec{r} \in \text{Bild}(\mathbf{M})$
+  entscheiden, ob ein Gleichungssystem lösbar ist, und seine Lösungsmenge mit
+  dem Kern beschreiben.
 ```
 
 ## Welche Ausgabevektoren sind erreichbar?
 
-Wir greifen das Beispiel aus dem vorigen Abschnitt auf: die Projektionsmatrix
-auf die $xy$-Ebene, die industrielle Bildverarbeitungssysteme als Kameramodell
-verwenden.
+Wir beginnen wieder mit der Projektion auf die $x$-Achse aus Kapitel 4.1,
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
+\mathbf{P} = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}, \quad
+\mathbf{P}\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} x \\ 0 \end{pmatrix}.
 \end{equation*}
 
-Der Kern dieser Matrix ist die gesamte $z$-Achse: Alle Punkte, die senkrecht
-über dem Ursprung stehen, werden auf den Nullvektor abgebildet. *Aber kann die
-Kamera überhaupt jeden Punkt im $\mathbb{R}^3$ als Ausgabe erzeugen?* Für einen
-beliebigen Eingabevektor $\vec{v} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$
-liefert die Abbildung:
+Jeder Bildvektor hat die zweite Komponente $0$. Ein Vektor wie
+$(0, 1)^{\top}$ kommt also nie als Ergebnis heraus, erreichbar ist nur die
+$x$-Achse. Bei der Matrix $\mathbf{A}$ aus Kapitel 4.1 ist es anders. Zu jedem
+Vektor $\vec{w}$ ist $\mathbf{A}^{-1}\vec{w}$ ein Eingabevektor mit dem Bild
+$\vec{w}$, erreichbar ist also die ganze Ebene.
+
+*Und wenn wir einer Matrix nicht sofort ansehen, was erreichbar ist?* Wir
+nehmen das durchgehende Beispiel aus Kapitel 4.3,
 
 \begin{equation*}
-\mathbf{A}\cdot\begin{pmatrix} x \\ y \\ z \end{pmatrix}
-= \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}.
+\mathbf{B} = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 0 \\ 1 & 1 & 1 \end{pmatrix},
 \end{equation*}
 
-Das Ergebnis hat immer eine dritte Komponente gleich null. Ein Vektor wie
-$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ kann niemals als Ausgabe auftreten.
-Kein Bildverarbeitungssystem kann einen Punkt außerhalb seiner Bildebene
-rekonstruieren: Was die Kamera liefert, liegt immer in der $xy$-Ebene. Diese
-Menge aller erreichbaren Ausgabevektoren heißt das **Bild** der Matrix.
+mit den Spalten $\vec{b}_1 = (1, 2, 1)^{\top}$, $\vec{b}_2 = (2, 1, 1)^{\top}$
+und $\vec{b}_3 = (3, 0, 1)^{\top}$. Nach Kapitel 4.1 ist
+$\mathbf{B}\vec{v} = v_1\vec{b}_1 + v_2\vec{b}_2 + v_3\vec{b}_3$, erreichbar
+sind also genau die Linearkombinationen der Spalten. In Kapitel 4.3 haben wir
+aber $\vec{b}_3 = 2\,\vec{b}_2 - \vec{b}_1$ gefunden. Damit lässt sich jede
+dieser Linearkombinationen ohne $\vec{b}_3$ schreiben:
+
+\begin{equation*}
+v_1\vec{b}_1 + v_2\vec{b}_2 + v_3\vec{b}_3
+= v_1\vec{b}_1 + v_2\vec{b}_2 + v_3\big(2\,\vec{b}_2 - \vec{b}_1\big)
+= (v_1 - v_3)\,\vec{b}_1 + (v_2 + 2v_3)\,\vec{b}_2.
+\end{equation*}
+
+Die dritte Spalte bringt also keine neue Richtung hinzu. Erreichbar sind genau
+die Linearkombinationen von $\vec{b}_1$ und $\vec{b}_2$, und weil keiner der
+beiden ein Vielfaches des anderen ist, füllen sie eine Ebene durch den
+Ursprung. Für $\vec{v} = (1, 1, 1)^{\top}$ liefert die rechte Seite
+$0\cdot\vec{b}_1 + 3\,\vec{b}_2 = (6, 3, 3)^{\top}$. Zur Probe rechnen wir
+direkt $\mathbf{B}(1, 1, 1)^{\top} = (1 + 2 + 3,\ 2 + 1 + 0,\ 1 + 1 + 1)^{\top} = (6, 3, 3)^{\top}$.
 
 ```{admonition} Was ist ... das Bild einer Matrix?
 :class: note
-Sei $F_{\mathbf{A}}: \mathbb{R}^n \to \mathbb{R}^m$ eine lineare Abbildung
-mit der Matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Das **Bild** von
-$\mathbf{A}$, geschrieben $\text{Bild}(\mathbf{A})$, ist die Menge aller
-Vektoren $\vec{w} \in \mathbb{R}^m$, die als Ergebnis der Abbildung auftreten
-können:
+Das **Bild** einer $m\times n$-Matrix $\mathbf{M}$ ist die Menge aller
+Vektoren, die $F_{\mathbf{M}}$ als Ergebnis liefert:
 
 \begin{equation*}
-\text{Bild}(\mathbf{A}) = \{\,\vec{w} \in \mathbb{R}^m
-\mid \vec{w} = \mathbf{A}\cdot\vec{v}
-\text{ für ein } \vec{v} \in \mathbb{R}^n\,\}.
+\text{Bild}(\mathbf{M})
+= \left\{ \mathbf{M}\vec{x} \;\middle|\; \vec{x} \in \mathbb{R}^n \right\}.
 \end{equation*}
+
+Es besteht aus allen Linearkombinationen der Spalten
+$\vec{m}_1, \ldots, \vec{m}_n$. Die Menge aller Linearkombinationen gegebener
+Vektoren heißt ihre **lineare Hülle** und wird mit spitzen Klammern
+geschrieben, also
+$\text{Bild}(\mathbf{M}) = \langle \vec{m}_1, \ldots, \vec{m}_n \rangle$.
 ```
 
-Für unsere Projektionsmatrix ist das Bild die gesamte $xy$-Ebene: alle Vektoren
-der Form $\begin{pmatrix} x \\ y \\ 0 \end{pmatrix}$ mit beliebigen
-$x, y \in \mathbb{R}$.
+Für unsere drei Matrizen erhalten wir
+$\text{Bild}(\mathbf{P}) = \langle (1, 0)^{\top}, (0, 0)^{\top} \rangle = \langle (1, 0)^{\top} \rangle$,
+denn die Nullspalte trägt nichts bei. Weiter ist
+$\text{Bild}(\mathbf{A}) = \mathbb{R}^2$ und
+$\text{Bild}(\mathbf{B}) = \langle \vec{b}_1, \vec{b}_2, \vec{b}_3 \rangle = \langle \vec{b}_1, \vec{b}_2 \rangle$.
+Bei $\mathbf{B}$ mussten wir dafür die Abhängigkeit der Spalten schon kennen.
+*Wie finden wir bei einer größeren Matrix heraus, welche Spalten überflüssig
+sind?*
 
-## Das Bild wird von den Spalten aufgespannt
-
-Wie bestimmen wir das Bild einer Matrix konkret? Der Schlüssel liegt in der
-Schreibweise der Matrix-Vektor-Multiplikation als Linearkombination. Für eine
-$m\times n$-Matrix $\mathbf{A} = (\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n)$
-mit Spaltenvektoren $\vec{a}_j$ gilt:
-
-\begin{equation*}
-\mathbf{A}\cdot\vec{v}
-= v_1\cdot\vec{a}_1 + v_2\cdot\vec{a}_2 + \cdots + v_n\cdot\vec{a}_n.
-\end{equation*}
-
-Jede mögliche Ausgabe ist also eine Linearkombination der Spalten von
-$\mathbf{A}$, wobei die Einträge von $\vec{v}$ als Koeffizienten dienen.
-Das Bild ist genau die Menge aller solchen Linearkombinationen, der sogenannte
-**Spaltenraum** der Matrix. In der FEM ist diese Interpretation direkt erkennbar:
-Die Spalten der globalen Steifigkeitsmatrix $\mathbf{K}$ sind die
-Kräftevektoren, die entstehen, wenn man jeweils genau einen Freiheitsgrad um
-eine Einheit auslenkt. Das Bild von $\mathbf{K}$ ist damit die Menge aller
-möglichen inneren Kräftezustände der Struktur.
-
-## Wie groß ist das Bild? Der Rang
-
-Das Bild wird von den Spalten aufgespannt, aber nicht alle Spalten müssen dazu
-beitragen: Ist eine Spalte eine Linearkombination der anderen, so liefert sie
-keine neue Richtung. Die Anzahl der linear unabhängigen Spalten, also die
-Dimension des Bildes, heißt der **Rang** der Matrix.
-
-```{admonition} Was ist ... der Rang einer Matrix?
-:class: note
-Der **Rang** einer Matrix $\mathbf{A}$, geschrieben $\text{Rang}(\mathbf{A})$,
-ist die Dimension des Bildes von $\mathbf{A}$:
-
-\begin{equation*}
-\text{Rang}(\mathbf{A}) = \dim(\text{Bild}(\mathbf{A})).
-\end{equation*}
-
-Der Rang entspricht der maximalen Anzahl linear unabhängiger Spalten (und
-gleichwertig: Zeilen) der Matrix. Für eine $m\times n$-Matrix gilt stets
-$\text{Rang}(\mathbf{A}) \leq \min(m, n)$.
+```{admonition} Besteht das Bild aus den Spalten der Matrix?
+:class: danger
+Nein. Die Spalten liegen im Bild, aber das Bild enthält zusätzlich alle ihre
+Linearkombinationen. Bei $\mathbf{B}$ sind das unendlich viele Vektoren, die
+eine ganze Ebene füllen, zum Beispiel $(6, 3, 3)^{\top}$, der keine Spalte von
+$\mathbf{B}$ ist. Die Spalten spannen das Bild nur auf.
 ```
-
-Wir bestimmen Bild und Rang an zwei Beispielen.
-
-**Beispiel 1:** Für die Matrix
-
-\begin{equation*}
-\mathbf{C} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}
-\end{equation*}
-
-trägt die mittlere Spalte (nur Nullen) nichts zum Bild bei. Die beiden übrigen
-Spalten $\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und
-$\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ sind linear unabhängig, daher gilt:
-
-\begin{equation*}
-\text{Bild}(\mathbf{C}) =
-\left\langle \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
-\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \right\rangle, \quad
-\text{Rang}(\mathbf{C}) = 2.
-\end{equation*}
-
-Das Bild ist die $xz$-Ebene im $\mathbb{R}^3$.
-
-**Beispiel 2:** Für die Matrix
-
-\begin{equation*}
-\mathbf{D} = \begin{pmatrix} 1 & 2 & 2 \\ 1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 1 & 0
-\end{pmatrix} \in \mathbb{R}^{4\times 3}
-\end{equation*}
-
-ist die dritte Spalte ein Vielfaches der ersten:
-$\begin{pmatrix} 2 \\ 2 \\ 0 \\ 0 \end{pmatrix} = 2\cdot\begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}$.
-Sie trägt keine neue Richtung bei. Die ersten beiden Spalten sind linear
-unabhängig, daher gilt:
-
-\begin{equation*}
-\text{Bild}(\mathbf{D}) =
-\left\langle \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix},
-\begin{pmatrix} 2 \\ -1 \\ 0 \\ 1 \end{pmatrix} \right\rangle, \quad
-\text{Rang}(\mathbf{D}) = 2.
-\end{equation*}
 
 ```{dropdown} Video "Bild einer Matrix berechnen" von Loay
 <iframe width="1054" height="593" src="https://www.youtube.com/embed/FD03SOlmnvM"
@@ -168,85 +115,183 @@ picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-## Was verbindet Kern und Bild? Die Dimensionsformel
+## Wie hängen Rang und Kern zusammen?
 
-Im vorigen Abschnitt haben wir für die Matrix $\mathbf{D}$ den Kern berechnet
-und $\dim(\text{Kern}(\mathbf{D})) = 1$ erhalten. Jetzt kennen wir auch den Rang:
-$\text{Rang}(\mathbf{D}) = 2$. Zusammen ergibt das $1 + 2 = 3$, genau die
-Anzahl der Spalten von $\mathbf{D}$. *Ist das Zufall, oder steckt dahinter ein
-allgemeines Gesetz?*
+Der Kern von $\mathbf{B}$ ist nach Kapitel 4.3 die Gerade
+$t\,(1, -2, 1)^{\top}$, das Bild ist die Ebene
+$\langle \vec{b}_1, \vec{b}_2 \rangle$. Eine Gerade beschreiben wir mit einem
+Parameter, eine Ebene mit zweien. *Wie messen wir diese Größe allgemein?* Auf
+einer Geraden durch den Ursprung finden wir nie zwei linear unabhängige
+Vektoren, denn je zwei sind Vielfache voneinander. In einer Ebene finden wir
+zwei, aber keine drei.
 
-```{admonition} Was ist ... die Dimensionsformel?
+```{admonition} Was ist ... die Dimension von Kern und Bild?
 :class: note
-Sei $\mathbf{A} \in \mathbb{R}^{m \times n}$ eine Matrix. Dann gilt:
+Die **Dimension** von Kern oder Bild ist die größte Anzahl linear
+unabhängiger Vektoren, die wir darin finden. Besteht die Menge nur aus dem
+Nullvektor, ist die Dimension $0$. Die Dimension des Bildes heißt **Rang**
+der Matrix:
 
 \begin{equation*}
-\dim(\text{Kern}(\mathbf{A}))
-+ \underbrace{\dim(\text{Bild}(\mathbf{A}))}_{\text{Rang}(\mathbf{A})} = n.
+\text{Rang}(\mathbf{M}) = \dim\big(\text{Bild}(\mathbf{M})\big).
 \end{equation*}
-
-Die Summe aus der Dimension des Kerns und dem Rang der Matrix ergibt immer
-die Anzahl $n$ der Spalten der Matrix.
 ```
 
-Die Formel hat eine anschauliche Bedeutung: Von den $n$ Dimensionen des
-Eingaberaums $\mathbb{R}^n$ werden $\dim(\text{Kern}(\mathbf{A}))$ Dimensionen
-durch die Abbildung auf null reduziert. Diese Dimensionen gehen verloren. Die
-verbleibenden $\text{Rang}(\mathbf{A})$ Dimensionen werden tatsächlich auf den
-Ausgaberaum abgebildet und bilden das Bild.
+Für $\mathbf{B}$ ist also $\dim(\text{Kern}(\mathbf{B})) = 1$ und
+$\text{Rang}(\mathbf{B}) = 2$. Beim Kern der $2\times 3$-Matrix $\mathbf{C}$
+aus Kapitel 4.3 gehören zu den beiden freien Parametern die Vektoren
+$(-2, 1, 0)^{\top}$ und $(1, 0, 1)^{\top}$. Sie sind linear unabhängig, denn
+in der zweiten Komponente steht nur beim ersten, in der dritten nur beim
+zweiten Vektor ein Eintrag ungleich null. So ist es immer: Jeder freie
+Parameter liefert eine eigene Richtung, und die Dimension des Kerns ist die
+Anzahl der freien Parameter.
 
-Im Maschinenbau entspricht das der wohlbekannten Aussage über Freiheitsgrade und
-Bindungen: Ein mechanisches System mit $n$ Koordinaten, das durch $b$ unabhängige
-Bindungsgleichungen eingeschränkt wird, hat $f = n - b$ Freiheitsgrade. Das ist
-genau die Dimensionsformel mit $b = \text{Rang}$ und $f = \dim(\text{Kern})$.
-
-Die Dimensionsformel erlaubt es, eine der beiden Größen direkt aus der anderen
-zu berechnen, ohne erneut ein Gleichungssystem lösen zu müssen. Für eine
-invertierbare $n\times n$-Matrix gilt $\text{Rang}(\mathbf{A}) = n$, also:
+*Und wie finden wir den Rang, ohne nach Abhängigkeiten zwischen den Spalten zu
+suchen?* Wir schauen noch einmal auf die Zeilenstufenform von $\mathbf{B}$ aus
+Kapitel 4.3:
 
 \begin{equation*}
-\dim(\text{Kern}(\mathbf{A})) = n - n = 0.
+\begin{pmatrix} 1 & 2 & 3 \\ 0 & -3 & -6 \\ 0 & 0 & 0 \end{pmatrix}.
 \end{equation*}
 
-Der Kern enthält nur den Nullvektor, die Abbildung ist umkehrbar. Für die
-Steifigkeitsmatrix in der FEM bedeutet das: Sie ist genau dann invertierbar
-und das Gleichungssystem eindeutig lösbar, wenn alle Starrkörperbewegungen
-durch Randbedingungen unterdrückt wurden.
+Die Pivotelemente stehen in der ersten und zweiten Spalte, und genau
+$\vec{b}_1$ und $\vec{b}_2$ spannen das Bild auf. Die dritte Spalte gehört zum
+freien Parameter $t$, und der Kernvektor mit $t = 1$ liefert
+$\vec{b}_1 - 2\,\vec{b}_2 + \vec{b}_3 = \vec{0}$, also gerade ihre
+Abhängigkeit von den Pivotspalten. Allgemein ist jede Spalte ohne
+Pivotelement auf diese Weise eine Linearkombination der Pivotspalten. Die
+Pivotspalten allein sind dagegen linear unabhängig, denn ohne die übrigen
+Spalten bliebe kein freier Parameter übrig.
 
-## Wann ist ein Lastvektor aufnehmbar?
-
-Eine unmittelbare Anwendung von Bild und Dimensionsformel ist die Frage nach
-der Lösbarkeit linearer Gleichungssysteme. In der Strukturmechanik lautet die
-Frage konkret: Kann die gegebene äußere Last $\vec{b}$ durch die inneren Kräfte
-der Struktur aufgenommen werden? Das ist gleichbedeutend damit, ob das
-Gleichungssystem $\mathbf{A}\vec{x} = \vec{b}$ lösbar ist.
+```{admonition} Was besagt die Dimensionsformel?
+:class: note
+Bringen wir eine $m\times n$-Matrix $\mathbf{M}$ auf Zeilenstufenform, so ist
+$\text{Rang}(\mathbf{M})$ die Anzahl der Pivotelemente und
+$\dim(\text{Kern}(\mathbf{M}))$ die Anzahl der Spalten ohne Pivotelement.
+Zusammen ergibt sich die **Dimensionsformel**
 
 \begin{equation*}
-\mathbf{A}\cdot\vec{x} = \vec{b} \text{ ist lösbar}
-\quad\Longleftrightarrow\quad
-\vec{b} \in \text{Bild}(\mathbf{A}).
+\dim\big(\text{Kern}(\mathbf{M})\big) + \text{Rang}(\mathbf{M}) = n.
 \end{equation*}
 
-Das System ist genau dann lösbar, wenn $\vec{b}$ im Bild der Matrix liegt.
-In der Regelungstechnik entspricht dieser Test der Steuerbarkeit: Kann ein
-dynamisches System durch eine geeignete Eingabe in jeden gewünschten Zustand
-überführt werden? Wenn das Bild der Eingangsmatrix den gesamten Zustandsraum
-aufspannt (der Rang also maximal ist), ist das System vollständig steuerbar.
-Den mathematischen Rahmen dafür werden Sie in der Vorlesung Regelungstechnik
-vertiefen.
+Weil in jeder Zeile und in jeder Spalte höchstens ein Pivotelement steht, gilt
+außerdem $\text{Rang}(\mathbf{M}) \leq \min(m, n)$.
+```
 
-Hat $\mathbf{A}$ vollen Spaltenrang ($\text{Rang}(\mathbf{A}) = n$), ist der
-Kern trivial und das Gleichungssystem hat höchstens eine Lösung. Liegt $\vec{b}$
-im Bild, ist diese Lösung eindeutig. Ist der Rang kleiner als $n$, hat das
-System entweder keine Lösung (wenn $\vec{b}$ nicht im Bild liegt) oder unendlich
-viele (weil man zu jeder Lösung beliebige Kernvektoren addieren kann).
+Für $\mathbf{B}$ ist $1 + 2 = 3$, und $n = 3$ ist die Anzahl der Spalten. Bei
+$\mathbf{C}$ sparen wir uns mit der Formel sogar die Suche nach dem Bild. Aus
+$\dim(\text{Kern}(\mathbf{C})) = 2$ folgt $\text{Rang}(\mathbf{C}) = 3 - 2 = 1$,
+und tatsächlich sind alle Spalten Vielfache der ersten, nämlich
+$(2, 4)^{\top} = 2\,(1, 2)^{\top}$ und $(-1, -2)^{\top} = -(1, 2)^{\top}$.
+Also ist $\text{Bild}(\mathbf{C}) = \langle (1, 2)^{\top} \rangle$ eine Gerade.
+Anschaulich gehen von den $n$ Richtungen des Eingaberaums so viele verloren,
+wie der Kern Dimensionen hat, und die übrigen bleiben im Bild erhalten.
 
-Als konkretes Zahlenbeispiel: Für unsere Projektionsmatrix $\mathbf{A}$ liegt
-$\vec{b} = \begin{pmatrix} 3 \\ 5 \\ 0 \end{pmatrix}$ im Bild (dritte Komponente
-null), während $\vec{b} = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ nicht im
-Bild liegt. Das Gleichungssystem $\mathbf{A}\vec{x} = \begin{pmatrix} 0 \\ 0 \\ 1
-\end{pmatrix}$ ist unlösbar: Das Kameramodell kann keinen Punkt außerhalb der
-Bildebene rekonstruieren.
+```{admonition} Liegen Kern und Bild im selben Raum?
+:class: danger
+Nicht unbedingt. Für eine $m\times n$-Matrix besteht der Kern aus
+Eingabevektoren im $\mathbb{R}^n$ und das Bild aus Bildvektoren im
+$\mathbb{R}^m$. Bei $\mathbf{C}$ ist der Kern eine Ebene im $\mathbb{R}^3$,
+das Bild dagegen eine Gerade im $\mathbb{R}^2$. Deshalb steht in der
+Dimensionsformel rechts die Spaltenzahl $n$ und nicht die Zeilenzahl $m$.
+```
+
+```{dropdown} Video "Inverse matrices, column space and null space" von 3Blue1Brown
+<iframe width="1018" height="572" src="https://www.youtube.com/embed/uQhTuRlWMxw" title="Inverse matrices, column space and null space | Chapter 7, Essence of linear algebra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Wann ist ein Gleichungssystem lösbar?
+
+In Kapitel 3.4 haben wir festgehalten, dass ein Gleichungssystem
+$\mathbf{M}\vec{x} = \vec{r}$ mit $\det(\mathbf{M}) = 0$ entweder keine oder
+unendlich viele Lösungen hat. Mit Bild und Kern können wir jetzt vorhersagen,
+welcher Fall eintritt. Ein Vektor $\vec{x}$ löst $\mathbf{B}\vec{x} = \vec{r}$
+genau dann, wenn $\vec{r}$ sein Bild ist. Das System ist also genau dann
+lösbar, wenn $\vec{r}$ im Bild von $\mathbf{B}$ liegt. *Welche rechten Seiten
+sind das?* Wir formen die erweiterte Koeffizientenmatrix aus Kapitel 2.4 mit
+denselben Zeilenumformungen wie in Kapitel 4.3 um, diesmal mit einer
+allgemeinen rechten Seite:
+
+\begin{equation*}
+\left(\begin{array}{ccc|c}
+1 & 2 & 3 & r_1 \\ 2 & 1 & 0 & r_2 \\ 1 & 1 & 1 & r_3
+\end{array}\right)
+\;\to\;
+\left(\begin{array}{ccc|c}
+1 & 2 & 3 & r_1 \\ 0 & -3 & -6 & r_2 - 2r_1 \\ 0 & 0 & 0 & r_3 - \frac{1}{3}(r_1 + r_2)
+\end{array}\right).
+\end{equation*}
+
+Die letzte Zeile lautet $0 = r_3 - \frac{1}{3}(r_1 + r_2)$. Das System ist
+also genau dann lösbar, wenn $r_1 + r_2 - 3r_3 = 0$ gilt, und diese Gleichung
+beschreibt die Ebene $\text{Bild}(\mathbf{B})$. Die Spalten erfüllen sie, etwa
+$\vec{b}_1$ mit $1 + 2 - 3 = 0$. Für $\vec{r} = (1, 0, 0)^{\top}$ ist dagegen
+$1 + 0 - 0 \neq 0$, die letzte Zeile wird zum Widerspruch
+$0 = -\frac{1}{3}$, und es gibt keine Lösung.
+
+Für die rechte Seite $\vec{r} = (6, 3, 3)^{\top}$ aus dem ersten Abschnitt ist
+$6 + 3 - 9 = 0$. Rückwärtseinsetzen mit $x_3 = t$ liefert aus
+$-3x_2 - 6t = 3 - 12 = -9$ den Wert $x_2 = 3 - 2t$ und aus
+$x_1 + 2(3 - 2t) + 3t = 6$ den Wert $x_1 = t$. Die Lösungsmenge ist
+
+\begin{equation*}
+\vec{x} = \begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix} +
+t\begin{pmatrix} 1 \\ -2 \\ 1 \end{pmatrix}, \quad t \in \mathbb{R}.
+\end{equation*}
+
+Das ist eine einzelne Lösung plus der Kern von $\mathbf{B}$. Für $t = 0$
+erhalten wir die Darstellung $3\,\vec{b}_2$ aus dem ersten Abschnitt, für
+$t = 1$ den Vektor $(1, 1, 1)^{\top}$, mit dem wir begonnen haben. Zur Probe
+ist $\mathbf{B}(0, 3, 0)^{\top} = 3\,\vec{b}_2 = (6, 3, 3)^{\top}$, und der
+Kernanteil trägt wegen $\mathbf{B}(1, -2, 1)^{\top} = \vec{0}$ nichts bei. Das
+ist kein Zufall: Lösen $\vec{x}$ und $\vec{y}$ beide das System, so ist
+$\mathbf{B}(\vec{x} - \vec{y}) = \vec{r} - \vec{r} = \vec{0}$, ihre Differenz
+liegt also im Kern.
+
+```{admonition} Wann ist ein Gleichungssystem lösbar?
+:class: note
+Für eine $m\times n$-Matrix $\mathbf{M}$ und $\vec{r} \in \mathbb{R}^m$ gilt:
+
+* $\mathbf{M}\vec{x} = \vec{r}$ ist genau dann lösbar, wenn
+  $\vec{r} \in \text{Bild}(\mathbf{M})$ ist. In der Zeilenstufenform der
+  erweiterten Koeffizientenmatrix trifft dann keine Nullzeile links auf eine
+  Zahl ungleich null rechts.
+* Ist $\vec{x}_p$ eine Lösung, besteht die Lösungsmenge aus allen Vektoren
+  $\vec{x}_p + \vec{k}$ mit $\vec{k} \in \text{Kern}(\mathbf{M})$.
+* Die Lösung ist also genau dann eindeutig, wenn
+  $\text{Kern}(\mathbf{M}) = \{\vec{0}\}$ ist, also wenn
+  $\text{Rang}(\mathbf{M}) = n$ gilt.
+```
+
+Jetzt verstehen wir auch die Aussage aus Kapitel 3.4. Eine quadratische Matrix
+mit $\det(\mathbf{M}) \neq 0$ hat linear unabhängige Spalten und damit den
+Rang $n$. Nach der Dimensionsformel ist ihr Kern $\{\vec{0}\}$, und ihr Bild
+füllt mit $n$ Dimensionen den ganzen $\mathbb{R}^n$, also gibt es für jede
+rechte Seite genau eine Lösung. Bei $\det(\mathbf{M}) = 0$ ist der Rang
+kleiner als $n$. Dann ist das Bild zu klein für manche rechten Seiten, und wo
+es eine Lösung gibt, kommt mit dem Kern eine ganze Schar weiterer Lösungen
+dazu.
+
+```{admonition} Hat ein Gleichungssystem mit mehr Unbekannten als Gleichungen immer unendlich viele Lösungen?
+:class: danger
+Nein, es kann auch unlösbar sein. Für $\mathbf{C}$ aus Kapitel 4.3 und
+$\vec{r} = (1, 0)^{\top}$ lauten die Gleichungen $x_1 + 2x_2 - x_3 = 1$ und
+$2x_1 + 4x_2 - 2x_3 = 0$. Die linke Seite der zweiten Gleichung ist das
+Doppelte der ersten, die rechte nicht, also gibt es keine Lösung. Richtig ist
+nur: Wenn ein solches System lösbar ist, hat es unendlich viele Lösungen, denn
+nach der Dimensionsformel hat der Kern mindestens die Dimension $n - m \geq 1$.
+```
+
+Zum Abschluss fassen wir zusammen, wie der Rang einer $m\times n$-Matrix über
+die Lösungen von $\mathbf{M}\vec{x} = \vec{r}$ entscheidet. Wegen
+$\text{Rang}(\mathbf{M}) \leq \min(m, n)$ gibt es genau vier Fälle.
+
+| Fall | $\dim(\text{Kern})$ | Lösungen von $\mathbf{M}\vec{x} = \vec{r}$ | Beispiel |
+| --- | --- | --- | --- |
+| $\text{Rang} = m = n$ | $0$ | genau eine für jedes $\vec{r}$ | $\mathbf{A}$ |
+| $\text{Rang} = n < m$ | $0$ | keine oder genau eine | $4\times 3$-Matrix $\mathbf{V}$ aus Kapitel 4.3 |
+| $\text{Rang} = m < n$ | $n - m$ | unendlich viele für jedes $\vec{r}$ | Projektion vom $\mathbb{R}^3$ in den $\mathbb{R}^2$ aus Kapitel 4.1 |
+| $\text{Rang} < m$ und $\text{Rang} < n$ | $n - \text{Rang}$ | keine oder unendlich viele | $\mathbf{P}$, $\mathbf{B}$, $\mathbf{C}$ |
 
 ```{dropdown} Video "Rang einer Matrix, Lösbarkeit von LGS" von Mathematische Methoden
 <iframe width="1020" height="574" src="https://www.youtube.com/embed/UNDha90yrT0"
@@ -256,25 +301,15 @@ picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-## Übersicht: Kern, Bild, Rang und Dimensionsformel
-
-| Situation | $\dim(\text{Kern})$ | Rang | Bedeutung in der Praxis |
-| --- | --- | --- | --- |
-| Invertierbare $n\times n$-Matrix | $0$ | $n$ | Eindeutig lösbar, zum Beispiel gelagerte FEM-Struktur |
-| Singuläre $n\times n$-Matrix | $\geq 1$ | $< n$ | Unendlich viele Lösungen oder unlösbar |
-| Projektion auf Unterraum | $\geq 1$ | $< n$ | Dimensionsverlust, zum Beispiel Kameramodell |
-| Nicht quadratisch, voller Rang | $n - m$ | $m$ | Überbestimmtes oder unterbestimmtes System |
-
 ## Zusammenfassung und Ausblick
 
-Das Bild einer Matrix ist die Menge aller erreichbaren Ausgabevektoren: Es wird
-durch die Spalten der Matrix aufgespannt, und der Rang gibt die Anzahl der linear
-unabhängigen Spalten an. Die Dimensionsformel
-$\dim(\text{Kern}(\mathbf{A})) + \text{Rang}(\mathbf{A}) = n$ verbindet diese
-beiden Konzepte: Von den $n$ Eingabedimensionen werden einige im Kern vernichtet
-und die übrigen bilden das Bild, analog zu Freiheitsgraden und Bindungen in der
-Mechanik. Das Lösbarkeitsskriterium $\vec{b} \in \text{Bild}(\mathbf{A})$ ist
-der Schlüssel zur Analyse von Tragwerken und Regelungssystemen auf ihre
-Lösbarkeit. Im nächsten Abschnitt stellen wir das letzte Konzept dieses Kapitels
-vor: die Koordinatendarstellung eines Vektors bezüglich einer anderen Basis, die
-uns direkt auf das Thema Eigenwerte und Eigenvektoren in Kapitel 5 vorbereitet.
+Das Bild einer Matrix ist die lineare Hülle ihrer Spalten, und seine Dimension
+ist der Rang. Wir bestimmen ihn wie den Kern mit dem Gauß-Algorithmus, indem
+wir die Pivotelemente zählen, und die Dimensionsformel verbindet beide Größen
+mit der Spaltenzahl. Ein Gleichungssystem ist genau dann lösbar, wenn die
+rechte Seite im Bild liegt, und seine Lösungen unterscheiden sich um Vektoren
+aus dem Kern. In Kapitel 5.1 nennen wir linear unabhängige Vektoren, deren
+lineare Hülle der ganze Raum ist, eine Basis und stellen Vektoren in einer
+solchen Basis dar. Die Dimensionsformel begegnet uns in Kapitel 6 wieder, wenn
+wir zählen, wie viele linear unabhängige Eigenvektoren zu einem Eigenwert
+gehören.
