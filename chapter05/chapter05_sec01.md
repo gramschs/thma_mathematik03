@@ -5,172 +5,332 @@ authors:
 
 # 5.1 Basis und Koordinaten
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-Bisher haben wir Vektoren stets in kartesischen Koordinaten beschrieben, also
-bezüglich der Standardbasis mit den Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und
-$\vec{e}_3$. In der Ingenieurpraxis ist die Standardbasis jedoch häufig nicht die
-sinnvollste Wahl. Ein Konstrukteur beschreibt ein Bauteil im körperfesten
-Koordinatensystem, das mit dem Bauteil mitdreht. Ein Schwingungsanalytiker wählt
-die Eigenformen des Systems als Basis, weil die Bewegungsgleichungen in dieser
-Basis vollständig entkoppeln. In diesem Kapitel lernen wir, wie man denselben Vektor in verschiedenen Basen darstellt.
+In Kapitel 4.2 haben wir eine lineare Abbildung aus den Bildern von nur zwei
+Vektoren zurückgewonnen, und in Kapitel 4.3 und 4.4 haben wir gelernt, wann
+Vektoren linear unabhängig sind und welche Vektoren sich aus ihnen
+kombinieren lassen. Jetzt führen wir beides zusammen und suchen Vektoren, aus
+denen sich jeder Vektor auf genau eine Weise zusammensetzen lässt. Die
+Vorfaktoren dieser Zusammensetzung beschreiben einen Vektor dann genauso gut
+wie seine gewohnten Komponenten. Im Maschinenbau beschreibt man so zum
+Beispiel ein Bauteil in einem körperfesten Koordinatensystem, das sich mit dem
+Bauteil mitbewegt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie wissen, was eine **Basis** des $\mathbb{R}^n$ ist, und kennen die
-  **kanonische Basis**.
-* Sie können einen Vektor $\vec{a} \in \mathbb{R}^n$ als **Linearkombination**
-  von Basisvektoren darstellen.
-* Sie kennen den **Koordinatenvektor** $[\vec{a}]_V$ eines Vektors $\vec{a}$
-  bezüglich einer Basismatrix $V$ und können ihn berechnen.
-* Sie können den **Koordinatenvektor** $[\vec{a}]_V$ berechnen, indem Sie das lineare
-  Gleichungssystem $V \cdot [\vec{a}]_V = \vec{a}$ lösen.
+* [ ] Sie wissen, wann Vektoren eine **Basis** des $\mathbb{R}^n$ bilden, und
+  kennen die **kanonische Basis**.
+* [ ] Sie können mit der Determinante oder dem Gauß-Algorithmus prüfen, ob
+  $n$ Vektoren eine Basis des $\mathbb{R}^n$ bilden.
+* [ ] Sie können einen Vektor als Linearkombination von Basisvektoren
+  darstellen und seinen **Koordinatenvektor** $[\vec{x}]_{\mathbf{M}}$
+  angeben.
+* [ ] Sie können den Koordinatenvektor aus dem Gleichungssystem
+  $\mathbf{M}\,[\vec{x}]_{\mathbf{M}} = \vec{x}$ oder mit der Inversen als
+  $[\vec{x}]_{\mathbf{M}} = \mathbf{M}^{-1}\vec{x}$ berechnen.
+* [ ] Sie wissen, in welche Richtung $\mathbf{M}$ und $\mathbf{M}^{-1}$ beim
+  **Basiswechsel** umrechnen.
 ```
 
-## Wiederholung: Lineare Unabhängigkeit und Basis
+## Was ist eine Basis?
 
-Bevor wir die Koordinatendarstellung einführen, erinnern wir uns an die notwendigen
-Grundbegriffe.
-
-Vektoren $\vec{v}_1, \ldots, \vec{v}_m \in \mathbb{R}^n$ heißen **linear
-unabhängig**, wenn die Vektorgleichung
-
-\begin{equation*}
-\lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_m \vec{v}_m = \vec{0}
-\end{equation*}
-
-nur für $\lambda_1 = \lambda_2 = \cdots = \lambda_m = 0$ erfüllt wird. Kein Vektor
-lässt sich dann als Linearkombination der anderen darstellen.
-
-Eine Menge von $n$ linear unabhängigen Vektoren $\vec{v}_1, \ldots, \vec{v}_n$
-im $\mathbb{R}^n$ heißt **Basis** des $\mathbb{R}^n$. Eine Basis ermöglicht es,
-jeden Vektor $\vec{a} \in \mathbb{R}^n$ als eindeutige Linearkombination der
-Basisvektoren darzustellen.
-
-Der Zusammenhang zwischen linearer Unabhängigkeit und Determinante ist dabei
-besonders nützlich. Fasst man die Basisvektoren als Spalten einer quadratischen
-Matrix $V$ zusammen, so gilt:
+In Kapitel 4.1 und 4.2 haben wir jeden Vektor der Ebene aus den
+Einheitsvektoren $\vec{e}_1$ und $\vec{e}_2$ zusammengesetzt. Für
+$\vec{v} = (1, 5)^{\top}$ ist das $\vec{v} = 1\,\vec{e}_1 + 5\,\vec{e}_2$, und
+die Komponenten $1$ und $5$ geben an, wie weit wir in Richtung $\vec{e}_1$ und
+in Richtung $\vec{e}_2$ gehen. *Klappt das auch mit zwei anderen Vektoren?*
+Als durchgehendes Beispiel für dieses Kapitel nehmen wir
 
 \begin{equation*}
-\det(V) \neq 0 \quad \Longleftrightarrow \quad \vec{v}_1, \ldots, \vec{v}_n \text{ sind linear unabhängig.}
+\vec{a}_1 = \begin{pmatrix} 2 \\ 1 \end{pmatrix}, \quad
+\vec{a}_2 = \begin{pmatrix} -1 \\ 1 \end{pmatrix}
 \end{equation*}
 
-## Die kanonische Basis
+und suchen Zahlen $\lambda_1$ und $\lambda_2$ mit
+$\lambda_1\vec{a}_1 + \lambda_2\vec{a}_2 = \vec{v}$. Komponentenweise sind das
+die beiden Gleichungen $2\lambda_1 - \lambda_2 = 1$ und
+$\lambda_1 + \lambda_2 = 5$. Addieren wir sie, fällt $\lambda_2$ heraus, und
+aus $3\lambda_1 = 6$ folgt $\lambda_1 = 2$ und damit $\lambda_2 = 3$. Zur Probe
+rechnen wir
+$2\,(2, 1)^{\top} + 3\,(-1, 1)^{\top} = (4 - 3,\ 2 + 3)^{\top} = (1, 5)^{\top}$.
 
-Die einfachste und am häufigsten verwendete Basis ist die **kanonische Basis** (auch
-Standardbasis genannt). Im $\mathbb{R}^2$ besteht sie aus den beiden Einheitsvektoren
+*Gelingt das mit jedem Vektor der Ebene?* Die beiden Gleichungen bilden das
+Gleichungssystem $\mathbf{A}\vec{\lambda} = \vec{v}$ mit
 
 \begin{equation*}
-\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad
-\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix},
+\mathbf{A} = \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix}.
 \end{equation*}
 
-und im $\mathbb{R}^3$ aus den drei Einheitsvektoren
+In den Spalten von $\mathbf{A}$ stehen $\vec{a}_1$ und $\vec{a}_2$, und
+$\vec{\lambda} = (\lambda_1, \lambda_2)^{\top}$ enthält die gesuchten
+Vorfaktoren. Wegen $\det(\mathbf{A}) = 2\cdot 1 - (-1)\cdot 1 = 3 \neq 0$ hat
+dieses Gleichungssystem nach Kapitel 4.4 für jede rechte Seite genau eine
+Lösung. Jeder Vektor der Ebene lässt sich also aus $\vec{a}_1$ und
+$\vec{a}_2$ zusammensetzen, und zwar auf genau eine Weise.
+
+Dabei kann zweierlei schiefgehen. Ersetzen wir $\vec{a}_2$ durch
+$2\,\vec{a}_1 = (4, 2)^{\top}$, zeigen beide Vektoren in dieselbe Richtung.
+Ihre Linearkombinationen füllen nur die Gerade durch $\vec{a}_1$, und
+$\vec{v}$ ist nicht erreichbar. Nehmen wir dagegen zu $\vec{a}_1$ und
+$\vec{a}_2$ noch $\vec{a}_3 = \vec{v}$ hinzu, ist zwar jeder Vektor
+erreichbar, aber nicht mehr eindeutig. So ist
+$\vec{v} = 2\,\vec{a}_1 + 3\,\vec{a}_2 + 0\,\vec{a}_3$ und zugleich
+$\vec{v} = 0\,\vec{a}_1 + 0\,\vec{a}_2 + 1\,\vec{a}_3$.
+
+In beiden Fällen sind die Vektoren linear abhängig. Für die Eindeutigkeit
+brauchen wir also linear unabhängige Vektoren, und damit jeder Vektor
+erreichbar ist, brauchen wir genug davon. Nach Kapitel 4.3 sind mehr als $n$
+Vektoren im $\mathbb{R}^n$ immer linear abhängig. Bei weniger als $n$ Vektoren
+hat die Matrix mit diesen Spalten nach Kapitel 4.4 einen Rang kleiner als $n$,
+und ihr Bild ist nicht der ganze $\mathbb{R}^n$. Es müssen also genau $n$
+linear unabhängige Vektoren sein, und der $\mathbb{R}^n$ hat im Sinne von
+Kapitel 4.4 die Dimension $n$.
+
+```{admonition} Was ist ... eine Basis?
+:class: note
+$n$ linear unabhängige Vektoren $\vec{m}_1, \ldots, \vec{m}_n \in \mathbb{R}^n$
+bilden eine **Basis** des $\mathbb{R}^n$. Jeder Vektor
+$\vec{x} \in \mathbb{R}^n$ lässt sich dann auf genau eine Weise als
+Linearkombination
 
 \begin{equation*}
-\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
-\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}, \quad
-\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}.
+\vec{x} = \lambda_1\vec{m}_1 + \lambda_2\vec{m}_2 + \ldots + \lambda_n\vec{m}_n
 \end{equation*}
 
-Bezüglich der kanonischen Basis sind die Koordinaten eines Vektors $\vec{a}$ gerade
-seine Einträge selbst:
+der Basisvektoren schreiben. Ob $n$ Vektoren eine Basis bilden, prüfen wir mit
+der Matrix $\mathbf{M}$, in deren Spalten sie stehen. Sie bilden genau dann
+eine Basis, wenn $\det(\mathbf{M}) \neq 0$ ist, oder gleichwertig, wenn der
+Gauß-Algorithmus in jeder Spalte von $\mathbf{M}$ ein Pivotelement liefert.
+Die Einheitsvektoren $\vec{e}_1, \ldots, \vec{e}_n$ bilden die **kanonische
+Basis**.
+```
+
+Für unser Beispiel ist $n = 2$, und wegen $\det(\mathbf{A}) = 3 \neq 0$ bilden
+$\vec{a}_1$ und $\vec{a}_2$ eine Basis des $\mathbb{R}^2$. Für $\vec{a}_1$ und
+$2\,\vec{a}_1$ ist dagegen die Determinante $2\cdot 2 - 4\cdot 1 = 0$, wie es
+nach der Überlegung oben sein muss. Auch die Einheitsvektoren bilden eine
+Basis, denn ihre Matrix ist die Einheitsmatrix $\mathbf{E}$ mit
+$\det(\mathbf{E}) = 1$. Die Ebene hat also mehr als eine Basis, tatsächlich
+sogar unendlich viele. Die kanonische Basis ist nur die bequemste, weil die
+Vorfaktoren dort einfach die Komponenten sind, wie bei
+$\vec{v} = 1\,\vec{e}_1 + 5\,\vec{e}_2$.
+
+```{admonition} Bilden linear unabhängige Vektoren immer eine Basis?
+:class: danger
+Nur wenn es genau $n$ Vektoren im $\mathbb{R}^n$ sind. Die Vektoren
+$(1, 2, 1)^{\top}$ und $(2, 1, 1)^{\top}$ aus Kapitel 4.4 sind linear
+unabhängig, spannen aber nur eine Ebene im $\mathbb{R}^3$ auf. Den Vektor
+$(1, 0, 0)^{\top}$ können wir aus ihnen nicht zusammensetzen, sie bilden also
+keine Basis des $\mathbb{R}^3$.
+```
+
+## Wie stellen wir einen Vektor in einer anderen Basis dar?
+
+Im ersten Abschnitt haben wir $\vec{v} = 2\,\vec{a}_1 + 3\,\vec{a}_2$
+gefunden. Die folgende Abbildung zeigt, was das geometrisch bedeutet. Links
+erreichen wir die Spitze von $\vec{v}$, indem wir eine Einheit nach rechts und
+fünf Einheiten nach oben gehen. Rechts gehen wir zweimal den Pfeil
+$\vec{a}_1$ entlang und dann dreimal den Pfeil $\vec{a}_2$. Die hellblauen
+Linien bilden ein schiefes Gitter, das die Basis $\vec{a}_1, \vec{a}_2$ über
+die Ebene legt, so wie die Kästchen links das Gitter der kanonischen Basis
+bilden.
+
+```{figure} pics/vektor_zwei_basen.svg
+---
+name: vektor_zwei_basen
+---
+Darstellung des Vektors $\vec{v}$ bezüglich der kanonischen Basis (links) und
+bezüglich der Basis $\vec{a}_1, \vec{a}_2$ mit ihrem Gitter (rechts).
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Es ist derselbe Pfeil, nur in zwei verschiedenen Gittern beschrieben. Die
+Zahlen $1$ und $5$ beschreiben $\vec{v}$ bezüglich der kanonischen Basis, die
+Zahlen $2$ und $3$ bezüglich der Basis $\vec{a}_1, \vec{a}_2$. Kennen wir die
+Basis, legt jedes der beiden Zahlenpaare den Vektor eindeutig fest. *Wie
+schreiben wir auf, welches Zahlenpaar zu welcher Basis gehört?*
+
+```{admonition} Was ist ... der Koordinatenvektor bezüglich einer Basis?
+:class: note
+Bilden die Spalten $\vec{m}_1, \ldots, \vec{m}_n$ der Matrix $\mathbf{M}$
+eine Basis des $\mathbb{R}^n$, so heißen die Vorfaktoren
+$\lambda_1, \ldots, \lambda_n$ in
 
 \begin{equation*}
-\vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
-= a_1 \cdot \vec{e}_1 + a_2 \cdot \vec{e}_2 + a_3 \cdot \vec{e}_3.
+\vec{x} = \lambda_1\vec{m}_1 + \lambda_2\vec{m}_2 + \ldots + \lambda_n\vec{m}_n
 \end{equation*}
 
-## Koordinatenvektoren bezüglich einer neuen Basis
-
-Sei nun $V = (\vec{v}_1 \mid \vec{v}_2 \mid \cdots \mid \vec{v}_n)$ eine
-invertierbare $n \times n$-Matrix mit den Basisvektoren $\vec{v}_1, \ldots, \vec{v}_n$
-als Spalten.
-Jeder Vektor $\vec{a} \in \mathbb{R}^n$ lässt sich eindeutig als Linearkombination
-der Spalten schreiben:
+die **Koordinaten** von $\vec{x}$ bezüglich dieser Basis. Zusammen bilden sie
+den **Koordinatenvektor**
 
 \begin{equation*}
-\vec{a} = \lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_n \vec{v}_n.
+[\vec{x}]_{\mathbf{M}} = \begin{pmatrix} \lambda_1 \\ \vdots \\ \lambda_n \end{pmatrix}.
 \end{equation*}
 
-Die Koeffizienten $\lambda_1, \lambda_2, \ldots, \lambda_n$ dieser Linearkombination
-heißen die **Koordinaten** von $\vec{a}$ bezüglich der Basismatrix $V$. Sie werden im
-**Koordinatenvektor** zusammengefasst:
+Wir berechnen ihn als Lösung des Gleichungssystems
+$\mathbf{M}\,[\vec{x}]_{\mathbf{M}} = \vec{x}$.
+```
+
+Für unser Beispiel lesen wir die beiden Koordinatenvektoren direkt ab:
 
 \begin{equation*}
-[\vec{a}]_V = \begin{pmatrix} \lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_n \end{pmatrix}.
+[\vec{v}]_{\mathbf{E}} = \begin{pmatrix} 1 \\ 5 \end{pmatrix} = \vec{v}, \quad
+[\vec{v}]_{\mathbf{A}} = \begin{pmatrix} 2 \\ 3 \end{pmatrix}.
 \end{equation*}
 
-Derselbe geometrische Vektor $\vec{a}$ wird durch verschiedene Zahlentupel
-beschrieben, je nachdem welche Basis verwendet wird. Das geometrische Objekt selbst
-ändert sich nicht, nur seine Darstellung.
-
-## Berechnung des Koordinatenvektors
-
-Die Berechnung des Koordinatenvektors $[\vec{a}]_V$ führt auf ein lineares
-Gleichungssystem. Schreibt man die Gleichung in Matrixform, erhält man:
+Bezüglich der kanonischen Basis ist der Koordinatenvektor also der Vektor
+selbst, und seine Einträge nennen wir deshalb auch Standardkoordinaten. Manche
+Bücher schreiben statt $[\vec{v}]_{\mathbf{A}}$ auch
+${}_{\mathbf{A}}\vec{v}$. Zur Probe setzen wir $[\vec{v}]_{\mathbf{A}}$ in das
+Gleichungssystem ein:
 
 \begin{equation*}
-\vec{a} = V \cdot [\vec{a}]_V.
+\mathbf{A}\,[\vec{v}]_{\mathbf{A}}
+= \begin{pmatrix} 2 & -1 \\ 1 & 1 \end{pmatrix}
+\begin{pmatrix} 2 \\ 3 \end{pmatrix}
+= \begin{pmatrix} 4 - 3 \\ 2 + 3 \end{pmatrix}
+= \begin{pmatrix} 1 \\ 5 \end{pmatrix} = \vec{v}.
 \end{equation*}
 
-Da $V$ aus linear unabhängigen Vektoren besteht, ist $\det(V) \neq 0$ und die Matrix
-ist invertierbar. Der Koordinatenvektor ergibt sich daher durch:
+*Und im Raum?* Dort lösen wir das Gleichungssystem mit dem Gauß-Algorithmus
+aus Kapitel 4.3. Wir bestimmen die Koordinaten von $\vec{w} = (1, 2, 3)^{\top}$
+bezüglich der Vektoren $\vec{b}_1 = (1, 1, 0)^{\top}$,
+$\vec{b}_2 = (0, 2, -2)^{\top}$ und $\vec{b}_3 = (-1, 0, -2)^{\top}$, also
+bezüglich der Spalten von
 
 \begin{equation*}
-[\vec{a}]_V = V^{-1} \cdot \vec{a}.
+\mathbf{B} = \begin{pmatrix} 1 & 0 & -1 \\ 1 & 2 & 0 \\ 0 & -2 & -2 \end{pmatrix}.
 \end{equation*}
 
-In der Praxis berechnet man $[\vec{a}]_V$ meist nicht über die explizite Inverse,
-sondern durch Lösung des Gleichungssystems $V \cdot [\vec{a}]_V = \vec{a}$ mit dem
-Gauß-Algorithmus.
-
-## Vollständiges Beispiel
-
-Wir berechnen die Koordinaten des Vektors $\vec{a} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$
-bezüglich der Basismatrix
+Ob die Spalten überhaupt eine Basis bilden, müssen wir nicht vorab prüfen,
+denn das zeigt uns der Gauß-Algorithmus nebenbei. Wir formen die erweiterte
+Koeffizientenmatrix aus Kapitel 2.4 um:
 
 \begin{equation*}
-V = (\vec{v}_1 \mid \vec{v}_2 \mid \vec{v}_3)
-\quad \text{mit} \quad
-\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
-\vec{v}_2 = \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix}, \quad
-\vec{v}_3 = \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
+\left(\begin{array}{ccc|c}
+1 & 0 & -1 & 1 \\ 1 & 2 & 0 & 2 \\ 0 & -2 & -2 & 3
+\end{array}\right)
+\;\to\;
+\left(\begin{array}{ccc|c}
+1 & 0 & -1 & 1 \\ 0 & 2 & 1 & 1 \\ 0 & -2 & -2 & 3
+\end{array}\right)
+\;\to\;
+\left(\begin{array}{ccc|c}
+1 & 0 & -1 & 1 \\ 0 & 2 & 1 & 1 \\ 0 & 0 & -1 & 4
+\end{array}\right).
 \end{equation*}
 
-Zunächst überprüfen wir, ob die Vektoren tatsächlich eine Basis bilden. Wir berechnen
-die Determinante der Koeffizientenmatrix $V = \begin{pmatrix} 1 & 0 & -1 \\ 1 & 2 & 0 \\ 0 & -2 & -2 \end{pmatrix}$.
-Es gilt $\det(V) \neq 0$, also sind die drei Vektoren linear unabhängig und bilden
-eine Basis des $\mathbb{R}^3$.
-
-Wir suchen $\lambda_1, \lambda_2, \lambda_3$ mit $\vec{a} = \lambda_1 \vec{v}_1 +
-\lambda_2 \vec{v}_2 + \lambda_3 \vec{v}_3$, also
+Dafür rechnen wir erst $Z_2 \to Z_2 - Z_1$ und dann $Z_3 \to Z_3 + Z_2$. In
+jeder Spalte steht ein Pivotelement, die Spalten von $\mathbf{B}$ bilden also
+eine Basis. Passend dazu ist nach Kapitel 3.3
+$\det(\mathbf{B}) = 1\cdot 2\cdot(-1) = -2 \neq 0$. Rückwärtseinsetzen liefert
+$\lambda_3 = -4$, aus $2\lambda_2 - 4 = 1$ folgt $\lambda_2 = \frac{5}{2}$, und
+aus $\lambda_1 + 4 = 1$ folgt $\lambda_1 = -3$. Also ist
 
 \begin{equation*}
-\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
-= \lambda_1 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} +
-\lambda_2 \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix} +
-\lambda_3 \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
+[\vec{w}]_{\mathbf{B}} = \begin{pmatrix} -3 \\ \frac{5}{2} \\ -4 \end{pmatrix}.
 \end{equation*}
 
-Mit dem Gauß-Algorithmus erhält man die Lösung:
+Zur Probe setzen wir die Koordinaten als Vorfaktoren ein und erhalten
+$-3\,\vec{b}_1 + \frac{5}{2}\,\vec{b}_2 - 4\,\vec{b}_3
+= (-3 + 0 + 4,\ -3 + 5 + 0,\ 0 - 5 + 8)^{\top} = (1, 2, 3)^{\top}$.
+
+```{admonition} Spielt die Reihenfolge der Basisvektoren eine Rolle?
+:class: danger
+Ja. Die Koordinaten gehören in derselben Reihenfolge zu den Basisvektoren, in
+der diese als Spalten in der Matrix stehen. Vertauschen wir $\vec{a}_1$ und
+$\vec{a}_2$, erhalten wir für $\vec{v}$ den Koordinatenvektor
+$(3, 2)^{\top}$ statt $(2, 3)^{\top}$. Zu einer Basis gehört deshalb immer
+auch die Reihenfolge ihrer Vektoren.
+```
+
+```{dropdown} Video "Change of basis" von 3Blue1Brown
+<iframe width="1054" height="593" src="https://www.youtube.com/embed/P2LTAUO1TdA"
+title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Was hat der Basiswechsel mit der Inversen zu tun?
+
+Für jeden neuen Vektor ein Gleichungssystem zu lösen, ist mühsam. *Geht es
+schneller, wenn wir viele Vektoren in die Basis $\vec{a}_1, \vec{a}_2$
+umrechnen wollen?* In Kapitel 2.4 haben wir $\mathbf{A}\vec{x} = \vec{b}$
+gelöst, indem wir beide Seiten von links mit $\mathbf{A}^{-1}$ multipliziert
+haben. Genauso wird aus $\mathbf{A}\,[\vec{v}]_{\mathbf{A}} = \vec{v}$ die
+Gleichung $[\vec{v}]_{\mathbf{A}} = \mathbf{A}^{-1}\vec{v}$. Mit der Formel
+aus Kapitel 2.2 und $\det(\mathbf{A}) = 3$ erhalten wir
 
 \begin{equation*}
-\lambda_1 = -3, \quad \lambda_2 = \frac{5}{2}, \quad \lambda_3 = -4,
+\mathbf{A}^{-1} = \frac{1}{3}\begin{pmatrix} 1 & 1 \\ -1 & 2 \end{pmatrix},
+\quad
+[\vec{v}]_{\mathbf{A}} = \mathbf{A}^{-1}\vec{v}
+= \frac{1}{3}\begin{pmatrix} 1 & 1 \\ -1 & 2 \end{pmatrix}
+\begin{pmatrix} 1 \\ 5 \end{pmatrix}
+= \frac{1}{3}\begin{pmatrix} 6 \\ 9 \end{pmatrix}
+= \begin{pmatrix} 2 \\ 3 \end{pmatrix}.
 \end{equation*}
 
-und damit den Koordinatenvektor:
+Das ist derselbe Koordinatenvektor wie im ersten Abschnitt, diesmal ohne
+Gleichungssystem. Die Matrix $\mathbf{A}$ selbst rechnet in die andere
+Richtung. Nach Kapitel
+4.1 setzt das Produkt $\mathbf{A}\,[\vec{v}]_{\mathbf{A}}$ die Spalten von
+$\mathbf{A}$ mit den Koordinaten als Vorfaktoren zusammen, also
+$2\,\vec{a}_1 + 3\,\vec{a}_2 = \vec{v}$. Aus den Koordinaten bezüglich
+$\vec{a}_1, \vec{a}_2$ macht $\mathbf{A}$ also Standardkoordinaten. Die
+Inverse macht das wie in Kapitel 4.1 rückgängig und übersetzt
+Standardkoordinaten zurück in Koordinaten bezüglich $\vec{a}_1, \vec{a}_2$.
+
+```{admonition} Wie rechnen wir beim Basiswechsel um?
+:class: note
+Bilden die Spalten der Matrix $\mathbf{M}$ eine Basis des $\mathbb{R}^n$, so
+ist $\mathbf{M}$ invertierbar, und für jeden Vektor $\vec{x} \in \mathbb{R}^n$
+gilt
 
 \begin{equation*}
-[\vec{a}]_V = \begin{pmatrix} -3 \\ \frac{5}{2} \\ -4 \end{pmatrix}.
+\vec{x} = \mathbf{M}\,[\vec{x}]_{\mathbf{M}}
+\quad \text{und} \quad
+[\vec{x}]_{\mathbf{M}} = \mathbf{M}^{-1}\vec{x}.
 \end{equation*}
+
+Die Matrix $\mathbf{M}$ rechnet Koordinaten bezüglich der Basis in
+Standardkoordinaten um, ihre Inverse $\mathbf{M}^{-1}$ rechnet zurück. Diesen
+Wechsel der Darstellung nennen wir **Basiswechsel**.
+```
+
+Für jeden weiteren Vektor genügt jetzt eine einzige Multiplikation mit
+$\mathbf{A}^{-1}$. So hat $\vec{u} = (4, -1)^{\top}$ die Koordinaten
+$[\vec{u}]_{\mathbf{A}} = \frac{1}{3}(4 - 1,\ -4 - 2)^{\top} = (1, -2)^{\top}$.
+Zur Probe rechnen wir mit $\mathbf{A}$ zurück und erhalten
+$\vec{a}_1 - 2\,\vec{a}_2 = (2 + 2,\ 1 - 2)^{\top} = (4, -1)^{\top}$.
+
+*Was verraten die Spalten von $\mathbf{A}^{-1}$?* Multiplizieren wir
+$\mathbf{A}^{-1}$ mit $\vec{e}_1$, kommt nach Kapitel 4.1 die erste Spalte
+heraus. Also ist $[\vec{e}_1]_{\mathbf{A}} = (\frac{1}{3}, -\frac{1}{3})^{\top}$
+und ebenso $[\vec{e}_2]_{\mathbf{A}} = (\frac{1}{3}, \frac{2}{3})^{\top}$. Zur
+Probe ist
+$\frac{1}{3}\vec{a}_1 - \frac{1}{3}\vec{a}_2 = \frac{1}{3}(2 + 1,\ 1 - 1)^{\top} = (1, 0)^{\top}$.
+Die Spalten von $\mathbf{A}$ sind also die neuen Basisvektoren in
+Standardkoordinaten, und die Spalten von $\mathbf{A}^{-1}$ sind die alten
+Basisvektoren $\vec{e}_1, \vec{e}_2$ in den neuen Koordinaten.
+
+```{admonition} Berechnen wir die Koordinaten mit $\mathbf{A}$ oder mit $\mathbf{A}^{-1}$?
+:class: danger
+Mit $\mathbf{A}^{-1}$. Es liegt nahe, $\vec{v}$ einfach mit der Matrix der
+neuen Basis zu multiplizieren, doch
+$\mathbf{A}\vec{v} = (2 - 5,\ 1 + 5)^{\top} = (-3, 6)^{\top}$ ist nicht der
+Koordinatenvektor $(2, 3)^{\top}$. Eine Probe deckt den Fehler sofort auf, denn
+mit $-3$ und $6$ als Vorfaktoren erhalten wir
+$-3\,\vec{a}_1 + 6\,\vec{a}_2 = (-12, 3)^{\top} \neq \vec{v}$.
+```
+
+*Lohnt sich die Inverse also immer?* Wie in Kapitel 2.4 hängt das davon ab,
+wie viele Vektoren wir umrechnen. Für den einen Vektor $\vec{w}$ im Raum war
+der Gauß-Algorithmus schneller, als es die Berechnung von $\mathbf{B}^{-1}$
+mit dem Gauß-Jordan-Algorithmus gewesen wäre. Müssen wir dagegen viele
+Vektoren umrechnen, berechnen wir die Inverse einmal und multiplizieren danach
+nur noch. In Kapitel 5.2 lernen wir Basen kennen, bei denen wir die Inverse
+sogar ganz ohne Rechnung hinschreiben können.
 
 ```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" von The Bright Side of Mathematics
 <iframe width="1054" height="585" src="https://www.youtube.com/embed/FFVauAY_FMI"
@@ -186,88 +346,16 @@ frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media
 picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video (EN) "Change of basis" von 3Blue1Brown
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/P2LTAUO1TdA"
-title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-## Anwendungen im Maschinenbau
-
-Die Koordinatendarstellung bezüglich einer Basis ist in der Ingenieurpraxis überall
-präsent. Die folgenden Beispiele zeigen, wie sich der Stoff aus diesem Kapitel in
-den späteren Vorlesungen wiederfinden wird. In vielen dieser Anwendungen wird später
-auch der allgemeine Wechsel zwischen zwei beliebigen Basen benötigt; die hier
-entwickelten Grundlagen sind dafür die notwendige Vorbereitung.
-
-**Roboterkinematik:** Ein Roboterarm wird zunächst in einem weltfesten
-Koordinatensystem beschrieben. Für die Steuerung der Gelenke ist es günstiger, die
-Koordinaten im körperfesten System des jeweiligen Armgliedes anzugeben. Der Übergang
-zwischen beiden Systemen ist eine Koordinatentransformation, die sich als
-Matrixmultiplikation darstellt. In der Vorlesung Robotik werden Sie die sogenannte
-Denavit-Hartenberg-Konvention kennenlernen, die systematisch solche Transformationen
-entlang der Gelenkkette aufstellt.
-
-**Hauptachsentransformation in der Festigkeitslehre:** Der allgemeine Spannungszustand
-in einem Punkt eines Bauteils wird durch den Spannungstensor beschrieben, eine
-symmetrische $3\times 3$-Matrix. In einem geeignet gewählten Koordinatensystem, den
-sogenannten Hauptachsen, nimmt dieser Tensor eine Diagonalgestalt an. Die
-Diagonalelemente sind die Hauptspannungen $\sigma_1$, $\sigma_2$, $\sigma_3$, die
-entscheidend für die Festigkeitsbewertung sind. Die geeigneten Basisvektoren heißen
-Eigenvektoren, und die Hauptspannungen heißen Eigenwerte. Den mathematischen Apparat
-dafür werden Sie im nächsten Kapitel kennenlernen.
-
-**Modalanalyse in der Schwingungstechnik:** Bei der Analyse von Maschinenschwingungen
-wählt man die Eigenformen des schwingenden Systems als neue Basis. In dieser Basis
-zerfällt das gekoppelte Differentialgleichungssystem mit vielen wechselwirkenden
-Freiheitsgraden in vollständig entkoppelte Einzelschwingungen. Jede Eigenform kann
-dann getrennt analysiert werden. Die mathematische Grundlage dafür ist das Kapitel
-über Eigenwerte und Eigenvektoren sowie die Diagonalisierung, die in den folgenden
-Kapiteln behandelt werden.
-
-**FEM: Lokale und globale Koordinaten:** In der Finite-Elemente-Methode werden
-Steifigkeitsmatrizen zunächst im lokalen Koordinatensystem jedes Elements berechnet
-und dann durch Koordinatentransformation in das globale Koordinatensystem überführt,
-bevor sie zur globalen Steifigkeitsmatrix zusammengefügt werden. Dieser Schritt ist
-für jedes FEM-Programm fundamental.
-
-```{admonition} Was ist ... der Koordinatenvektor bezüglich einer Basis?
-:class: note
-Gegeben sei ein Vektor $\vec{a} \in \mathbb{R}^n$ und eine invertierbare Matrix
-$V = (\vec{v}_1 \mid \cdots \mid \vec{v}_n) \in \mathbb{R}^{n \times n}$ mit
-linear unabhängigen Spalten.
-
-Der **Koordinatenvektor** $[\vec{a}]_V$ enthält die Koeffizienten
-$\lambda_1, \ldots, \lambda_n$ der eindeutigen Darstellung
-
-\begin{equation*}
-\vec{a} = \lambda_1 \vec{v}_1 + \cdots + \lambda_n \vec{v}_n = V \cdot [\vec{a}]_V.
-\end{equation*}
-
-Er wird berechnet durch Lösung des linearen Gleichungssystems
-
-\begin{equation*}
-V \cdot [\vec{a}]_V = \vec{a},
-\end{equation*}
-
-wobei $\vec{a}$ in Standardkoordinaten gegeben ist.
-```
-
 ## Zusammenfassung und Ausblick
 
-Eine Basis des $\mathbb{R}^n$ ist eine Menge von $n$ linear unabhängigen Vektoren,
-bezüglich derer jeder Vektor eindeutig als Linearkombination dargestellt werden kann.
-Fasst man diese Basisvektoren als Spalten der invertierbaren Matrix $V$ zusammen,
-so erhält man den Koordinatenvektor $[\vec{a}]_V$ eines in Standardkoordinaten
-gegebenen Vektors $\vec{a}$ durch Lösung des Gleichungssystems
-$V \cdot [\vec{a}]_V = \vec{a}$.
-
-Im Maschinenbau ist die Koordinatendarstellung in verschiedenen Basen allgegenwärtig:
-in der Roboterkinematik, der FEM, der Festigkeitslehre und der Schwingungsanalyse.
-Besonders bedeutsam ist sie als Vorbereitung auf die Eigenwertrechnung: Die
-Eigenvektoren einer Matrix bilden eine besonders günstige Basis, in der die lineare
-Abbildung eine Diagonalgestalt annimmt. In dieser Basis lassen sich
-Schwingungsanalysen, Stabilitätsuntersuchungen und Hauptspannungsberechnungen mit
-minimalem Rechenaufwand durchführen. Den allgemeinen Wechsel zwischen zwei
-beliebigen Basen sowie die dafür benötigte Basiswechselmatrix werden wir im Kapitel
-über Eigenwerte und Eigenvektoren einführen, wenn wir sie konkret benötigen.
+Eine Basis des $\mathbb{R}^n$ besteht aus $n$ linear unabhängigen Vektoren,
+und jeder Vektor lässt sich auf genau eine Weise aus ihnen zusammensetzen. Die
+Vorfaktoren bilden den Koordinatenvektor, den wir aus dem Gleichungssystem
+$\mathbf{M}\,[\vec{x}]_{\mathbf{M}} = \vec{x}$ oder mit der Inversen als
+$[\vec{x}]_{\mathbf{M}} = \mathbf{M}^{-1}\vec{x}$ berechnen. Dabei rechnet
+$\mathbf{M}$ von den Koordinaten in Standardkoordinaten um und
+$\mathbf{M}^{-1}$ zurück. In Kapitel 5.2 untersuchen wir Matrizen, deren
+Inverse einfach ihre Transponierte ist, und sehen, welche geometrische
+Eigenschaft der Basisvektoren dahintersteckt. In Kapitel 7 drehen wir die
+Frage dann um und suchen zu einer gegebenen Matrix eine Basis, in der die
+zugehörige lineare Abbildung jeden Basisvektor nur noch streckt.
