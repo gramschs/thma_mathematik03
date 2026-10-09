@@ -5,6 +5,13 @@ authors:
 
 # 12.2 Der Resonanzfall und das Anfangswertproblem
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 11.1 haben wir die partikuläre Lösung für eine Stoßkraft
 $F(t) = 10\,e^{-3t}~\text{N}$ bestimmt, die rasch abklang. Jetzt verändern wir
 das Szenario: Die Kraft klingt mit $F(t) = 10\,e^{-t}~\text{N}$ langsamer ab,

@@ -3,7 +3,14 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 6.3 Berechnung der Eigenvektoren
+# 6.3 Eigenvektoren und Eigenraum
+
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
 
 Im vorigen Abschnitt haben wir die Eigenwerte einer Matrix als Nullstellen des
 charakteristischen Polynoms berechnet. Für den Spannungstensor eines Bauteils

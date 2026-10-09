@@ -1,266 +1,170 @@
----
-authors:
-  - name: Simone Gramsch
----
+# 6.1 Eigenwerte und Eigenvektoren
 
-# 6.1 Koordinatendarstellung bezüglich einer Basis
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
 
-Bisher haben wir Vektoren stets in kartesischen Koordinaten beschrieben, also
-bezüglich der Standardbasis mit den Einheitsvektoren $\vec{e}_1$, $\vec{e}_2$ und
-$\vec{e}_3$. In der Ingenieurpraxis ist die Standardbasis jedoch häufig nicht die
-sinnvollste Wahl. Ein Konstrukteur beschreibt ein Bauteil im körperfesten
-Koordinatensystem, das mit dem Bauteil mitdreht. Ein Schwingungsanalytiker wählt
-die Eigenformen des Systems als Basis, weil die Bewegungsgleichungen in dieser
-Basis vollständig entkoppeln. In diesem Kapitel lernen wir, wie man denselben Vektor in verschiedenen Basen darstellt.
+Bisher haben wir Matrizen als Werkzeuge für lineare Gleichungssysteme und als
+Beschreibung von Drehungen und Transformationen kennengelernt. Jetzt stellen
+wir eine ganz andere Frage: *Gibt es Richtungen im Raum, die durch eine
+Matrixtransformation nicht verbogen, sondern nur gestreckt oder gestaucht
+werden?* Diese Frage führt uns direkt zum Begriff der Eigenwerte und
+Eigenvektoren, der zu den bedeutsamsten Konzepten der gesamten linearen
+Algebra gehört.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* Sie wissen, was eine **Basis** des $\mathbb{R}^n$ ist, und kennen die
-  **kanonische Basis**.
-* Sie können einen Vektor $\vec{a} \in \mathbb{R}^n$ als **Linearkombination**
-  von Basisvektoren darstellen.
-* Sie kennen den **Koordinatenvektor** $[\vec{a}]_V$ eines Vektors $\vec{a}$
-  bezüglich einer Basismatrix $V$ und können ihn berechnen.
-* Sie können den **Koordinatenvektor** $[\vec{a}]_V$ berechnen, indem Sie das lineare
-  Gleichungssystem $V \cdot [\vec{a}]_V = \vec{a}$ lösen.
+* [ ] Sie verstehen, was ein **Eigenvektor** und ein **Eigenwert** einer
+  quadratischen Matrix sind, und können die definierende Gleichung
+  \begin{equation*}
+  \mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
+  \end{equation*} 
+  erläutern.
+* [ ] Sie können geometrisch beschreiben, was es bedeutet, dass ein Vektor
+  Eigenvektor einer Abbildung ist: Er wird durch die Abbildung nur gestreckt
+  oder gestaucht, nicht gedreht.
+* [ ] Sie wissen, dass der Nullvektor kein Eigenvektor ist.
+* [ ] Sie kennen mindestens zwei maschinenbauliche Anwendungen von Eigenwerten,
+  etwa **Hauptspannungen** in der Festigkeitslehre und **Eigenfrequenzen** in
+  der Schwingungsanalyse.
 ```
 
-## Wiederholung: Lineare Unabhängigkeit und Basis
+## Wo begegnen uns Eigenwerte im Maschinenbau?
 
-Bevor wir die Koordinatendarstellung einführen, erinnern wir uns an die notwendigen
-Grundbegriffe.
+In der Festigkeitslehre wird der Spannungszustand an einem Punkt eines Bauteils
+durch den Spannungstensor beschrieben, eine symmetrische $3\times 3$-Matrix.
+Die Frage, welche Schnittflächen an diesem Punkt keine Schubspannungen erfahren
+und nur durch Normalspannungen belastet sind, führt auf ein Eigenwertproblem.
+Die Eigenwerte des Spannungstensors sind die **Hauptspannungen**, und die
+Eigenvektoren zeigen in die **Hauptspannungsrichtungen**. Diese Größen sind für
+die Auslegung von Bauteilen unter Betriebslast unverzichtbar.
 
-Vektoren $\vec{v}_1, \ldots, \vec{v}_m \in \mathbb{R}^n$ heißen **linear
-unabhängig**, wenn die Vektorgleichung
+Ein zweites, sehr vertrautes Beispiel aus dem Maschinenbau sind schwingungsfähige
+Systeme. Ein einfacher Zweimassenschwinger besteht aus zwei Massen, die über
+Federn miteinander und mit einem Rahmen verbunden sind. Die Differentialgleichungen
+der Bewegung lassen sich in Matrizenform schreiben. Die Frequenzen, bei denen
+das System resonant schwingt, die **Eigenfrequenzen**, sind direkt mit den
+Eigenwerten der Systemmatrix verknüpft. Wir werden diesen Zusammenhang im
+weiteren Verlauf des Kurses noch vertiefen.
 
-\begin{equation*}
-\lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_m \vec{v}_m = \vec{0}
-\end{equation*}
+## Was ist ein Eigenvektor?
 
-nur für $\lambda_1 = \lambda_2 = \cdots = \lambda_m = 0$ erfüllt wird. Kein Vektor
-lässt sich dann als Linearkombination der anderen darstellen.
-
-Eine Menge von $n$ linear unabhängigen Vektoren $\vec{v}_1, \ldots, \vec{v}_n$
-im $\mathbb{R}^n$ heißt **Basis** des $\mathbb{R}^n$. Eine Basis ermöglicht es,
-jeden Vektor $\vec{a} \in \mathbb{R}^n$ als eindeutige Linearkombination der
-Basisvektoren darzustellen.
-
-Der Zusammenhang zwischen linearer Unabhängigkeit und Determinante ist dabei
-besonders nützlich. Fasst man die Basisvektoren als Spalten einer quadratischen
-Matrix $V$ zusammen, so gilt:
+Wir betrachten eine konkrete Situation. Gegeben sei die Matrix
 
 \begin{equation*}
-\det(V) \neq 0 \quad \Longleftrightarrow \quad \vec{v}_1, \ldots, \vec{v}_n \text{ sind linear unabhängig.}
+\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}.
 \end{equation*}
 
-## Die kanonische Basis
-
-Die einfachste und am häufigsten verwendete Basis ist die **kanonische Basis** (auch
-Standardbasis genannt). Im $\mathbb{R}^2$ besteht sie aus den beiden Einheitsvektoren
+Wir multiplizieren verschiedene Vektoren mit $\mathbf{A}$ und beobachten,
+was geschieht. Für den Vektor $\vec{u} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
+ergibt sich:
 
 \begin{equation*}
-\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad
-\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix},
+\mathbf{A}\cdot\vec{u} = \begin{pmatrix} 6 \\ 2 \end{pmatrix}.
 \end{equation*}
 
-und im $\mathbb{R}^3$ aus den drei Einheitsvektoren
+Der Vektor zeigt nach der Transformation in eine andere Richtung. Versuchen
+wir es mit $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$:
 
 \begin{equation*}
-\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
-\vec{e}_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}, \quad
-\vec{e}_3 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}.
+\mathbf{A}\cdot\vec{v} =
+\begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}
+\begin{pmatrix} 2 \\ 1 \end{pmatrix} =
+\begin{pmatrix} 14 \\ 7 \end{pmatrix} = 7 \cdot \begin{pmatrix} 2 \\ 1 \end{pmatrix}
+= 7\cdot\vec{v}.
 \end{equation*}
 
-Bezüglich der kanonischen Basis sind die Koordinaten eines Vektors $\vec{a}$ gerade
-seine Einträge selbst:
+Hier passiert etwas Besonderes: Das Ergebnis ist dasselbe wie $\vec{v}$,
+lediglich mit dem Faktor $7$ gestreckt. Die Matrix hat die Richtung von $\vec{v}$
+vollständig erhalten und ihn nur skaliert. Genau solche Vektoren nennen wir
+Eigenvektoren.
+
+```{admonition} Was sind ... Eigenwert und Eigenvektor?
+:class: note
+Ein Vektor $\vec{v} \neq \vec{0}$ heißt **Eigenvektor** der quadratischen
+Matrix $\mathbf{A}$, wenn es eine reelle Zahl $\lambda$ gibt, sodass
 
 \begin{equation*}
-\vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}
-= a_1 \cdot \vec{e}_1 + a_2 \cdot \vec{e}_2 + a_3 \cdot \vec{e}_3.
+\mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
 \end{equation*}
 
-## Koordinatenvektoren bezüglich einer neuen Basis
+gilt. Die Zahl $\lambda$ heißt der zu $\vec{v}$ gehörende **Eigenwert**.
 
-Sei nun $V = (\vec{v}_1 \mid \vec{v}_2 \mid \cdots \mid \vec{v}_n)$ eine
-invertierbare $n \times n$-Matrix mit den Basisvektoren $\vec{v}_1, \ldots, \vec{v}_n$
-als Spalten.
-Jeder Vektor $\vec{a} \in \mathbb{R}^n$ lässt sich eindeutig als Linearkombination
-der Spalten schreiben:
-
-\begin{equation*}
-\vec{a} = \lambda_1 \vec{v}_1 + \lambda_2 \vec{v}_2 + \cdots + \lambda_n \vec{v}_n.
-\end{equation*}
-
-Die Koeffizienten $\lambda_1, \lambda_2, \ldots, \lambda_n$ dieser Linearkombination
-heißen die **Koordinaten** von $\vec{a}$ bezüglich der Basismatrix $V$. Sie werden im
-**Koordinatenvektor** zusammengefasst:
-
-\begin{equation*}
-[\vec{a}]_V = \begin{pmatrix} \lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_n \end{pmatrix}.
-\end{equation*}
-
-Derselbe geometrische Vektor $\vec{a}$ wird durch verschiedene Zahlentupel
-beschrieben, je nachdem welche Basis verwendet wird. Das geometrische Objekt selbst
-ändert sich nicht, nur seine Darstellung.
-
-## Berechnung des Koordinatenvektors
-
-Die Berechnung des Koordinatenvektors $[\vec{a}]_V$ führt auf ein lineares
-Gleichungssystem. Schreibt man die Gleichung in Matrixform, erhält man:
-
-\begin{equation*}
-\vec{a} = V \cdot [\vec{a}]_V.
-\end{equation*}
-
-Da $V$ aus linear unabhängigen Vektoren besteht, ist $\det(V) \neq 0$ und die Matrix
-ist invertierbar. Der Koordinatenvektor ergibt sich daher durch:
-
-\begin{equation*}
-[\vec{a}]_V = V^{-1} \cdot \vec{a}.
-\end{equation*}
-
-In der Praxis berechnet man $[\vec{a}]_V$ meist nicht über die explizite Inverse,
-sondern durch Lösung des Gleichungssystems $V \cdot [\vec{a}]_V = \vec{a}$ mit dem
-Gauß-Algorithmus.
-
-## Vollständiges Beispiel
-
-Wir berechnen die Koordinaten des Vektors $\vec{a} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$
-bezüglich der Basismatrix
-
-\begin{equation*}
-V = (\vec{v}_1 \mid \vec{v}_2 \mid \vec{v}_3)
-\quad \text{mit} \quad
-\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
-\vec{v}_2 = \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix}, \quad
-\vec{v}_3 = \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
-\end{equation*}
-
-Zunächst überprüfen wir, ob die Vektoren tatsächlich eine Basis bilden. Wir berechnen
-die Determinante der Koeffizientenmatrix $V = \begin{pmatrix} 1 & 0 & -1 \\ 1 & 2 & 0 \\ 0 & -2 & -2 \end{pmatrix}$.
-Es gilt $\det(V) \neq 0$, also sind die drei Vektoren linear unabhängig und bilden
-eine Basis des $\mathbb{R}^3$.
-
-Wir suchen $\lambda_1, \lambda_2, \lambda_3$ mit $\vec{a} = \lambda_1 \vec{v}_1 +
-\lambda_2 \vec{v}_2 + \lambda_3 \vec{v}_3$, also
-
-\begin{equation*}
-\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
-= \lambda_1 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} +
-\lambda_2 \begin{pmatrix} 0 \\ 2 \\ -2 \end{pmatrix} +
-\lambda_3 \begin{pmatrix} -1 \\ 0 \\ -2 \end{pmatrix}.
-\end{equation*}
-
-Mit dem Gauß-Algorithmus erhält man die Lösung:
-
-\begin{equation*}
-\lambda_1 = -3, \quad \lambda_2 = \frac{5}{2}, \quad \lambda_3 = -4,
-\end{equation*}
-
-und damit den Koordinatenvektor:
-
-\begin{equation*}
-[\vec{a}]_V = \begin{pmatrix} -3 \\ \frac{5}{2} \\ -4 \end{pmatrix}.
-\end{equation*}
-
-```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" von The Bright Side of Mathematics
-<iframe width="1054" height="585" src="https://www.youtube.com/embed/FFVauAY_FMI"
-title="Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Der Nullvektor $\vec{0}$ ist ausdrücklich kein Eigenvektor, da
+$\mathbf{A}\cdot\vec{0} = \vec{0} = \lambda\cdot\vec{0}$ für jedes $\lambda$
+gilt und damit keine sinnvolle Aussage über eine Richtung liefert.
 ```
 
-```{dropdown} Video "Basis-Transformation" von MathePeter
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/CR7e7Zc0QLg"
-title="BASISTRANSFORMATION | Transformationsmatrix berechnen am BEISPIEL (linearer Unterraum)"
+Wir haben bereits überprüft, dass $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$
+ein Eigenvektor von $\mathbf{A}$ zum Eigenwert $\lambda = 7$ ist. Jedes
+skalare Vielfache $s\cdot\vec{v}$ mit $s \neq 0$ ist ebenfalls ein Eigenvektor
+zum selben Eigenwert, denn:
+
+\begin{equation*}
+\mathbf{A}\cdot(s\vec{v}) = s\cdot(\mathbf{A}\vec{v}) = s\cdot 7\vec{v} = 7\cdot(s\vec{v}).
+\end{equation*}
+
+Es gibt also nicht den einen Eigenvektor zu einem Eigenwert, sondern eine ganze
+Richtung im Raum. Alle Vielfachen von $\vec{v}$ bilden zusammen den
+**Eigenraum** zum Eigenwert $\lambda = 7$.
+
+## Was bedeutet ein negativer Eigenwert?
+
+Ein Eigenwert $\lambda > 1$ entspricht einer Streckung in die Richtung des
+Eigenvektors. Für $0 < \lambda < 1$ schrumpft der Vektor. Ist $\lambda < 0$,
+kehrt sich die Richtung um, der Vektor wird gespiegelt und zusätzlich skaliert.
+Für $\lambda = 0$ wäre $\mathbf{A}\vec{v} = \vec{0}$, was bedeutet, dass der
+Eigenvektor auf den Nullvektor abgebildet wird. In diesem Fall ist die Matrix
+nicht invertierbar, wie wir aus dem Kapitel über Determinanten wissen.
+
+*Aber wie berechnet man Eigenwerte systematisch, ohne wie oben nach Vektoren
+raten zu müssen?* Diese Frage führt auf das charakteristische Polynom, das wir
+im nächsten Abschnitt kennenlernen.
+
+## Eigenwerte und Eigenvektoren in der Festigkeitslehre
+
+In der Technischen Mechanik beschreibt der ebene Spannungstensor den
+Spannungszustand an einem Punkt eines dünnwandigen Bauteils:
+
+\begin{equation*}
+\boldsymbol{\sigma} =
+\begin{pmatrix} \sigma_{xx} & \tau_{xy} \\ \tau_{xy} & \sigma_{yy} \end{pmatrix}.
+\end{equation*}
+
+Die Diagonalelemente sind Normalspannungen, die Nebendiagonalelemente sind
+Schubspannungen. Die Eigenwerte dieser Matrix sind genau die Hauptspannungen
+$\sigma_1$ und $\sigma_2$, auf die es für die Bewertung nach der Gestaltänderungs-
+energiehypothese (von-Mises-Kriterium) ankommt. Die Eigenvektoren zeigen in die
+Richtungen, in denen keine Schubspannungen auftreten. Diese Verbindung werden
+Sie in der Technischen Mechanik II vertiefen.
+
+```{dropdown} Video "Eigenwertproblem Einfach Erklärt!" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/eJWgKvrhDmE?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
+title="Eigenwertproblem Einfach Erklärt! | Eigenwerte und Eigenvektoren: Bedeutung, Anwendung, Herleitung"
 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
 picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video (EN) "Change of basis" von 3Blue1Brown
-<iframe width="1054" height="593" src="https://www.youtube.com/embed/P2LTAUO1TdA"
-title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-## Anwendungen im Maschinenbau
-
-Die Koordinatendarstellung bezüglich einer Basis ist in der Ingenieurpraxis überall
-präsent. Die folgenden Beispiele zeigen, wie sich der Stoff aus diesem Kapitel in
-den späteren Vorlesungen wiederfinden wird. In vielen dieser Anwendungen wird später
-auch der allgemeine Wechsel zwischen zwei beliebigen Basen benötigt; die hier
-entwickelten Grundlagen sind dafür die notwendige Vorbereitung.
-
-**Roboterkinematik:** Ein Roboterarm wird zunächst in einem weltfesten
-Koordinatensystem beschrieben. Für die Steuerung der Gelenke ist es günstiger, die
-Koordinaten im körperfesten System des jeweiligen Armgliedes anzugeben. Der Übergang
-zwischen beiden Systemen ist eine Koordinatentransformation, die sich als
-Matrixmultiplikation darstellt. In der Vorlesung Robotik werden Sie die sogenannte
-Denavit-Hartenberg-Konvention kennenlernen, die systematisch solche Transformationen
-entlang der Gelenkkette aufstellt.
-
-**Hauptachsentransformation in der Festigkeitslehre:** Der allgemeine Spannungszustand
-in einem Punkt eines Bauteils wird durch den Spannungstensor beschrieben, eine
-symmetrische $3\times 3$-Matrix. In einem geeignet gewählten Koordinatensystem, den
-sogenannten Hauptachsen, nimmt dieser Tensor eine Diagonalgestalt an. Die
-Diagonalelemente sind die Hauptspannungen $\sigma_1$, $\sigma_2$, $\sigma_3$, die
-entscheidend für die Festigkeitsbewertung sind. Die geeigneten Basisvektoren heißen
-Eigenvektoren, und die Hauptspannungen heißen Eigenwerte. Den mathematischen Apparat
-dafür werden Sie im nächsten Kapitel kennenlernen.
-
-**Modalanalyse in der Schwingungstechnik:** Bei der Analyse von Maschinenschwingungen
-wählt man die Eigenformen des schwingenden Systems als neue Basis. In dieser Basis
-zerfällt das gekoppelte Differentialgleichungssystem mit vielen wechselwirkenden
-Freiheitsgraden in vollständig entkoppelte Einzelschwingungen. Jede Eigenform kann
-dann getrennt analysiert werden. Die mathematische Grundlage dafür ist das Kapitel
-über Eigenwerte und Eigenvektoren sowie die Diagonalisierung, die in den folgenden
-Kapiteln behandelt werden.
-
-**FEM: Lokale und globale Koordinaten:** In der Finite-Elemente-Methode werden
-Steifigkeitsmatrizen zunächst im lokalen Koordinatensystem jedes Elements berechnet
-und dann durch Koordinatentransformation in das globale Koordinatensystem überführt,
-bevor sie zur globalen Steifigkeitsmatrix zusammengefügt werden. Dieser Schritt ist
-für jedes FEM-Programm fundamental.
-
-```{admonition} Was ist ... der Koordinatenvektor bezüglich einer Basis?
-:class: note
-Gegeben sei ein Vektor $\vec{a} \in \mathbb{R}^n$ und eine invertierbare Matrix
-$V = (\vec{v}_1 \mid \cdots \mid \vec{v}_n) \in \mathbb{R}^{n \times n}$ mit
-linear unabhängigen Spalten.
-
-Der **Koordinatenvektor** $[\vec{a}]_V$ enthält die Koeffizienten
-$\lambda_1, \ldots, \lambda_n$ der eindeutigen Darstellung
-
-\begin{equation*}
-\vec{a} = \lambda_1 \vec{v}_1 + \cdots + \lambda_n \vec{v}_n = V \cdot [\vec{a}]_V.
-\end{equation*}
-
-Er wird berechnet durch Lösung des linearen Gleichungssystems
-
-\begin{equation*}
-V \cdot [\vec{a}]_V = \vec{a},
-\end{equation*}
-
-wobei $\vec{a}$ in Standardkoordinaten gegeben ist.
+```{dropdown} Video (EN) "Eigenvectors and Eigenvalues" von 3Blue1Brown
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PFDu9oVAE-g"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Eine Basis des $\mathbb{R}^n$ ist eine Menge von $n$ linear unabhängigen Vektoren,
-bezüglich derer jeder Vektor eindeutig als Linearkombination dargestellt werden kann.
-Fasst man diese Basisvektoren als Spalten der invertierbaren Matrix $V$ zusammen,
-so erhält man den Koordinatenvektor $[\vec{a}]_V$ eines in Standardkoordinaten
-gegebenen Vektors $\vec{a}$ durch Lösung des Gleichungssystems
-$V \cdot [\vec{a}]_V = \vec{a}$.
+Ein Eigenvektor einer Matrix ist ein Vektor, dessen Richtung durch die
+Matrixtransformation nicht geändert wird. Er wird nur gestreckt, gestaucht oder
+gespiegelt, und der Streckungsfaktor ist der zugehörige Eigenwert. Der Nullvektor
+ist ausdrücklich kein Eigenvektor.
 
-Im Maschinenbau ist die Koordinatendarstellung in verschiedenen Basen allgegenwärtig:
-in der Roboterkinematik, der FEM, der Festigkeitslehre und der Schwingungsanalyse.
-Besonders bedeutsam ist sie als Vorbereitung auf die Eigenwertrechnung: Die
-Eigenvektoren einer Matrix bilden eine besonders günstige Basis, in der die lineare
-Abbildung eine Diagonalgestalt annimmt. In dieser Basis lassen sich
-Schwingungsanalysen, Stabilitätsuntersuchungen und Hauptspannungsberechnungen mit
-minimalem Rechenaufwand durchführen. Den allgemeinen Wechsel zwischen zwei
-beliebigen Basen sowie die dafür benötigte Basiswechselmatrix werden wir im Kapitel
-über Eigenwerte und Eigenvektoren einführen, wenn wir sie konkret benötigen.
+Im nächsten Abschnitt lernen wir, wie wir die Eigenwerte einer Matrix
+systematisch berechnen: über das charakteristische Polynom, das durch
+$\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ definiert ist. Die Kenntnis der
+Determinante aus Kapitel 1 zahlt sich jetzt aus.

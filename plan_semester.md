@@ -1,6 +1,6 @@
 # Plan: Semesterstruktur und Umbau Sprint 02
 
-Stand: 2026-10-07
+Stand: 2026-10-09
 
 ## Rahmenbedingungen
 
@@ -155,17 +155,147 @@ Aufgabennummern unten sind die **neuen** Nummern im Booklet.
    als Vertiefung.
 2. Inhalt von 7.3.
 
-## Sprint 03: Kapitel 8–9 (Wochen 8–9), noch zu planen
+## Sprint 03: Kapitel 8–9 (Wochen 8–9)
 
-Bisherige Kapitel 7–9 (10 Dateien) auf zwei Kapitel verdichten. Grobe Idee:
-Woche 8 „Was ist eine DGL?“ und Trennung der Variablen, Richtungsfeld und Euler als
-Vertiefung; Woche 9 Substitution und lineare DGL 1. Ordnung. Substitution ist laut
-Modulhandbuch Pflicht. Booklet S03: Grundwissen 15, Richtungsfeld 2, Euler 5,
-Separation/Substitution 15, lineare DGL 10, Übersicht 2 Sterne. Vor der
-Entscheidung Kapitel 7–9 lesen (eigener Chat).
+Geplant am 2026-10-09 nach Lektüre der alten Kapitel 7–9. Die bisherigen zehn
+Dateien werden auf acht verdichtet. Grundlage ist Booklet 03 in der Fassung v2
+(`booklets/Sprint03_Booklet_DGL_Teil1_v2.pdf`, Quelle `booklets_src/Sprint03_extended/`),
+die als Abschnitt 5 die linearen DGL enthält. Aufgabennummern unten sind die Nummern
+in v2.
 
-Abhängigkeit: Der Ordner `chapter07` (DGL) muss umziehen, bevor das neue Kapitel 7
-(Diagonalisierung) angelegt wird.
+Sterne (aktive Aufgaben): Grundwissen 15 (Aufg. 1–12), Richtungsfeld 2 (16), Euler 5
+(19, 20), Trennung 8 (21–25), Substitution 7 (26–29), lineare DGL 12 (30–38).
+Warm-ups 13–15 und 17–18 ohne Sterne. Damit 23 Sterne in Woche 8 (plus 7 Vertiefung)
+und 19 in Woche 9. Die Alternative „Substitution noch in Woche 8“ hätte 30 zu 12
+ergeben.
+
+Alle alten DGL-Dateien sind noch nicht nach den aktuellen Instruktionen
+überarbeitet: Abschnittsnummern im Text um eins verschoben (6.x statt 7.x usw.),
+H2 „Weiteres Lernmaterial“ mit gesammelten Videos, bis zu fünf Videos pro Datei,
+`$$` in Lernzielen, MB-Anwendungen in den Abschnitten. Jede Datei wird also wie
+Kapitel 4 umgebaut, nicht nur verschoben.
+
+### Woche 8, Kapitel 8: Differentialgleichungen und Trennung der Variablen (Booklet-Abschnitte 1–4, 23 Sterne + 7 Vertiefung)
+
+| Datei | Quelle | H2-Abschnitte | Aufgaben |
+| --- | --- | --- | --- |
+| 8.1 Was ist eine Differentialgleichung? | 7.1 (Teil 1) | Wie wird aus einer Änderungsrate eine Gleichung? · Was ist die Ordnung einer DGL? · Was ist eine Lösung, und warum gibt es unendlich viele? | 1–4, 7–9 |
+| 8.2 Anfangs- und Randwertprobleme | 7.1 (Teil 2) + neu | Wie legt eine Anfangsbedingung die Lösung fest? · Was ändert sich bei einer DGL 2. Ordnung? · Was ist ein Randwertproblem? | 5, 6, 10–12 |
+| 8.3 Richtungsfelder und Euler-Verfahren (Vertiefung) | 7.2 + 7.3 | Was schreibt eine DGL in jedem Punkt vor? · Wie folgen wir einer Lösungskurve im Richtungsfeld? · Wie wird aus einem Linienelement ein Rechenschritt? | 13–15 (Warm-up), 16, 17–18 (Warm-up), 19, 20 |
+| 8.4 Trennung der Variablen | 8.1 | Wann lässt sich eine DGL trennen? · Wie funktioniert das Verfahren? · Was passiert, wenn $g(y) = 0$ ist? | 21–25 |
+
+- 8.1: Schreibweisen (Punkt, Strich, Leibniz) und explizit/implizit (Aufg. 7, 9) in den
+  zweiten Abschnitt. „Grad“ streichen, partielle DGL nur in einem Satz. Biegelinie
+  und Wärmeleitung höchstens als Hinweis in der Einleitung.
+- 8.2 neu: Die Booklet-Aufgaben 6, 8, 10–12 brauchen DGL 2. Ordnung mit
+  gegebener allgemeiner Lösung (etwa $y'' + 9y = 0$) sowie zwei Bedingungen als AWP
+  und als RWP. Vorwärtsverweis auf Kapitel 11.
+- 8.3: 7.2 und 7.3 zusammenlegen und als Vertiefung kennzeichnen, mit dem Hinweis,
+  dass Richtungsfelder und Euler-Verfahren nicht Prüfungsstoff für CA 3 sind
+  (entschieden 2026-10-09). Die Python-Zellen in 7.3 sind schon optional; prüfen,
+  ob sie bleiben.
+- 8.4: Anfangsbedingung in den zweiten Abschnitt, Sonderfall $g(y) = 0$ als dritter.
+  Rückverweis auf 8.3 (Nullisokline) nur als Vertiefungshinweis.
+- Durchgehendes Beispiel: Der Fallschirmspringer leitet die DGL aus dem zweiten
+  Newtonschen Gesetz her. Prüfen, ob die DGL einfach vorgegeben wird oder ein
+  Beispiel ohne Physik (etwa Abkühlung) besser passt.
+- Streichen: alte 8.3 „Technische Anwendungen der Separation“ (Riementrieb,
+  Torricelli). Die Tabelle „Welche Methode für welche ODE?“ steckt schon in 10.3.
+
+### Woche 9, Kapitel 9: Substitution und lineare DGL 1. Ordnung (Booklet-Abschnitte 4 Rest + 5, 19 Sterne)
+
+| Datei | Quelle | H2-Abschnitte | Aufgaben |
+| --- | --- | --- | --- |
+| 9.1 Substitution | 8.2 + neu | Warum scheitert die direkte Trennung? · Wie hilft die Substitution $u = ax + by + c$? · Wie hilft die Substitution $u = y/x$? | 26–29 |
+| 9.2 Lineare DGL erkennen | 9.1 | Was macht eine DGL linear? · Homogen oder inhomogen? · Konstante oder variable Koeffizienten? | 30–34, 37, 38 |
+| 9.3 Die homogene lineare DGL | 9.2 | Wie lösen wir $y' + ay = 0$ durch Trennung? · Wie lautet die Lösungsformel für beliebige Koeffizienten? · Was liefert die Formel bei variablen Koeffizienten? | 35, 36 |
+| 9.4 Die inhomogene lineare DGL | 9.3 | Warum reicht die homogene Lösung nicht aus? · Wie wählen wir den Ansatz vom Typ der rechten Seite? · Was ändert sich bei einer Sinus-Störfunktion? | – |
+
+- 9.1 neu: Substitution $u = y/x$ (Aufg. 27–29 verlangen sie, das Skript hat sie
+  bisher nicht). Singuläre Lösungen nur kurz, als Stolperfalle.
+- 9.4 muss in Kapitel 9 bleiben, weil 10.1 mit den Grenzen des Ansatzes beginnt.
+  Booklet 03 hat dazu keine Aufgaben; die Aufgaben zum Störansatz stehen in Booklet 04,
+  Abschnitt 3 (Woche 10).
+- Streichen: alte 9.4 „Technische Anwendungen linearer ODEs“ (RC-Kreis, Wärmequelle).
+  Modulhandbuch „Beispiele aus der Technik“ über die durchgehenden Beispiele und
+  Hinweise in den Einleitungen abdecken.
+
+### Umzug der Dateien (erledigt 2026-10-09)
+
+Die Gliederung in `myst.yml` und die Dateien entsprechen seit 2026-10-09 schon dem
+neuen Plan für Kapitel 5–9 (per `git mv`). Die Spalte „Quelle“ in den Tabellen
+oben meint die alte Nummer; deren Inhalt steht jetzt bereits in der Zieldatei,
+mit neuem H1-Titel und einem Hinweis `:class: warning` („Dieses Kapitel wird gerade
+überarbeitet“), den auch alle Dateien von Kapitel 10–14 tragen. Beim Umbau einer
+Datei den Hinweis wieder entfernen.
+
+- Zusammengeführt: 5.4 enthält alte 5.3 und 5.4 hintereinander, 8.3 alte 7.2 und 7.3
+  (Überschriften jeweils eine Ebene tiefer).
+- Aufgeteilt: Der ganze Inhalt steht in der ersten Zieldatei (6.3, 7.1, 8.1); 6.4,
+  7.2 und 8.2 sind Platzhalter, die nur aus dem Hinweis bestehen.
+- Entfallen: alte 8.3 und 9.4, liegen als `chapter08_sec03_old.md` und
+  `chapter09_sec04_old.md` im Repo.
+- Bild `chap06_richtungsfeld_fallschirmspringer.svg` liegt jetzt in `chapter08/pics`.
+  Applets liegen extern unter `thma_mathematik03_assets/interactive/chapter06/` und
+  bleiben dort.
+- 8.3 und 14.3 tragen „(Vertiefung)“ im Titel und im Hinweis „kein Prüfungsstoff“.
+
+## Sprint 04 und 05: Kapitel 10–14 (Wochen 10–14)
+
+Bleiben in Nummer und Zuschnitt. Zuordnung zu den Booklets:
+
+| Woche | Kapitel | Booklet |
+| --- | --- | --- |
+| 10 | 10 Variation der Konstanten | 04, Abschnitte 2–3 |
+| 11 | 11 Lineare DGL 2. Ordnung: homogene Lösung | 04, Abschnitt 4 |
+| 12 | 12 Lineare DGL 2. Ordnung: Schwingungen und Resonanz | 04, Abschnitt 5 + Gemischte Aufgaben |
+| 13 | 13 Fourierreihen I | 05, Abschnitt 1 + Anfang Abschnitt 2 |
+| 14 | 14 Fourierreihen II | 05, Rest Abschnitt 2 + Abschnitt 3 (Vertiefung) |
+
+Beim späteren Umbau zu erledigen (ändert den Zeitplan nicht):
+
+- Booklet 04, Abschnitt 1 „Grundwissen“ enthält dieselben Aufgaben wie Booklet 03 v2,
+  Abschnitt 5. Mit der Kollegin klären, ob er bleibt.
+- Kapitel 10 hat nur drei Dateien.
+- Abschnittsnummern im Text sind in Kapitel 10–14 um eins verschoben (10.1 nennt den
+  Ansatz „Abschnitt 8.3“). Schlussüberschriften 12.4 „Zusammenfassung: Kapitel 11“ und
+  14.4 „Zusammenfassung: Kapitel 12 und 13“.
+- 14.3 komplexe Fourierreihe als Vertiefung kennzeichnen, mit dem Hinweis, dass sie
+  nicht Prüfungsstoff für CA 4 ist (entschieden 2026-10-09).
+- 11.1, 12.3, 12.4, 13.x und 14.x setzen MB-Beispiele (Schwebebahn, Kurbelwelle,
+  Unwucht) als durchgehende Beispiele ein. Gegen die Instruktionen prüfen.
+
+## Zeitplan für die Studierenden und CA
+
+Dienstag Vorlesung, Freitag Übung. Die CA-Termine aus `admin/planung_wise26.html`
+und `admin/ca_bedingungen.html` bleiben, nur der Prüfungsstoff von CA 2 und CA 3
+verschiebt sich (alte DGL-Einführung von CA 2 nach CA 3).
+
+| CA | Termin | Stoff alt | Stoff neu |
+| --- | --- | --- | --- |
+| CA 1 | Di 20.10.2026 | Kap. 1–4 | Kap. 1–4 (unverändert) |
+| CA 2 | Di 10.11.2026 | Orth. Matrizen, Diagonalisierung, gewöhnliche DGL | Kap. 5–7 (nur noch Matrizen) |
+| CA 3 | Di 01.12.2026 | Separation, lineare DGL, Variation der Konstanten | Kap. 8–10 ohne 8.3 (Richtungsfelder, Euler) |
+| CA 4 | Di 12.01.2027 | Kap. 11–14 | Kap. 11–14 ohne 14.3 (komplexe Fourierreihe) |
+
+Nachschreibetermin Fr 15.01.2027. `admin/planung_wise26.csv` ist veraltet (fünf
+CAs, andere Termine) und wird nicht mehr gepflegt.
+
+Termine für Skript und Booklets (Kapitel jeweils bis zum Dienstag der Woche online,
+Booklet am Freitag davor):
+
+| Woche | Di | Kapitel | Booklet |
+| --- | --- | --- | --- |
+| 5 | 20.10. | 5 Basis, orthogonale Matrizen und Drehungen | |
+| 6 | 27.10. | 6 Eigenwerte und Eigenvektoren | |
+| 7 | 03.11. | 7 Diagonalisierung und Anwendungen | |
+| 8 | 10.11. | 8 Differentialgleichungen und Trennung der Variablen | 03 v2 am Fr 06.11. |
+| 9 | 17.11. | 9 Substitution und lineare DGL 1. Ordnung | |
+| 10 | 24.11. | 10 Variation der Konstanten | 04 am Fr 20.11. |
+| 13 | 15.12. | 13 Fourierreihen I | 05 am Fr 11.12. |
+
+Neue Fassungen zur Durchsicht: `admin/planung_wise26_neu.html` und
+`admin/ca_bedingungen_neu.html` (Originale unverändert).
 
 ## Booklet Sprint 02 (Veröffentlichung Fr 2026-10-09)
 
@@ -212,21 +342,27 @@ geöffneten Lösungen steckten Fehler.
 - Korrigierte Fassung von Booklet 02 anbieten (Fehler betreffen beide).
 - Kennzeichnung „Vertiefung“ für Richtungsfelder, Euler, komplexe Fourierreihe.
 - Ggf. neue Aufgaben: homogene Koordinaten, $A^n$, Spektralsatz, Anwendungen.
+- Booklet 03 in Fassung v2 (mit linearen DGL) verwenden; doppelter Abschnitt
+  „Grundwissen“ in Booklet 04; Aufgaben zum Störansatz 1. Ordnung erst in Booklet 04.
 
 ## Status
 
 - [x] Semesterplan 3 + 4 + 2 + 3 + 2 festgelegt (2026-10-07)
 - [x] Booklet Sprint 02 umsortiert und korrigiert (Durchsicht der `_neu`-PDFs ausstehend)
 - [ ] Restliche Lösungen Booklet 02 prüfen (vor Fr 2026-10-09)
-- [x] Kapitel 4 umgebaut (2026-10-07, MyST-Build ohne Fehler; noch nicht committet)
+- [x] Kapitel 4 umgebaut (2026-10-07, MyST-Build ohne Fehler; Commit `f545b95`)
   - [x] 4.1
   - [x] 4.2
   - [x] 4.3
   - [x] 4.4
 - [ ] Kapitel 5 umgebaut
-- [ ] Ordner `chapter07` (DGL) verschoben
+- [x] Gliederung Kapitel 5–9 umgestellt, Ordner `chapter07` (DGL) verschoben,
+  Hinweis „wird überarbeitet“ ab Kapitel 5 (2026-10-09, MyST-Build ohne Warnungen)
 - [ ] Kapitel 6 umgebaut
 - [ ] Kapitel 7 angelegt
-- [ ] `myst.yml` und Querverweise in Kapitel 4–7 angepasst
-- [ ] Sprint 03 geplant (Kapitel 7–9 alt lesen, eigener Chat)
+- [x] `myst.yml` an die neue Gliederung angepasst (2026-10-09)
+- [ ] Querverweise im Text (Abschnittsnummern) in Kapitel 4–14 angepasst
+- [x] Sprint 03 geplant (2026-10-09)
+- [ ] Neuer Zeitplan und CA-Stoff an die Studierenden (`_neu`-Fassungen in `admin/`)
+- [ ] Kapitel 8 und 9 umgebaut
 - [ ] Abstimmung mit der Kollegin

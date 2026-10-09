@@ -3,212 +3,217 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.1 Lineare Differentialgleichungen: Struktur erkennen und benennen
+# 9.1 Substitution
 
-In Kapitel 7 haben wir zwei Lösungsverfahren für ODEs 1. Ordnung kennengelernt:
-die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
-Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
-Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
-bisher nicht explizit benannt haben: **Linearität**. Die
-Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
-Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
-Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
-weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
-Klassifikation ist die Voraussetzung für die Lösungstheorie, die in den
-folgenden Abschnitten entwickelt wird.
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+In Abschnitt 7.1 haben wir gelernt, ODEs der Form $y' = f(x) \cdot g(y)$ durch Trennung
+der Variablen exakt zu lösen. Das Verfahren setzt jedoch voraus, dass sich die rechte Seite
+als Produkt zweier voneinander unabhängiger Faktoren schreiben lässt. Viele ODEs, die in
+der technischen Praxis auftreten, erfüllen diese Bedingung nicht: Der Ausdruck auf der
+rechten Seite hängt von $x$ und $y$ so verflochten ab, dass eine direkte Trennung nicht
+möglich ist. Ein einfaches Beispiel ist die ODE $y' = (x + y)^2 - 1$. Hier erscheinen
+$x$ und $y$ gemeinsam im Quadrat, und keine algebraische Umformung führt auf ein Produkt
+$f(x) \cdot g(y)$. Wenn aber der Ausdruck, von dem die rechte Seite abhängt, eine lineare
+Kombination von $x$ und $y$ ist, gibt es einen eleganten Ausweg: die **Substitution**.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, wie eine **lineare gewöhnliche Differentialgleichung** definiert ist,
-  und können sie von einer nichtlinearen DGL unterscheiden.
-* [ ] Sie können eine lineare DGL als **homogen** oder **inhomogen** klassifizieren und
-  wissen, dass die Störfunktion $g(x)$ den Unterschied ausmacht.
-* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung** $y(x) = 0$
-  besitzt.
-* [ ] Sie können eine lineare DGL **mit konstanten Koeffizienten** von einer linearen DGL
-  mit variablen Koeffizienten unterscheiden.
+* [ ] Sie erkennen eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$ und wissen,
+  dass eine direkte Separation im Allgemeinen nicht möglich ist.
+* [ ] Sie können die **Substitution** $u = ax + by + c$ durchführen, $y'$ durch $u'$
+  ausdrücken und die ODE in eine separierbare ODE in $u$ und $u'$ umformen.
+* [ ] Sie können die umgeformte ODE durch Separation der Variablen lösen und anschließend
+  durch **Resubstitution** $u = ax + by + c$ die Lösung in den ursprünglichen Variablen
+  angeben.
+* [ ] Sie beachten den Sonderfall $a + b \cdot f(u) = 0$ und können die zugehörige Lösung
+  gesondert bestimmen.
 ```
 
-## Was bedeutet es, dass eine ODE "linear" ist?
+## Warum scheitert die direkte Trennung?
 
-Wir betrachten noch einmal die Fallschirmspringer-Gleichung in der Form, die wir in
-Abschnitt 6.1 aufgestellt haben:
-
-\begin{equation*}
-\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
-\end{equation*}
-
-Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
-Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
-nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
-meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
-treten ausschließlich linear auf.
-
-*Was würde die Linearität zerstören?* Bereits eine kleine Modifikation des
-Modells reicht. Wäre der Luftwiderstand quadratisch in der Geschwindigkeit, also
-$F_L = b\,v^2$ statt $F_L = b\,v$, so würde die ODE
+Wir betrachten die ODE $y' = (x + y)^2 - 1$. Um zu prüfen, ob sie separierbar ist,
+versuchen wir, die rechte Seite als Produkt $f(x) \cdot g(y)$ zu schreiben. Das Ausmultiplizieren ergibt:
 
 \begin{equation*}
-\dot{v} + k\,v^2 = 9.81~\text{m\,s}^{-2}
+(x + y)^2 - 1 = x^2 + 2xy + y^2 - 1.
 \end{equation*}
 
-lauten. Hier erscheint $v^2$. Das ist kein linearer Term, und die Gleichung ist
-daher nichtlinear. Ebenso nichtlinear wären $\dot{v} = \sin(v)$ oder $\dot{v}
-\cdot v = 1$: im ersten Fall steckt $v$ in einer nichtlinearen Funktion, im
-zweiten Beispiel werden $\dot{v}$ und $v$ miteinander multipliziert.
+Hier treten $x^2$, $y^2$ und das gemischte Produkt $2xy$ auf. Es gibt keine Faktorisierung
+in einen reinen $x$-Faktor und einen reinen $y$-Faktor. Die direkte Separation schlägt
+fehl.
 
-Die allgemeine Form einer linearen ODE $n$-ter Ordnung lautet:
+Was wir aber sehen: Die rechte Seite ist eine Funktion von $x + y$ allein, also von einer
+linearen Kombination beider Variablen. *Und wenn wir diese Kombination als neue Variable
+einführen?* Dann beschreibt die ODE in der neuen Variablen vielleicht etwas viel
+Einfacheres.
+
+## Wie verwandelt die Substitution die ODE?
+
+Wir benennen die Kombination $x + y$ als neue unbekannte Funktion $u(x)$:
 
 \begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x).
+u = x + y \quad \Leftrightarrow \quad y = u - x.
 \end{equation*}
 
-Jede Ableitung $y^{(k)}$ tritt genau einmal und zur ersten Potenz auf,
-multipliziert mit einem Koeffizient $a_k(x)$, der von $x$ abhängen darf, aber
-nicht von $y$. Die rechte Seite $g(x)$ hängt ebenfalls nur von $x$ ab.
+Leiten wir beide Seiten nach $x$ ab, ergibt sich für die linke Seite $u'$ und für die
+rechte Seite $y' + 1$, also:
 
-```{admonition} Was ist ... eine lineare ODE?
+\begin{equation*}
+u' = 1 + y' \quad \Leftrightarrow \quad y' = u' - 1.
+\end{equation*}
+
+Wir setzen in die ursprüngliche ODE ein. Die linke Seite $y'$ wird zu $u' - 1$, die rechte
+Seite $(x + y)^2 - 1$ wird zu $u^2 - 1$:
+
+\begin{equation*}
+u' - 1 = u^2 - 1 \quad \Rightarrow \quad u' = u^2.
+\end{equation*}
+
+Das ist eine separierbare ODE in $u$ und $x$, die wir mit dem Verfahren aus Abschnitt 7.1
+lösen können. Die Substitution hat ihre Schuldigkeit getan.
+
+```{admonition} Was ist ... die Substitutionsmethode für $y' = f(ax + by + c)$?
 :class: note
-Eine **lineare ODE** $n$-ter Ordnung hat die Form
+Gegeben sei eine ODE der Form
 
 \begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x),
+y' = f(ax + by + c)
 \end{equation*}
 
-wobei die Koeffizientenfunktionen $a_0(x), \ldots, a_{n-1}(x)$ und die rechte Seite
-$g(x)$ nur von $x$ abhängen. Die gesuchte Funktion $y$ und alle ihre Ableitungen
-erscheinen ausschließlich zur ersten Potenz und werden nicht miteinander multipliziert.
+mit Konstanten $a, b, c \in \mathbb{R}$ und $b \neq 0$. Die **Substitution**
+$u = ax + by + c$ führt auf
 
-Eine ODE, die diese Form nicht hat, heißt **nichtlinear**.
+\begin{equation*}
+u' = a + b \cdot y' = a + b \cdot f(u).
+\end{equation*}
+
+Diese ODE in $u$ und $x$ ist separierbar (sofern $a + b \cdot f(u) \neq 0$) und kann
+durch Trennung der Variablen gelöst werden. Nach der Lösung liefert die **Resubstitution**
+$u = ax + by + c$ die Lösung in den ursprünglichen Variablen $x$ und $y$.
 ```
 
-Die Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ ist
-eine lineare ODE 1. Ordnung mit $n = 1$, $a_0(t) = k$ und $g(t) =
-9.81~\text{m\,s}^{-2}$. Die Torricellische Ausflussgleichung $\dot{h} =
--k\sqrt{h}$ aus Abschnitt 7.3 ist hingegen nichtlinear: $\sqrt{h} = h^{1/2}$ ist
-kein linearer Term in $h$.
+Für unser Beispiel: $a = 1$, $b = 1$, $c = 0$ und $f(u) = u^2 - 1$. Die substituierte ODE
+lautet $u' = 1 + 1 \cdot (u^2 - 1) = u^2$, wie wir gerade berechnet haben.
 
-## Homogen oder inhomogen?
+## Lösung durch Separation und Resubstitution
 
-Innerhalb der linearen ODEs gibt es eine weitere wichtige Unterscheidung. Wir
-schauen auf die rechte Seite der allgemeinen Form, die Funktion $g(x)$.
+Wir lösen $u' = u^2$ durch Trennung der Variablen, wobei wir zunächst $u \neq 0$
+voraussetzen.
 
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist die rechte Seite die konstante Funktion $g(t) = 9.81~\text{m\,s}^{-2}$, die
-nirgends gleich null ist. Das physikalische Bild dahinter: Die Schwerkraft
-treibt das System ständig an, auch wenn die Geschwindigkeit null ist. Eine
-solche ODE heißt **inhomogen**.
+**Schritt 1: Trennen.**
 
-Streichen wir die Antriebskraft, ergibt sich die vereinfachte Gleichung $\dot{v}+
-k\,v = 0$. Physikalisch beschreibt das einen Körper, der ohne äußere Kraft nur
-durch Reibung gebremst wird. Hier ist $g(t) = 0$ für alle $t$. Eine solche ODE
-heißt **homogen**.
+\begin{equation*}
+\frac{du}{u^2} = dx.
+\end{equation*}
 
-```{admonition} Was ist ... eine homogene und eine inhomogene lineare ODE?
+**Schritt 2 und 3: Integrieren und Stammfunktionen einsetzen.**
+
+\begin{equation*}
+\int u^{-2}\,du = \int dx \quad \Rightarrow \quad -\frac{1}{u} = x + C, \quad C \in \mathbb{R}.
+\end{equation*}
+
+**Schritt 4: Nach $u$ auflösen.**
+
+\begin{equation*}
+u = -\frac{1}{x + C}.
+\end{equation*}
+
+**Resubstitution.** Wir ersetzen $u$ durch $x + y$:
+
+\begin{equation*}
+x + y = -\frac{1}{x + C}.
+\end{equation*}
+
+Auflösen nach $y$ ergibt die allgemeine Lösung in den ursprünglichen Variablen:
+
+\begin{equation*}
+y(x) = -x - \frac{1}{x + C}, \quad C \in \mathbb{R}.
+\end{equation*}
+
+**Verifikation.** Wir prüfen, ob diese Funktion die ODE $y' = (x + y)^2 - 1$ erfüllt.
+
+Ableitung der Lösung:
+\begin{equation*}
+y'(x) = -1 + \frac{1}{(x + C)^2}.
+\end{equation*}
+
+Rechte Seite der ODE:
+\begin{align*}
+(x + y)^2 - 1
+  &= \left(x - x - \frac{1}{x+C}\right)^2 - 1
+   = \frac{1}{(x+C)^2} - 1.
+\end{align*}
+
+Linke und rechte Seite stimmen überein. Die Lösung ist verifiziert. $\checkmark$
+
+In der Regelungstechnik, die Sie in höheren Semestern kennenlernen, erscheinen ODEs dieser
+Struktur bei der Analyse nichtlinearer Regelkreise, deren Zustandsänderung von einer
+skalierten Linearkombination von Zustands- und Stellgröße abhängt. Das Substitutionsverfahren
+ist dort ein Standardwerkzeug zur Gewinnung analytischer Näherungslösungen.
+
+## Was ist der Sonderfall $a + b \cdot f(u) = 0$?
+
+Im Trennungsschritt haben wir durch $u^2$ dividiert und dabei $u \neq 0$ vorausgesetzt.
+*Was passiert, wenn $u = 0$ ist?* Dann ist $u' = u^2 = 0$: Die Funktion $u$ ist konstant
+gleich null. Das entspricht in den ursprünglichen Variablen der Bedingung
+$x + y = 0$, also $y = -x$.
+
+Allgemein: Wenn $a + b \cdot f(u) = 0$ für einen Wert $u = u_0$ gilt, dann ist
+$u \equiv u_0$ eine konstante Lösung der substituierten ODE. Die zugehörige Lösung in den
+Originalvariablen ergibt sich aus $ax + by + c = u_0$, aufgelöst nach $y$.
+
+Wir prüfen für unser Beispiel. Mit $y = -x$ gilt $y' = -1$. Einsetzen in die ODE:
+
+\begin{equation*}
+(x + (-x))^2 - 1 = 0 - 1 = -1 = y'. \quad \checkmark
+\end{equation*}
+
+Die Funktion $y = -x$ ist tatsächlich eine Lösung. Sie lässt sich aus der allgemeinen
+Lösung $y = -x - 1/(x+C)$ für kein endliches $C$ gewinnen: Im Grenzwert
+$|C| \to \infty$ verschwindet der Bruch zwar, aber $C = \infty$ ist keine zulässige
+reelle Konstante. Es handelt sich um eine **singuläre Lösung**, die separat neben der
+allgemeinen Lösung anzugeben ist.
+
+```{admonition} Was ist ... die vollständige Lösung im Substitutionsverfahren?
 :class: note
-Eine lineare ODE
+Gegeben sei eine ODE der Form $y' = f(ax + by + c)$ mit $b \neq 0$. Die vollständige
+Lösung besteht aus:
 
-\begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_0(x)\,y = g(x)
-\end{equation*}
-
-heißt **homogen**, wenn $g(x) = 0$ für alle $x$ im Definitionsbereich gilt, und
-**inhomogen**, wenn $g(x)$ nicht identisch null ist. Die Funktion $g(x)$ auf der
-rechten Seite heißt **Störfunktion**.
+1. Der **allgemeinen Lösung**, erhalten durch Substitution, Separation und Resubstitution
+   (gilt für $a + b \cdot f(u) \neq 0$).
+2. Den **singulären Lösungen**, die aus den Nullstellen $u_0$ von $a + b \cdot f(u) = 0$
+   durch Resubstitution $ax + by + c = u_0$ folgen.
 ```
 
-Die homogene Form spielt in der Lösungstheorie eine zentrale Rolle. *Warum?*
-Weil jede homogene lineare ODE eine ausgezeichnete Lösung besitzt, die wir
-sofort hinschreiben können: die **triviale Lösung** $y(x) = 0$. Einsetzen
-bestätigt das sofort, denn alle Ableitungen von $y = 0$ sind ebenfalls null:
-
-\begin{equation*}
-0^{(n)} + a_{n-1}(x)\cdot 0 + \cdots + a_0(x)\cdot 0 = 0 = g(x). \quad \checkmark
-\end{equation*}
-
-Diese triviale Lösung ist mathematisch wenig interessant, aber sie zeigt eine
-tiefe Eigenschaft linearer ODEs: Das System „ruht" immer bei $y = 0$. In der
-Schwingungslehre, die in der Technischen Mechanik vertieft wird, entspricht das
-dem ungestörten Gleichgewichtszustand. Die Störfunktion $g(x)$ beschreibt dann
-eine äußere Anregung, die das System aus diesem Gleichgewicht herausreißt.
-
-## Konstante oder variable Koeffizienten?
-
-Eine weitere Unterscheidung betrifft die Koeffizientenfunktionen $a_0(x), \ldots,
-a_{n-1}(x)$. Hängen sie wirklich von $x$ ab, oder sind sie Konstanten?
-
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist der Koeffizient vor $v$ die Konstante $k = 0.2~\text{s}^{-1}$. Sie hängt
-nicht von $t$ ab. Das ist eine lineare ODE **mit konstanten Koeffizienten**.
-
-Betrachten wir zum Vergleich die Gleichung
-
-\begin{equation*}
-y' + \frac{1}{x}\,y = x^2.
-\end{equation*}
-
-Hier ist der Koeffizient vor $y$ die Funktion $\frac{1}{x}$, die von $x$
-abhängt. Das ist eine lineare ODE **mit variablen Koeffizienten**. Solche
-Gleichungen treten beispielsweise in der Wärmeübertragung auf, wenn der
-Wärmeübergangskoeffizient entlang einer Kühlrippe mit dem Ort variiert, oder in
-der Strukturmechanik bei Balken mit veränderlichem Querschnitt.
-
-```{admonition} Was ist ... eine lineare ODE mit konstanten Koeffizienten?
-:class: note
-Eine lineare ODE heißt **lineare ODE mit konstanten Koeffizienten**, wenn alle
-Koeffizientenfunktionen $a_0, \ldots, a_{n-1}$ konstant sind, also nicht von $x$
-abhängen. Andernfalls spricht man von einer linearen ODE mit **variablen
-Koeffizienten**.
+```{dropdown} Video "Trennung der Variable nach vorheriger Substitution" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/A0Cg4tRNrfI?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable nach vorheriger Substitution" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-Für die Lösungstheorie ist diese Unterscheidung entscheidend: Lineare ODEs mit
-konstanten Koeffizienten lassen sich vollständig und systematisch lösen, wie wir
-in den Abschnitten 8.2 und 8.3 sehen werden. Bei variablen Koeffizienten ist das
-im Allgemeinen schwieriger und gelingt nur für spezielle Typen. Kapitel 8
-konzentriert sich daher auf den Fall konstanter Koeffizienten.
-
-## Klassifikation auf einen Blick
-
-Die drei Unterscheidungen lassen sich an konkreten Beispielen direkt ablesen:
-
-| ODE | Linear? | Homogen? | Koeffizienten |
-| --- | --- | --- | --- |
-| $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ | ja | nein | konstant |
-| $\dot{v} + k\,v = 0$ | ja | ja | konstant |
-| $y' + \tfrac{1}{x}\,y = x^2$ | ja | nein | variabel |
-| $\dot{h} + k\sqrt{h} = 0$ | nein | — | — |
-| $y' = y^2$ | nein | — | — |
-
-Bei nichtlinearen ODEs entfällt die Unterscheidung in homogen und inhomogen: Sie
-ist nur für lineare ODEs definiert.
-
-```{dropdown} Video "Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung - Definition
-und Vorbetrachtung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-```{dropdown} Video "Lineare Differentialgleichung (DGL) 1. Ordnung" von MathePeter
-<iframe width="927" height="521" src="https://www.youtube.com/embed/qwJPZHmNcIs"
-title="Lineare Differentialgleichung (DGL) 1. Ordnung | Einfach erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```{dropdown} Video "Differentialgleichung lösen durch Substitution" von Kochrezepte für Mathematik
+<iframe width="927" height="521" src="https://www.youtube.com/embed/oIjnic9GT3o"
+title="Differentialgleichung lösen durch Substitution - DGL" frameborder="0" allow="accelerometer;
+autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Eine lineare ODE zeichnet sich dadurch aus, dass die gesuchte Funktion und alle
-ihre Ableitungen ausschließlich zur ersten Potenz auftreten. Innerhalb dieser
-Klasse unterscheiden wir nach der Störfunktion $g(x)$: Bei $g(x) = 0$ ist die
-ODE homogen und besitzt stets die triviale Lösung $y = 0$; bei $g(x) \not\equiv
-0$ ist sie inhomogen. Eine weitere Unterscheidung betrifft die
-Koeffizientenfunktionen: Konstante Koeffizienten ermöglichen eine vollständige
-Lösungstheorie, während variable Koeffizienten den Lösungsaufwand erheblich
-steigern.
+ODEs der Form $y' = f(ax + by + c)$ lassen sich nicht direkt trennen, weil $x$ und $y$
+gemeinsam im Argument der Funktion auftreten. Die Substitution $u = ax + by + c$ ersetzt
+dieses Argument durch eine neue Funktion und verwandelt die ODE in die separierbare Form
+$u' = a + b \cdot f(u)$, die wir mit dem Verfahren aus Abschnitt 7.1 lösen. Nach der
+Resubstitution erhalten wir die allgemeine Lösung in den Originalvariablen. Der Sonderfall
+$a + b \cdot f(u) = 0$ liefert singuläre Lösungen, die separat zu prüfen und anzugeben sind.
 
-In Abschnitt 8.2 entwickeln wir das Lösungsverfahren für lineare ODEs 1. Ordnung
-mit konstanten Koeffizienten. Das Schlüsselwerkzeug ist die Variation der
-Konstanten, eine Methode, die die homogene Lösung als Ausgangspunkt nimmt und
-daraus die vollständige Lösung der inhomogenen Gleichung konstruiert.
+In Abschnitt 7.3 verlassen wir den methodischen Werkzeugkasten und kehren zur
+Ingenieurpraxis zurück. Wir wenden beide Verfahren dieses Kapitels auf konkrete technische
+Probleme an: den Fallschirmspringer aus Kapitel 6, dessen Lösung wir in Abschnitt 7.1
+erstmals hergeleitet haben, sowie zwei weitere Szenarien aus dem Maschinenbau, an denen
+deutlich wird, wie die Wahl des richtigen Lösungswegs vom Typ der ODE abhängt.

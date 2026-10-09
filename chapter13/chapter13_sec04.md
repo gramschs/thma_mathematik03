@@ -5,6 +5,13 @@ authors:
 
 # 13.4 Fourierreihen berechnen: Beispiele
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 12.3 haben wir die Formeln zur Bestimmung der Fourierkoeffizienten
 kennengelernt und den Mittelwert $a_0$ für ein asymmetrisches Rechtecksignal
 berechnet. Jetzt führen wir die vollständige Rechnung durch: alle Koeffizienten

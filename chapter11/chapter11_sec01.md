@@ -5,6 +5,13 @@ authors:
 
 # 11.1 Lineare ODE 2. Ordnung: wenn auch die Beschleunigung eine Rolle spielt
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 Die Wuppertaler Schwebebahn hängt wie ein Pendel an ihrer Schiene: Der
 Fahrwagen ist über ein Drehgelenk am Fahrwerk befestigt und kann seitlich
 ausschwingen. Bei einer Kurvenfahrt wird er durch die Zentripetalkraft aus der

@@ -5,6 +5,13 @@ authors:
 
 # 11.4 Komplexe Eigenwerte und das Modell der gedämpften Schwingung
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 10.3 haben wir gesehen, dass die charakteristische Gleichung für
 $D > 0$ oder $D = 0$ reelle Eigenwerte liefert und die zugehörigen Lösungen
 monoton gegen null abklingen. Die Schwebebahn schwingt in diesen Fällen nicht,

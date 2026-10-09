@@ -5,6 +5,13 @@ authors:
 
 # 14.4 Erzwungene Schwingung mit periodischer Erregung
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 13.3 haben wir das Amplitudenspektrum der Lagerkraft unserer
 Kurbelwelle berechnet: Neben der Grundschwingung bei $25~\text{Hz}$ enthält
 es Spektrallinien bei $75~\text{Hz}$, $125~\text{Hz}$ und allen weiteren

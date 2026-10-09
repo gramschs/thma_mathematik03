@@ -5,6 +5,13 @@ authors:
 
 # 11.3 Die charakteristische Gleichung: der Fall reeller Eigenwerte
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 10.2 haben wir gesehen, dass die allgemeine Lösung der homogenen
 ODE 2. Ordnung die Form $y_h = C_1 y_1 + C_2 y_2$ hat, sobald $y_1$ und $y_2$
 ein Fundamentalsystem bilden. Was noch fehlt, ist ein systematisches Verfahren,

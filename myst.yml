@@ -43,31 +43,30 @@ project:
        - file: chapter04/chapter04_sec02.md
        - file: chapter04/chapter04_sec03.md
        - file: chapter04/chapter04_sec04.md
-    - title: 5. Orthogonale Matrizen und Eigenwerte
-      children: 
+    - title: 5. Basis, orthogonale Matrizen und Drehungen
+      children:
        - file: chapter05/chapter05_sec01.md
        - file: chapter05/chapter05_sec02.md
        - file: chapter05/chapter05_sec03.md
        - file: chapter05/chapter05_sec04.md
-       - file: chapter05/chapter05_sec05.md
-    - title: 6. Diagonalisierung und Anwendungen
+    - title: 6. Eigenwerte und Eigenvektoren
       children:
        - file: chapter06/chapter06_sec01.md
        - file: chapter06/chapter06_sec02.md
        - file: chapter06/chapter06_sec03.md
        - file: chapter06/chapter06_sec04.md
-       - file: chapter06/chapter06_sec05.md
-    - title: 7. Gewöhnliche Differentialgleichungen
+    - title: 7. Diagonalisierung und Anwendungen
       children:
        - file: chapter07/chapter07_sec01.md
        - file: chapter07/chapter07_sec02.md
        - file: chapter07/chapter07_sec03.md
-    - title: 8. Separation der Variablen
+    - title: 8. Differentialgleichungen und Trennung der Variablen
       children:
        - file: chapter08/chapter08_sec01.md
        - file: chapter08/chapter08_sec02.md
        - file: chapter08/chapter08_sec03.md
-    - title: 9. Lineare DGL 1. Ordnung mit konstanten Koeffizienten
+       - file: chapter08/chapter08_sec04.md
+    - title: 9. Substitution und lineare DGL 1. Ordnung
       children:
        - file: chapter09/chapter09_sec01.md
        - file: chapter09/chapter09_sec02.md
