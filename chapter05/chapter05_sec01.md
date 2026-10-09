@@ -174,10 +174,12 @@ $\mathbf{M}\,[\vec{x}]_{\mathbf{M}} = \vec{x}$.
 
 Für unser Beispiel lesen wir die beiden Koordinatenvektoren direkt ab:
 
+<!-- markdownlint-disable -->
 \begin{equation*}
 [\vec{v}]_{\mathbf{E}} = \begin{pmatrix} 1 \\ 5 \end{pmatrix} = \vec{v}, \quad
 [\vec{v}]_{\mathbf{A}} = \begin{pmatrix} 2 \\ 3 \end{pmatrix}.
 \end{equation*}
+<!-- markdownlint-enable -->
 
 Bezüglich der kanonischen Basis ist der Koordinatenvektor also der Vektor
 selbst, und seine Einträge nennen wir deshalb auch Standardkoordinaten. Manche
@@ -247,8 +249,10 @@ auch die Reihenfolge ihrer Vektoren.
 
 ```{dropdown} Video "Change of basis" von 3Blue1Brown
 <iframe width="1054" height="593" src="https://www.youtube.com/embed/P2LTAUO1TdA"
-title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+title="Change of basis | Chapter 13, Essence of linear algebra" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
 ```
 
 ## Was hat der Basiswechsel mit der Inversen zu tun?
@@ -308,11 +312,10 @@ $\vec{a}_1 - 2\,\vec{a}_2 = (2 + 2,\ 1 - 2)^{\top} = (4, -1)^{\top}$.
 $\mathbf{A}^{-1}$ mit $\vec{e}_1$, kommt nach Kapitel 4.1 die erste Spalte
 heraus. Also ist $[\vec{e}_1]_{\mathbf{A}} = (\frac{1}{3}, -\frac{1}{3})^{\top}$
 und ebenso $[\vec{e}_2]_{\mathbf{A}} = (\frac{1}{3}, \frac{2}{3})^{\top}$. Zur
-Probe ist
-$\frac{1}{3}\vec{a}_1 - \frac{1}{3}\vec{a}_2 = \frac{1}{3}(2 + 1,\ 1 - 1)^{\top} = (1, 0)^{\top}$.
-Die Spalten von $\mathbf{A}$ sind also die neuen Basisvektoren in
-Standardkoordinaten, und die Spalten von $\mathbf{A}^{-1}$ sind die alten
-Basisvektoren $\vec{e}_1, \vec{e}_2$ in den neuen Koordinaten.
+Probe ist $\frac{1}{3}\vec{a}_1 - \frac{1}{3}\vec{a}_2 = \frac{1}{3}(2 + 1,\ 1 -
+1)^{\top} = (1, 0)^{\top}$. Die Spalten von $\mathbf{A}$ sind also die neuen
+Basisvektoren in Standardkoordinaten, und die Spalten von $\mathbf{A}^{-1}$ sind
+die alten Basisvektoren $\vec{e}_1, \vec{e}_2$ in den neuen Koordinaten.
 
 ```{admonition} Berechnen wir die Koordinaten mit $\mathbf{A}$ oder mit $\mathbf{A}^{-1}$?
 :class: danger
@@ -332,7 +335,8 @@ Vektoren umrechnen, berechnen wir die Inverse einmal und multiplizieren danach
 nur noch. In Kapitel 5.2 lernen wir Basen kennen, bei denen wir die Inverse
 sogar ganz ohne Rechnung hinschreiben können.
 
-```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" von The Bright Side of Mathematics
+```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel"
+von The Bright Side of Mathematics
 <iframe width="1054" height="585" src="https://www.youtube.com/embed/FFVauAY_FMI"
 title="Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
@@ -341,9 +345,10 @@ web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></if
 
 ```{dropdown} Video "Basis-Transformation" von MathePeter
 <iframe width="1054" height="593" src="https://www.youtube.com/embed/CR7e7Zc0QLg"
-title="BASISTRANSFORMATION | Transformationsmatrix berechnen am BEISPIEL (linearer Unterraum)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+title="BASISTRANSFORMATION | Transformationsmatrix berechnen am BEISPIEL
+(linearer Unterraum)" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
