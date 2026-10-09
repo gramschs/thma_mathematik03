@@ -5,6 +5,13 @@ authors:
 
 # 14.1 Symmetrie nutzen: Kosinus- und Sinusreihen
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 Wir kehren zu unserer Kurbelwelle aus den Abschnitten 12.1 und 12.2 zurück und
 geben dem Leitbeispiel dieses Kapitels seine physikalische Gestalt: Die Kraft
 auf das Pleuellager wechselt idealisiert mit jeder halben Umdrehung ihr

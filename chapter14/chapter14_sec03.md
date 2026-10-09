@@ -3,7 +3,15 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 14.3 Die komplexe Fourierreihe
+# 14.3 Die komplexe Fourierreihe (Vertiefung)
+
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+Es ist eine Vertiefung und kein Prüfungsstoff.
+```
 
 In Abschnitt 13.2 haben wir gesehen, dass die Fourierkoeffizienten der
 Lagerkraft wie $1/n$ abklingen und damit auch hohe Frequenzen noch spürbar

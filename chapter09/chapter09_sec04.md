@@ -3,235 +3,250 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.4 Technische Anwendungen linearer ODEs 1. Ordnung
+# 9.4 Die inhomogene lineare Differentialgleichung
 
-In Abschnitt 7.3 haben wir separierbare ODEs auf zwei konkrete Ingenieurprobleme
-angewandt und dabei den vollständigen Weg von der Physik zur Lösung zur Interpretation
-geübt. Diesen Weg gehen wir hier erneut, diesmal für inhomogene lineare ODEs mit
-konstanten Koeffizienten. Die Lösungstheorie aus den Abschnitten 8.2 und 8.3 liefert
-das Werkzeug; die Beispiele zeigen, wie sich technisch so verschiedene Phänomene wie das
-Aufladen eines Kondensators und das Aufwärmen einer Maschinenkomponente auf dieselbe
-mathematische Struktur zurückführen lassen.
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
+Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
+ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
+hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
+modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
+**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
+der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
+dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
+den Bogen, der in Kapitel 6 geöffnet wurde.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können ein technisches Problem als inhomogene lineare ODE 1. Ordnung mit
-  konstanten Koeffizienten modellieren und die Lösung $y_{\text{allgemein}} = y_h + y_p$
-  vollständig berechnen.
-* [ ] Sie können die Integrationskonstante aus einer gegebenen Anfangsbedingung bestimmen
-  und die **partikuläre Lösung** des Anfangswertproblems angeben.
-* [ ] Sie können die Lösung physikalisch interpretieren und zwischen dem
-  **transienten Anteil** (klingt ab) und dem **stationären Anteil** (bleibt dauerhaft)
-  unterscheiden.
+* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
+  $$y_{\text{allgemein}} = y_h + y_p$$
+  aus homogener Lösung und partikulärer Lösung zusammensetzt.
+* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
+  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
+* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
+  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
+* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
+  Anfangsbedingungen anpassen.
 ```
 
-## Beispiel 1: Aufladen eines Kondensators im RC-Kreis
+## Warum reicht die homogene Lösung nicht aus?
 
-In der Steuerungs- und Antriebstechnik begegnen RC-Schaltkreise als Verzögerungsglieder,
-Tiefpassfilter und Energiespeicher. Das Ladevorgang eines Kondensators ist das einfachste
-Beispiel für ein dynamisches Verhalten mit Zeitkonstante, und er führt auf eine ODE, die
-wir mit den Methoden aus Abschnitt 8.3 vollständig lösen können.
-
-### Aufstellen der ODE
-
-Ein Kondensator mit Kapazität $C = 100~\mu\text{F}$ liegt in Reihe mit einem Widerstand
-$R = 10~\text{k}\Omega$ an einer Gleichspannungsquelle $U_0 = 12~\text{V}$. Die
-Maschenregel liefert $U_0 = u_R + u_C$, wobei $u_R = R\,i$ und $i = C\,\dot{u}_C$. Nach
-dem Einsetzen und Division durch $RC$:
+Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
+9.81$ erfüllt:
 
 \begin{equation*}
-\dot{u}_C + \frac{1}{RC}\,u_C = \frac{U_0}{RC}.
+\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
 \end{equation*}
 
-Mit der **Zeitkonstante** $\tau = RC = 10^4~\Omega \cdot 10^{-4}~\text{F} = 1~\text{s}$:
+$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
+Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
+wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
+genau diesen fehlenden Anteil liefert.
 
-\begin{equation*}
-\dot{u}_C + \frac{1}{\tau}\,u_C = \frac{U_0}{\tau}.
-\end{equation*}
-
-Das ist eine lineare ODE mit konstanten Koeffizienten $f(t) = 1/\tau$ und der konstanten
-Störfunktion $g(t) = U_0/\tau$. Der Kondensator sei zu Beginn ungeladen: $u_C(0) = 0$.
-
-### Lösung
-
-**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 1/\tau$):
-
-\begin{equation*}
-u_h(t) = A\,e^{-t/\tau}.
-\end{equation*}
-
-**Partikuläre Lösung** (Ansatz $u_p = C_0$ für konstante Störfunktion):
-
-\begin{equation*}
-\dot{u}_p + \frac{1}{\tau}\,u_p = 0 + \frac{C_0}{\tau}
-  \stackrel{!}{=} \frac{U_0}{\tau}
-\quad \Rightarrow \quad C_0 = U_0.
-\end{equation*}
-
-**Allgemeine Lösung:**
-
-\begin{equation*}
-u_C(t) = A\,e^{-t/\tau} + U_0.
-\end{equation*}
-
-**Anfangsbedingung** $u_C(0) = 0$: $A + U_0 = 0$, also $A = -U_0$. Die spezielle Lösung:
-
-\begin{equation*}
-u_C(t) = U_0\!\left(1 - e^{-t/\tau}\right) = 12\!\left(1 - e^{-t}\right)~\text{V}.
-\end{equation*}
-
-**Verifikation:** $\dot{u}_C = \frac{U_0}{\tau}\,e^{-t/\tau}$ und
-$\frac{1}{\tau}u_C = \frac{U_0}{\tau}(1 - e^{-t/\tau})$, also:
-
-\begin{equation*}
-\dot{u}_C + \frac{1}{\tau}u_C
-  = \frac{U_0}{\tau}\,e^{-t/\tau} + \frac{U_0}{\tau} - \frac{U_0}{\tau}\,e^{-t/\tau}
-  = \frac{U_0}{\tau}. \quad \checkmark
-\end{equation*}
-
-### Physikalische Interpretation
-
-Die Lösung gliedert sich in zwei Anteile. Der **transiente Anteil** $-U_0\,e^{-t/\tau}$
-stammt aus $u_h$ und klingt mit der Zeitkonstante $\tau = 1~\text{s}$ ab; er beschreibt,
-wie stark das System vom stationären Zustand entfernt ist. Der **stationäre Anteil**
-$u_p = U_0 = 12~\text{V}$ ist die partikuläre Lösung; er beschreibt den Endzustand, den
-der Kondensator für $t \to \infty$ anstrebt.
-
-Nach einer Zeitkonstante gilt $u_C(\tau) = 12(1 - e^{-1}) \approx 7.58~\text{V}$: Der
-Kondensator hat $63.2\%$ seiner Endspannung erreicht. Nach fünf Zeitkonstanten beträgt
-die Spannung $u_C(5\tau) \approx 11.92~\text{V}$, also $99.3\%$ des Endwertes. In der
-Praxis gilt ein System nach fünf Zeitkonstanten als eingeschwungen. Diese Faustregeln
-für $\tau$ sind in der Antriebstechnik und Regelungstechnik grundlegend.
-
-## Beispiel 2: Maschinenkomponente bei periodischer Wärmequelle
-
-Viele Maschinenkomponenten sind Wärmequellen ausgesetzt, deren Intensität sich zeitlich
-ändert: ein Elektromotor mit periodisch wechselnder Last, ein Getriebe im Fahrzyklus oder
-eine Produktionsanlage mit getaktetem Betrieb. Wenn die Wärmequelle näherungsweise
-sinusförmig variiert, führt das auf eine lineare ODE mit trigonometrischer Störfunktion,
-wie wir sie in Abschnitt 8.3 mit dem $\sin$/$\cos$-Ansatz gelöst haben.
+*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
+ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
 
 <!-- markdownlint-disable -->
-### Aufstellen der ODE
+\begin{align*}
+(y_h + y_p)' + f(x)\,(y_h + y_p)
+  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
+   = g(x). \quad \checkmark
+\end{align*}
 <!-- markdownlint-enable -->
 
-Eine Maschinenkomponente mit der Temperatur $T(t)$ gibt Wärme proportional zur
-Temperaturdifferenz gegenüber der Umgebung ab (Newtonsches Abkühlgesetz) und nimmt
-gleichzeitig eine sinusförmig variierende Wärmeleistung auf. Mit dem
-Wärmeübergangskoeffizienten $\alpha = 0.5~\text{s}^{-1}$, der Umgebungstemperatur
-null als Bezugspunkt und der Wärmequelle mit Amplitude $\beta = 10~\text{K\,s}^{-1}$
-sowie Kreisfrequenz $\omega = 1~\text{s}^{-1}$:
+Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
+die Störfunktion reproduziert. Dieses Zusammenspiel heißt
+**Superpositionsprinzip**.
+
+```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
+:class: note
+Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
+setzt sich zusammen aus
 
 \begin{equation*}
-\dot{T} + \alpha\,T = \beta\sin(\omega t)
-\quad \Longrightarrow \quad
-\dot{T} + 0.5\,T = 10\sin(t).
+y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
 \end{equation*}
 
-Die Komponente hat zur Zeit $t = 0$ die Temperatur $T(0) = 20~\text{°C}$.
+wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
+$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
+Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
+festgelegt.
+```
+
+## Wie wählen wir den richtigen Ansatz?
+
+Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
+$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
+$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
+Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
+Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
+$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
+die drei wichtigsten Typen zusammen:
 
 <!-- markdownlint-disable -->
-### Lösung
+| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
+| --- | --- |
+| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
+| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
+| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
 <!-- markdownlint-enable -->
 
-**Homogene Lösung** (aus Abschnitt 8.2 mit $a = 0.5$):
+Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
+homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
+null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
+werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
+
+## Beispiel 1: der Fallschirmsprung
+
+Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
+0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
+Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
 
 \begin{equation*}
-T_h(t) = A\,e^{-0.5\,t}.
+v_p = C, \quad C \in \mathbb{R}.
 \end{equation*}
 
-**Partikuläre Lösung** (Ansatz für trigonometrische Störfunktion aus Abschnitt 8.3):
+Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
 
 \begin{equation*}
-T_p = P\cos(t) + Q\sin(t)
-\quad \Rightarrow \quad
-\dot{T}_p = -P\sin(t) + Q\cos(t).
+\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
 \end{equation*}
 
-Einsetzen in $\dot{T} + 0.5\,T = 10\sin(t)$:
+**Koeffizientenvergleich** liefert unmittelbar:
+
+\begin{equation*}
+C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
+\end{equation*}
+
+Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
+physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
+Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
+A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
+
+\begin{equation*}
+v(t) = A\,e^{-kt} + v_\infty.
+\end{equation*}
+
+**Anfangsbedingung** $v(0) = 0$:
+
+\begin{equation*}
+v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
+\quad \Rightarrow \quad A = -v_\infty.
+\end{equation*}
+
+Die spezielle Lösung des AWP lautet:
+
+\begin{equation*}
+v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
+     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+\end{equation*}
+
+Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
+hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
+ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
+$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
+
+## Beispiel 2: eine Sinus-Störfunktion
+
+Wir betrachten die ODE
+
+\begin{equation*}
+y' + y = \sin(x).
+\end{equation*}
+
+Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
+(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
+\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
+
+\begin{equation*}
+y_p(x) = P\cos(x) + Q\sin(x).
+\end{equation*}
+
+Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
+\sin(x)$:
 
 \begin{align*}
-(-P\sin t + Q\cos t) + 0.5(P\cos t + Q\sin t) &= 10\sin t, \\
-(0.5Q - P)\sin t + (0.5P + Q)\cos t &= 10\sin t.
+y_p'(x) + y_p(x)
+  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
+  &= (Q - P)\sin(x) + (P + Q)\cos(x)
+   \stackrel{!}{=} \sin(x).
 \end{align*}
 
-**Koeffizientenvergleich:**
+**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
+$\cos(x)$ auf beiden Seiten:
 
 \begin{align*}
-\sin(t)\text{-Koeffizient:} &\quad 0.5\,Q - P = 10, \\
-\cos(t)\text{-Koeffizient:} &\quad 0.5\,P + Q = 0
-  \quad \Rightarrow \quad P = -2Q.
+\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
+\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
 \end{align*}
 
-Einsetzen in die erste Gleichung: $0.5\,Q + 2Q = 2.5\,Q = 10$, also $Q = 4$
-und $P = -8$. Die partikuläre Lösung lautet:
+Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
+= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
+lautet:
 
 \begin{equation*}
-T_p(t) = -8\cos(t) + 4\sin(t)~\text{°C}.
+y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
 \end{equation*}
 
-**Allgemeine Lösung:**
+Die allgemeine Lösung ist:
 
 \begin{equation*}
-T(t) = A\,e^{-0.5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
+y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
 \end{equation*}
 
-**Anfangsbedingung** $T(0) = 20~\text{°C}$:
-
-\begin{equation*}
-A\,e^{0} - 8\cos(0) + 4\sin(0) = A - 8 = 20
-\quad \Rightarrow \quad A = 28.
-\end{equation*}
-
-Die spezielle Lösung:
-
-\begin{equation*}
-T(t) = 28\,e^{-0.5\,t} - 8\cos(t) + 4\sin(t)~\text{°C}.
-\end{equation*}
-
-**Verifikation:** Mit $\dot{T} = -14\,e^{-0.5\,t} + 8\sin(t) + 4\cos(t)$:
+**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
 
 \begin{align*}
-\dot{T} + 0.5\,T
-  &= \bigl(-14\,e^{-0.5\,t} + 8\sin t + 4\cos t\bigr) +
-     0.5\bigl(28\,e^{-0.5\,t} - 8\cos t + 4\sin t\bigr) \\
-  &= (-14 + 14)\,e^{-0.5\,t} + (8 + 2)\sin t + (4 - 4)\cos t \\
-  &= 10\sin(t). \quad \checkmark
+y' + y
+  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
+     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
+  &= \sin(x). \quad \checkmark
 \end{align*}
+
+Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
+durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
+Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
+Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
+
+```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
+<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
 
 <!-- markdownlint-disable -->
-### Physikalische Interpretation
+```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
+<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
+title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
 <!-- markdownlint-enable -->
-
-Auch hier gliedert sich die Lösung in zwei Anteile. Der transiente Anteil
-$28\,e^{-0.5\,t}$ klingt mit der Zeitkonstante $1/\alpha = 2~\text{s}$ ab:
-Nach etwa zehn Sekunden ist er praktisch null. Übrig bleibt der stationäre
-Anteil $T_p(t) = -8\cos(t) + 4\sin(t)$, eine dauerhaft anhaltende Schwingung mit
-der Kreisfrequenz $\omega = 1~\text{s}^{-1}$ der Wärmequelle. Die Amplitude des
-eingeschwungenen Zustands beträgt $\sqrt{(-8)^2 + 4^2} = 4\sqrt{5} \approx
-8.9~\text{K}$ und ist damit kleiner als der Wert $\beta/\omega = 10~\text{K}$,
-den ein einfacher Amplitudenvergleich mit der Störfunktion $\beta\sin(\omega t)$
-nahelegen würde: Die Trägheit der Komponente dämpft die Temperaturschwankung ab.
-
-*Warum ist das für den Maschinenbau relevant?* Das Verhältnis von Eingangs- zu
-Ausgangsamplitude bei periodischer Anregung beschreibt die
-Übertragungseigenschaften des Systems. In der Regelungstechnik heißt dieser
-Zusammenhang Frequenzgang; er ist das zentrale Werkzeug zur Auslegung von
-Reglern. Für ODEs 2. Ordnung werden wir in Kapitel 11 sehen, dass dieser
-Zusammenhang noch reichhaltiger wird und den Resonanzfall einschließt.
 
 ## Zusammenfassung und Ausblick
 
-Beide Beispiele zeigen dieselbe universelle Struktur: Die allgemeine Lösung
-$y_{\text{allgemein}} = y_h + y_p$ besteht aus einem transienten Anteil, der das
-Anfangsverhalten beschreibt und mit der Zeitkonstante $1/a$ abklingt, und einem
-stationären Anteil, der dauerhaft erhalten bleibt und die Form der Störfunktion
-trägt. Diese Zweiteilung ist kein Zufall, sondern eine direkte Konsequenz des
-Superpositionsprinzips aus Abschnitt 8.3.
+Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
+Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
+beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
+trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
+funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
+Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
+Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
+$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
+Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
 
-In Kapitel 9 lernen wir die Variation der Konstanten kennen: ein
-Lösungsverfahren, das die partikuläre Lösung auch dann findet, wenn die
-Störfunktion nicht in die Ansatztabelle passt, und das den Resonanzfall
-automatisch korrekt behandelt.
+In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
+an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
+Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
+nicht in die Ansatztabelle passt.

@@ -3,264 +3,226 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 7.1 Was ist eine Differentialgleichung?
+# 7.1 Diagonalisierung
 
-Am Ende von Kapitel 5 haben wir gesehen, wie die Modalanalyse ein gekoppeltes
-Schwingungssystem auf seine Eigenfrequenzen zurückführt. Dabei sind Ausdrücke
-wie $m\ddot{x} = -kx$ aufgetaucht: Gleichungen, in denen die gesuchte Funktion
-und ihre Ableitungen gemeinsam vorkommen. Solche Gleichungen sind kein
-Sonderfall, sondern das wichtigste mathematische Werkzeug der Ingenieurpraxis.
-Wärmeübertragung, Strömungsmechanik, Regelungstechnik und Festigkeitslehre
-führen alle auf denselben Typ von Beschreibung. In diesem Kapitel klären wir,
-was eine **Differentialgleichung** ist, was ihre Lösungen bedeuten und wie
-eine einzige Zusatzbedingung die Lösung eindeutig festlegt.
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+In Abschnitt 5.3 haben wir für die symmetrische Matrix
+$\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}$
+die Eigenvektoren $\vec{v}_1 = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$ und
+$\vec{v}_2 = \begin{pmatrix} 1 \\ -2 \end{pmatrix}$ berechnet und dabei
+bemerkt: $\vec{v}_1 \cdot \vec{v}_2 = 0$. Wir haben das als Tatsache
+festgehalten, aber noch nicht erklärt. In diesem Abschnitt zeigen wir, warum
+das immer so ist, wenn die Matrix symmetrisch ist, und nutzen diese Eigenschaft
+dann, um die Matrix auf eine besonders einfache Form zu bringen: eine
+Diagonalmatrix, in der die Eigenwerte direkt ablesbar sind.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was eine **gewöhnliche Differentialgleichung (ODE)** ist,
-  und können sie von einer partiellen Differentialgleichung unterscheiden.
-* [ ] Sie kennen die wichtigsten **Schreibweisen** für ODEs und können
-  dieselbe Gleichung in Punkt-, Strich- und Leibniz-Notation lesen.
-* [ ] Sie kennen die Begriffe **Ordnung** und **Grad** einer ODE und können
-  diese an konkreten Beispielen bestimmen.
-* [ ] Sie können zwischen der **allgemeinen Lösung** und der **speziellen
-  (partikulären) Lösung** einer ODE unterscheiden.
-* [ ] Sie wissen, was ein **Anfangswertproblem (AWP)** und ein
-  **Randwertproblem (RWP)** sind, und können für ein gegebenes AWP die
-  Anfangsbedingungen benennen.
+* [ ] Sie wissen, dass alle Eigenwerte einer **symmetrischen Matrix** reell sind
+  und können beweisen, dass Eigenvektoren zu verschiedenen Eigenwerten stets
+  orthogonal sind.
+* [ ] Sie verstehen, dass eine **Ähnlichkeitstransformation**
+  $\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}$ dieselbe lineare
+  Abbildung in einem anderen Koordinatensystem beschreibt und die Eigenwerte
+  erhält.
+* [ ] Sie wissen, wann eine Matrix **diagonalisierbar** ist: genau dann, wenn
+  für alle Eigenwerte $d_\lambda = m_\lambda$ gilt.
+* [ ] Sie können eine diagonalisierbare Matrix **diagonalisieren**, indem Sie
+  die Eigenvektoren als Spalten in $\mathbf{V}$ schreiben und
+  $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ berechnen.
+* [ ] Sie kennen den **Spektralsatz**: Jede symmetrische Matrix ist
+  diagonalisierbar, und $\mathbf{V}$ kann als orthogonale Matrix $\mathbf{Q}$
+  mit $\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$ gewählt werden.
 ```
 
-## Wie wird aus einem Physikproblem eine Differentialgleichung?
+## Warum sind Eigenvektoren symmetrischer Matrizen orthogonal?
 
-Ein Mensch mit Masse $m = 80~\text{kg}$ springt aus einem Flugzeug. Vor dem
-Öffnen des Fallschirms wirken auf ihn zwei Kräfte: die Schwerkraft
-$F_g = mg$ nach unten und der Luftwiderstand $F_L = b\,v$ entgegen der
-Fallrichtung. Der Luftwiderstand wächst mit der Geschwindigkeit $v(t)$; je
-schneller der Fall, desto stärker bremst die Luft. Mit dem
-Luftwiderstandskoeffizient $b = 16~\text{kg\,s}^{-1}$ und
-$g = 9.81~\text{m\,s}^{-2}$ lautet das zweite Newtonsche Gesetz:
+In der Festigkeitslehre tritt der Spannungstensor als symmetrische Matrix auf.
+Seine Eigenwerte, die Hauptspannungen, müssen reelle Größen sein: Eine imaginäre
+Spannung hätte keine physikalische Bedeutung. Dass die Mathematik das automatisch
+sicherstellt, ist eine der wichtigsten Eigenschaften symmetrischer Matrizen.
+*Aber warum sind auch die Eigenvektoren stets orthogonal?* Wir zeigen das allgemein.
 
-\begin{equation*}
-m\,\dot{v} = mg - b\,v.
-\end{equation*}
-
-Wir dividieren durch $m$ und führen die Abkürzung $k = b/m = 0.2~\text{s}^{-1}$
-ein:
-
-\begin{equation*}
-\dot{v} = g - k\,v.
-\end{equation*}
-
-In dieser Gleichung ist $v(t)$ die gesuchte Funktion. Auf der linken Seite
-steht ihre Ableitung $\dot{v}$, auf der rechten Seite ein Ausdruck, der $v$
-selbst enthält. Das unterscheidet diese Gleichung grundlegend von einer
-algebraischen Gleichung wie $2x - 3 = 0$: Dort suchen wir eine Zahl, hier
-suchen wir eine Funktion, deren Ableitung eine vorgeschriebene Beziehung zur
-Funktion selbst erfüllt.
-
-### Schreibweisen für dieselbe Gleichung
-
-In Lehrbüchern und späteren Lehrveranstaltungen begegnet dieselbe ODE in
-verschiedenen Notationen. Unsere Fallgleichung lässt sich äquivalent
-schreiben als:
-
-\begin{equation*}
-\dot{v} = g - kv \quad \text{(Punkt-Notation, üblich bei Zeitableitungen)},
-\end{equation*}
-
-\begin{equation*}
-v' = g - kv \quad \text{(Strich-Notation)},
-\end{equation*}
-
-\begin{equation*}
-\frac{dv}{dt} = g - kv \quad \text{(Leibniz-Notation, betont die unabhängige Variable $t$)}.
-\end{equation*}
-
-Alle drei Schreibweisen drücken dieselbe Forderung aus. In der Mechanik ist die
-Punkt-Notation für Zeitableitungen am gebräuchlichsten; in der Mathematik und
-bei Ableitungen nach dem Ort wird meist die Strich- oder Leibniz-Notation
-bevorzugt.
-
-```{admonition} Was ist ... eine gewöhnliche Differentialgleichung?
-:class: note
-Eine **gewöhnliche Differentialgleichung** (englisch: *ordinary differential
-equation*, **ODE**) ist eine Gleichung, die eine unbekannte Funktion einer
-einzigen unabhängigen Variable und mindestens eine ihrer Ableitungen enthält.
-
-Die **Ordnung** einer ODE ist die höchste auftretende Ableitungsordnung. Der
-**Grad** ist der Exponent, mit dem diese höchste Ableitung in der Gleichung
-vorkommt, sofern die Gleichung polynomial in den Ableitungen ist.
-
-Eine **partielle Differentialgleichung** enthält partielle Ableitungen nach
-mehreren unabhängigen Variablen gleichzeitig.
-```
-
-Unsere Fallgleichung $\dot{v} = g - kv$ ist eine ODE 1. Ordnung und 1. Grades,
-denn $\dot{v}$ erscheint linear und es tritt keine höhere Ableitung auf.
-Zum Vergleich: Die Bewegungsgleichung eines ungedämpften Schwingers
-$m\ddot{x} = -kx$ ist eine ODE 2. Ordnung. Die Wärmeleitungsgleichung
-$\partial T/\partial t = a\,\partial^2 T/\partial x^2$ hingegen ist eine
-partielle Differentialgleichung, denn die Temperatur $T$ hängt sowohl von der
-Zeit $t$ als auch vom Ort $x$ ab; solche Gleichungen liegen außerhalb des
-Rahmens dieses Kapitels.
-
-In der Strukturmechanik trifft man regelmäßig auf ODEs höherer Ordnung.
-Die Biegelinie eines Balkens genügt der Gleichung $EI\,w'' = M(x)$, einer
-ODE 2. Ordnung in der Durchbiegung $w(x)$. Die Gleichung $EI\,w'''' = q(x)$
-für eine verteilte Streckenlast $q(x)$ ist sogar eine ODE 4. Ordnung. In der
-Technischen Mechanik werden Sie diese Gleichungen ausführlich einsetzen.
-
-## Was ist eine Lösung, und warum gibt es unendlich viele?
-
-*Was bedeutet es überhaupt, eine ODE zu „lösen"?* Eine Lösung ist eine
-Funktion, die die Gleichung identisch erfüllt, wenn man sie einsetzt. Für
-unser Fallbeispiel behaupten wir, dass die Funktion
-
-\begin{equation*}
-v(t) = \frac{g}{k} + C\,e^{-kt}
-\end{equation*}
-
-für jede Konstante $C \in \mathbb{R}$ eine Lösung von $\dot{v} = g - kv$ ist.
-Die Größe $g/k = 9.81 / 0.2 = 49.05~\text{m\,s}^{-1}$ ist die
-**Grenzgeschwindigkeit** $v_\infty$: die Geschwindigkeit, bei der sich
-Schwerkraft und Luftwiderstand gerade ausgleichen.
-
-Wir verifizieren das durch Einsetzen. Die Ableitung der behaupteten Lösung ist:
-
-\begin{equation*}
-\dot{v}(t) = -kC\,e^{-kt}.
-\end{equation*}
-
-Die rechte Seite der ODE lautet mit unserer Lösung:
+Seien $\lambda_1 \neq \lambda_2$ zwei Eigenwerte einer symmetrischen Matrix
+$\mathbf{A}$ mit Eigenvektoren $\vec{v}_1$ und $\vec{v}_2$. Wir multiplizieren
+die Gleichung $\mathbf{A}\vec{v}_1 = \lambda_1 \vec{v}_1$ von links mit
+$\vec{v}_2^{\top}$ und nutzen $\mathbf{A}^{\top} = \mathbf{A}$:
 
 \begin{align*}
-g - k\,v(t) &= g - k\!\left(\frac{g}{k} + C\,e^{-kt}\right)
-             = g - g - kC\,e^{-kt}
-             = -kC\,e^{-kt}.
+\vec{v}_2^{\top} \mathbf{A} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1, \\
+(\mathbf{A} \vec{v}_2)^{\top} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1, \\
+\lambda_2\, \vec{v}_2^{\top} \vec{v}_1 &= \lambda_1\, \vec{v}_2^{\top} \vec{v}_1.
 \end{align*}
 
-Linke und rechte Seite stimmen für jedes $C$ überein. Die Verifikation ist
-damit abgeschlossen.
+Umstellen liefert $(\lambda_2 - \lambda_1)\,\vec{v}_2^{\top} \vec{v}_1 = 0$. Da
+$\lambda_1 \neq \lambda_2$ vorausgesetzt ist, muss $\vec{v}_2^{\top} \vec{v}_1 = 0$
+gelten. Die Orthogonalität folgt zwingend aus der Symmetrie.
 
-```{admonition} Was ist ... die allgemeine Lösung einer ODE?
+```{admonition} Eigenwerte und Eigenvektoren symmetrischer Matrizen
 :class: note
-Die **allgemeine Lösung** einer ODE $n$-ter Ordnung ist eine Familie von
-Funktionen, die $n$ frei wählbare Konstanten $C_1, \ldots, C_n$ enthält und
-alle Lösungen der Gleichung umfasst. Jede Wahl der Konstanten liefert eine
-**spezielle (partikuläre) Lösung**.
+Sei $\mathbf{A} \in \mathbb{R}^{n \times n}$ eine symmetrische Matrix
+($\mathbf{A}^{\top} = \mathbf{A}$). Dann gilt:
+
+1. Alle Eigenwerte von $\mathbf{A}$ sind **reell**.
+2. Eigenvektoren zu verschiedenen Eigenwerten sind **orthogonal**:
+   aus $\lambda_1 \neq \lambda_2$ folgt $\vec{v}_1 \cdot \vec{v}_2 = 0$.
+3. Es gibt immer eine vollständige Basis aus $n$ paarweise orthogonalen
+   Eigenvektoren.
 ```
 
-In unserem Beispiel ist $v(t) = v_\infty + C\,e^{-kt}$ die allgemeine Lösung.
-Für $C > 0$ startet die Geschwindigkeit über der Grenzgeschwindigkeit und fällt
-auf sie zu; für $C < 0$ startet sie darunter und steigt gegen $v_\infty$; für
-$C = 0$ liegt man von Beginn an exakt auf der Grenzgeschwindigkeit. Die
-Gesamtheit aller Lösungen bildet eine Kurvenschar, in der $v_\infty$ als
-waagerechte Asymptote erscheint. In Abschnitt 6.2 werden wir dieses Bild
-systematisch als Richtungsfeld darstellen, noch bevor wir die Lösung berechnen.
+Für unsere Beispielmatrix bestätigt das die Rechnung aus Abschnitt 5.3:
+$\vec{v}_1 \cdot \vec{v}_2 = 2 \cdot 1 + 1 \cdot (-2) = 0$. Spannungstensor,
+Trägheitstensor und Steifigkeitsmatrix in der FEM sind allesamt symmetrisch.
+Der Satz garantiert daher, dass ihre Eigenwerte stets reell und ihre
+Eigenrichtungen stets orthogonal sind, unabhängig von der Wahl des
+Koordinatensystems.
 
-<!-- markdownlint-disable MD033 -->
-<div id="applet-container-720a">
+## Von den Eigenvektoren zur Diagonalmatrix
 
-<iframe
-  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_kurvenschar.html"
-  width="100%"
-  frameborder="0"
-  scrolling="no">
-</iframe>
-
-</div>
-<!-- markdownlint-enable MD033 -->
-
-## Wie legt eine Bedingung die Lösung fest?
-
-Die allgemeine Lösung enthält eine freie Konstante und beschreibt damit
-unendlich viele mögliche Bewegungen. In der Praxis wissen wir jedoch den
-Anfangszustand: Der Fallschirmspringer ist zu Beginn in Ruhe, also gilt
-$v(0) = 0$. Wir setzen diese Bedingung ein:
+Wir kehren zu unserem Beispiel zurück. Wir schreiben die Eigenvektoren aus
+Abschnitt 5.3 nebeneinander in eine Matrix:
 
 \begin{equation*}
-v(0) = v_\infty + C\,e^{0} = v_\infty + C = 0
-\quad \Rightarrow \quad
-C = -v_\infty = -49.05~\text{m\,s}^{-1}.
+\mathbf{V} = \bigl(\vec{v}_1 \;\big|\; \vec{v}_2\bigr)
+= \begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}.
 \end{equation*}
 
-Die spezielle Lösung lautet damit:
+Nun berechnen wir das Produkt $\mathbf{A}\mathbf{V}$. Da jede Spalte von
+$\mathbf{V}$ ein Eigenvektor ist, gilt $\mathbf{A}\vec{v}_k = \lambda_k\vec{v}_k$,
+und das Produkt lässt sich kompakt schreiben:
 
 \begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+\mathbf{A}\mathbf{V}
+= \bigl(\mathbf{A}\vec{v}_1 \;\big|\; \mathbf{A}\vec{v}_2\bigr)
+= \bigl(\lambda_1 \vec{v}_1 \;\big|\; \lambda_2 \vec{v}_2\bigr)
+= \mathbf{V} \begin{pmatrix} 7 & 0 \\ 0 & 2 \end{pmatrix}
+= \mathbf{V}\mathbf{D}.
 \end{equation*}
 
-Probe für $t = 0$: $v(0) = 49.05\,(1 - 1) = 0$. Korrekt. Für große $t$
-nähert sich $e^{-0.2\,t}$ gegen null, und $v(t)$ strebt gegen die
-Grenzgeschwindigkeit $49.05~\text{m\,s}^{-1}$, was etwa
-$177~\text{km\,h}^{-1}$ entspricht. Das ist ein bekannter Richtwert für
-Fallschirmspringer im freien Fall.
+Da $\mathbf{V}$ invertierbar ist (seine Spalten sind linear unabhängig), folgt
+durch Linksmultiplikation mit $\mathbf{V}^{-1}$:
 
-```{admonition} Was ist ... ein Anfangswertproblem und ein Randwertproblem?
+\begin{equation*}
+\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}
+= \begin{pmatrix} 7 & 0 \\ 0 & 2 \end{pmatrix}.
+\end{equation*}
+
+Das Ergebnis ist eine Diagonalmatrix mit den Eigenwerten auf der Hauptdiagonale.
+Wir verifizieren mit der Probe $\mathbf{A}\mathbf{V} = \mathbf{V}\mathbf{D}$:
+
+\begin{equation*}
+\mathbf{A}\mathbf{V} =
+\begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}
+\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
+= \begin{pmatrix} 14 & 2 \\ 7 & -4 \end{pmatrix},
+\qquad
+\mathbf{V}\mathbf{D} =
+\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
+\begin{pmatrix} 7 & 0 \\ 0 & 2 \end{pmatrix}
+= \begin{pmatrix} 14 & 2 \\ 7 & -4 \end{pmatrix}.
+\end{equation*}
+
+Beide Seiten stimmen überein. Die Transformation $\mathbf{A} \mapsto
+\mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ beschreibt dieselbe lineare Abbildung
+wie $\mathbf{A}$, aber im Koordinatensystem der Eigenvektoren. Zwei Matrizen,
+die durch eine solche Transformation miteinander zusammenhängen, nennen wir
+**ähnlich**. Ähnliche Matrizen haben dieselben Eigenwerte, weil physikalische
+Größen wie Hauptspannungen nicht davon abhängen können, in welchem
+Koordinatensystem wir den Tensor aufschreiben.
+
+```{admonition} Was sind ... ähnliche Matrizen und Diagonalisierung?
 :class: note
-Bei einem **Anfangswertproblem (AWP)** werden alle $n$ Bedingungen einer ODE
-$n$-ter Ordnung an derselben Stelle $t_0$ vorgegeben:
+Zwei Matrizen $\mathbf{A}, \mathbf{C} \in \mathbb{R}^{n \times n}$ heißen
+**ähnlich**, wenn es eine invertierbare Matrix $\mathbf{B}$ gibt mit
 
 \begin{equation*}
-y(t_0) = y_0,\quad \dot{y}(t_0) = y_1,\quad \ldots,\quad y^{(n-1)}(t_0) = y_{n-1}.
+\mathbf{C} = \mathbf{B}^{-1}\mathbf{A}\mathbf{B}.
 \end{equation*}
 
-Bei einem **Randwertproblem (RWP)** werden die Bedingungen an verschiedenen
-Stellen vorgegeben, typischerweise an den Enden eines Intervalls $[x_0, x_1]$.
+Ähnliche Matrizen beschreiben dieselbe lineare Abbildung in verschiedenen
+Koordinatensystemen und haben dasselbe charakteristische Polynom und damit
+dieselben Eigenwerte.
+
+Eine Matrix $\mathbf{A}$ heißt **diagonalisierbar**, wenn eine invertierbare
+Matrix $\mathbf{V}$ existiert, sodass $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$
+eine Diagonalmatrix ist. Die Spalten von $\mathbf{V}$ sind dann Eigenvektoren
+von $\mathbf{A}$, die Diagonalelemente von $\mathbf{D}$ die zugehörigen
+Eigenwerte in derselben Reihenfolge.
+
+$\mathbf{A}$ ist genau dann diagonalisierbar, wenn für alle Eigenwerte gilt:
+$d_\lambda = m_\lambda$.
 ```
 
-Unser Fallbeispiel ist ein AWP: Die einzige Bedingung $v(0) = 0$ liegt am
-Anfangszeitpunkt $t = 0$.
+Da $\mathbf{A}$ symmetrisch ist, sind die Eigenvektoren orthogonal und wir
+können sie auf Länge Eins normieren. Die normierte Eigenvektormatrix
 
-Ein typisches RWP im Maschinenbau ist die Biegelinie eines einfach gelagerten
-Balkens der Länge $L$. Die Gleichung $EI\,w'' = M(x)$ ist eine ODE 2. Ordnung
-in der Durchbiegung $w(x)$. Die allgemeine Lösung enthält zwei freie Konstanten,
-die durch die Auflagerbedingungen $w(0) = 0$ und $w(L) = 0$ festgelegt werden.
-Da die Bedingungen an zwei verschiedenen Stellen liegen, handelt es sich um ein
-Randwertproblem. *Warum führen RWP auf andere mathematische Schwierigkeiten als
-AWP?* Das werden wir in Abschnitt 6.6 bei ODEs 2. Ordnung genauer untersuchen.
+\begin{equation*}
+\mathbf{Q} = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & 1 \\ 1 & -2 \end{pmatrix}
+\end{equation*}
 
-## Weiteres Lernmaterial
+ist orthogonal im Sinne von Abschnitt 5.1: Es gilt $\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$.
+Die Diagonalisierung nimmt damit die besonders einfache Form
+$\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}$ an, ohne dass eine
+Matrixinverse explizit berechnet werden muss.
 
-Die folgenden beiden Videos stammen von Prof. Hielscher der TH Mannheim.
-
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Matrix diagonalisieren" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/KmFq0Pl2nxM"
+title="Matrix diagonalisieren + Matrixpotenzen Einfach Erklärt!"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Anfangswert- und Randwertprobleme" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/kEuTsYsK5nk?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Anfangswert- und Randwertprobleme" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+## Wann schlägt die Diagonalisierung fehl? Der Spektralsatz
+
+*Ist jede Matrix diagonalisierbar?* Nein. In Abschnitt 5.3 haben wir die
+Matrix $\mathbf{B} = \begin{pmatrix} 3 & 1 \\ 0 & 3 \end{pmatrix}$ gesehen,
+deren Eigenwert $\lambda = 3$ algebraische Vielfachheit $m_3 = 2$ hat, aber
+nur geometrische Vielfachheit $d_3 = 1$. Es gibt nicht genug linear
+unabhängige Eigenvektoren, um eine invertierbare Matrix $\mathbf{V}$
+aufzustellen. Die Diagonalisierungsformel ist dann nicht anwendbar.
+
+Für den Maschinenbau entscheidend ist, dass dieser Fall bei allen physikalisch
+relevanten Tensoren niemals auftreten kann:
+
+```{admonition} Spektralsatz für symmetrische Matrizen
+:class: note
+Jede symmetrische Matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ ist
+diagonalisierbar. Die Transformationsmatrix $\mathbf{V}$ kann stets so gewählt
+werden, dass ihre Spalten paarweise orthonormal sind. In diesem Fall ist
+$\mathbf{V} = \mathbf{Q}$ eine orthogonale Matrix mit
+$\mathbf{Q}^{-1} = \mathbf{Q}^{\top}$, und es gilt:
+
+\begin{equation*}
+\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q},
+\qquad
+\mathbf{A} = \mathbf{Q}\mathbf{D}\mathbf{Q}^{\top}.
+\end{equation*}
 ```
 
-Das folgende Video zeigt eine Einführung in Differentialgleichungen für
-Ingenieure an der Hochschule Bochum, die im traditionellen Vorlesungsstil
-gehalten wird.
-
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Ein Einstieg" von Jörg Frochte
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/kN5CxBG_z-k"
-title="Gewöhnliche Differentialgleichungen - Ein Einstieg -" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+Spannungstensor, Trägheitstensor, Massenmatrix und Steifigkeitsmatrix sind
+allesamt symmetrisch. Der Spektralsatz garantiert, dass für all diese Matrizen
+die Hauptachsentransformation immer gelingt: Es gibt immer ein Koordinatensystem,
+in dem der Tensor diagonal ist und die physikalisch relevanten Größen direkt auf
+der Diagonalen abgelesen werden können.
 
 ## Zusammenfassung und Ausblick
 
-Eine gewöhnliche Differentialgleichung (ODE) sucht nicht eine Zahl, sondern
-eine Funktion, deren Ableitung einer vorgeschriebenen Bedingung genügt. Die
-allgemeine Lösung einer ODE $n$-ter Ordnung enthält $n$ freie Konstanten und
-beschreibt eine ganze Kurvenschar. Erst eine Anfangsbedingung wählt aus dieser
-Schar eine einzige spezielle Lösung heraus. Unser Leitbeispiel
-$\dot{v} = g - kv$ mit $v(0) = 0$ hat als spezielle Lösung
-$v(t) = v_\infty(1 - e^{-kt})$: Die Geschwindigkeit des Fallschirmspringers
-steigt von null und nähert sich asymptotisch der Grenzgeschwindigkeit
-$v_\infty = 49.05~\text{m\,s}^{-1}$.
-
-In Abschnitt 6.2 lernen wir, wie man die Lösungskurven einer ODE 1. Ordnung
-sieht, bevor man sie berechnet: Das Richtungsfeld macht aus der Gleichung
-$\dot{v} = g - kv$ unmittelbar sichtbar, dass alle Lösungen gegen $v_\infty$
-streben, unabhängig vom Startwert.
+Symmetrische Matrizen haben zwei außergewöhnliche Eigenschaften: Alle
+Eigenwerte sind reell, und Eigenvektoren zu verschiedenen Eigenwerten stehen
+stets senkrecht aufeinander. Diese Symmetrieeigenschaft ist die Grundlage der
+Diagonalisierung: Durch die Transformation $\mathbf{D} = \mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}$
+mit der orthogonalen Eigenvektormatrix $\mathbf{Q}$ wird jede symmetrische
+Matrix auf Diagonalgestalt gebracht. Der Spektralsatz garantiert, dass das
+für alle physikalischen Tensoren im Maschinenbau immer gelingt. Im nächsten
+Abschnitt wenden wir dieses Werkzeug auf drei konkrete Ingenieurprobleme an:
+die Hauptträgheitsmomente eines Balkenprofils, die Hauptspannungen in einem
+belasteten Bauteil und die Eigenfrequenzen eines Schwingungssystems.

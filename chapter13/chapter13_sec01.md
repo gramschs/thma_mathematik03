@@ -5,6 +5,13 @@ authors:
 
 # 13.1 Periodische Funktionen und periodische Fortsetzung
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 11.4 haben wir gesehen, dass eine rotierende Unwucht eine
 periodische Kraft erzeugt und das System bei Resonanz zum Verhängnis werden
 kann. Dort haben wir diese Kraft einfach als $F(t) = F_0\,\sin(\Omega t)$

@@ -1,4 +1,11 @@
-# 6.2 Berechnung der Eigenwerte
+# 6.2 Das charakteristische Polynom
+
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
 
 Im letzten Abschnitt haben wir den Eigenvektor von $\mathbf{A}$ durch
 glückliches Raten gefunden. In der Praxis mit großen Matrizen ist das natürlich

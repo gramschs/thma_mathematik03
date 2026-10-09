@@ -5,6 +5,13 @@ authors:
 
 # 13.2 Grundschwingung und Oberschwingungen
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 12.1 haben wir den Kolbenhub der Kurbelwelle mit der einfachen
 Funktion $f(t) = 3\,\sin(\omega_0 t)$ modelliert. Das ist eine nützliche
 Vereinfachung, aber wer schon einmal einen laufenden Motor gehört hat, ahnt,

@@ -3,243 +3,209 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.3 Die partikuläre Lösung: einen passenden Ansatz erraten und bestimmen
+# 9.3 Die homogene lineare Differentialgleichung
 
-In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
-Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
-ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
-hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
-modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
-**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
-der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
-dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
-den Bogen, der in Kapitel 6 geöffnet wurde.
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+In Abschnitt 8.1 haben wir lineare ODEs nach drei Kriterien klassifiziert:
+linear oder nichtlinear, homogen oder inhomogen, konstante oder variable
+Koeffizienten. Jetzt lösen wir die einfachste dieser Klassen: die homogene
+lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Der Lösungsweg führt direkt über die
+Trennung der Variablen aus Abschnitt 7.1, die wir bereits für die
+Fallschirmspringer-Gleichung eingesetzt haben. Das Ergebnis ist stets eine
+Exponentialfunktion, und genau das erklärt rückblickend, warum ein
+Exponentialansatz für lineare ODEs mit konstanten Koeffizienten der natürliche
+erste Versuch ist. Dieses Prinzip bauen wir in Kapitel 10 für ODEs 2. Ordnung
+systematisch aus.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
-  $$y_{\text{allgemein}} = y_h + y_p$$
-  aus homogener Lösung und partikulärer Lösung zusammensetzt.
-* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
-  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
-* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
-  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
-* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
-  Anfangsbedingungen anpassen.
+* [ ] Sie können die allgemeine Lösung $y_h$ der homogenen linearen DGL 1. Ordnung
+  $y' + f(x) \cdot y = 0$ mit Hilfe der Separation der Variablen herleiten.
+* [ ] Sie können die Formel
+  \begin{equation*}
+  y_h(x) = A \cdot e^{-\int f(x)\, dx}, \quad A \in \mathbb{R},
+  \end{equation*}
+  auf eine gegebene homogene lineare DGL 1. Ordnung anwenden.
+* [ ] Sie können den Sonderfall konstanter Koeffizienten $y' + ay = 0$ direkt lösen
+  und die Lösung $y_h(x) = A \cdot e^{-ax}$ angeben.
 ```
 
-## Warum reicht die homogene Lösung nicht aus?
+## Was beschreibt die homogene Gleichung physikalisch?
 
-Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
-9.81$ erfüllt:
+Aus der Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ wird die
+zugehörige homogene ODE, indem wir die Störfunktion auf null setzen:
 
 \begin{equation*}
-\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
+\dot{v} + k\,v = 0.
 \end{equation*}
 
-$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
-Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
-wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
-genau diesen fehlenden Anteil liefert.
+Physikalisch beschreibt das einen Körper, der sich ausschließlich durch
+Luftreibung verlangsamt, ohne dass eine äußere Kraft antreibt. *Was erwarten wir
+qualitativ?* Die Geschwindigkeit sollte monoton abnehmen und sich asymptotisch
+dem Ruhezustand $v = 0$ annähern. Das stimmt mit der trivialen Lösung $v = 0$
+überein, die in Abschnitt 8.1 für jede homogene lineare ODE festgestellt wurde.
 
-*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
-ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+Die rechte Seite der homogenen ODE lässt sich als $f(t) \cdot g(v) = 1 \cdot
+(-kv)$ schreiben. Die Gleichung ist also separierbar, und wir können das
+Verfahren aus Abschnitt 7.1 direkt anwenden.
 
-<!-- markdownlint-disable -->
-\begin{align*}
-(y_h + y_p)' + f(x)\,(y_h + y_p)
-  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
-   = g(x). \quad \checkmark
-\end{align*}
-<!-- markdownlint-enable -->
+## Wie leiten wir die homogene Lösung her?
 
-Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
-die Störfunktion reproduziert. Dieses Zusammenspiel heißt
-**Superpositionsprinzip**.
+Das Verfahren folgt den vier Schritten der Trennung der Variablen. Wir setzen $v
+\neq 0$ voraus und dividieren durch $v$:
 
-```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
+**Schritt 1: Trennen.**
+
+\begin{equation*}
+\frac{dv}{v} = -k\,dt.
+\end{equation*}
+
+**Schritt 2 und 3: Integrieren und Stammfunktion einsetzen.**
+
+\begin{equation*}
+\int \frac{dv}{v} = \int -k\,dt
+\quad \Rightarrow \quad
+\ln|v| = -kt + C_1, \quad C_1 \in \mathbb{R}.
+\end{equation*}
+
+**Schritt 4: Auflösen.** Wir nehmen auf beiden Seiten die Exponentialfunktion
+und fassen alle Konstanten in $A \in \mathbb{R}$ zusammen:
+
+\begin{equation*}
+v_h(t) = A\,e^{-kt}, \quad A \in \mathbb{R}.
+\end{equation*}
+
+Das Vorzeichen von $v$ wird in $A$ absorbiert; für $A = 0$ entsteht die triviale
+Lösung $v = 0$, die damit automatisch enthalten ist.
+
+**Verifikation.** Einsetzen in $\dot{v} + kv = 0$:
+
+\begin{equation*}
+\dot{v}_h + k\,v_h
+  = -Ak\,e^{-kt} + k \cdot A\,e^{-kt}
+  = 0. \quad \checkmark
+\end{equation*}
+
+Das physikalische Bild bestätigt die Erwartung: Für $k = 0.2~\text{s}^{-1}$ und
+$A > 0$ klingt $v_h(t)$ exponentiell ab und strebt gegen null. Ohne antreibende
+Kraft kommt der Körper durch Reibung zur Ruhe. In der Regelungstechnik
+beschreibt genau diese Lösung das freie Einschwingen eines Systems nach dem
+Abschalten des Eingangssignals.
+
+## Die allgemeine Formel für beliebiges f(x)
+
+Das gerade durchgeführte Verfahren überträgt sich wörtlich auf die allgemeine
+homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Wir trennen die Variablen
+für $y \neq 0$:
+
+\begin{equation*}
+\frac{dy}{y} = -f(x)\,dx.
+\end{equation*}
+
+Integration beider Seiten und Auflösen nach $y$ liefert:
+
+\begin{equation*}
+\ln|y| = -\int f(x)\,dx + C_1
+\quad \Rightarrow \quad
+y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
+\end{equation*}
+
+```{admonition} Was ist ... die homogene Lösung einer linearen ODE 1. Ordnung?
 :class: note
-Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
-setzt sich zusammen aus
+Die allgemeine Lösung der homogenen linearen ODE 1. Ordnung $y' + f(x)\,y = 0$
+lautet
 
 \begin{equation*}
-y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
+y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
 \end{equation*}
 
-wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
-$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
-Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
-festgelegt.
+Im Sonderfall konstanter Koeffizienten $f(x) = a = \mathrm{const}$ vereinfacht
+sich die Formel zu
+
+\begin{equation*}
+y_h(x) = A\,e^{-ax}.
+\end{equation*}
+
+Die Funktion $y_h$ heißt **homogene Lösung**. Sie enthält eine freie Konstante
+$A$ und bildet den ersten Baustein für die vollständige Lösung der inhomogenen
+Gleichung.
 ```
 
-## Wie wählen wir den richtigen Ansatz?
+Für den Fallschirmspringer gilt $f(t) = k = 0.2~\text{s}^{-1}$, also $\int
+f(t)\,dt = kt$. Die Formel liefert unmittelbar $v_h(t) = A\,e^{-kt}$, wie wir es
+bereits durch explizite Rechnung hergeleitet haben.
 
-Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
-$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
-$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
-Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
-Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
-$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
-die drei wichtigsten Typen zusammen:
+## Was passiert bei variablem f(x)? Ein überraschendes Ergebnis
 
-<!-- markdownlint-disable -->
-| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
-| --- | --- |
-| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
-| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
-| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
-<!-- markdownlint-enable -->
-
-Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
-homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
-null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
-werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
-
-## Beispiel 1: der Fallschirmsprung
-
-Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
-0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
-Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
+Die Stärke der Formel $y_h = A\,e^{-\int f(x)\,dx}$ zeigt sich erst bei
+variablen Koeffizienten. Wir betrachten als zweites Beispiel:
 
 \begin{equation*}
-v_p = C, \quad C \in \mathbb{R}.
+y' + 2x\,y = 0.
 \end{equation*}
 
-Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
+Hier ist $f(x) = 2x$. Das Integral des Koeffizienten ist $\int 2x\,dx = x^2$,
+also:
 
 \begin{equation*}
-\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
+y_h(x) = A\,e^{-x^2}, \quad A \in \mathbb{R}.
 \end{equation*}
 
-**Koeffizientenvergleich** liefert unmittelbar:
+*Was ist das für eine Funktion?* Es ist die Gaußsche Glockenkurve, eine der
+bedeutendsten Funktionen in Naturwissenschaft und Technik. In der Statistik
+beschreibt sie die Normalverteilung, in der Messtechnik die Verteilung
+zufälliger Fehler, in der Wärmeübertragung das Temperaturprofil eines
+Diffusionsvorgangs. Dass sie als Lösung einer so einfachen ODE erscheint, ist
+kein Zufall: Die Trennungsmethode hat die Gaußkurve nicht konstruiert, sondern
+zwingend aus der Gleichungsstruktur hergeleitet.
 
-\begin{equation*}
-C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
-\end{equation*}
-
-Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
-physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
-Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
-A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
-
-\begin{equation*}
-v(t) = A\,e^{-kt} + v_\infty.
-\end{equation*}
-
-**Anfangsbedingung** $v(0) = 0$:
-
-\begin{equation*}
-v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
-\quad \Rightarrow \quad A = -v_\infty.
-\end{equation*}
-
-Die spezielle Lösung des AWP lautet:
-
-\begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
-\end{equation*}
-
-Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
-hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
-ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
-$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
-
-## Beispiel 2: eine Sinus-Störfunktion
-
-Wir betrachten die ODE
-
-\begin{equation*}
-y' + y = \sin(x).
-\end{equation*}
-
-Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
-(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
-\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
-
-\begin{equation*}
-y_p(x) = P\cos(x) + Q\sin(x).
-\end{equation*}
-
-Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
-\sin(x)$:
+**Verifikation.** Einsetzen in $y' + 2xy = 0$:
 
 \begin{align*}
-y_p'(x) + y_p(x)
-  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
-  &= (Q - P)\sin(x) + (P + Q)\cos(x)
-   \stackrel{!}{=} \sin(x).
+y_h'(x) + 2x\,y_h(x)
+  &= A\,(-2x)\,e^{-x^2} + 2x \cdot A\,e^{-x^2} \\
+  &= -2Ax\,e^{-x^2} + 2Ax\,e^{-x^2} = 0. \quad \checkmark
 \end{align*}
 
-**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
-$\cos(x)$ auf beiden Seiten:
+```{dropdown} Video "Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="927" height="588" src="https://www.youtube.com/embed/GS8b6hQt4PU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen
+DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
 
-\begin{align*}
-\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
-\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
-\end{align*}
-
-Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
-= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
-lautet:
-
-\begin{equation*}
-y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-Die allgemeine Lösung ist:
-
-\begin{equation*}
-y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
-
-\begin{align*}
-y' + y
-  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
-     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
-  &= \sin(x). \quad \checkmark
-\end{align*}
-
-Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
-durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
-Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
-Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
-
-```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
-<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+```{dropdown} Video "Homogene lineare DGL 1. Ordnung" von ScienceBarbie
+<iframe width="927" height="521" src="https://www.youtube.com/embed/dOKdPjvEnuY"
+title="Gewöhnliche Differentialgleichungen: Homogene lineare DGL 1. Ordnung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
 allowfullscreen></iframe>
 ```
-
-<!-- markdownlint-disable -->
-```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
-<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
-title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
-```
-<!-- markdownlint-enable -->
 
 ## Zusammenfassung und Ausblick
 
-Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
-Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
-beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
-trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
-funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
-Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
-Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
-Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
+Die homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$ ist stets separierbar.
+Die Trennung der Variablen aus Abschnitt 7.1 liefert die allgemeine homogene
+Lösung $y_h(x) = A\,e^{-\int f(x)\,dx}$, die für konstante Koeffizienten $f(x) =
+a$ zur vertrauten Form $y_h = A\,e^{-ax}$ wird. Das Ergebnis ist immer eine
+Exponentialfunktion oder entsteht aus ihr durch Integration des Koeffizienten.
+Genau darin liegt die Antwort auf die Titelfrage: Der Exponentialansatz
+funktioniert bei linearen ODEs mit konstanten Koeffizienten, weil er keine
+Vermutung, sondern eine erzwungene Konsequenz der Gleichungsstruktur ist.
 
-In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
-an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
-Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
-nicht in die Ansatztabelle passt.
+Die homogene Lösung $y_h$ enthält eine freie Konstante $A$ und beschreibt damit
+allein noch keine eindeutige Bewegung. Sie ist aber der erste und entscheidende
+Baustein. In Abschnitt 8.3 ergänzen wir sie durch eine partikuläre Lösung $y_p$,
+die die Störfunktion $g(x)$ berücksichtigt. Für den Fallschirmspringer bedeutet
+das: $y_h = A\,e^{-kt}$ beschreibt das freie Abklingen, $y_p$ die durch die
+Schwerkraft erzwungene Grenzgeschwindigkeit. Zusammen ergibt sich die
+vollständige Lösung $v(t) = y_h + y_p$, die wir in Abschnitt 7.1 bereits
+hergeleitet haben.

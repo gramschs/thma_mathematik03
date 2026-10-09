@@ -5,6 +5,13 @@ authors:
 
 # 10.3 Welches Verfahren für welche ODE? Orientierung im Methodenüberblick
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 Mit Kapitel 9.2 ist der Block über gewöhnliche Differentialgleichungen 1. Ordnung
 abgeschlossen. In den Kapiteln 7 bis 9 haben wir sechs Verfahren kennengelernt, die
 zusammen einen breiten Bereich von ODEs abdecken: von der einfachen Trennung der

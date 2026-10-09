@@ -5,6 +5,13 @@ authors:
 
 # 12.3 Schwingungen und Bewegungsgleichungen: DGL 2. Ordnung in der Technik
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In den Abschnitten 11.1 und 11.2 haben wir die ODE des Feder-Masse-Dämpfer-Systems
 stets als fertige Gleichung übernommen und ihre Lösung bestimmt. Jetzt gehen
 wir einen Schritt zurück und fragen: *Wie entsteht diese Gleichung überhaupt

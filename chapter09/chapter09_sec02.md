@@ -3,202 +3,219 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.2 Die homogene Lösung: warum ein Exponentialansatz funktioniert
+# 9.2 Lineare Differentialgleichungen erkennen
 
-In Abschnitt 8.1 haben wir lineare ODEs nach drei Kriterien klassifiziert:
-linear oder nichtlinear, homogen oder inhomogen, konstante oder variable
-Koeffizienten. Jetzt lösen wir die einfachste dieser Klassen: die homogene
-lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Der Lösungsweg führt direkt über die
-Trennung der Variablen aus Abschnitt 7.1, die wir bereits für die
-Fallschirmspringer-Gleichung eingesetzt haben. Das Ergebnis ist stets eine
-Exponentialfunktion, und genau das erklärt rückblickend, warum ein
-Exponentialansatz für lineare ODEs mit konstanten Koeffizienten der natürliche
-erste Versuch ist. Dieses Prinzip bauen wir in Kapitel 10 für ODEs 2. Ordnung
-systematisch aus.
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+In Kapitel 7 haben wir zwei Lösungsverfahren für ODEs 1. Ordnung kennengelernt:
+die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
+Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
+Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
+bisher nicht explizit benannt haben: **Linearität**. Die
+Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
+Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
+Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
+weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
+Klassifikation ist die Voraussetzung für die Lösungstheorie, die in den
+folgenden Abschnitten entwickelt wird.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die allgemeine Lösung $y_h$ der homogenen linearen DGL 1. Ordnung
-  $y' + f(x) \cdot y = 0$ mit Hilfe der Separation der Variablen herleiten.
-* [ ] Sie können die Formel
-  \begin{equation*}
-  y_h(x) = A \cdot e^{-\int f(x)\, dx}, \quad A \in \mathbb{R},
-  \end{equation*}
-  auf eine gegebene homogene lineare DGL 1. Ordnung anwenden.
-* [ ] Sie können den Sonderfall konstanter Koeffizienten $y' + ay = 0$ direkt lösen
-  und die Lösung $y_h(x) = A \cdot e^{-ax}$ angeben.
+* [ ] Sie wissen, wie eine **lineare gewöhnliche Differentialgleichung** definiert ist,
+  und können sie von einer nichtlinearen DGL unterscheiden.
+* [ ] Sie können eine lineare DGL als **homogen** oder **inhomogen** klassifizieren und
+  wissen, dass die Störfunktion $g(x)$ den Unterschied ausmacht.
+* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung** $y(x) = 0$
+  besitzt.
+* [ ] Sie können eine lineare DGL **mit konstanten Koeffizienten** von einer linearen DGL
+  mit variablen Koeffizienten unterscheiden.
 ```
 
-## Was beschreibt die homogene Gleichung physikalisch?
+## Was bedeutet es, dass eine ODE "linear" ist?
 
-Aus der Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ wird die
-zugehörige homogene ODE, indem wir die Störfunktion auf null setzen:
-
-\begin{equation*}
-\dot{v} + k\,v = 0.
-\end{equation*}
-
-Physikalisch beschreibt das einen Körper, der sich ausschließlich durch
-Luftreibung verlangsamt, ohne dass eine äußere Kraft antreibt. *Was erwarten wir
-qualitativ?* Die Geschwindigkeit sollte monoton abnehmen und sich asymptotisch
-dem Ruhezustand $v = 0$ annähern. Das stimmt mit der trivialen Lösung $v = 0$
-überein, die in Abschnitt 8.1 für jede homogene lineare ODE festgestellt wurde.
-
-Die rechte Seite der homogenen ODE lässt sich als $f(t) \cdot g(v) = 1 \cdot
-(-kv)$ schreiben. Die Gleichung ist also separierbar, und wir können das
-Verfahren aus Abschnitt 7.1 direkt anwenden.
-
-## Wie leiten wir die homogene Lösung her?
-
-Das Verfahren folgt den vier Schritten der Trennung der Variablen. Wir setzen $v
-\neq 0$ voraus und dividieren durch $v$:
-
-**Schritt 1: Trennen.**
+Wir betrachten noch einmal die Fallschirmspringer-Gleichung in der Form, die wir in
+Abschnitt 6.1 aufgestellt haben:
 
 \begin{equation*}
-\frac{dv}{v} = -k\,dt.
+\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
 \end{equation*}
 
-**Schritt 2 und 3: Integrieren und Stammfunktion einsetzen.**
+Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
+Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
+nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
+meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
+treten ausschließlich linear auf.
+
+*Was würde die Linearität zerstören?* Bereits eine kleine Modifikation des
+Modells reicht. Wäre der Luftwiderstand quadratisch in der Geschwindigkeit, also
+$F_L = b\,v^2$ statt $F_L = b\,v$, so würde die ODE
 
 \begin{equation*}
-\int \frac{dv}{v} = \int -k\,dt
-\quad \Rightarrow \quad
-\ln|v| = -kt + C_1, \quad C_1 \in \mathbb{R}.
+\dot{v} + k\,v^2 = 9.81~\text{m\,s}^{-2}
 \end{equation*}
 
-**Schritt 4: Auflösen.** Wir nehmen auf beiden Seiten die Exponentialfunktion
-und fassen alle Konstanten in $A \in \mathbb{R}$ zusammen:
+lauten. Hier erscheint $v^2$. Das ist kein linearer Term, und die Gleichung ist
+daher nichtlinear. Ebenso nichtlinear wären $\dot{v} = \sin(v)$ oder $\dot{v}
+\cdot v = 1$: im ersten Fall steckt $v$ in einer nichtlinearen Funktion, im
+zweiten Beispiel werden $\dot{v}$ und $v$ miteinander multipliziert.
+
+Die allgemeine Form einer linearen ODE $n$-ter Ordnung lautet:
 
 \begin{equation*}
-v_h(t) = A\,e^{-kt}, \quad A \in \mathbb{R}.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x).
 \end{equation*}
 
-Das Vorzeichen von $v$ wird in $A$ absorbiert; für $A = 0$ entsteht die triviale
-Lösung $v = 0$, die damit automatisch enthalten ist.
+Jede Ableitung $y^{(k)}$ tritt genau einmal und zur ersten Potenz auf,
+multipliziert mit einem Koeffizient $a_k(x)$, der von $x$ abhängen darf, aber
+nicht von $y$. Die rechte Seite $g(x)$ hängt ebenfalls nur von $x$ ab.
 
-**Verifikation.** Einsetzen in $\dot{v} + kv = 0$:
-
-\begin{equation*}
-\dot{v}_h + k\,v_h
-  = -Ak\,e^{-kt} + k \cdot A\,e^{-kt}
-  = 0. \quad \checkmark
-\end{equation*}
-
-Das physikalische Bild bestätigt die Erwartung: Für $k = 0.2~\text{s}^{-1}$ und
-$A > 0$ klingt $v_h(t)$ exponentiell ab und strebt gegen null. Ohne antreibende
-Kraft kommt der Körper durch Reibung zur Ruhe. In der Regelungstechnik
-beschreibt genau diese Lösung das freie Einschwingen eines Systems nach dem
-Abschalten des Eingangssignals.
-
-## Die allgemeine Formel für beliebiges f(x)
-
-Das gerade durchgeführte Verfahren überträgt sich wörtlich auf die allgemeine
-homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$. Wir trennen die Variablen
-für $y \neq 0$:
-
-\begin{equation*}
-\frac{dy}{y} = -f(x)\,dx.
-\end{equation*}
-
-Integration beider Seiten und Auflösen nach $y$ liefert:
-
-\begin{equation*}
-\ln|y| = -\int f(x)\,dx + C_1
-\quad \Rightarrow \quad
-y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
-\end{equation*}
-
-```{admonition} Was ist ... die homogene Lösung einer linearen ODE 1. Ordnung?
+```{admonition} Was ist ... eine lineare ODE?
 :class: note
-Die allgemeine Lösung der homogenen linearen ODE 1. Ordnung $y' + f(x)\,y = 0$
-lautet
+Eine **lineare ODE** $n$-ter Ordnung hat die Form
 
 \begin{equation*}
-y_h(x) = A\,e^{-\int f(x)\,dx}, \quad A \in \mathbb{R}.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x),
 \end{equation*}
 
-Im Sonderfall konstanter Koeffizienten $f(x) = a = \mathrm{const}$ vereinfacht
-sich die Formel zu
+wobei die Koeffizientenfunktionen $a_0(x), \ldots, a_{n-1}(x)$ und die rechte Seite
+$g(x)$ nur von $x$ abhängen. Die gesuchte Funktion $y$ und alle ihre Ableitungen
+erscheinen ausschließlich zur ersten Potenz und werden nicht miteinander multipliziert.
 
-\begin{equation*}
-y_h(x) = A\,e^{-ax}.
-\end{equation*}
-
-Die Funktion $y_h$ heißt **homogene Lösung**. Sie enthält eine freie Konstante
-$A$ und bildet den ersten Baustein für die vollständige Lösung der inhomogenen
-Gleichung.
+Eine ODE, die diese Form nicht hat, heißt **nichtlinear**.
 ```
 
-Für den Fallschirmspringer gilt $f(t) = k = 0.2~\text{s}^{-1}$, also $\int
-f(t)\,dt = kt$. Die Formel liefert unmittelbar $v_h(t) = A\,e^{-kt}$, wie wir es
-bereits durch explizite Rechnung hergeleitet haben.
+Die Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ ist
+eine lineare ODE 1. Ordnung mit $n = 1$, $a_0(t) = k$ und $g(t) =
+9.81~\text{m\,s}^{-2}$. Die Torricellische Ausflussgleichung $\dot{h} =
+-k\sqrt{h}$ aus Abschnitt 7.3 ist hingegen nichtlinear: $\sqrt{h} = h^{1/2}$ ist
+kein linearer Term in $h$.
 
-## Was passiert bei variablem f(x)? Ein überraschendes Ergebnis
+## Homogen oder inhomogen?
 
-Die Stärke der Formel $y_h = A\,e^{-\int f(x)\,dx}$ zeigt sich erst bei
-variablen Koeffizienten. Wir betrachten als zweites Beispiel:
+Innerhalb der linearen ODEs gibt es eine weitere wichtige Unterscheidung. Wir
+schauen auf die rechte Seite der allgemeinen Form, die Funktion $g(x)$.
+
+Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
+ist die rechte Seite die konstante Funktion $g(t) = 9.81~\text{m\,s}^{-2}$, die
+nirgends gleich null ist. Das physikalische Bild dahinter: Die Schwerkraft
+treibt das System ständig an, auch wenn die Geschwindigkeit null ist. Eine
+solche ODE heißt **inhomogen**.
+
+Streichen wir die Antriebskraft, ergibt sich die vereinfachte Gleichung $\dot{v}+
+k\,v = 0$. Physikalisch beschreibt das einen Körper, der ohne äußere Kraft nur
+durch Reibung gebremst wird. Hier ist $g(t) = 0$ für alle $t$. Eine solche ODE
+heißt **homogen**.
+
+```{admonition} Was ist ... eine homogene und eine inhomogene lineare ODE?
+:class: note
+Eine lineare ODE
 
 \begin{equation*}
-y' + 2x\,y = 0.
+y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_0(x)\,y = g(x)
 \end{equation*}
 
-Hier ist $f(x) = 2x$. Das Integral des Koeffizienten ist $\int 2x\,dx = x^2$,
-also:
+heißt **homogen**, wenn $g(x) = 0$ für alle $x$ im Definitionsbereich gilt, und
+**inhomogen**, wenn $g(x)$ nicht identisch null ist. Die Funktion $g(x)$ auf der
+rechten Seite heißt **Störfunktion**.
+```
+
+Die homogene Form spielt in der Lösungstheorie eine zentrale Rolle. *Warum?*
+Weil jede homogene lineare ODE eine ausgezeichnete Lösung besitzt, die wir
+sofort hinschreiben können: die **triviale Lösung** $y(x) = 0$. Einsetzen
+bestätigt das sofort, denn alle Ableitungen von $y = 0$ sind ebenfalls null:
 
 \begin{equation*}
-y_h(x) = A\,e^{-x^2}, \quad A \in \mathbb{R}.
+0^{(n)} + a_{n-1}(x)\cdot 0 + \cdots + a_0(x)\cdot 0 = 0 = g(x). \quad \checkmark
 \end{equation*}
 
-*Was ist das für eine Funktion?* Es ist die Gaußsche Glockenkurve, eine der
-bedeutendsten Funktionen in Naturwissenschaft und Technik. In der Statistik
-beschreibt sie die Normalverteilung, in der Messtechnik die Verteilung
-zufälliger Fehler, in der Wärmeübertragung das Temperaturprofil eines
-Diffusionsvorgangs. Dass sie als Lösung einer so einfachen ODE erscheint, ist
-kein Zufall: Die Trennungsmethode hat die Gaußkurve nicht konstruiert, sondern
-zwingend aus der Gleichungsstruktur hergeleitet.
+Diese triviale Lösung ist mathematisch wenig interessant, aber sie zeigt eine
+tiefe Eigenschaft linearer ODEs: Das System „ruht" immer bei $y = 0$. In der
+Schwingungslehre, die in der Technischen Mechanik vertieft wird, entspricht das
+dem ungestörten Gleichgewichtszustand. Die Störfunktion $g(x)$ beschreibt dann
+eine äußere Anregung, die das System aus diesem Gleichgewicht herausreißt.
 
-**Verifikation.** Einsetzen in $y' + 2xy = 0$:
+## Konstante oder variable Koeffizienten?
 
-\begin{align*}
-y_h'(x) + 2x\,y_h(x)
-  &= A\,(-2x)\,e^{-x^2} + 2x \cdot A\,e^{-x^2} \\
-  &= -2Ax\,e^{-x^2} + 2Ax\,e^{-x^2} = 0. \quad \checkmark
-\end{align*}
+Eine weitere Unterscheidung betrifft die Koeffizientenfunktionen $a_0(x), \ldots,
+a_{n-1}(x)$. Hängen sie wirklich von $x$ ab, oder sind sie Konstanten?
 
-```{dropdown} Video "Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" von Prof. Hielscher
-<iframe width="927" height="588" src="https://www.youtube.com/embed/GS8b6hQt4PU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Allgemeine Lösung der homogenen linearen
-DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
+ist der Koeffizient vor $v$ die Konstante $k = 0.2~\text{s}^{-1}$. Sie hängt
+nicht von $t$ ab. Das ist eine lineare ODE **mit konstanten Koeffizienten**.
+
+Betrachten wir zum Vergleich die Gleichung
+
+\begin{equation*}
+y' + \frac{1}{x}\,y = x^2.
+\end{equation*}
+
+Hier ist der Koeffizient vor $y$ die Funktion $\frac{1}{x}$, die von $x$
+abhängt. Das ist eine lineare ODE **mit variablen Koeffizienten**. Solche
+Gleichungen treten beispielsweise in der Wärmeübertragung auf, wenn der
+Wärmeübergangskoeffizient entlang einer Kühlrippe mit dem Ort variiert, oder in
+der Strukturmechanik bei Balken mit veränderlichem Querschnitt.
+
+```{admonition} Was ist ... eine lineare ODE mit konstanten Koeffizienten?
+:class: note
+Eine lineare ODE heißt **lineare ODE mit konstanten Koeffizienten**, wenn alle
+Koeffizientenfunktionen $a_0, \ldots, a_{n-1}$ konstant sind, also nicht von $x$
+abhängen. Andernfalls spricht man von einer linearen ODE mit **variablen
+Koeffizienten**.
+```
+
+Für die Lösungstheorie ist diese Unterscheidung entscheidend: Lineare ODEs mit
+konstanten Koeffizienten lassen sich vollständig und systematisch lösen, wie wir
+in den Abschnitten 8.2 und 8.3 sehen werden. Bei variablen Koeffizienten ist das
+im Allgemeinen schwieriger und gelingt nur für spezielle Typen. Kapitel 8
+konzentriert sich daher auf den Fall konstanter Koeffizienten.
+
+## Klassifikation auf einen Blick
+
+Die drei Unterscheidungen lassen sich an konkreten Beispielen direkt ablesen:
+
+| ODE | Linear? | Homogen? | Koeffizienten |
+| --- | --- | --- | --- |
+| $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ | ja | nein | konstant |
+| $\dot{v} + k\,v = 0$ | ja | ja | konstant |
+| $y' + \tfrac{1}{x}\,y = x^2$ | ja | nein | variabel |
+| $\dot{h} + k\sqrt{h} = 0$ | nein | — | — |
+| $y' = y^2$ | nein | — | — |
+
+Bei nichtlinearen ODEs entfällt die Unterscheidung in homogen und inhomogen: Sie
+ist nur für lineare ODEs definiert.
+
+```{dropdown} Video "Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588" src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung - Definition
+und Vorbetrachtung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
 encrypted-media; gyroscope; picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video "Homogene lineare DGL 1. Ordnung" von ScienceBarbie
-<iframe width="927" height="521" src="https://www.youtube.com/embed/dOKdPjvEnuY"
-title="Gewöhnliche Differentialgleichungen: Homogene lineare DGL 1. Ordnung"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
+```{dropdown} Video "Lineare Differentialgleichung (DGL) 1. Ordnung" von MathePeter
+<iframe width="927" height="521" src="https://www.youtube.com/embed/qwJPZHmNcIs"
+title="Lineare Differentialgleichung (DGL) 1. Ordnung | Einfach erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die homogene lineare ODE 1. Ordnung $y' + f(x)\,y = 0$ ist stets separierbar.
-Die Trennung der Variablen aus Abschnitt 7.1 liefert die allgemeine homogene
-Lösung $y_h(x) = A\,e^{-\int f(x)\,dx}$, die für konstante Koeffizienten $f(x) =
-a$ zur vertrauten Form $y_h = A\,e^{-ax}$ wird. Das Ergebnis ist immer eine
-Exponentialfunktion oder entsteht aus ihr durch Integration des Koeffizienten.
-Genau darin liegt die Antwort auf die Titelfrage: Der Exponentialansatz
-funktioniert bei linearen ODEs mit konstanten Koeffizienten, weil er keine
-Vermutung, sondern eine erzwungene Konsequenz der Gleichungsstruktur ist.
+Eine lineare ODE zeichnet sich dadurch aus, dass die gesuchte Funktion und alle
+ihre Ableitungen ausschließlich zur ersten Potenz auftreten. Innerhalb dieser
+Klasse unterscheiden wir nach der Störfunktion $g(x)$: Bei $g(x) = 0$ ist die
+ODE homogen und besitzt stets die triviale Lösung $y = 0$; bei $g(x) \not\equiv
+0$ ist sie inhomogen. Eine weitere Unterscheidung betrifft die
+Koeffizientenfunktionen: Konstante Koeffizienten ermöglichen eine vollständige
+Lösungstheorie, während variable Koeffizienten den Lösungsaufwand erheblich
+steigern.
 
-Die homogene Lösung $y_h$ enthält eine freie Konstante $A$ und beschreibt damit
-allein noch keine eindeutige Bewegung. Sie ist aber der erste und entscheidende
-Baustein. In Abschnitt 8.3 ergänzen wir sie durch eine partikuläre Lösung $y_p$,
-die die Störfunktion $g(x)$ berücksichtigt. Für den Fallschirmspringer bedeutet
-das: $y_h = A\,e^{-kt}$ beschreibt das freie Abklingen, $y_p$ die durch die
-Schwerkraft erzwungene Grenzgeschwindigkeit. Zusammen ergibt sich die
-vollständige Lösung $v(t) = y_h + y_p$, die wir in Abschnitt 7.1 bereits
-hergeleitet haben.
+In Abschnitt 8.2 entwickeln wir das Lösungsverfahren für lineare ODEs 1. Ordnung
+mit konstanten Koeffizienten. Das Schlüsselwerkzeug ist die Variation der
+Konstanten, eine Methode, die die homogene Lösung als Ausgangspunkt nimmt und
+daraus die vollständige Lösung der inhomogenen Gleichung konstruiert.

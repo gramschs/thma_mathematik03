@@ -5,6 +5,13 @@ authors:
 
 # 12.4 Erzwungene Schwingungen und Resonanz
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 11.3 schwang unser Maschinenelement ohne jede äußere Kraft mit
 konstanter Amplitude: ein idealisiertes, aber physikalisch klares Bild. Jetzt
 bringen wir eine periodische Kraft ins Spiel, wie sie in der Praxis durch eine

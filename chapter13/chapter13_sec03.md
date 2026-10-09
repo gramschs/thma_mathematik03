@@ -5,6 +5,13 @@ authors:
 
 # 13.3 Die Fourierreihe und ihre Koeffizienten
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 12.2 haben wir gesehen, dass sich ein reales Motorsignal als
 Überlagerung einer Grundschwingung und ihrer Oberschwingungen beschreiben lässt.
 Wir wussten dort aber noch nicht, mit welchen Amplituden die einzelnen Anteile

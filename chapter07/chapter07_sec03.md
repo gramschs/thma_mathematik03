@@ -1,225 +1,205 @@
----
-authors:
-  - name: Simone Gramsch
-kernelspec:
-  name: python3
-  display_name: 'Python 3'
----
+# 7.3 Anwendungen der Eigenwertberechnung
 
-# 7.3 Das Euler-Verfahren: eine Lösungskurve Schritt für Schritt verfolgen
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
 
-In Abschnitt 6.2 haben wir gesehen, wie man einer Lösungskurve im Richtungsfeld
-mit dem Auge folgt: Man beginnt am Startpunkt und bewegt sich immer in Richtung
-des dortigen Linienelementes. Das ist qualitativ überzeugend, aber für
-ingenieurmäßige Berechnungen nicht präzise genug. Jetzt machen wir aus dieser
-Idee einen Algorithmus. Das Euler-Verfahren ist das einfachste numerische
-Verfahren zur Lösung von ODEs und bildet die Grundlage für alle modernen
-Simulationswerkzeuge in der Strömungsmechanik, der Mehrkörperdynamik und der
-Regelungstechnik.
+Wir haben in diesem Kapitel das Werkzeug der Diagonalisierung vollständig
+entwickelt. Jetzt setzen wir es ein. Der Trägheitstensor des L-Profils und der
+Spannungstensor haben uns als Leitbeispiele begleitet, und beide sind bereits
+vollständig behandelt. In diesem Abschnitt fassen wir die Ergebnisse dieser
+beiden Beispiele aus Ingenieurperspektive zusammen und fügen eine dritte
+wichtige Anwendung hinzu: die Modalanalyse schwingender Systeme.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die **Euler-Formel**
-  $v_{n+1} = v_n + h \cdot F(t_n, v_n)$ aus dem Differenzenquotienten
-  herleiten.
-* [ ] Sie können das **Euler-Verfahren** als nummerierten Algorithmus
-  formulieren und auf ein gegebenes AWP anwenden.
-* [ ] Sie können die entstehende **Punktfolge** $(t_n, v_n)$ tabellarisch
-  berechnen und als Polygonzug im Richtungsfeld interpretieren.
-* [ ] Sie kennen die **Schwächen des Euler-Verfahrens**: akkumulierender
-  Fehler und starke Abhängigkeit von der Schrittweite $h$.
+* [ ] Sie können erläutern, wie die Diagonalisierung des **Trägheitstensors**
+  die Hauptträgheitsmomente und Hauptträgheitsachsen eines Querschnitts liefert.
+* [ ] Sie können den Zusammenhang zwischen Diagonalisierung und der Berechnung
+  von **Hauptspannungen** erläutern: Die Eigenwerte des Spannungstensors sind
+  die Hauptspannungen, die Eigenvektoren geben die Hauptspannungsrichtungen an.
+* [ ] Sie können erläutern, wie die Diagonalisierung in der **Modalanalyse**
+  eingesetzt wird: Ein gekoppeltes Schwingungssystem zerfällt in der Basis der
+  Eigenvektoren in unabhängige Einzelschwingungen.
 ```
 
-## Wie wird aus einem Linienelement ein Rechenschritt?
+## Hauptträgheitsmomente und Hauptträgheitsachsen
 
-Im Richtungsfeld aus Abschnitt 6.2 haben wir gesehen: Am Punkt $(t_n, v_n)$
-hat die Lösungskurve die Steigung $F(t_n, v_n) = g - k v_n$. Die Idee des
-Euler-Verfahrens ist, diese Steigung für einen kleinen Zeitschritt der Länge
-$h$ als konstant anzunehmen und damit den nächsten Punkt der Kurve zu
-berechnen. Das entspricht dem Ersetzen der Ableitung durch einen
-Differenzenquotienten:
+Ein Balken mit L-förmigem Querschnitt wurde in diesem Kapitel als durchgehendes
+Beispiel verwendet. Der Trägheitstensor im ursprünglichen Koordinatensystem
 
 \begin{equation*}
-\dot{v}(t_n) \approx \frac{v_{n+1} - v_n}{h}.
+\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4
 \end{equation*}
 
-Wir setzen $\dot{v}(t_n) = F(t_n, v_n)$ ein und lösen nach $v_{n+1}$ auf:
+hat den Nebendiagonaleintrag $2 \cdot 10^4\,\text{mm}^4$, weil die
+Koordinatenachsen nicht mit den natürlichen Symmetrieachsen des Profils
+übereinstimmen. Durch Diagonalisierung haben wir in Abschnitt 5.4 das
+Koordinatensystem der Hauptträgheitsachsen gefunden:
 
 \begin{equation*}
-v_{n+1} = v_n + h \cdot F(t_n, v_n).
+\mathbf{D} = \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
 \end{equation*}
 
-Das ist die **Euler-Formel**. Aus dem aktuellen Wert $v_n$ und der aktuellen
-Steigung berechnen wir den nächsten Wert $v_{n+1}$. Die entstehende
-Punktfolge $(t_0, v_0), (t_1, v_1), (t_2, v_2), \ldots$ bildet einen
-Polygonzug, der im Richtungsfeld ungefähr entlang der Linienelemente verläuft
-und die Lösungskurve annähert.
-
-```{admonition} Was ist ... das Euler-Verfahren?
-:class: note
-Gegeben sei das AWP $\dot{y} = F(t, y)$, $y(t_0) = y_0$, und eine
-Schrittweite $h > 0$ sowie eine Endzeit $T$. Das **explizite Euler-Verfahren**
-läuft nach folgendem Algorithmus:
-
-1. Setze $t_0 = t_\text{Start}$, $y_0 = y_\text{Start}$.
-2. Berechne die Steigung am aktuellen Punkt: $F(t_n, y_n)$.
-3. Berechne den nächsten Wert: $y_{n+1} = y_n + h \cdot F(t_n, y_n)$.
-4. Setze $t_{n+1} = t_n + h$.
-5. Wiederhole ab Schritt 2, solange $t_n \leq T$.
-
-Jeder Schritt ersetzt die Kurve lokal durch ihre Tangente am Punkt $(t_n, y_n)$.
-```
-
-Wir führen den Algorithmus für unser AWP $\dot{v} = g - kv$, $v(0) = 0$ mit
-der groben Schrittweite $h = 5~\text{s}$ von Hand durch. Die Schrittweite ist
-bewusst groß gewählt, damit der Fehler deutlich sichtbar wird.
-
-**Schritt 0:** $t_0 = 0~\text{s}$, $v_0 = 0~\text{m\,s}^{-1}$.
+Die Diagonaleinträge sind die **Hauptträgheitsmomente** $I_1 = 6 \cdot 10^4\,\text{mm}^4$
+und $I_2 = 1 \cdot 10^4\,\text{mm}^4$. Die zugehörigen Eigenvektoren
 
 \begin{equation*}
-F(0,\; 0) = 9.81 - 0.2 \cdot 0 = 9.81~\text{m\,s}^{-2}.
+\vec{v}_1 = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 \\ 1 \end{pmatrix}
+\quad \text{und} \quad
+\vec{v}_2 = \frac{1}{\sqrt{5}}\begin{pmatrix} 1 \\ -2 \end{pmatrix}
 \end{equation*}
+
+zeigen in die **Hauptträgheitsachsen**, also in die Richtungen der größten und
+kleinsten Biegesteifigkeit. Um den Balken zu biegen, ist die Kraft in Richtung
+$\vec{v}_2$ am wirksamsten, weil das kleinste Trägheitsmoment dort liegt.
+
+Diese Information ist in der Praxis unverzichtbar: In der Norm DIN EN 1993
+(Bemessung von Stahlbauten) werden alle Nachweise für Biegung und Knickung
+bezüglich der Hauptträgheitsachsen geführt. Ohne die Diagonalisierung müsste
+man mit dem ungünstigeren ursprünglichen Koordinatensystem rechnen und würde
+dabei entweder auf der sicheren Seite zu konservativ oder im ungünstigen Fall
+falsch liegen.
+
+## Hauptspannungen und Hauptspannungsrichtungen
+
+Der Spannungstensor an einem Punkt eines belasteten Bauteils beschreibt, welche
+Normal- und Schubspannungen auf Schnittflächen in verschiedene Richtungen
+wirken. Im Beispiel aus Abschnitt 5.2 lautete er:
 
 \begin{equation*}
-v_1 = 0 + 5 \cdot 9.81 = 49.05~\text{m\,s}^{-1}.
+\boldsymbol{\sigma} = \begin{pmatrix} 7 & 2 \\ 2 & 4 \end{pmatrix}~\text{MPa}.
 \end{equation*}
 
-**Schritt 1:** $t_1 = 5~\text{s}$, $v_1 = 49.05~\text{m\,s}^{-1}$.
+Durch Diagonalisierung haben wir in Abschnitt 5.4 die Hauptspannungen
+$\sigma_1 = 8~\text{MPa}$ und $\sigma_2 = 3~\text{MPa}$ bestimmt. Die
+zugehörigen Eigenvektoren geben die **Hauptspannungsrichtungen** an, also die
+Schnittflächen, auf denen ausschließlich Normalspannungen und keine
+Schubspannungen wirken.
+
+*Warum ist das für die Auslegung wichtig?* Die meisten Versagenskriterien im
+Maschinenbau, wie das von-Mises-Kriterium oder das Tresca-Kriterium, werden in
+den Hauptspannungen formuliert. Konkret lautet die von-Mises-Vergleichsspannung
+für den ebenen Spannungszustand:
 
 \begin{equation*}
-F(5,\; 49.05) = 9.81 - 0.2 \cdot 49.05 = 9.81 - 9.81 = 0~\text{m\,s}^{-2}.
+\sigma_V = \sqrt{\sigma_1^2 - \sigma_1\sigma_2 + \sigma_2^2}.
 \end{equation*}
+
+Für unser Beispiel ergibt sich:
 
 \begin{equation*}
-v_2 = 49.05 + 5 \cdot 0 = 49.05~\text{m\,s}^{-1}.
+\sigma_V = \sqrt{8^2 - 8\cdot 3 + 3^2} = \sqrt{64 - 24 + 9} = \sqrt{49} = 7~\text{MPa}.
 \end{equation*}
 
-Das Verfahren bleibt ab dem zweiten Schritt exakt auf der Grenzgeschwindigkeit
-stehen. *Was ist passiert?* Die Schrittweite $h = 5~\text{s}$ ist so groß, dass
-der erste Schritt direkt von $v = 0$ auf $v = v_\infty$ springt, weit über
-die tatsächliche Kurve hinaus. Die Steigung am neuen Punkt ist exakt null,
-also verändert sich die Näherung danach nicht mehr.
+Diesen Wert vergleicht man mit der Streckgrenze des Werkstoffs. Die
+Diagonalisierung ist hier also kein Selbstzweck, sondern der notwendige erste
+Schritt vor dem Festigkeitsnachweis. In der Technischen Mechanik II werden Sie
+diesen Zusammenhang für den räumlichen Spannungszustand mit einem $3\times 3$-Tensor
+vertiefen.
 
-## Wie gut ist die Näherung, und was tun wir dagegen?
+## Modalanalyse: wenn Maschinen schwingen
 
-Der Vergleich mit der exakten Lösung $v(t) = v_\infty(1 - e^{-kt})$ aus
-Abschnitt 6.1 zeigt das Ausmaß des Fehlers:
+Eine dritte, in der Praxis besonders wichtige Anwendung der Diagonalisierung
+ist die Analyse schwingender Systeme. Jede Maschine schwingt, wenn sie in
+Betrieb ist: Motoren, Pumpen, Brücken, Flugzeugtragflächen. Die Frage, bei
+welchen Frequenzen Resonanz auftritt, entscheidet über Komfort, Lärm und im
+Extremfall über das Versagen des Bauteils.
 
-| $n$ | $t_n~\text{(s)}$ | $v_n$ Euler $\text{(m\,s}^{-1})$ | $v(t_n)$ exakt $\text{(m\,s}^{-1})$ | Fehler $\text{(m\,s}^{-1})$ |
-| --- | --- | --- | --- | --- |
-| 0 | 0 | 0 | 0 | 0 |
-| 1 | 5 | 49.05 | 31.01 | +18.04 |
-| 2 | 10 | 49.05 | 42.41 | +6.64 |
-| 3 | 15 | 49.05 | 46.61 | +2.44 |
+Wir betrachten ein einfaches Modell: zwei Massen $m_1$ und $m_2$, die über
+Federn miteinander und mit einem festen Rahmen verbunden sind. Die Bewegung
+beider Massen ist gekoppelt, weil die mittlere Feder beide Massen gleichzeitig
+beeinflusst. Die Gleichgewichtsbedingung führt auf ein lineares
+Gleichungssystem der Form
 
-Der Fehler im ersten Schritt beträgt über $18~\text{m\,s}^{-1}$, fast
-$65~\text{km\,h}^{-1}$. Der Grund liegt in der starken Krümmung der
-Lösungskurve nahe $t = 0$: Die Steigung ändert sich dort rasch, aber das
-Euler-Verfahren verwendet nur die Steigung am linken Rand des Intervalls und
-ignoriert diese Änderung vollständig. Der Fehler jedes Schritts schlägt sich
-dabei in den Ausgangswert des nächsten Schritts nieder, weshalb sich der
-Gesamtfehler über viele Schritte hinweg aufsummiert.
+\begin{equation*}
+\mathbf{K}\vec{x} = \omega^2 \mathbf{M}\vec{x},
+\end{equation*}
 
-Das Mittel gegen diesen Fehler ist eine kleinere Schrittweite. Mit $h = 2~\text{s}$
-oder $h = 0.5~\text{s}$ nähert sich der Polygonzug der exakten Kurve deutlich
-besser an. Die Rechnung von Hand wird dabei schnell mühsam. Genau hier hilft
-der Computer.
+wobei $\mathbf{K}$ die **Steifigkeitsmatrix**, $\mathbf{M}$ die **Massenmatrix**,
+$\vec{x}$ der Vektor der Auslenkungen und $\omega$ die gesuchte Kreisfrequenz
+ist. Das ist ein verallgemeinertes Eigenwertproblem. Für den Sonderfall gleicher
+Massen $m_1 = m_2 = m$ vereinfacht es sich auf ein gewöhnliches Eigenwertproblem
+für die Matrix $\mathbf{A} = \frac{1}{m}\mathbf{K}$.
 
-Die folgenden zwei Code-Zellen sind **optional** und richten sich an
-Studierende mit Python-Vorkenntnissen sowie an alle, die einen Vorgeschmack auf
-die Vorlesung Angewandte Numerik bekommen möchten. Die erste Zelle implementiert
-den Euler-Algorithmus direkt nach obiger Schritt-für-Schritt-Beschreibung, die
-zweite erzeugt den interaktiven Vergleichsplot.
+Als konkretes Beispiel wählen wir $m = 1\,\text{kg}$ und die Steifigkeitsmatrix
 
-```{code-cell} python
-import numpy as np
+\begin{equation*}
+\mathbf{K} = \begin{pmatrix} 3 & -1 \\ -1 & 3 \end{pmatrix}~\frac{\text{N}}{\text{m}},
+\end{equation*}
 
-# Parameter des Modells
-g  = 9.81   # Erdbeschleunigung in m/s^2
-k  = 0.2    # Luftwiderstandskoeffizient in 1/s
-v0 = 0.0    # Anfangsgeschwindigkeit in m/s
-T  = 30.0   # Simulationsdauer in s
+sodass $\mathbf{A} = \mathbf{K}$. Die Matrix ist symmetrisch, der Spektralsatz
+garantiert, dass die Diagonalisierung gelingt. Wir berechnen die Eigenwerte:
 
-def euler(h):
-    """Euler-Verfahren für dv/dt = g - k*v mit Schrittweite h."""
-    t = np.arange(0.0, T + h, h)   # Schritt 1: Zeitgitter anlegen
-    v = np.zeros(len(t))           # Ergebnisarray initialisieren
-    v[0] = v0                      # Anfangsbedingung einsetzen
-    for n in range(len(t) - 1):
-        v[n+1] = v[n] + h * (g - k * v[n])   # Schritte 2-4: Euler-Formel
-    return t, v
+\begin{equation*}
+p(\lambda) = (3 - \lambda)^2 - 1 = \lambda^2 - 6\lambda + 8 = (\lambda - 4)(\lambda - 2) = 0.
+\end{equation*}
 
-# Exakte Lösung zum Vergleich
-t_ex = np.linspace(0, T, 300)
-v_ex = (g / k) * (1 - np.exp(-k * t_ex))
+Die Eigenwerte sind $\lambda_1 = 4$ und $\lambda_2 = 2$. Die zugehörigen
+**Eigenkreisfrequenzen** sind:
 
-# Ergebnisse für drei Schrittweiten ausgeben
-for h in [5.0, 2.0, 0.5]:
-    t, v = euler(h)
-    print(f"h = {h} s:  v(5s) = {v[int(5/h)]:.2f} m/s  "
-          f"(exakt: {v_ex[int(5/T*300)]:.2f} m/s)")
-```
+\begin{equation*}
+\omega_1 = \sqrt{\lambda_1} = 2~\frac{\text{rad}}{\text{s}}
+\quad \text{und} \quad
+\omega_2 = \sqrt{\lambda_2} = \sqrt{2}~\frac{\text{rad}}{\text{s}} \approx 1.41~\frac{\text{rad}}{\text{s}}.
+\end{equation*}
 
-```{code-cell} python
-import plotly.express as px
-import pandas as pd
+Jetzt berechnen wir die Eigenvektoren. Für $\lambda_1 = 4$:
 
-# Daten für alle Kurven zusammenstellen
-rows = []
-for h in [5.0, 2.0, 0.5]:
-    t, v = euler(h)
-    for ti, vi in zip(t, v):
-        rows.append({'t': ti, 'v': vi, 'Kurve': f'Euler  h = {h} s'})
-for ti, vi in zip(t_ex, v_ex):
-    rows.append({'t': ti, 'v': vi, 'Kurve': 'Exakte Lösung'})
+\begin{equation*}
+\mathbf{A} - 4\mathbf{E} = \begin{pmatrix} -1 & -1 \\ -1 & -1 \end{pmatrix}
+\quad \Rightarrow \quad
+\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
+\end{equation*}
 
-# Interaktiver Plot
-fig = px.line(
-    pd.DataFrame(rows), x='t', y='v', color='Kurve',
-    labels={'t': 'Zeit t in s', 'v': 'Geschwindigkeit v in m/s'},
-)
-fig.add_hline(
-    y=g / k, line_dash='dash', line_color='gray',
-    annotation_text='Grenzgeschwindigkeit',
-    annotation_position='bottom right',
-)
-fig.show()
-```
+Für $\lambda_2 = 2$:
 
-*Was zeigt das Bild?* Mit $h = 5~\text{s}$ springt der Polygonzug sofort zur
-Grenzgeschwindigkeit und bleibt dort. Mit $h = 0.5~\text{s}$ ist die Näherung
-kaum noch vom exakten Verlauf zu unterscheiden. Die Schrittweite steuert also
-den Kompromiss zwischen Rechenaufwand und Genauigkeit.
+\begin{equation*}
+\mathbf{A} - 2\mathbf{E} = \begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}
+\quad \Rightarrow \quad
+\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
+\end{equation*}
 
-Das Euler-Verfahren ist das einfachste Mitglied einer ganzen Familie numerischer
-Verfahren. In der Ingenieurpraxis werden genauere Methoden wie das
-**Runge-Kutta-Verfahren 4. Ordnung** eingesetzt, das die Steigung nicht nur am
-linken Rand, sondern an mehreren Stellen innerhalb des Intervalls auswertet.
-Python, MATLAB und Simulink nutzen im Standard solche Verfahren.
+Diese Eigenvektoren sind die **Eigenformen** des Schwingungssystems. Sie
+beschreiben, wie die beiden Massen bei der jeweiligen Eigenfrequenz relativ
+zueinander schwingen. Im ersten Eigenvektor $\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}$
+bewegen sich die beiden Massen in entgegengesetzte Richtungen: Die eine geht
+nach links, während die andere nach rechts geht. Im zweiten Eigenvektor
+$\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ bewegen sich beide Massen
+gemeinsam in dieselbe Richtung.
 
-## Weiteres Lernmaterial
+*Wozu hilft die Diagonalisierung hier?* Das originale System mit der Matrix
+$\mathbf{A}$ beschreibt zwei gekoppelte Schwingungen: Die Bewegung von Masse 1
+beeinflusst Masse 2 und umgekehrt. In der Basis der Eigenvektoren, also nach
+der Transformation $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ mit
 
-Das folgende Video zeigt das Euler-Verfahren **ab** ca. Zeitindex 8:16 min.
+\begin{equation*}
+\mathbf{V} = \begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}
+\quad \text{und} \quad
+\mathbf{D} = \begin{pmatrix} 4 & 0 \\ 0 & 2 \end{pmatrix},
+\end{equation*}
 
-```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/7J5cJspIpl8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
+zerfällt das gekoppelte System in zwei vollständig unabhängige Einzelschwingungen.
+Jede Einzelschwingung lässt sich separat analysieren und lösen. Das ist der
+zentrale Vorteil der Modalanalyse: Ein kompliziertes gekoppeltes System wird
+durch Diagonalisierung in einfache Teilsysteme zerlegt. In der
+Maschinendynamik, die Sie in höheren Semestern kennenlernen werden, bildet
+dieses Prinzip die Grundlage für die rechnergestützte Schwingungsanalyse ganzer
+Fahrzeuge, Turbinen und Brückentragwerke.
 
-## Zusammenfassung und Ausblick
+## Zusammenfassung
 
-Das Euler-Verfahren übersetzt die geometrische Idee des Richtungsfeldes in
-einen Algorithmus: In jedem Schritt wird die Lösungskurve durch ihre Tangente
-ersetzt, und der nächste Punkt ergibt sich aus der Euler-Formel
-$v_{n+1} = v_n + h \cdot F(t_n, v_n)$. Die entstehende Punktfolge bildet
-einen Polygonzug, der im Richtungsfeld entlang der Linienelemente verläuft.
-Die Schrittweite $h$ kontrolliert dabei den Fehler; wegen der Fehlerakkumulation
-über viele Schritte ist eine kleine Schrittweite entscheidend für eine
-brauchbare Näherung.
-
-In Abschnitt 6.4 wechseln wir vom numerischen zum analytischen Standpunkt.
-Die Methode der Trennung der Variablen liefert die exakte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$, mit der wir in diesem Abschnitt den
-Euler-Fehler gemessen haben.
+Die Diagonalisierung ist in allen drei Beispielen dasselbe mathematische
+Werkzeug, aber die Interpretation der Eigenwerte und Eigenvektoren wechselt
+mit dem physikalischen Kontext. Beim Trägheitstensor sind die Eigenwerte
+Hauptträgheitsmomente und die Eigenvektoren Hauptachsen. Beim Spannungstensor
+sind die Eigenwerte Hauptspannungen und die Eigenvektoren spannungsfreie
+Schnittrichtungen. Bei der Modalanalyse sind die Wurzeln der Eigenwerte
+Eigenfrequenzen und die Eigenvektoren Schwingungsformen. Das verbindende
+Prinzip ist stets dasselbe: Im Koordinatensystem der Eigenvektoren wird eine
+komplizierte, gekoppelte Beschreibung durch eine einfache, diagonale ersetzt.

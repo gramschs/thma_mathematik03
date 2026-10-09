@@ -1,175 +1,159 @@
-# 5.3 Drehmatrizen im R²
+---
+authors:
+  - name: Simone Gramsch
+---
 
-Orthogonale Matrizen mit Determinante $+1$ beschreiben Drehungen. Das klingt
-zunächst abstrakt, ist aber in der Ingenieurpraxis allgegenwärtig: In der
-Robotik muss die Position eines Greifers nach einer Drehbewegung berechnet
-werden, in der Messtechnik werden Koordinatensysteme von Sensoren auf das
-Maschinensystem transformiert, und in der Technischen Mechanik werden Spannungen
-aus einem schräg orientierten Schnitt in das globale Koordinatensystem
-zurückgerechnet. In diesem Abschnitt lernen wir die Drehmatrix für die Ebene
-kennen.
+# 5.3 Gram-Schmidt-Verfahren
+
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
+Im vorigen Abschnitt haben wir gesehen, dass orthogonale Matrizen besonders
+angenehme Eigenschaften besitzen: Ihre Inverse ist gleich ihrer Transponierten,
+und sie erhalten Längen und Winkel. Diese Eigenschaften setzen voraus, dass die
+Spalten der Matrix paarweise orthonormal sind. In der Ingenieurpraxis sind
+Basisvektoren jedoch selten von vornherein orthogonal: Ein Messsystem liefert
+Richtungen, die durch Kalibrierungsfehler leicht schief stehen, oder ein
+Berechnungsverfahren erzeugt linear unabhängige Vektoren ohne Orthogonalitätsgarantie.
+Das Gram-Schmidt-Verfahren baut aus solchen Vektoren systematisch eine
+orthonormale Basis.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die **Drehmatrix im $\mathbb{R}^2$** für eine Drehung um den
-  Winkel $\varphi$ gegen den Uhrzeigersinn:
-  \begin{equation*}
-  \mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-  \sin\varphi & \cos\varphi \end{pmatrix}.
-  \end{equation*}
-* [ ] Sie können überprüfen, dass jede Drehmatrix eine orthogonale Matrix ist.
-* [ ] Sie wissen, dass $\det(\mathbf{D}) = 1$ gilt, und können dies geometrisch
-  begründen: Drehungen erhalten Längen, Winkel und Orientierung.
-* [ ] Sie können die Drehmatrix anwenden, um einen Vektor oder ein Bauteilprofil
-  um einen gegebenen Winkel zu drehen.
+* [ ] Sie können das **Gram-Schmidt-Verfahren** auf linear unabhängige Vektoren
+  $\vec{v}_1, \ldots, \vec{v}_n$ anwenden und daraus paarweise orthogonale
+  Vektoren $\vec{w}_1, \ldots, \vec{w}_n$ erzeugen.
+* [ ] Sie können die orthogonalisierten Vektoren **normieren** und damit eine
+  **Orthonormalbasis** konstruieren.
+* [ ] Sie verstehen den Unterschied zwischen **Orthogonalisierung** (paarweise
+  senkrecht) und **Orthonormalisierung** (paarweise senkrecht und Länge eins).
 ```
 
-## Was soll eine Drehmatrix leisten?
+## Warum macht Orthogonalität das Leben leichter?
 
-Stellen wir uns den ebenen Roboterarm einer Fräsmaschine vor. Der Arm hat die
-Länge $r = 5~\text{cm}$ und zeigt zunächst in die positive $x$-Richtung. Die
-Spitze befindet sich also im Punkt
-
-\begin{equation*}
-\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}~\text{cm}.
-\end{equation*}
-
-Die Steuerung dreht den Arm um den Winkel $\varphi = 45°$ gegen den
-Uhrzeigersinn. *Wo befindet sich die Spitze danach?* Geometrisch liegt die
-Antwort auf der Hand: auf einem Kreis mit Radius $5~\text{cm}$, im Winkel
-$45°$ zur $x$-Achse. In Koordinaten ausgedrückt:
+Wir betrachten das Koordinatensystem eines ebenen Messsensors an einem
+Robotergelenk. Der Sensor liefert nach der Kalibrierung zwei Richtungsvektoren:
 
 \begin{equation*}
-\vec{p}' = \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} =
-\begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{5}{\sqrt{2}} \end{pmatrix} \approx
-\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
+\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad
+\vec{v}_2 = \begin{pmatrix} 3 \\ 1 \end{pmatrix}.
 \end{equation*}
 
-Die geometrische Überlegung funktioniert, solange wir wissen, in welchem Winkel
-der Ausgangsvektor zur $x$-Achse liegt. Für einen allgemeinen Startvektor
-benötigen wir eine systematischere Methode. Genau das liefert die Drehmatrix.
+Beide Vektoren sind linear unabhängig, spannen also die Ebene auf. Orthogonal
+sind sie jedoch nicht: $\vec{v}_1 \cdot \vec{v}_2 = 3 + 1 = 4 \neq 0$. Würde
+die Robotersteuerung dieses schiefe System als Basis verwenden, müsste sie bei
+jeder Koordinatentransformation die vollständige Inverse der Basismatrix
+berechnen. Wären die Basisvektoren dagegen orthonormal, reduziert sich die
+Inverse auf die Transponierte, was den Rechenaufwand erheblich senkt und
+numerische Fehler vermeidet. *Wie erzeugen wir aus $\vec{v}_1$ und $\vec{v}_2$
+ein orthonormales System, das denselben Raum aufspannt?*
 
-## Woher kommt die Formel für die Drehmatrix?
+## Was ist das Kernprinzip des Verfahrens?
 
-Liegt ein Vektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ vor, so liegt
-er in einem Winkel $\alpha$ zur $x$-Achse mit $x = r\cos\alpha$ und
-$y = r\sin\alpha$, wobei $r = \|\vec{v}\|$. Nach einer Drehung um $\varphi$
-gegen den Uhrzeigersinn zeigt er in den Winkel $\alpha + \varphi$:
+Der Grundgedanke ist einfach: Wir übernehmen den ersten Vektor unverändert und
+bauen jeden weiteren so um, dass er zu allen vorherigen senkrecht steht. Dazu
+subtrahieren wir von jedem neuen Vektor seinen Anteil in Richtung der bereits
+orthogonalisierten Vektoren. Dieser Anteil heißt die **Projektion** von
+$\vec{v}$ auf $\vec{w}$:
+
+\begin{equation*}
+\text{proj}_{\vec{w}}(\vec{v})
+= \frac{\vec{v} \cdot \vec{w}}{\vec{w} \cdot \vec{w}} \cdot \vec{w}.
+\end{equation*}
+
+Der Skalar $\frac{\vec{v} \cdot \vec{w}}{\vec{w} \cdot \vec{w}}$ gibt an, wie
+viel von $\vec{v}$ in Richtung $\vec{w}$ steckt. Zieht man diesen Anteil ab,
+bleibt ein Vektor übrig, der senkrecht auf $\vec{w}$ steht. Wiederholt man das
+für jeden neuen Vektor, erhält man das Gram-Schmidt-Verfahren.
+
+```{admonition} Was ist ... das Gram-Schmidt-Verfahren?
+:class: note
+Gegeben seien $n$ linear unabhängige Vektoren $\vec{v}_1, \ldots, \vec{v}_n$.
+Das **Gram-Schmidt-Verfahren** erzeugt daraus $n$ paarweise orthogonale
+Vektoren $\vec{w}_1, \ldots, \vec{w}_n$ nach der Vorschrift:
 
 \begin{align*}
-x' &= r\cos(\alpha + \varphi) = r\cos\alpha\cos\varphi - r\sin\alpha\sin\varphi
-     = x\cos\varphi - y\sin\varphi, \\
-y' &= r\sin(\alpha + \varphi) = r\cos\alpha\sin\varphi + r\sin\alpha\cos\varphi
-     = x\sin\varphi + y\cos\varphi.
+\vec{w}_1 &= \vec{v}_1, \\
+\vec{w}_k &= \vec{v}_k
+  - \sum_{j=1}^{k-1} \frac{\vec{v}_k \cdot \vec{w}_j}{\vec{w}_j \cdot \vec{w}_j}
+  \cdot \vec{w}_j, \quad k = 2, 3, \ldots, n.
 \end{align*}
 
-Diese beiden Gleichungen lassen sich elegant als Matrixprodukt schreiben:
+Werden die Vektoren abschließend auf die Länge Eins normiert, spricht man von
+**Orthonormalisierung**:
 
 \begin{equation*}
-\begin{pmatrix} x' \\ y' \end{pmatrix} =
-\begin{pmatrix} \cos\varphi & -\sin\varphi \\ \sin\varphi & \cos\varphi \end{pmatrix}
-\begin{pmatrix} x \\ y \end{pmatrix}.
+\hat{e}_k = \frac{\vec{w}_k}{\|\vec{w}_k\|}.
 \end{equation*}
-
-Die Matrix auf der rechten Seite ist die gesuchte Drehmatrix.
-
-```{admonition} Was ist ... die Drehmatrix im $\mathbb{R}^2$?
-:class: note
-Die **Drehmatrix** für eine Drehung um den Winkel $\varphi$ gegen den Uhrzeigersinn
-ist:
-
-\begin{equation*}
-\mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-\sin\varphi & \cos\varphi \end{pmatrix}.
-\end{equation*}
-
-Für einen Vektor $\vec{v} \in \mathbb{R}^2$ liefert das Matrixprodukt
-$\vec{v}' = \mathbf{D}(\varphi)\cdot\vec{v}$ den um $\varphi$ gedrehten Vektor.
 ```
 
-Wir wenden die Drehmatrix auf unser Roboterarm-Beispiel an. Mit $\varphi = 45°$
-und $\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}$ ergibt sich:
+## Wie wenden wir das Verfahren auf unser Beispiel an?
+
+Wir kehren zu den Messsensor-Vektoren $\vec{v}_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+und $\vec{v}_2 = \begin{pmatrix} 3 \\ 1 \end{pmatrix}$ zurück.
+
+**Schritt 1:** Der erste Vektor wird direkt übernommen:
 
 \begin{equation*}
-\mathbf{D}(45°)\cdot\vec{p} =
-\begin{pmatrix} \cos 45° & -\sin 45° \\ \sin 45° & \cos 45° \end{pmatrix}
-\begin{pmatrix} 5 \\ 0 \end{pmatrix} =
-\begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} \approx
-\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
+\vec{w}_1 = \vec{v}_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
 \end{equation*}
 
-Das stimmt mit unserem geometrischen Ergebnis von oben überein.
-
-## Warum ist die Drehmatrix orthogonal?
-
-Wir überprüfen die Orthogonalitätsbedingung $\mathbf{D}^T\cdot\mathbf{D} = \mathbf{E}$.
-Die Transponierte ist:
+**Schritt 2:** Wir subtrahieren vom zweiten Vektor seinen Anteil in Richtung
+$\vec{w}_1$. Dazu berechnen wir den Projektionsskalar:
 
 \begin{equation*}
-\mathbf{D}^T(\varphi) = \begin{pmatrix} \cos\varphi & \sin\varphi \\
--\sin\varphi & \cos\varphi \end{pmatrix}.
+\frac{\vec{v}_2 \cdot \vec{w}_1}{\vec{w}_1 \cdot \vec{w}_1}
+= \frac{3 \cdot 1 + 1 \cdot 1}{1^2 + 1^2} = \frac{4}{2} = 2.
 \end{equation*}
 
-Das Produkt ergibt:
+Damit ergibt sich:
 
 \begin{equation*}
-\mathbf{D}^T\cdot\mathbf{D} =
-\begin{pmatrix} \cos^2\varphi + \sin^2\varphi & \cos\varphi\sin\varphi - \sin\varphi\cos\varphi \\
--\sin\varphi\cos\varphi + \cos\varphi\sin\varphi & \sin^2\varphi + \cos^2\varphi \end{pmatrix}
-= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \mathbf{E}.
+\vec{w}_2 = \vec{v}_2 - 2\,\vec{w}_1
+= \begin{pmatrix} 3 \\ 1 \end{pmatrix} - 2\begin{pmatrix} 1 \\ 1 \end{pmatrix}
+= \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
 \end{equation*}
 
-Damit ist $\mathbf{D}^{-1} = \mathbf{D}^T = \mathbf{D}(-\varphi)$: Die Umkehrung
-einer Drehung um $\varphi$ ist eine Drehung um $-\varphi$. Das ist geometrisch
-einleuchtend.
+Wir prüfen die Orthogonalität: $\vec{w}_1 \cdot \vec{w}_2 = 1 \cdot 1 + 1 \cdot (-1) = 0$.
+Die beiden Vektoren stehen tatsächlich senkrecht aufeinander.
 
-Die Determinante berechnen wir direkt:
+**Normierung:** Um eine Orthonormalbasis zu erhalten, teilen wir beide Vektoren
+durch ihre Länge. Da $\|\vec{w}_1\| = \|\vec{w}_2\| = \sqrt{2}$ gilt:
 
 \begin{equation*}
-\det(\mathbf{D}(\varphi)) = \cos^2\varphi + \sin^2\varphi = 1.
+\hat{e}_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad
+\hat{e}_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \end{pmatrix}.
 \end{equation*}
 
-Da $\det(\mathbf{D}) = 1 > 0$, ändert sich die Orientierung nicht: ein
-rechtshändiges Koordinatensystem bleibt rechtshändig. Wäre die Determinante
-$-1$, würde es sich um eine Spiegelung handeln.
+Schreiben wir $\hat{e}_1$ und $\hat{e}_2$ als Spalten in eine Matrix, entsteht
+eine orthogonale Matrix im Sinne von Abschnitt 5.1: $\mathbf{Q}^{-1} = \mathbf{Q}^T$.
+Der Robotercontroller kann die Transformation zwischen dem Sensor-Koordinatensystem
+und dem Weltkoordinatensystem jetzt mit einer einfachen Matrixtransposition
+durchführen, ohne eine vollständige Matrixinversion zu berechnen.
 
-## Was passiert bei zwei hintereinander ausgeführten Drehungen?
-
-In der Kinematik eines Roboters werden häufig mehrere Gelenke nacheinander
-bewegt. Dreht der Arm zunächst um $\varphi_1$ und dann um $\varphi_2$, so
-entspricht das einer Gesamtdrehung um $\varphi_1 + \varphi_2$. Das Assoziativgesetz
-der Matrizenmultiplikation erlaubt es, dies kompakt zu schreiben:
-
-\begin{equation*}
-\mathbf{D}(\varphi_2)\cdot\mathbf{D}(\varphi_1) = \mathbf{D}(\varphi_1 + \varphi_2).
-\end{equation*}
-
-Diese Eigenschaft lässt sich mit dem Additionstheorem für den Kosinus und Sinus
-nachrechnen. Für unseren Roboterarm bedeutet das: Eine Drehung um $30°$ gefolgt
-von einer Drehung um $60°$ ergibt dasselbe wie eine einzige Drehung um $90°$.
-
-*Und was geschieht, wenn wir in drei Dimensionen drehen wollen? Dann reicht eine
-einzige Matrix nicht mehr aus, wie wir im nächsten Abschnitt sehen werden.
-
-```{dropdown} Video "Orthogonale Matrizen, Drehmatrix" von MathePeter
-<iframe width="1020" height="574" 
-src="https://www.youtube.com/embed/Enj_IYsPfc8?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
-title="Orthogonale Matrizen im R^2 | Drehmatrix, Spiegelmatrix (Komplettübersicht)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+```{dropdown} Video "Gram-Schmidt-Verfahren" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/l6pr1W3MQoE"
+title="Orthogonale Basis bestimmen (Gram Schmidt Orthogonalisierungsverfahren)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die Drehmatrix $\mathbf{D}(\varphi)$ ist eine orthogonale $2\times 2$-Matrix mit
-Determinante $1$. Sie dreht jeden Vektor um den Winkel $\varphi$ gegen den
-Uhrzeigersinn, ohne seine Länge zu verändern. Aufeinanderfolgende Drehungen
-werden durch einfaches Matrizenprodukt kombiniert.
-
-Im nächsten Abschnitt erweitern wir diese Idee auf den dreidimensionalen Raum.
-Dort lässt sich eine allgemeine Drehung als Produkt von drei Achsendrehungen
-darstellen, die durch die sogenannten Kardanwinkel beschrieben werden. Diese
-Darstellung ist in der Luft- und Raumfahrttechnik sowie in der Robotik fundamental.
+Das Gram-Schmidt-Verfahren wandelt ein linear unabhängiges Vektorensystem
+schrittweise in ein orthogonales und durch anschließende Normierung in ein
+orthonormales um. Der Kernschritt ist stets derselbe: Von jedem neuen Vektor
+wird seine Projektion auf alle bereits orthogonalisierten Vektoren abgezogen,
+sodass der Rest senkrecht auf ihnen steht. Im nächsten Abschnitt wenden wir
+uns den Drehmatrizen zu, die eine besonders wichtige Klasse orthogonaler
+Matrizen darstellen. Das Gram-Schmidt-Verfahren begegnet uns später erneut:
+Wenn wir in Kapitel 6 symmetrische Matrizen diagonalisieren und ein Eigenwert
+mehrfach auftritt, benötigen wir es, um die Eigenvektoren im mehrdimensionalen
+Eigenraum orthogonalisieren zu können.

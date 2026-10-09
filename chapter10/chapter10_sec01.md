@@ -5,6 +5,13 @@ authors:
 
 # 10.1 Variation der Konstanten: aus einer Konstante wird eine Funktion
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 8.3 haben wir die partikuläre Lösung einer inhomogenen linearen ODE durch
 den Ansatz vom Typ der rechten Seite gewonnen: Wir erraten die Form von $y_p$ aus der
 Störfunktion und bestimmen die Koeffizienten durch Vergleich. Das Verfahren ist schnell,

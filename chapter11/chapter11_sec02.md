@@ -5,6 +5,13 @@ authors:
 
 # 11.2 Wann spannen zwei Lösungen den gesamten Lösungsraum auf?
 
+```{admonition} Dieses Kapitel wird gerade überarbeitet
+:class: warning
+Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
+rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
+sich Aufbau und Inhalt noch ändern.
+```
+
 In Abschnitt 10.1 haben wir die Schwingungsgleichung der Wuppertaler
 Schwebebahn aufgestellt und als Vorschau angekündigt, dass die allgemeine
 Lösung die Form $y_h = C_1 y_1 + C_2 y_2$ hat. Aber stimmt das wirklich für
