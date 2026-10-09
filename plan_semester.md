@@ -108,6 +108,20 @@ Aufgabennummern unten sind die **neuen** Nummern im Booklet.
 - Orthogonalitätsnachweis für $R(\varphi)$ nur einmal (in 5.4).
 - Aus alter 6.1 streichen: „Wiederholung: Lineare Unabhängigkeit“ (jetzt 4.3),
   „Anwendungen im Maschinenbau“.
+- 5.1 neu geschrieben (2026-10-09): durchgehendes Beispiel $\vec a_1 = (2,1)^{\top}$,
+  $\vec a_2 = (-1,1)^{\top}$ als $\mathbf{A}$ ($\det = 3$), $\vec v = (1,5)^{\top}$ mit
+  $[\vec v]_{\mathbf{A}} = (2,3)^{\top}$, $\mathbf{A}^{-1} = \frac13\begin{pmatrix}1&1\\-1&2\end{pmatrix}$,
+  $\vec u = (4,-1)^{\top}$ mit $(1,-2)^{\top}$. 3D-Beispiel aus dem Booklet-Backlog als
+  $\mathbf{B}$ mit Gauß ($[\vec w]_{\mathbf{B}} = (-3, \frac52, -4)^{\top}$). Basis als
+  $n$ linear unabhängige Vektoren, Dimension und Rang per Rückverweis auf 4.3/4.4.
+  Schreibweise $[\vec x]_{\mathbf{M}}$ (Hinweis auf ${}_{\mathbf{A}}\vec v$ wie im Booklet).
+  Dritter Abschnitt: $[\vec x]_{\mathbf{M}} = \mathbf{M}^{-1}\vec x$ mit Rückverweis 2.4,
+  Spalten von $\mathbf{A}^{-1}$ als $[\vec e_j]_{\mathbf{A}}$, Stolperfalle $\mathbf{A}\vec v$
+  statt $\mathbf{A}^{-1}\vec v$. Neue Abbildung `chapter05/pics/vektor_zwei_basen`
+  (zwei Teilbilder, ohne `responsive-figure-50`). 5.1 kündigt an: 5.2 „Inverse ohne
+  Rechnung“ bzw. „Inverse = Transponierte“, Kapitel 7 „Basis, in der die Abbildung nur
+  streckt“. 5.2 kann $\mathbf{A}$ und $[\vec x]_{\mathbf{M}} = \mathbf{M}^{-1}\vec x$
+  aufgreifen.
 
 ### Woche 6, Kapitel 6: Eigenwerte und Eigenvektoren (Abschnitt 3, 17 Sterne)
 
@@ -356,6 +370,10 @@ geöffneten Lösungen steckten Fehler.
   - [x] 4.3
   - [x] 4.4
 - [ ] Kapitel 5 umgebaut
+  - [x] 5.1 (2026-10-09, MyST-Build ohne Warnungen)
+  - [ ] 5.2
+  - [ ] 5.3
+  - [ ] 5.4
 - [x] Gliederung Kapitel 5–9 umgestellt, Ordner `chapter07` (DGL) verschoben,
   Hinweis „wird überarbeitet“ ab Kapitel 5 (2026-10-09, MyST-Build ohne Warnungen)
 - [ ] Kapitel 6 umgebaut
