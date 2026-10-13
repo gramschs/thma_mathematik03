@@ -1,0 +1,304 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 5.3 Gram-Schmidt-Verfahren
+
+In Kapitel 5.2 haben wir gesehen, wie bequem eine Orthonormalbasis ist: Die
+Inverse ist die Transponierte, und jede Koordinate ist ein Skalarprodukt. Die
+Orthonormalbasis im Raum war dort aber einfach vorgegeben, und den Trick aus
+der Ebene, die beiden Komponenten zu vertauschen, gibt es im Raum nicht. In
+diesem Kapitel lernen wir ein Verfahren, das aus beliebigen linear
+unabhängigen Vektoren Schritt für Schritt orthonormale Vektoren macht. Im
+Maschinenbau braucht man so etwas zum Beispiel, wenn ein Sensor schief
+stehende Messrichtungen liefert und daraus ein rechtwinkliges
+Koordinatensystem werden soll.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können von einem Vektor seine **Projektion** auf einen anderen Vektor
+  abziehen, sodass der Rest senkrecht auf diesem steht.
+* [ ] Sie können das **Gram-Schmidt-Verfahren** auf linear unabhängige Vektoren
+  anwenden und erhalten paarweise orthogonale Vektoren.
+* [ ] Sie kennen den Unterschied zwischen **Orthogonalisierung** und
+  **Orthonormalisierung** und können eine Orthonormalbasis konstruieren.
+* [ ] Sie wissen, dass die neuen Vektoren denselben Raum aufspannen wie die
+  alten, und erkennen linear abhängige Vektoren am Nullvektor.
+```
+
+## Wie machen wir einen Vektor senkrecht zu einem anderen?
+
+Wir beginnen mit zwei Vektoren im Raum,
+
+\begin{equation*}
+\vec{v}_1 = \begin{pmatrix} 2 \\ 2 \\ -1 \end{pmatrix}, \quad
+\vec{v}_2 = \begin{pmatrix} 1 \\ 4 \\ 1 \end{pmatrix},
+\end{equation*}
+
+die zusammen mit einem dritten Vektor im zweiten Abschnitt das durchgehende
+Beispiel dieses Kapitels bilden. Keiner der beiden ist ein Vielfaches des
+anderen, sie sind also linear unabhängig und spannen nach Kapitel 4.4 eine
+Ebene auf. Senkrecht aufeinander stehen sie aber nicht, denn
+$\vec{v}_1\cdot\vec{v}_2 = 2 + 8 - 1 = 9 \neq 0$. *Können wir $\vec{v}_2$ so
+abändern, dass er senkrecht auf $\vec{v}_1$ steht, ohne die Ebene zu
+verlassen?*
+
+In der Ebene bleiben wir, wenn wir von $\vec{v}_2$ ein Vielfaches von
+$\vec{v}_1$ abziehen. Wir machen deshalb den Ansatz
+$\vec{w}_2 = \vec{v}_2 - \lambda\,\vec{v}_1$ und suchen die Zahl $\lambda$, für
+die $\vec{w}_2$ senkrecht auf $\vec{v}_1$ steht. Die Bedingung
+$\vec{w}_2\cdot\vec{v}_1 = 0$ lautet ausgeschrieben
+
+\begin{equation*}
+(\vec{v}_2 - \lambda\,\vec{v}_1)\cdot\vec{v}_1
+= \vec{v}_2\cdot\vec{v}_1 - \lambda\,\vec{v}_1\cdot\vec{v}_1
+= 9 - 9\lambda = 0.
+\end{equation*}
+
+Dabei haben wir das Skalarprodukt wie ein Produkt von Zahlen ausmultipliziert,
+und $\vec{v}_1\cdot\vec{v}_1 = 4 + 4 + 1 = 9$ ist das Quadrat der Länge von
+$\vec{v}_1$. Daraus folgt $\lambda = 1$. Wir zerlegen $\vec{v}_2$ also in den
+Anteil $\lambda\,\vec{v}_1 = \vec{v}_1$, der in Richtung von $\vec{v}_1$ zeigt,
+und den Rest $\vec{w}_2$, der senkrecht darauf steht.
+
+*Kennen wir diese Zerlegung schon?* In Kapitel 5.2 war $7\,\vec{a}_1$ der
+Fußpunkt des Lots von der Spitze des Vektors $\vec{u}$ auf die Gerade durch
+$\vec{a}_1$, und der Rest $\vec{u} - 7\,\vec{a}_1 = -\vec{a}_2$ stand senkrecht
+auf $\vec{a}_1$. Genauso ist hier $\lambda\,\vec{v}_1$ der Fußpunkt des Lots von
+der Spitze von $\vec{v}_2$ auf die Gerade durch $\vec{v}_1$. Der einzige
+Unterschied ist, dass $\vec{v}_1$ nicht die Länge $1$ hat. Deshalb müssen wir
+durch $\vec{v}_1\cdot\vec{v}_1$ teilen, während in Kapitel 5.2 das
+Skalarprodukt $\vec{a}_1\cdot\vec{u} = 7$ allein schon den Faktor lieferte.
+Dieselbe Rechnung funktioniert für beliebige Vektoren $\vec{v}$ und
+$\vec{w} \neq \vec{0}$, denn aus $(\vec{v} - \lambda\,\vec{w})\cdot\vec{w} = 0$
+folgt immer $\lambda = \frac{\vec{v}\cdot\vec{w}}{\vec{w}\cdot\vec{w}}$.
+
+In unserem Beispiel liegt der Fußpunkt des Lots wegen $\lambda = 1$ genau auf
+der Spitze von $\vec{v}_1$. Die folgende Abbildung zeigt einen Fall mit
+$\lambda > 1$, in dem der Fußpunkt hinter der Spitze von $\vec{w}$ liegt. Der
+Rest $\vec{v} - \lambda\,\vec{w}$ ist einmal im Ursprung und einmal im
+Fußpunkt angetragen.
+
+```{figure} pics/vektor_projektion.svg
+---
+name: vektor_projektion
+---
+Darstellung der Zerlegung von $\vec{v}$ in die Projektion auf $\vec{w}$ und
+einen dazu senkrechten Rest.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+```{admonition} Was ist ... die Projektion eines Vektors auf einen anderen?
+:class: note
+Für einen Vektor $\vec{v}$ und einen Vektor $\vec{w} \neq \vec{0}$ heißt
+
+\begin{equation*}
+\frac{\vec{v}\cdot\vec{w}}{\vec{w}\cdot\vec{w}}\,\vec{w}
+\end{equation*}
+
+die **Projektion** von $\vec{v}$ auf $\vec{w}$. Sie ist der Fußpunkt des Lots
+von der Spitze von $\vec{v}$ auf die Gerade durch $\vec{w}$. Ziehen wir die
+Projektion von $\vec{v}$ ab, steht der Rest senkrecht auf $\vec{w}$.
+```
+
+Für unser Beispiel ist die Projektion von $\vec{v}_2$ auf $\vec{v}_1$ gleich
+$\frac{9}{9}\,\vec{v}_1 = \vec{v}_1$. Ziehen wir sie ab, erhalten wir
+
+\begin{equation*}
+\vec{w}_2 = \vec{v}_2 - \vec{v}_1
+= \begin{pmatrix} 1 \\ 4 \\ 1 \end{pmatrix} -
+\begin{pmatrix} 2 \\ 2 \\ -1 \end{pmatrix}
+= \begin{pmatrix} -1 \\ 2 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Zur Probe rechnen wir $\vec{w}_2\cdot\vec{v}_1 = -2 + 4 - 2 = 0$. Die Vektoren
+$\vec{v}_1$ und $\vec{w}_2$ stehen also senkrecht aufeinander, und weil
+$\vec{w}_2$ aus $\vec{v}_1$ und $\vec{v}_2$ zusammengesetzt ist, liegt er in
+derselben Ebene. Die folgende Abbildung zeigt diese Ebene im Raum. Weil auch
+$\vec{w}_2$ die Länge $\sqrt{1 + 4 + 4} = 3$ hat, ist $\vec{v}_2$ die Diagonale
+eines Quadrats mit den Seiten $\vec{v}_1$ und $\vec{w}_2$.
+
+```{figure} pics/vektor_projektion_ebene.svg
+---
+name: vektor_projektion_ebene
+---
+Darstellung der Zerlegung von $\vec{v}_2$ in $\vec{v}_1$ und $\vec{w}_2$ in der
+Ebene, die $\vec{v}_1$ und $\vec{v}_2$ aufspannen.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Beim Rechnen mit der Projektion dürfen wir $\vec{w}$ im Bruch übrigens nicht
+kürzen. Zähler und Nenner sind Skalarprodukte, also Zahlen, und
+ein Bruch aus Vektoren ist gar nicht definiert. Wer trotzdem kürzt, erhält als
+Projektion $\vec{v}$ selbst und als Rest den Nullvektor.
+
+## Wie geht es beim dritten Vektor weiter?
+
+Jetzt nehmen wir den dritten Vektor unseres Beispiels hinzu:
+
+\begin{equation*}
+\vec{v}_3 = \begin{pmatrix} 5 \\ 5 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Damit alle neuen Vektoren gleich heißen, nennen wir den ersten Vektor ab jetzt
+$\vec{w}_1 = \vec{v}_1$. Gesucht ist ein Vektor $\vec{w}_3$, der senkrecht auf
+$\vec{w}_1$ und auf $\vec{w}_2$ steht. *Wie viele Projektionen müssen wir
+diesmal abziehen?* Wir machen den Ansatz
+$\vec{w}_3 = \vec{v}_3 - \lambda_1\vec{w}_1 - \lambda_2\vec{w}_2$ und
+schreiben die beiden Bedingungen $\vec{w}_3\cdot\vec{w}_1 = 0$ und
+$\vec{w}_3\cdot\vec{w}_2 = 0$ aus:
+
+\begin{align*}
+\vec{v}_3\cdot\vec{w}_1 - \lambda_1\,\vec{w}_1\cdot\vec{w}_1 -
+\lambda_2\,\vec{w}_2\cdot\vec{w}_1 &= 18 - 9\lambda_1 - 0 = 0, \\
+\vec{v}_3\cdot\vec{w}_2 - \lambda_1\,\vec{w}_1\cdot\vec{w}_2 -
+\lambda_2\,\vec{w}_2\cdot\vec{w}_2 &= 9 - 0 - 9\lambda_2 = 0.
+\end{align*}
+
+Dabei ist $\vec{v}_3\cdot\vec{w}_1 = 10 + 10 - 2 = 18$ und
+$\vec{v}_3\cdot\vec{w}_2 = -5 + 10 + 4 = 9$, und beide Längenquadrate
+$\vec{w}_1\cdot\vec{w}_1$ und $\vec{w}_2\cdot\vec{w}_2 = 1 + 4 + 4$ sind $9$.
+Weil $\vec{w}_1$ und $\vec{w}_2$ schon senkrecht aufeinander stehen, fällt in
+jeder Gleichung ein Summand weg, und jede enthält nur noch eine Unbekannte. Wir
+erhalten $\lambda_1 = 2$ und $\lambda_2 = 1$, und das sind genau die Faktoren
+der Projektionen von $\vec{v}_3$ auf $\vec{w}_1$ und auf $\vec{w}_2$. Wir
+müssen also beide Projektionen abziehen.
+
+Wichtig ist dabei, dass wir auf $\vec{w}_2$ projizieren und nicht auf
+$\vec{v}_2$. Der Vektor $\vec{v}_2$ steht nicht senkrecht auf $\vec{w}_1$, und
+dann fällt in den beiden Gleichungen kein Summand mehr weg. Mit jedem weiteren
+Vektor geht es genauso weiter: Wir ziehen die Projektionen auf alle bereits
+berechneten Vektoren ab.
+
+```{admonition} Was ist ... das Gram-Schmidt-Verfahren?
+:class: note
+Aus linear unabhängigen Vektoren $\vec{v}_1, \ldots, \vec{v}_n$ erzeugt das
+**Gram-Schmidt-Verfahren** paarweise orthogonale Vektoren
+$\vec{w}_1, \ldots, \vec{w}_n$. Den ersten Vektor übernehmen wir unverändert,
+und von jedem weiteren ziehen wir seine Projektionen auf alle bereits
+berechneten Vektoren ab:
+
+\begin{align*}
+\vec{w}_1 &= \vec{v}_1, \\
+\vec{w}_k &= \vec{v}_k -
+\sum_{j=1}^{k-1} \frac{\vec{v}_k\cdot\vec{w}_j}{\vec{w}_j\cdot\vec{w}_j}\,\vec{w}_j
+\quad\text{für } k = 2, \ldots, n.
+\end{align*}
+```
+
+Für $k = 2$ hat die Summe nur einen Summanden, und wir erhalten wie im ersten
+Abschnitt $\vec{w}_2 = (-1, 2, 2)^{\top}$. Für $k = 3$ stehen in der Summe die
+Projektionen von $\vec{v}_3$ auf $\vec{w}_1$ und auf $\vec{w}_2$ mit den
+Faktoren $\frac{18}{9} = 2$ und $\frac{9}{9} = 1$:
+
+\begin{equation*}
+\vec{w}_3 = \vec{v}_3 - 2\,\vec{w}_1 - \vec{w}_2
+= \begin{pmatrix} 5 \\ 5 \\ 2 \end{pmatrix} -
+\begin{pmatrix} 4 \\ 4 \\ -2 \end{pmatrix} -
+\begin{pmatrix} -1 \\ 2 \\ 2 \end{pmatrix}
+= \begin{pmatrix} 2 \\ -1 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Zur Probe rechnen wir $\vec{w}_3\cdot\vec{w}_1 = 4 - 2 - 2 = 0$ und
+$\vec{w}_3\cdot\vec{w}_2 = -2 - 2 + 4 = 0$. Zusammen mit
+$\vec{w}_1\cdot\vec{w}_2 = 0$ aus dem ersten Abschnitt stehen die drei Vektoren
+$\vec{w}_1 = (2, 2, -1)^{\top}$, $\vec{w}_2 = (-1, 2, 2)^{\top}$ und
+$\vec{w}_3 = (2, -1, 2)^{\top}$ also paarweise senkrecht aufeinander.
+
+```{dropdown} Video "Gram-Schmidt-Verfahren" von MathePeter
+<iframe width="1020" height="574" src="https://www.youtube.com/embed/l6pr1W3MQoE"
+title="Orthogonale Basis bestimmen (Gram Schmidt Orthogonalisierungsverfahren)"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Wie wird daraus eine Orthonormalbasis?
+
+Die Vektoren $\vec{w}_1, \vec{w}_2, \vec{w}_3$ stehen paarweise senkrecht
+aufeinander, haben aber noch nicht die Länge $1$. Für eine Orthonormalbasis im
+Sinne von Kapitel 5.2 fehlt also noch ein Schritt. Wie in Mathematik 1 teilen
+wir jeden Vektor durch seine Länge und machen ihn so zu einem Vektor der Länge
+$1$, ohne seine Richtung zu ändern. Dabei bleiben die Skalarprodukte $0$, die
+Vektoren stehen also weiterhin senkrecht aufeinander.
+
+```{admonition} Was ist ... eine Orthonormalisierung?
+:class: note
+Das Gram-Schmidt-Verfahren allein ist eine **Orthogonalisierung**, denn es
+liefert paarweise orthogonale Vektoren $\vec{w}_1, \ldots, \vec{w}_n$. Teilen
+wir anschließend jeden Vektor durch seine Länge,
+
+\begin{equation*}
+\vec{a}_k = \frac{1}{|\vec{w}_k|}\,\vec{w}_k \quad\text{für } k = 1, \ldots, n,
+\end{equation*}
+
+erhalten wir orthonormale Vektoren $\vec{a}_1, \ldots, \vec{a}_n$. Beide
+Schritte zusammen heißen **Orthonormalisierung**. Aus $n$ linear unabhängigen
+Vektoren des $\mathbb{R}^n$ entsteht so eine Orthonormalbasis.
+```
+
+In unserem Beispiel haben alle drei Vektoren dieselbe Länge, denn
+$|\vec{w}_1| = \sqrt{4 + 4 + 1}$, $|\vec{w}_2| = \sqrt{1 + 4 + 4}$ und
+$|\vec{w}_3| = \sqrt{4 + 1 + 4}$ sind alle $3$. Die normierten Vektoren
+$\vec{a}_k = \frac{1}{3}\vec{w}_k$ bilden die Spalten der orthogonalen Matrix
+
+\begin{equation*}
+\mathbf{A} = \frac{1}{3}\begin{pmatrix} 2 & -1 & 2 \\ 2 & 2 & -1 \\ -1 & 2 & 2 \end{pmatrix}.
+\end{equation*}
+
+Das ist genau die Matrix, die in Kapitel 5.2 $\mathbf{C}$ hieß und deren
+Spalten wir dort als orthonormal nachgerechnet haben. Mit ihr hatten wir die
+Koordinaten des Vektors $(1, 2, 3)^{\top}$ als $(1, 3, 2)^{\top}$ berechnet,
+ganz ohne Gauß-Algorithmus. Das Gram-Schmidt-Verfahren zeigt uns jetzt, woher
+eine solche Basis kommt. Normiert haben wir übrigens erst am Schluss, denn
+sonst hätten wir in den Projektionen schon mit Wurzeln rechnen müssen.
+
+*Spannen die neuen Vektoren noch denselben Raum auf wie die alten?* Aus
+$\vec{w}_2 = \vec{v}_2 - \vec{v}_1$ und
+$\vec{w}_3 = \vec{v}_3 - 2\,\vec{w}_1 - \vec{w}_2 = \vec{v}_3 - \vec{v}_1 - \vec{v}_2$
+sehen wir, dass jeder neue Vektor aus den alten zusammengesetzt ist. Umgekehrt
+gilt $\vec{v}_2 = \vec{w}_1 + \vec{w}_2$ und
+$\vec{v}_3 = 2\,\vec{w}_1 + \vec{w}_2 + \vec{w}_3$. Nach Kapitel 4.4 haben
+$\vec{v}_1, \vec{v}_2$ und $\vec{w}_1, \vec{w}_2$ also dieselbe lineare Hülle,
+nämlich die Ebene aus dem ersten Abschnitt. Wenden wir das Verfahren nur auf
+zwei Vektoren im Raum an, erhalten wir deshalb eine Orthonormalbasis dieser
+Ebene. Genau das brauchen wir in Kapitel 7, wenn wir für symmetrische Matrizen
+eine Orthonormalbasis aus Eigenvektoren suchen und zwei davon nicht senkrecht
+aufeinander stehen.
+
+*Und was passiert, wenn die Vektoren linear abhängig sind?* Ersetzen wir
+$\vec{v}_3$ durch $\vec{v}_1 + \vec{v}_2 = (3, 6, 0)^{\top}$, so sind die
+Faktoren der Projektionen $\frac{6 + 12 + 0}{9} = 2$ und
+$\frac{-3 + 12 + 0}{9} = 1$, und es bleibt
+
+\begin{equation*}
+\vec{w}_3 = \begin{pmatrix} 3 \\ 6 \\ 0 \end{pmatrix} -
+\begin{pmatrix} 4 \\ 4 \\ -2 \end{pmatrix} -
+\begin{pmatrix} -1 \\ 2 \\ 2 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}.
+\end{equation*}
+
+Das ist kein Rechenfehler. Der Vektor $(3, 6, 0)^{\top}$ liegt in der Ebene von
+$\vec{w}_1$ und $\vec{w}_2$, und nach Abzug seiner Anteile in diese beiden
+Richtungen bleibt nichts übrig. Den Nullvektor können wir nicht normieren. Das
+Verfahren prüft also die lineare Unabhängigkeit aus Kapitel 4.3 gleich mit:
+Entsteht irgendwo der Nullvektor, sind die Vektoren linear abhängig. In unserem
+Beispiel ist das nicht passiert, und wir haben drei orthonormale Vektoren und
+damit nach Kapitel 5.2 eine Basis des $\mathbb{R}^3$ erhalten. Die lineare
+Unabhängigkeit von $\vec{v}_1, \vec{v}_2, \vec{v}_3$ hätten wir also vorab gar
+nicht prüfen müssen.
+
+## Zusammenfassung und Ausblick
+
+Das Gram-Schmidt-Verfahren übernimmt den ersten Vektor und zieht von jedem
+weiteren die Projektionen auf alle bereits berechneten Vektoren ab. Was übrig
+bleibt, steht senkrecht auf allen Vorgängern, und nach dem Normieren erhalten
+wir eine Orthonormalbasis desselben Raums. Entsteht unterwegs der Nullvektor,
+waren die Ausgangsvektoren linear abhängig. In Kapitel 5.4 untersuchen wir die
+Drehmatrizen, die wichtigste Familie orthogonaler Matrizen, und finden dort
+auch den Winkel, um den die Matrix $\mathbf{A}$ aus Kapitel 5.2 die Ebene
+dreht. In Kapitel 7 setzen wir das Gram-Schmidt-Verfahren dann ein, um für
+symmetrische Matrizen eine Orthonormalbasis aus Eigenvektoren zu bauen.
