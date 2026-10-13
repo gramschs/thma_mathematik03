@@ -97,8 +97,8 @@ Aufgabennummern unten sind die **neuen** Nummern im Booklet.
 | --- | --- | --- | --- |
 | 5.1 Basis und Koordinaten | 6.1 | Was ist eine Basis? · Wie stellen wir einen Vektor in einer anderen Basis dar? · Was hat der Basiswechsel mit der Inversen zu tun? | 16–21 |
 | 5.2 Orthogonale Matrizen | 5.1 (neu schreiben) | Wann ist eine Matrix orthogonal? · Was bleibt bei einer orthogonalen Abbildung erhalten? · Warum wird der Basiswechsel so einfach? | 14, 15 (Warm-up), 22–24 |
-| 5.3 Gram-Schmidt-Verfahren | 5.2 | unverändert | 25, 26 |
-| 5.4 Drehmatrizen | 5.3 + 5.4 | Wie dreht eine Matrix die Ebene? · Wie drehen wir um die Koordinatenachsen? · Warum kommt es auf die Reihenfolge an? | 27, 28 |
+| 5.3 Gram-Schmidt-Verfahren | 5.2 | Wie machen wir einen Vektor senkrecht zu einem anderen? · Wie geht es beim dritten Vektor weiter? · Wie wird daraus eine Orthonormalbasis? | 25, 26 |
+| 5.4 Drehmatrizen | 5.3 + 5.4 | Wie dreht eine Matrix die Ebene? · Warum ist jede Drehmatrix orthogonal? · Was passiert, wenn wir zweimal drehen? | 27 (28 Vertiefung) |
 
 - Roter Faden: Koordinaten bzgl. $V$ erfordern ein LGS; ist $V$ orthogonal, gilt
   $[\vec a]_Q = Q^{\top}\vec a$; Gram-Schmidt baut eine solche Basis; Drehungen sind
@@ -122,6 +122,72 @@ Aufgabennummern unten sind die **neuen** Nummern im Booklet.
   Rechnung“ bzw. „Inverse = Transponierte“, Kapitel 7 „Basis, in der die Abbildung nur
   streckt“. 5.2 kann $\mathbf{A}$ und $[\vec x]_{\mathbf{M}} = \mathbf{M}^{-1}\vec x$
   aufgreifen.
+- 5.2 neu geschrieben (2026-10-09): durchgehendes Beispiel
+  $\mathbf{A} = \frac15\begin{pmatrix}3&-4\\4&3\end{pmatrix}$ ($\det = 1$, Drehung um
+  $\cos\varphi = \frac35$, ca. $53^\circ$); 5.1-Matrix als $\mathbf{B}$. Keine
+  Stolperfallen-Boxen (auf Wunsch gestrichen). Abschnitt 1: $\mathbf{B}^{\top}\mathbf{B}$
+  als Skalarprodukte der Spalten, Bau von $\mathbf{A}$, orthonormal/orthogonal,
+  $\mathbf{M}^{-1} = \mathbf{M}^{\top}$. Abschnitt 2: $\vec x = (1,2)^{\top}$,
+  $\vec y = (3,1)^{\top}$ ($45^\circ$) auf $(-1,2)^{\top}$, $(1,3)^{\top}$; Beweis über
+  $\vec x^{\top}\mathbf{M}^{\top}\mathbf{M}\vec y$; $\det = \pm 1$ über die Produktregel
+  (Versprechen aus 3.3 eingelöst); Umkehrschluss mit der Scherung aus 4.1 als Satz im
+  Fließtext (Versprechen aus 4.1 eingelöst). Abschnitt 3: Orthonormalbasis,
+  $[\vec u]_{\mathbf{A}} = (7,-1)^{\top}$ für $\vec u = (5,5)^{\top}$, Lot/Ankathete;
+  3D-Beispiel $\mathbf{C} = \frac13\begin{pmatrix}2&-1&2\\2&2&-1\\-1&2&2\end{pmatrix}$ mit
+  $\vec w = (1,2,3)^{\top}$ aus 5.1, $[\vec w]_{\mathbf{C}} = (1,3,2)^{\top}$. Je Abschnitt
+  ca. 500 Wörter Fließtext. Neue Abbildung `chapter05/pics/vektor_orthonormalbasis`. 5.2 kündigt an:
+  5.4 „um welchen Winkel $\mathbf{A}$ dreht“, 5.3 Gram-Schmidt, Kapitel 7
+  Orthonormalbasis bei symmetrischen Matrizen. Die Orthogonalität von $R(\varphi)$
+  wird in 5.2 nicht gezeigt (bleibt in 5.4).
+- 5.3 neu geschrieben (2026-10-09), H2 neu statt „unverändert“ (alte Fassung hatte
+  Formel vor Beispiel und MB-Beispiel in den Abschnitten): durchgehendes Beispiel
+  $\vec v_1 = (2,2,-1)^{\top}$, $\vec v_2 = (1,4,1)^{\top}$, $\vec v_3 = (5,5,2)^{\top}$ mit
+  $\vec w_2 = (-1,2,2)^{\top}$ (Faktor 1), $\vec w_3 = (2,-1,2)^{\top}$ (Faktoren 2, 1),
+  alle Längen 3; normiert ergibt sich $\mathbf{C}$ aus 5.2 (in 5.3 $\mathbf{A}$).
+  Projektion über den Ansatz $(\vec v - \lambda\vec w)\cdot\vec w = 0$, Rückverweis auf
+  das Lot in 5.2; Aufg. 26 (nicht kürzen) als Satz. Abschnitt 3: Orthogonalisierung vs.
+  Orthonormalisierung, gleiche lineare Hülle (4.4), $\vec v_3 = \vec v_1 + \vec v_2$
+  liefert $\vec w_3 = \vec 0$ (4.3). Keine Stolperfallen-Box. Abbildung
+  `chapter05/pics/vektor_projektion` (2026-10-13) vor der Projektions-Definition:
+  allgemeiner Fall mit $\lambda = 1.8 > 1$, weil im Beispiel ($\lambda = 1$) der
+  Lotfußpunkt mit der Spitze von $\vec v_1$ zusammenfällt. Nach der Probe
+  interaktive 3D-Grafik `chap05_sec03_projektion` (Repo
+  `thma_mathematik03_assets`, `applet-container-850`): Ebene von $\vec v_1$,
+  $\vec v_2$ mit $\vec w_2$ drehbar, Ansichten „schräg“ und „von vorn“
+  (Quadrat mit Seitenlänge 3). Statische TikZ-Fassung verworfen, weil der
+  Blickwinkel nicht trug. Für $\vec w_3$ im zweiten Abschnitt ließe sich die App
+  erweitern ($\vec w_3$ ist die Normale der Ebene).
+  Ankündigungen: 5.4 Winkel von $\mathbf{A}$ aus 5.2; Kapitel 7 Gram-Schmidt für
+  Eigenvektoren symmetrischer Matrizen (Ebene im $\mathbb{R}^3$).
+- 5.4 neu geschrieben (2026-10-13), nur noch $\mathbb{R}^2$: Für 4 SWS und eine
+  Woche war 5.4 mit $\mathbb{R}^3$ zu viel, Drehungen machen nur 4 der 20 Sterne
+  aus; Robotik gibt es im Studiengang nicht, FEM und MKS sind Wahlfächer.
+  Bezeichnung $\mathbf{R}(\varphi)$ (international üblich, passt zu $\mathbf{R}$ aus
+  4.1; dort ist $\mathbf{D}$ die Scherung), Satz „Manche Bücher schreiben … auch
+  $\mathbf{D}(\varphi)$“ nach der Definition wegen des Booklets. Abschnitt 1: Bilder von
+  $\vec e_1, \vec e_2$ über den Einheitskreis und die $90^\circ$-Drehung aus 4.1
+  (Trick „vertauschen, Vorzeichen“ aus 5.2), Abbildung
+  `chapter05/pics/drehung_einheitsvektoren` (mit $\varphi$ von $\mathbf{A}$), Winkel
+  von $\mathbf{A}$: $\arccos\frac35 \approx 53.13^\circ$, Vorzeichen von $\sin$
+  entscheidet (Versprechen aus 5.2 eingelöst). Abschnitt 2: Orthogonalitätsnachweis,
+  $\det = 1$, $\mathbf{R}(\varphi)^{\top} = \mathbf{R}(-\varphi)$, Umkehrung
+  (orthogonal mit $\det = 1$ ist Drehung, sonst Spiegelung). Abschnitt 3:
+  $\mathbf{R}(45^\circ)^2 = \mathbf{R}(90^\circ) = \mathbf{R}$, Vertauschbarkeit an
+  $\mathbf{A}\,\mathbf{R}(45^\circ)$ ($98.13^\circ$), Ausblick Raum mit
+  $\mathbf{R}_z$ und Buch-Experiment, „vertiefen wir nicht weiter“. Ohne
+  Additionstheoreme, Kardanwinkel, Roboter-/Sensor-Beispiele, DIN-Satz.
+  Ausblick auf Kapitel 6: Drehung um $53.13^\circ$ hat keinen Vektor, der nur
+  gestreckt wird. 4.2 angepasst (Drehmatrizen aus 5.4 für die Ebene, $4\times 4$ im
+  Raum als eigener Satz). Auf Anregung eines Kollegen ergänzt: aktive und passive
+  Drehung in Abschnitt 2 nach der Probe mit $\mathbf{A}^{\top}$ (passive Drehung =
+  Basiswechsel aus 5.1, Koordinaten mit $\mathbf{R}(-\varphi)$, Rückbezug auf
+  $[\vec u]_{\mathbf{A}} = (7, -1)^{\top}$ aus 5.2), Lernziel und Zusammenfassung
+  erweitert. Dezimalpunkt statt Komma (53.13°).
+- Aufgabe 28 (Flugzeugtechnik, ⋆⋆⋆) damit Vertiefung, Woche 5 hat 17 Sterne.
+  Noch mit der Kollegin abstimmen und in der CA-Stoffliste ausnehmen. Hinweis für
+  die Kollegin: Die Booklet-Lösung $D_x(\Phi)D_y(\Theta)D_z(\Psi)$ gilt für feste
+  Achsen; die Luftfahrt-Konvention (mitgedrehte Achsen) ergibt
+  $D_z(\Psi)D_y(\Theta)D_x(\Phi)$.
 
 ### Woche 6, Kapitel 6: Eigenwerte und Eigenvektoren (Abschnitt 3, 17 Sterne)
 
@@ -348,13 +414,14 @@ Zuordnung alte → neue Aufgabennummer:
 | 3 Eigenwerte und Eigenvektoren | 29→29, 30→30, 31→31, 35→32, 44→33, 32→34, 37→35, 36→36, 42→37, 33→38, 38→39, 39→40, 43→41, 40→42, 41→43, 34→44 |
 | 4 Diagonalisierung | 45→45, 48→46, 46→47, 47→48 |
 
-Offen: Die übrigen Lösungen sind nicht systematisch geprüft. In allen drei bisher
-geöffneten Lösungen steckten Fehler.
+Die übrigen Lösungen sind seit 2026-10-09 geprüft.
 
 ## Abstimmung mit der Kollegin
 
 - Korrigierte Fassung von Booklet 02 anbieten (Fehler betreffen beide).
 - Kennzeichnung „Vertiefung“ für Richtungsfelder, Euler, komplexe Fourierreihe.
+- Drehungen im $\mathbb{R}^3$ (Aufgabe 28) als Vertiefung; Hinweis zur
+  Achsen-Konvention in der Lösung von Aufgabe 28 (siehe Woche 5).
 - Ggf. neue Aufgaben: homogene Koordinaten, $A^n$, Spektralsatz, Anwendungen.
 - Booklet 03 in Fassung v2 (mit linearen DGL) verwenden; doppelter Abschnitt
   „Grundwissen“ in Booklet 04; Aufgaben zum Störansatz 1. Ordnung erst in Booklet 04.
@@ -362,18 +429,18 @@ geöffneten Lösungen steckten Fehler.
 ## Status
 
 - [x] Semesterplan 3 + 4 + 2 + 3 + 2 festgelegt (2026-10-07)
-- [x] Booklet Sprint 02 umsortiert und korrigiert (Durchsicht der `_neu`-PDFs ausstehend)
-- [ ] Restliche Lösungen Booklet 02 prüfen (vor Fr 2026-10-09)
+- [x] Booklet Sprint 02 umsortiert und korrigiert, `_neu`-PDFs durchgesehen (2026-10-09)
+- [x] Restliche Lösungen Booklet 02 geprüft (2026-10-09)
 - [x] Kapitel 4 umgebaut (2026-10-07, MyST-Build ohne Fehler; Commit `f545b95`)
   - [x] 4.1
   - [x] 4.2
   - [x] 4.3
   - [x] 4.4
-- [ ] Kapitel 5 umgebaut
+- [x] Kapitel 5 umgebaut
   - [x] 5.1 (2026-10-09, MyST-Build ohne Warnungen)
-  - [ ] 5.2
-  - [ ] 5.3
-  - [ ] 5.4
+  - [x] 5.2 (2026-10-09, MyST-Build ohne Warnungen)
+  - [x] 5.3 (2026-10-09, MyST-Build und Linter ohne Warnungen)
+  - [x] 5.4 (2026-10-13, nur $\mathbb{R}^2$, MyST-Build und Linter ohne Warnungen)
 - [x] Gliederung Kapitel 5–9 umgestellt, Ordner `chapter07` (DGL) verschoben,
   Hinweis „wird überarbeitet“ ab Kapitel 5 (2026-10-09, MyST-Build ohne Warnungen)
 - [ ] Kapitel 6 umgebaut

@@ -346,11 +346,11 @@ In der letzten Spalte steht jetzt $\mathbf{A}\vec{t} = (8, 11)^{\top}$ statt
 $\vec{t}$, denn die Verschiebung wird von $\mathbf{A}$ mit abgebildet. Der Punkt
 $(1, 1)$ landet deshalb bei $(2 + 3 + 8,\ 1 + 5 + 11) = (13, 17)$. Schrittweise
 erhalten wir dasselbe, denn $T(\vec{v}) = (2, 3)^{\top}$ und
-$\mathbf{A}(2, 3)^{\top} = (4 + 9,\ 2 + 15)^{\top} = (13, 17)^{\top}$. Im Raum
-funktioniert der Trick genauso mit einer vierten Komponente $1$ und
-$4\times 4$-Matrizen. Zusammen mit den Drehmatrizen aus Kapitel 5.4 lässt sich
-so jede Kombination aus Drehungen und Verschiebungen als eine einzige Matrix
-schreiben.
+$\mathbf{A}(2, 3)^{\top} = (4 + 9,\ 2 + 15)^{\top} = (13, 17)^{\top}$.
+Zusammen mit den Drehmatrizen aus Kapitel 5.4 lässt sich so jede Kombination
+aus Drehungen und Verschiebungen der Ebene als eine einzige Matrix schreiben.
+Im Raum funktioniert der Trick genauso mit einer vierten Komponente $1$ und
+$4\times 4$-Matrizen.
 
 ```{admonition} Haben homogene Koordinaten etwas mit der Homogenität zu tun?
 :class: danger
