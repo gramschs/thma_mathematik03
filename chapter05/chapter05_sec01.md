@@ -11,9 +11,9 @@ Vektoren linear unabhängig sind und welche Vektoren sich aus ihnen
 kombinieren lassen. Jetzt führen wir beides zusammen und suchen Vektoren, aus
 denen sich jeder Vektor auf genau eine Weise zusammensetzen lässt. Die
 Vorfaktoren dieser Zusammensetzung beschreiben einen Vektor dann genauso gut
-wie seine gewohnten Komponenten. Im Maschinenbau beschreibt man so zum
-Beispiel ein Bauteil in einem körperfesten Koordinatensystem, das sich mit dem
-Bauteil mitbewegt.
+wie seine gewohnten Komponenten. Im Maschinenbau lässt sich so zum Beispiel
+ein Bauteil in einem körperfesten Koordinatensystem beschreiben, das sich mit
+dem Bauteil bewegt.
 
 ## Lernziele
 
@@ -74,7 +74,7 @@ $2\,\vec{a}_1 = (4, 2)^{\top}$, zeigen beide Vektoren in dieselbe Richtung.
 Ihre Linearkombinationen füllen nur die Gerade durch $\vec{a}_1$, und
 $\vec{v}$ ist nicht erreichbar. Nehmen wir dagegen zu $\vec{a}_1$ und
 $\vec{a}_2$ noch $\vec{a}_3 = \vec{v}$ hinzu, ist zwar jeder Vektor
-erreichbar, aber nicht mehr eindeutig. So ist
+erreichbar, aber nicht mehr auf genau eine Weise. So ist
 $\vec{v} = 2\,\vec{a}_1 + 3\,\vec{a}_2 + 0\,\vec{a}_3$ und zugleich
 $\vec{v} = 0\,\vec{a}_1 + 0\,\vec{a}_2 + 1\,\vec{a}_3$.
 
@@ -277,13 +277,12 @@ aus Kapitel 2.2 und $\det(\mathbf{A}) = 3$ erhalten wir
 
 Das ist derselbe Koordinatenvektor wie im ersten Abschnitt, diesmal ohne
 Gleichungssystem. Die Matrix $\mathbf{A}$ selbst rechnet in die andere
-Richtung. Nach Kapitel
-4.1 setzt das Produkt $\mathbf{A}\,[\vec{v}]_{\mathbf{A}}$ die Spalten von
-$\mathbf{A}$ mit den Koordinaten als Vorfaktoren zusammen, also
+Richtung. Nach Kapitel 4.1 setzt das Produkt $\mathbf{A}\,[\vec{v}]_{\mathbf{A}}$
+die Spalten von $\mathbf{A}$ mit den Koordinaten als Vorfaktoren zusammen, also
 $2\,\vec{a}_1 + 3\,\vec{a}_2 = \vec{v}$. Aus den Koordinaten bezüglich
 $\vec{a}_1, \vec{a}_2$ macht $\mathbf{A}$ also Standardkoordinaten. Die
-Inverse macht das wie in Kapitel 4.1 rückgängig und übersetzt
-Standardkoordinaten zurück in Koordinaten bezüglich $\vec{a}_1, \vec{a}_2$.
+Inverse kehrt das wie in Kapitel 4.1 um und übersetzt Standardkoordinaten
+zurück in Koordinaten bezüglich $\vec{a}_1, \vec{a}_2$.
 
 ```{admonition} Wie rechnen wir beim Basiswechsel um?
 :class: note
@@ -312,8 +311,9 @@ $\vec{a}_1 - 2\,\vec{a}_2 = (2 + 2,\ 1 - 2)^{\top} = (4, -1)^{\top}$.
 $\mathbf{A}^{-1}$ mit $\vec{e}_1$, kommt nach Kapitel 4.1 die erste Spalte
 heraus. Also ist $[\vec{e}_1]_{\mathbf{A}} = (\frac{1}{3}, -\frac{1}{3})^{\top}$
 und ebenso $[\vec{e}_2]_{\mathbf{A}} = (\frac{1}{3}, \frac{2}{3})^{\top}$. Zur
-Probe ist $\frac{1}{3}\vec{a}_1 - \frac{1}{3}\vec{a}_2 = \frac{1}{3}(2 + 1,\ 1 -
-1)^{\top} = (1, 0)^{\top}$. Die Spalten von $\mathbf{A}$ sind also die neuen
+Probe ist $\frac{1}{3}\vec{a}_1 - \frac{1}{3}\vec{a}_2
+= \frac{1}{3}(2 + 1,\ 1 - 1)^{\top} = (1, 0)^{\top}$. Die Spalten von
+$\mathbf{A}$ sind also die neuen
 Basisvektoren in Standardkoordinaten, und die Spalten von $\mathbf{A}^{-1}$ sind
 die alten Basisvektoren $\vec{e}_1, \vec{e}_2$ in den neuen Koordinaten.
 
@@ -335,8 +335,7 @@ Vektoren umrechnen, berechnen wir die Inverse einmal und multiplizieren danach
 nur noch. In Kapitel 5.2 lernen wir Basen kennen, bei denen wir die Inverse
 sogar ganz ohne Rechnung hinschreiben können.
 
-```{dropdown} Video "Basiswechsel - Transformationsmatrizen - Koordinatenwechsel"
-von The Bright Side of Mathematics
+```{dropdown} Video "Basiswechsel" von The Bright Side of Mathematics
 <iframe width="1054" height="585" src="https://www.youtube.com/embed/FFVauAY_FMI"
 title="Basiswechsel - Transformationsmatrizen - Koordinatenwechsel" frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;

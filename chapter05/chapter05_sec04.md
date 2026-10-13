@@ -5,376 +5,326 @@ authors:
 
 # 5.4 Drehmatrizen
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-Vorerst stehen hier die bisherigen Kapitel 5.3 und 5.4 hintereinander.
-```
+Orthogonale Matrizen haben wir in Kapitel 5.2 kennengelernt und in Kapitel 5.3
+selbst gebaut. Die Matrix $\mathbf{A}$ aus Kapitel 5.2 dreht die Ebene um den
+Ursprung, aber um welchen Winkel, ist offen geblieben. In diesem Kapitel
+stellen wir die Drehmatrix für einen beliebigen Winkel auf und beantworten
+damit auch diese Frage. Im
+Maschinenbau stecken Drehmatrizen zum Beispiel hinter dem Drehen eines Bauteils
+im CAD-Programm und hinter der Umrechnung zwischen gegeneinander gedrehten
+Koordinatensystemen.
 
-## Drehmatrizen im R²
-
-Orthogonale Matrizen mit Determinante $+1$ beschreiben Drehungen. Das klingt
-zunächst abstrakt, ist aber in der Ingenieurpraxis allgegenwärtig: In der
-Robotik muss die Position eines Greifers nach einer Drehbewegung berechnet
-werden, in der Messtechnik werden Koordinatensysteme von Sensoren auf das
-Maschinensystem transformiert, und in der Technischen Mechanik werden Spannungen
-aus einem schräg orientierten Schnitt in das globale Koordinatensystem
-zurückgerechnet. In diesem Abschnitt lernen wir die Drehmatrix für die Ebene
-kennen.
-
-### Lernziele
+## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie kennen die **Drehmatrix im $\mathbb{R}^2$** für eine Drehung um den
-  Winkel $\varphi$ gegen den Uhrzeigersinn:
-  \begin{equation*}
-  \mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-  \sin\varphi & \cos\varphi \end{pmatrix}.
-  \end{equation*}
-* [ ] Sie können überprüfen, dass jede Drehmatrix eine orthogonale Matrix ist.
-* [ ] Sie wissen, dass $\det(\mathbf{D}) = 1$ gilt, und können dies geometrisch
-  begründen: Drehungen erhalten Längen, Winkel und Orientierung.
-* [ ] Sie können die Drehmatrix anwenden, um einen Vektor oder ein Bauteilprofil
-  um einen gegebenen Winkel zu drehen.
+* [ ] Sie können die **Drehmatrix** $\mathbf{R}(\varphi)$ der Ebene aus den
+  Bildern der Einheitsvektoren aufstellen.
+* [ ] Sie können den Drehwinkel einer Drehmatrix ablesen.
+* [ ] Sie können nachweisen, dass jede Drehmatrix orthogonal ist und die
+  Determinante $1$ hat.
+* [ ] Sie können eine Drehung mit der Transponierten rückgängig machen und
+  kennen den Unterschied zwischen einer **aktiven** und einer **passiven
+  Drehung**.
+* [ ] Sie wissen, dass sich bei zwei Drehungen der Ebene die Winkel addieren
+  und die Reihenfolge keine Rolle spielt.
 ```
 
-### Was soll eine Drehmatrix leisten?
+## Wie dreht eine Matrix die Ebene?
 
-Stellen wir uns den ebenen Roboterarm einer Fräsmaschine vor. Der Arm hat die
-Länge $r = 5~\text{cm}$ und zeigt zunächst in die positive $x$-Richtung. Die
-Spitze befindet sich also im Punkt
-
-\begin{equation*}
-\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}~\text{cm}.
-\end{equation*}
-
-Die Steuerung dreht den Arm um den Winkel $\varphi = 45°$ gegen den
-Uhrzeigersinn. *Wo befindet sich die Spitze danach?* Geometrisch liegt die
-Antwort auf der Hand: auf einem Kreis mit Radius $5~\text{cm}$, im Winkel
-$45°$ zur $x$-Achse. In Koordinaten ausgedrückt:
+In Kapitel 4.1 haben wir die Drehung um $90^\circ$ gegen den Uhrzeigersinn
+kennengelernt. Sie bringt $\vec{e}_1$ auf $\vec{e}_2$ und $\vec{e}_2$ auf
+$-\vec{e}_1$, und weil die Spalten einer Matrix die Bilder der
+Einheitsvektoren sind, gehört zu ihr die Matrix
 
 \begin{equation*}
-\vec{p}' = \begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} =
-\begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{5}{\sqrt{2}} \end{pmatrix} \approx
-\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
+\mathbf{R} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.
 \end{equation*}
 
-Die geometrische Überlegung funktioniert, solange wir wissen, in welchem Winkel
-der Ausgangsvektor zur $x$-Achse liegt. Für einen allgemeinen Startvektor
-benötigen wir eine systematischere Methode. Genau das liefert die Drehmatrix.
+*Wie sieht die Matrix für einen beliebigen Winkel $\varphi$ aus?* Wir gehen
+genauso vor und fragen, wohin die Einheitsvektoren wandern. Der Vektor
+$\vec{e}_1$ hat die Länge $1$, seine Spitze liegt also auf dem Einheitskreis.
+Nach der Drehung um $\varphi$ schließt er mit der $x$-Achse den Winkel
+$\varphi$ ein, und aus Mathematik 1 wissen wir, dass der Punkt des
+Einheitskreises zu diesem Winkel die Koordinaten $\cos\varphi$ und
+$\sin\varphi$ hat.
 
-### Woher kommt die Formel für die Drehmatrix?
+Den Vektor $\vec{e}_2$ erreichen wir von $\vec{e}_1$ aus durch eine
+Vierteldrehung gegen den Uhrzeigersinn. Weil sich die ganze Ebene starr
+mitdreht, gilt das auch für die Bilder. Das Bild von $\vec{e}_2$ entsteht also
+aus $(\cos\varphi, \sin\varphi)^{\top}$ durch die Drehung um $90^\circ$. An der
+Matrix $\mathbf{R}$ sehen wir, dass diese Drehung die beiden Komponenten
+vertauscht und das Vorzeichen der neuen ersten Komponente ändert, genau wie
+beim senkrechten Vektor in Kapitel 5.2. Das Bild von $\vec{e}_2$ ist damit
+$(-\sin\varphi, \cos\varphi)^{\top}$, wie die folgende Abbildung zeigt.
 
-Liegt ein Vektor $\vec{v} = \begin{pmatrix} x \\ y \end{pmatrix}$ vor, so liegt
-er in einem Winkel $\alpha$ zur $x$-Achse mit $x = r\cos\alpha$ und
-$y = r\sin\alpha$, wobei $r = \|\vec{v}\|$. Nach einer Drehung um $\varphi$
-gegen den Uhrzeigersinn zeigt er in den Winkel $\alpha + \varphi$:
+```{figure} pics/drehung_einheitsvektoren.svg
+---
+name: drehung_einheitsvektoren
+---
+Darstellung der Einheitsvektoren und ihrer Bilder bei einer Drehung um den
+Winkel $\varphi$ gegen den Uhrzeigersinn.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Schreiben wir die beiden Bilder als Spalten in eine Matrix, erhalten wir die
+gesuchte Matrix der Drehung um $\varphi$. Zur Probe setzen wir $\varphi = 90^\circ$
+ein. Mit $\cos 90^\circ = 0$ und $\sin 90^\circ = 1$ entsteht wieder die Matrix
+$\mathbf{R}$ aus Kapitel 4.1.
+
+```{admonition} Was ist ... eine Drehmatrix?
+:class: note
+Die Drehung der Ebene um den Ursprung um den Winkel $\varphi$ gegen den
+Uhrzeigersinn hat die **Drehmatrix**
+
+\begin{equation*}
+\mathbf{R}(\varphi) =
+\begin{pmatrix} \cos\varphi & -\sin\varphi \\ \sin\varphi & \cos\varphi \end{pmatrix}.
+\end{equation*}
+
+Ihre Spalten sind die Bilder von $\vec{e}_1$ und $\vec{e}_2$. Bei einem
+negativen Winkel dreht sie im Uhrzeigersinn.
+```
+
+Manche Bücher schreiben statt $\mathbf{R}(\varphi)$ auch $\mathbf{D}(\varphi)$.
+Mit der Drehmatrix können wir jetzt die offene Frage aus Kapitel 5.2
+beantworten. *Hat die Matrix
+$\mathbf{A}$ die Form einer Drehmatrix?* Wir ziehen den Faktor $\frac{1}{5}$ in
+die Matrix hinein:
+
+\begin{equation*}
+\mathbf{A} = \frac{1}{5}\begin{pmatrix} 3 & -4 \\ 4 & 3 \end{pmatrix}
+= \begin{pmatrix} \frac{3}{5} & -\frac{4}{5} \\[2pt] \frac{4}{5} & \frac{3}{5} \end{pmatrix}.
+\end{equation*}
+
+Auf der Diagonalen steht zweimal derselbe Wert, und die beiden anderen Einträge
+unterscheiden sich nur im Vorzeichen. Mit $\cos\varphi = \frac{3}{5}$ und
+$\sin\varphi = \frac{4}{5}$ ist also $\mathbf{A} = \mathbf{R}(\varphi)$, und
+der Taschenrechner liefert $\varphi = \arccos\frac{3}{5} \approx 53.13^\circ$.
+Auf den Kosinus allein dürfen wir uns dabei nicht verlassen, denn auch
+$-53.13^\circ$ hat den Kosinus $\frac{3}{5}$. Erst das positive Vorzeichen
+von $\sin\varphi = \frac{4}{5}$ zeigt, dass $\mathbf{A}$ gegen den
+Uhrzeigersinn dreht.
+
+Zur Probe nehmen wir $\vec{x} = (1, 2)^{\top}$ und sein Bild
+$\mathbf{A}\vec{x} = (-1, 2)^{\top}$ aus Kapitel 5.2. Beide haben die Länge
+$\sqrt{5}$, und für den Winkel zwischen ihnen gilt
+$\cos\varphi = \frac{-1 + 4}{\sqrt{5}\cdot\sqrt{5}} = \frac{3}{5}$. Die Matrix
+$\mathbf{A}$ dreht den Vektor $\vec{x}$ also tatsächlich um $53.13^\circ$.
+
+## Warum ist jede Drehmatrix orthogonal?
+
+Für $\mathbf{A}$ haben wir in Kapitel 5.2 nachgerechnet, dass die Spalten
+orthonormal sind. *Gilt das für jeden Drehwinkel?* Wir berechnen für
+$\mathbf{R}(\varphi)$ die Längenquadrate der beiden Spalten und ihr
+Skalarprodukt:
 
 \begin{align*}
-x' &= r\cos(\alpha + \varphi) = r\cos\alpha\cos\varphi - r\sin\alpha\sin\varphi
-     = x\cos\varphi - y\sin\varphi, \\
-y' &= r\sin(\alpha + \varphi) = r\cos\alpha\sin\varphi + r\sin\alpha\cos\varphi
-     = x\sin\varphi + y\cos\varphi.
+\cos^2\varphi + \sin^2\varphi &= 1, \\
+(-\sin\varphi)^2 + \cos^2\varphi &= 1, \\
+\cos\varphi\cdot(-\sin\varphi) + \sin\varphi\cdot\cos\varphi &= 0.
 \end{align*}
 
-Diese beiden Gleichungen lassen sich elegant als Matrixprodukt schreiben:
+Die ersten beiden Zeilen sind der trigonometrische Pythagoras aus Mathematik 1,
+in der dritten heben sich die beiden Summanden auf. Die Spalten sind also für
+jeden Winkel orthonormal, und $\mathbf{R}(\varphi)$ ist orthogonal. Das passt
+zur Anschauung, denn die Spalten sind die gedrehten Einheitsvektoren, und eine
+Drehung ändert weder ihre Längen noch den rechten Winkel zwischen ihnen. Die
+Determinante ist
 
 \begin{equation*}
-\begin{pmatrix} x' \\ y' \end{pmatrix} =
-\begin{pmatrix} \cos\varphi & -\sin\varphi \\ \sin\varphi & \cos\varphi \end{pmatrix}
-\begin{pmatrix} x \\ y \end{pmatrix}.
+\det(\mathbf{R}(\varphi))
+= \cos\varphi\cdot\cos\varphi - (-\sin\varphi)\cdot\sin\varphi
+= \cos^2\varphi + \sin^2\varphi = 1.
 \end{equation*}
 
-Die Matrix auf der rechten Seite ist die gesuchte Drehmatrix.
+Nach Kapitel 4.1 bleibt die Orientierung also immer erhalten. Als orthogonale
+Matrix hat $\mathbf{R}(\varphi)$ nach Kapitel 5.2 die Transponierte als
+Inverse. Mit $\cos(-\varphi) = \cos\varphi$ und $\sin(-\varphi) = -\sin\varphi$
+aus Mathematik 1 erkennen wir in ihr eine bekannte Drehmatrix:
 
-```{admonition} Was ist ... die Drehmatrix im $\mathbb{R}^2$?
+\begin{equation*}
+\mathbf{R}(\varphi)^{\top}
+= \begin{pmatrix} \cos\varphi & \sin\varphi \\ -\sin\varphi & \cos\varphi \end{pmatrix}
+= \begin{pmatrix} \cos(-\varphi) & -\sin(-\varphi) \\ \sin(-\varphi) & \cos(-\varphi) \end{pmatrix}
+= \mathbf{R}(-\varphi).
+\end{equation*}
+
+Die Inverse dreht also um denselben Winkel zurück, wie wir es von einer
+Umkehrabbildung erwarten.
+
+*Ist umgekehrt jede orthogonale Matrix mit der Determinante $1$ eine
+Drehmatrix?* Die erste Spalte einer orthogonalen $2\times 2$-Matrix hat die
+Länge $1$, ihre Komponenten sind also wie oben $\cos\varphi$ und $\sin\varphi$
+für einen passenden Winkel $\varphi$. Die
+zweite Spalte hat ebenfalls die Länge $1$ und steht senkrecht auf der ersten.
+Dafür kommen nur $(-\sin\varphi, \cos\varphi)^{\top}$ und der Gegenvektor
+$(\sin\varphi, -\cos\varphi)^{\top}$ in Frage. Im ersten Fall erhalten wir
+$\mathbf{R}(\varphi)$, im zweiten eine Matrix mit der Determinante
+$-\cos^2\varphi - \sin^2\varphi = -1$, also eine Spiegelung wie die an der
+Winkelhalbierenden aus Kapitel 4.1.
+
+```{admonition} Welche Eigenschaften hat eine Drehmatrix?
 :class: note
-Die **Drehmatrix** für eine Drehung um den Winkel $\varphi$ gegen den Uhrzeigersinn
-ist:
+Jede Drehmatrix $\mathbf{R}(\varphi)$ ist orthogonal und hat die Determinante
+$1$. Ihre Inverse ist die Drehung um den Winkel $-\varphi$:
 
 \begin{equation*}
-\mathbf{D}(\varphi) = \begin{pmatrix} \cos\varphi & -\sin\varphi \\
-\sin\varphi & \cos\varphi \end{pmatrix}.
+\mathbf{R}(\varphi)^{-1} = \mathbf{R}(\varphi)^{\top} = \mathbf{R}(-\varphi).
 \end{equation*}
 
-Für einen Vektor $\vec{v} \in \mathbb{R}^2$ liefert das Matrixprodukt
-$\vec{v}' = \mathbf{D}(\varphi)\cdot\vec{v}$ den um $\varphi$ gedrehten Vektor.
+Umgekehrt ist jede orthogonale $2\times 2$-Matrix mit der Determinante $1$
+eine Drehmatrix.
 ```
 
-Wir wenden die Drehmatrix auf unser Roboterarm-Beispiel an. Mit $\varphi = 45°$
-und $\vec{p} = \begin{pmatrix} 5 \\ 0 \end{pmatrix}$ ergibt sich:
+Für unser Beispiel bedeutet das: $\mathbf{A}^{-1} = \mathbf{A}^{\top}$ ist die
+Drehung um $-53.13^\circ$. Zur Probe drehen wir den Bildvektor $(-1, 2)^{\top}$
+zurück und erhalten
 
 \begin{equation*}
-\mathbf{D}(45°)\cdot\vec{p} =
-\begin{pmatrix} \cos 45° & -\sin 45° \\ \sin 45° & \cos 45° \end{pmatrix}
-\begin{pmatrix} 5 \\ 0 \end{pmatrix} =
-\begin{pmatrix} 5\cos 45° \\ 5\sin 45° \end{pmatrix} \approx
-\begin{pmatrix} 3.54 \\ 3.54 \end{pmatrix}~\text{cm}.
+\mathbf{A}^{\top}\begin{pmatrix} -1 \\ 2 \end{pmatrix}
+= \frac{1}{5}\begin{pmatrix} 3 & 4 \\ -4 & 3 \end{pmatrix}
+\begin{pmatrix} -1 \\ 2 \end{pmatrix}
+= \frac{1}{5}\begin{pmatrix} -3 + 8 \\ 4 + 6 \end{pmatrix}
+= \begin{pmatrix} 1 \\ 2 \end{pmatrix},
 \end{equation*}
 
-Das stimmt mit unserem geometrischen Ergebnis von oben überein.
+also wieder $\vec{x}$. Damit ist auch die Beobachtung aus Kapitel 5.2
+bestätigt: Eine längentreue und winkeltreue Abbildung der Ebene, die die
+Orientierung erhält, ist eine Drehung.
 
-### Warum ist die Drehmatrix orthogonal?
+*Was ändert sich, wenn wir nicht den Vektor drehen, sondern das
+Koordinatensystem?* Bisher hat $\mathbf{R}(\varphi)$ den Vektor selbst gedreht,
+und wir sprechen dann von einer **aktiven Drehung**. Bleibt dagegen der Vektor
+liegen und drehen sich die Achsen um $\varphi$, ist das eine **passive
+Drehung**. Sie ist nichts anderes als der Basiswechsel aus Kapitel 5.1, denn
+die gedrehten Achsen zeigen in Richtung der Spalten von $\mathbf{R}(\varphi)$.
+Nach Kapitel 5.2 sind die neuen Koordinaten deshalb
+$\mathbf{R}(\varphi)^{\top}\vec{x} = \mathbf{R}(-\varphi)\,\vec{x}$.
 
-Wir überprüfen die Orthogonalitätsbedingung $\mathbf{D}^T\cdot\mathbf{D} = \mathbf{E}$.
-Die Transponierte ist:
+Genau so haben wir in Kapitel 5.2 die Koordinaten von $\vec{u} = (5, 5)^{\top}$
+im um $53.13^\circ$ gedrehten Gitter von $\vec{a}_1, \vec{a}_2$ berechnet,
+nämlich mit $\mathbf{A}^{\top} = \mathbf{R}(-53.13^\circ)$. Herausgekommen ist
+$(7, -1)^{\top}$. Drehen sich die Achsen um $\varphi$, erscheint der Vektor in
+den neuen Koordinaten also um $-\varphi$ gedreht. Wer beide Sichtweisen
+verwechselt, erhält den Winkel mit dem falschen Vorzeichen.
 
-\begin{equation*}
-\mathbf{D}^T(\varphi) = \begin{pmatrix} \cos\varphi & \sin\varphi \\
--\sin\varphi & \cos\varphi \end{pmatrix}.
-\end{equation*}
-
-Das Produkt ergibt:
-
-\begin{equation*}
-\mathbf{D}^T\cdot\mathbf{D} =
-\begin{pmatrix} \cos^2\varphi + \sin^2\varphi & \cos\varphi\sin\varphi - \sin\varphi\cos\varphi \\
--\sin\varphi\cos\varphi + \cos\varphi\sin\varphi & \sin^2\varphi + \cos^2\varphi \end{pmatrix}
-= \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \mathbf{E}.
-\end{equation*}
-
-Damit ist $\mathbf{D}^{-1} = \mathbf{D}^T = \mathbf{D}(-\varphi)$: Die Umkehrung
-einer Drehung um $\varphi$ ist eine Drehung um $-\varphi$. Das ist geometrisch
-einleuchtend.
-
-Die Determinante berechnen wir direkt:
-
-\begin{equation*}
-\det(\mathbf{D}(\varphi)) = \cos^2\varphi + \sin^2\varphi = 1.
-\end{equation*}
-
-Da $\det(\mathbf{D}) = 1 > 0$, ändert sich die Orientierung nicht: ein
-rechtshändiges Koordinatensystem bleibt rechtshändig. Wäre die Determinante
-$-1$, würde es sich um eine Spiegelung handeln.
-
-### Was passiert bei zwei hintereinander ausgeführten Drehungen?
-
-In der Kinematik eines Roboters werden häufig mehrere Gelenke nacheinander
-bewegt. Dreht der Arm zunächst um $\varphi_1$ und dann um $\varphi_2$, so
-entspricht das einer Gesamtdrehung um $\varphi_1 + \varphi_2$. Das Assoziativgesetz
-der Matrizenmultiplikation erlaubt es, dies kompakt zu schreiben:
-
-\begin{equation*}
-\mathbf{D}(\varphi_2)\cdot\mathbf{D}(\varphi_1) = \mathbf{D}(\varphi_1 + \varphi_2).
-\end{equation*}
-
-Diese Eigenschaft lässt sich mit dem Additionstheorem für den Kosinus und Sinus
-nachrechnen. Für unseren Roboterarm bedeutet das: Eine Drehung um $30°$ gefolgt
-von einer Drehung um $60°$ ergibt dasselbe wie eine einzige Drehung um $90°$.
-
-*Und was geschieht, wenn wir in drei Dimensionen drehen wollen? Dann reicht eine
-einzige Matrix nicht mehr aus, wie wir im nächsten Abschnitt sehen werden.
-
-```{dropdown} Video "Orthogonale Matrizen, Drehmatrix" von MathePeter
-<iframe width="1020" height="574" 
+```{dropdown} Video "Orthogonale Matrizen im R^2" von MathePeter
+<iframe width="1020" height="574"
 src="https://www.youtube.com/embed/Enj_IYsPfc8?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
 title="Orthogonale Matrizen im R^2 | Drehmatrix, Spiegelmatrix (Komplettübersicht)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-### Zusammenfassung und Ausblick
+## Was passiert, wenn wir zweimal drehen?
 
-Die Drehmatrix $\mathbf{D}(\varphi)$ ist eine orthogonale $2\times 2$-Matrix mit
-Determinante $1$. Sie dreht jeden Vektor um den Winkel $\varphi$ gegen den
-Uhrzeigersinn, ohne seine Länge zu verändern. Aufeinanderfolgende Drehungen
-werden durch einfaches Matrizenprodukt kombiniert.
-
-Im nächsten Abschnitt erweitern wir diese Idee auf den dreidimensionalen Raum.
-Dort lässt sich eine allgemeine Drehung als Produkt von drei Achsendrehungen
-darstellen, die durch die sogenannten Kardanwinkel beschrieben werden. Diese
-Darstellung ist in der Luft- und Raumfahrttechnik sowie in der Robotik fundamental.
-
-## Drehmatrizen im R³
-
-In der Ebene genügt ein einziger Winkel, um eine Drehung vollständig zu
-beschreiben. Im dreidimensionalen Raum ist das nicht mehr ausreichend. Eine
-Turbinenschaufel, ein Robotergelenk oder ein Flugkörper kann um drei
-verschiedene Achsen rotieren, und die Reihenfolge dieser Drehungen spielt
-dabei eine entscheidende Rolle. Dieses Phänomen begegnet uns in der
-Luft- und Raumfahrttechnik ebenso wie in der Robotik und der rechnergestützten
-Kinematikanalyse.
-
-### Lernziele
-
-```{admonition} Lernziele
-:class: attention
-* [ ] Sie kennen die **Drehmatrizen um die Koordinatenachsen** im $\mathbb{R}^3$:
-  $\mathbf{D}_x(\alpha)$, $\mathbf{D}_y(\beta)$ und $\mathbf{D}_z(\gamma)$.
-* [ ] Sie wissen, dass eine allgemeine räumliche Drehung durch Hintereinanderausführung
-  dreier Achsendrehungen beschrieben werden kann:
-  \begin{equation*}
-  \mathbf{D}(\alpha, \beta, \gamma) = \mathbf{D}_x(\alpha)\,\mathbf{D}_y(\beta)\,\mathbf{D}_z(\gamma).
-  \end{equation*}
-* [ ] Sie kennen den Begriff der **Kardanwinkel** (auch Euler-Winkel genannt) und
-  wissen, dass die Reihenfolge der Drehungen das Ergebnis beeinflusst.
-* [ ] Sie wissen, dass das Produkt orthogonaler Matrizen wieder eine orthogonale
-  Matrix ist, und können dies auf verkettete Drehungen anwenden.
-```
-
-### Wie beschreiben wir eine Drehung im Raum?
-
-Wir betrachten eine Messsonde an einem Roboterarm, die im Raum ausgerichtet
-werden soll. In der Ausgangsstellung zeigt der Sensor in die positive
-$z$-Richtung. Nun soll er zunächst um die $x$-Achse um den Winkel $\alpha$
-und anschließend um die $z$-Achse um den Winkel $\gamma$ geschwenkt werden.
-Jede dieser Teilbewegungen ist eine Drehung um eine der drei Koordinatenachsen,
-und jede lässt sich durch eine eigene $3\times 3$-Matrix beschreiben.
-
-Die Idee ist dieselbe wie in zwei Dimensionen: Eine Drehung um eine Achse
-lässt die zugehörige Komponente unverändert und dreht die beiden anderen
-Komponenten gemäß der zweidimensionalen Drehmatrix.
-
-### Die drei Grunddrehmatrizen
-
-Eine Drehung um die $x$-Achse um den Winkel $\alpha$ lässt die $x$-Komponente
-unverändert und dreht die $yz$-Ebene:
+Wir drehen zweimal hintereinander um $45^\circ$ und erwarten insgesamt eine
+Drehung um $90^\circ$. Mit $\cos 45^\circ = \sin 45^\circ = \frac{1}{\sqrt{2}}$
+ist
 
 \begin{equation*}
-\mathbf{D}_x(\alpha) =
-\begin{pmatrix}
-1 & 0 & 0 \\
-0 & \cos\alpha & -\sin\alpha \\
-0 & \sin\alpha & \cos\alpha
-\end{pmatrix}.
+\mathbf{R}(45^\circ) = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}.
 \end{equation*}
 
-Entsprechend dreht eine Drehung um die $y$-Achse um den Winkel $\beta$ die
-$xz$-Ebene und lässt die $y$-Komponente fest:
+Nach Kapitel 4.1 gehört zur Hintereinanderausführung das Matrixprodukt. Den
+Faktor $\frac{1}{\sqrt{2}}$ ziehen wir aus beiden Matrizen vor das Produkt und
+erhalten
 
 \begin{equation*}
-\mathbf{D}_y(\beta) =
-\begin{pmatrix}
-\cos\beta & 0 & \sin\beta \\
-0 & 1 & 0 \\
--\sin\beta & 0 & \cos\beta
-\end{pmatrix}.
+\mathbf{R}(45^\circ)\,\mathbf{R}(45^\circ)
+= \frac{1}{2}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}
+\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}
+= \frac{1}{2}\begin{pmatrix} 0 & -2 \\ 2 & 0 \end{pmatrix}
+= \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.
 \end{equation*}
 
-Zu beachten ist das Vorzeichen: Bei der Drehung um die $y$-Achse erscheint
-$\sin\beta$ in der oberen rechten Position und $-\sin\beta$ in der unteren
-linken. Das folgt aus der Rechtshändigkeitskonvention des Koordinatensystems.
-Schließlich dreht die Drehung um die $z$-Achse um den Winkel $\gamma$ die
-$xy$-Ebene:
+Das ist $\mathbf{R}(90^\circ) = \mathbf{R}$ aus dem ersten Abschnitt, die
+Winkel haben sich also addiert. Dahinter steckt kein Zufall. Weil beide
+Drehungen Längen und Winkel erhalten, tut das auch ihre
+Hintereinanderausführung. Die Spalten des Produkts
+sind deshalb orthonormal, und nach der Produktregel aus Kapitel 3.3 ist seine
+Determinante $1\cdot 1 = 1$. Nach dem zweiten Abschnitt ist das Produkt also
+wieder eine Drehmatrix.
 
-\begin{equation*}
-\mathbf{D}_z(\gamma) =
-\begin{pmatrix}
-\cos\gamma & -\sin\gamma & 0 \\
-\sin\gamma & \cos\gamma & 0 \\
-0 & 0 & 1
-\end{pmatrix}.
-\end{equation*}
+Den Winkel dieser Drehmatrix lesen wir am Bild von $\vec{e}_1$ ab. Es wird
+erst um den einen und dann um den anderen Winkel gedreht, insgesamt also um
+ihre Summe. *Kommt es dabei auf die
+Reihenfolge an?* Bei Scherung und Spiegelung in Kapitel 4.1 war das so. Bei
+zwei Drehungen ist die Summe der Winkel aber in beiden Reihenfolgen dieselbe.
 
-Diese drei Matrizen kennen wir bereits strukturell aus Kapitel 4.1: Jede von
-ihnen ist eine orthogonale Matrix mit Determinante $1$.
-
-```{admonition} Was ist ... eine räumliche Drehmatrix?
+```{admonition} Was passiert bei zwei Drehungen nacheinander?
 :class: note
-Eine **räumliche Drehmatrix** ist eine orthogonale $3\times 3$-Matrix mit
-$\det(\mathbf{D}) = 1$. Jede allgemeine Drehung im $\mathbb{R}^3$ kann als
-Produkt von drei Grunddrehungen um die Koordinatenachsen geschrieben werden:
+Drehen wir die Ebene erst um den Winkel $\alpha$ und dann um den Winkel
+$\beta$, so drehen wir sie insgesamt um $\alpha + \beta$:
 
 \begin{equation*}
-\mathbf{D}(\alpha, \beta, \gamma) =
-\mathbf{D}_x(\alpha)\cdot\mathbf{D}_y(\beta)\cdot\mathbf{D}_z(\gamma).
+\mathbf{R}(\beta)\,\mathbf{R}(\alpha) = \mathbf{R}(\alpha + \beta)
+= \mathbf{R}(\alpha)\,\mathbf{R}(\beta).
 \end{equation*}
 
-Die Winkel $\alpha$, $\beta$, $\gamma$ heißen **Kardanwinkel** (oder Euler-Winkel
-je nach Konvention). Die Reihenfolge der Matrixmultiplikation legt die
-Reihenfolge der Drehungen fest.
+Zwei Drehungen der Ebene dürfen wir also vertauschen.
 ```
 
-### Wie wenden wir die Drehmatrizen auf unser Beispiel an?
-
-Zurück zur Messsonde. Der Sensor zeigt zu Beginn in $z$-Richtung:
-$\vec{s} = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$. Wir drehen zunächst
-um die $x$-Achse um $\alpha = 30°$ und danach um die $z$-Achse um
-$\gamma = 45°$.
-
-Schritt 1: Drehung um die $x$-Achse.
-
-\begin{equation*}
-\mathbf{D}_x(30°)\cdot\vec{s} =
-\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos 30° & -\sin 30° \\ 0 & \sin 30° & \cos 30° \end{pmatrix}
-\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} =
-\begin{pmatrix} 0 \\ -\sin 30° \\ \cos 30° \end{pmatrix} \approx
-\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix}.
-\end{equation*}
-
-Der Sensor zeigt jetzt schräg nach vorne unten in der $yz$-Ebene.
-
-Schritt 2: Drehung des Ergebnisses um die $z$-Achse.
-
-\begin{equation*}
-\mathbf{D}_z(45°)\cdot\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix} =
-\begin{pmatrix} \cos 45° & -\sin 45° & 0 \\ \sin 45° & \cos 45° & 0 \\ 0 & 0 & 1 \end{pmatrix}
-\begin{pmatrix} 0 \\ -0.5 \\ 0.866 \end{pmatrix} \approx
-\begin{pmatrix} 0.354 \\ -0.354 \\ 0.866 \end{pmatrix}.
-\end{equation*}
-
-Wir können beide Schritte auch zur Gesamtdrehmatrix kombinieren:
-$\mathbf{D} = \mathbf{D}_z(45°)\cdot\mathbf{D}_x(30°)$. Die Länge des Sensors
-ist erhalten: $\|\vec{s}'\| = \sqrt{0.354^2 + 0.354^2 + 0.866^2} \approx 1$.
-
-```{dropdown} Video "Drehmatrizen" von Prof. Hielscher
-<iframe width="742" height="613" src="https://www.youtube.com/embed/aXAikhRe6v0?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Drehmatrizen" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-### Warum ist die Reihenfolge der Drehungen wichtig?
-
-Anders als bei reellen Zahlen gilt für Matrizen im Allgemeinen
-$\mathbf{A}\cdot\mathbf{B} \neq \mathbf{B}\cdot\mathbf{A}$. Das hat für
-Drehungen im Raum eine direkt spürbare Konsequenz: Erst um $x$, dann um $z$
-drehen ergibt eine andere Endlage als erst um $z$, dann um $x$.
-
-Wir überprüfen dies mit einem einfachen Beispiel. Mit dem Einheitsvektor
-$\vec{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$ und den Winkeln
-$90°$ ergibt sich:
+Wir prüfen das an unserem Beispiel und drehen einmal erst mit $\mathbf{A}$ und
+dann um $45^\circ$ und einmal in umgekehrter Reihenfolge. Die Vorfaktoren
+$\frac{1}{5}$ und $\frac{1}{\sqrt{2}}$ ziehen wir wieder vor das Produkt:
 
 \begin{align*}
-\mathbf{D}_x(90°)\cdot\mathbf{D}_z(90°)\cdot\vec{e}_1 &=
-\mathbf{D}_x(90°)\cdot\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} =
-\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}, \\
-\mathbf{D}_z(90°)\cdot\mathbf{D}_x(90°)\cdot\vec{e}_1 &=
-\mathbf{D}_z(90°)\cdot\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} =
-\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}.
+\mathbf{R}(45^\circ)\,\mathbf{A}
+&= \frac{1}{5\sqrt{2}}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}
+\begin{pmatrix} 3 & -4 \\ 4 & 3 \end{pmatrix}
+= \frac{1}{5\sqrt{2}}\begin{pmatrix} -1 & -7 \\ 7 & -1 \end{pmatrix}, \\
+\mathbf{A}\,\mathbf{R}(45^\circ)
+&= \frac{1}{5\sqrt{2}}\begin{pmatrix} 3 & -4 \\ 4 & 3 \end{pmatrix}
+\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}
+= \frac{1}{5\sqrt{2}}\begin{pmatrix} -1 & -7 \\ 7 & -1 \end{pmatrix}.
 \end{align*}
 
-Die Endlagen unterscheiden sich. In der Robotik ist die Festlegung der
-Drehungsreihenfolge daher eine Konvention, auf die sich alle Beteiligten
-einigen müssen. In der Luftfahrt verwendet man typischerweise die Reihenfolge
-Gieren, Nicken, Rollen (yaw, pitch, roll) gemäß der DIN-Norm für
-Flugzustände.
+Beide Reihenfolgen liefern dieselbe Matrix, und das muss die Drehung um
+$53.13^\circ + 45^\circ = 98.13^\circ$ sein. Zur Probe liefert der
+Taschenrechner $\cos 98.13^\circ \approx -0.141$ und
+$\sin 98.13^\circ \approx 0.990$, und auf drei Nachkommastellen gerundet
+sind das genau die Einträge $-\frac{1}{5\sqrt{2}}$ und $\frac{7}{5\sqrt{2}}$.
 
-*Wie hängen diese Drehmatrizen mit den Eigenwerten zusammen? Tatsächlich hat
-jede Drehmatrix im $\mathbb{R}^3$ immer den Eigenwert $\lambda = 1$, und der
-zugehörige Eigenvektor zeigt genau in die Drehachse. Diese Verbindung werden
-wir in den folgenden Abschnitten dieses Kapitels herstellen.*
+*Gilt das auch im Raum?* Dort drehen wir um eine Achse. Bei einer Drehung um
+die $z$-Achse dreht sich die $xy$-Ebene wie bisher, und die $z$-Komponente
+bleibt unverändert. In der Matrix steht deshalb unsere Drehmatrix links oben:
+
+\begin{equation*}
+\mathbf{R}_z(\varphi) =
+\begin{pmatrix} \cos\varphi & -\sin\varphi & 0 \\ \sin\varphi & \cos\varphi & 0 \\ 0 & 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Entsprechend gibt es Drehungen um die $x$-Achse und um die $y$-Achse. Anders
+als in der Ebene kommt es im Raum aber auf die Reihenfolge an. Das können wir
+mit einem Buch ausprobieren, das flach vor uns auf dem Tisch liegt. Kippen wir
+es erst um $90^\circ$ um eine waagerechte Achse und drehen es dann um $90^\circ$
+um die senkrechte Achse, liegt es am Ende anders als bei umgekehrter
+Reihenfolge. Drehungen im Raum vertiefen wir in diesem Kurs nicht weiter.
 
 ```{dropdown} Video "Orthogonale Matrizen im R^3" von MathePeter
 <iframe width="1020" height="574"
 src="https://www.youtube.com/embed/-Zp-hz7XevM?list=PLvBnQVOJXCUEd5Zc4Y5ZcvQkCCglGLXkQ"
 title="Orthogonale Matrizen im R^3 | Drehmatrix, Spiegelmatrix, Drehspiegelmatrix (Komplettübersicht)"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-### Zusammenfassung und Ausblick
+## Zusammenfassung und Ausblick
 
-Räumliche Drehungen werden durch orthogonale $3\times 3$-Matrizen mit
-Determinante $1$ beschrieben. Jede allgemeine Drehung lässt sich als Produkt
-von Grunddrehungen um die drei Koordinatenachsen darstellen. Die Reihenfolge
-der Multiplikation ist entscheidend, weil Matrizenmultiplikation nicht
-kommutativ ist.
-
-Im nächsten Abschnitt wenden wir uns einem der wichtigsten Konzepte der linearen
-Algebra zu: den Eigenwerten und Eigenvektoren. Sie beschreiben diejenigen
-Richtungen, die eine Matrixtransformation invariant lässt. In der
-Festigkeitslehre entsprechen sie den Hauptspannungsrichtungen, in der
-Schwingungsanalyse den Eigenfrequenzen einer Struktur.
+Die Drehmatrix $\mathbf{R}(\varphi)$ hat als Spalten die gedrehten
+Einheitsvektoren $(\cos\varphi, \sin\varphi)^{\top}$ und
+$(-\sin\varphi, \cos\varphi)^{\top}$. Sie ist orthogonal mit der Determinante
+$1$, und umgekehrt ist jede orthogonale $2\times 2$-Matrix mit der Determinante
+$1$ eine Drehmatrix. Rückgängig machen wir eine Drehung mit der Transponierten
+$\mathbf{R}(-\varphi)$, und mit derselben Matrix rechnen wir Koordinaten in ein
+um $\varphi$ gedrehtes Koordinatensystem um. Bei zwei Drehungen addieren sich
+die Winkel in beliebiger Reihenfolge.
+Unsere Matrix $\mathbf{A}$ aus Kapitel 5.2 dreht die Ebene um etwa
+$53.13^\circ$. In Kapitel 6 suchen wir Vektoren, die eine Matrix nur
+streckt, ohne ihre Richtung zu ändern. Bei einer Drehung um $53.13^\circ$
+gibt es keinen solchen Vektor, und wir werden sehen, woran wir das in der
+Rechnung erkennen.
