@@ -1,0 +1,296 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 6.3 Eigenvektoren und Eigenraum
+
+In Kapitel 6.2 haben wir die Eigenwerte als Nullstellen des charakteristischen
+Polynoms berechnet. Für die $2\times 2$-Matrix $\mathbf{A}$ kennen wir die
+Eigenvektoren schon aus Kapitel 6.1, für die $3\times 3$-Matrix $\mathbf{B}$
+dagegen noch nicht. In diesem Kapitel berechnen wir zu jedem Eigenwert alle
+Eigenvektoren, und dafür brauchen wir nur den Kern aus Kapitel 4.3. Im
+Maschinenbau sind die Eigenvektoren oft sogar wichtiger als die Eigenwerte,
+denn sie geben Richtungen an, etwa die Hauptspannungsrichtungen in einem
+Bauteil oder die Form, in der es schwingt.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können zu einem Eigenwert $\lambda$ die Eigenvektoren berechnen,
+  indem Sie das homogene Gleichungssystem
+  $(\mathbf{A} - \lambda\mathbf{E})\,\vec{v} = \vec{0}$ lösen.
+* [ ] Sie wissen, was der **Eigenraum** zu einem Eigenwert ist, und können ihn
+  als lineare Hülle angeben.
+* [ ] Sie können einen Eigenvektor ohne Brüche angeben und auf die Länge $1$
+  normieren.
+* [ ] Sie wissen, dass Eigenvektoren zu verschiedenen Eigenwerten linear
+  unabhängig sind.
+```
+
+## Wie führt der Eigenwert auf den Eigenvektor?
+
+Nach Kapitel 6.2 ist die Eigenwertgleichung gleichwertig zu dem homogenen
+Gleichungssystem
+
+\begin{equation*}
+(\mathbf{A} - \lambda\mathbf{E})\,\vec{v} = \vec{0}.
+\end{equation*}
+
+Bisher haben wir daraus nur die Bedingung für $\lambda$ gewonnen. Kennen wir
+einen Eigenwert, setzen wir ihn ein und lösen das Gleichungssystem nach
+$\vec{v}$. Für unsere Matrix
+
+\begin{equation*}
+\mathbf{A} = \begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix}
+\end{equation*}
+
+und den Eigenwert $\lambda_1 = 5$ ist die Koeffizientenmatrix
+
+\begin{equation*}
+\mathbf{A} - 5\mathbf{E} = \begin{pmatrix} -1 & 1 \\ 2 & -2 \end{pmatrix}.
+\end{equation*}
+
+Die zweite Zeile ist das $(-2)$-Fache der ersten. Das muss so sein, denn wir
+haben $\lambda$ gerade so gewählt, dass die Determinante null ist. Es bleibt
+also nur die Gleichung $-v_1 + v_2 = 0$, und daraus folgt $v_2 = v_1$. Wie in
+Kapitel 4.3 wählen wir $v_1 = t$ als freien Parameter und erhalten
+
+\begin{equation*}
+\vec{v} = t\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad t \neq 0.
+\end{equation*}
+
+Das ist die Gerade durch $\vec{v}_1 = (1, 1)^{\top}$ aus Kapitel 6.1, aber
+diesmal haben wir sie nicht erraten, sondern berechnet. Für den Eigenwert
+$\lambda_2 = 2$ ist
+
+\begin{equation*}
+\mathbf{A} - 2\mathbf{E} = \begin{pmatrix} 2 & 1 \\ 2 & 1 \end{pmatrix}.
+\end{equation*}
+
+Beide Zeilen sind gleich, und aus $2v_1 + v_2 = 0$ folgt mit $v_1 = t$ die
+Lösung $\vec{v} = t\,(1, -2)^{\top}$. Zur Probe rechnen wir für beliebiges $t$
+nach:
+
+\begin{equation*}
+\mathbf{A}\begin{pmatrix} t \\ -2t \end{pmatrix}
+= \begin{pmatrix} 4t - 2t \\ 2t - 6t \end{pmatrix}
+= \begin{pmatrix} 2t \\ -4t \end{pmatrix}
+= 2\begin{pmatrix} t \\ -2t \end{pmatrix}.
+\end{equation*}
+
+Bei $2\times 2$-Matrizen geht es sogar noch schneller. Die verbleibende
+Gleichung $2v_1 + v_2 = 0$ besagt, dass das Skalarprodukt von $\vec{v}$ mit
+dem Zeilenvektor $(2, 1)$ null ist, dass also $\vec{v}$ senkrecht auf ihm
+steht. Einen solchen Vektor finden wir wie in Kapitel 5.2, indem wir die
+beiden Einträge vertauschen und bei einem das Vorzeichen ändern. Aus der
+Zeile $(2, 1)$ wird so der Eigenvektor $(1, -2)^{\top}$, und aus der Zeile
+$(-1, 1)$ von $\mathbf{A} - 5\mathbf{E}$ wird $(1, 1)^{\top}$.
+
+```{admonition} Wie berechnen wir die Eigenvektoren zu einem Eigenwert?
+:class: note
+Ist $\lambda$ ein Eigenwert der Matrix $\mathbf{M}$, so sind die Eigenvektoren
+zu $\lambda$ die Lösungen $\vec{v} \neq \vec{0}$ des homogenen
+Gleichungssystems
+
+\begin{equation*}
+(\mathbf{M} - \lambda\mathbf{E})\,\vec{v} = \vec{0}.
+\end{equation*}
+
+Wir lösen es wie bei der Berechnung des Kerns mit dem Gauß-Algorithmus. Weil
+$\det(\mathbf{M} - \lambda\mathbf{E}) = 0$ ist, entsteht dabei mindestens eine
+Nullzeile, und die Lösung enthält mindestens einen freien Parameter.
+```
+
+Mit diesem Verfahren bestimmen wir jetzt die Eigenvektoren der Matrix aus
+Kapitel 6.2,
+
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 7 & -2 & 0 \\ -2 & 6 & -2 \\ 0 & -2 & 5 \end{pmatrix},
+\end{equation*}
+
+zum Eigenwert $\lambda_1 = 3$. Wir ziehen $3$ von der Diagonalen ab und bringen
+$\mathbf{B} - 3\mathbf{E}$ mit dem Gauß-Algorithmus auf Zeilenstufenform:
+
+\begin{equation*}
+\begin{pmatrix} 4 & -2 & 0 \\ -2 & 3 & -2 \\ 0 & -2 & 2 \end{pmatrix}
+\;\to\;
+\begin{pmatrix} 4 & -2 & 0 \\ 0 & 2 & -2 \\ 0 & -2 & 2 \end{pmatrix}
+\;\to\;
+\begin{pmatrix} 4 & -2 & 0 \\ 0 & 2 & -2 \\ 0 & 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Im ersten Schritt rechnen wir $Z_2 \to Z_2 + \frac{1}{2}Z_1$, im zweiten
+$Z_3 \to Z_3 + Z_2$. Wie angekündigt entsteht eine Nullzeile. In der dritten
+Spalte steht kein Pivotelement, also wählen wir $v_3 = t$. Aus der zweiten
+Zeile folgt $2v_2 - 2t = 0$, also $v_2 = t$, und aus der ersten
+$4v_1 - 2t = 0$, also $v_1 = \frac{1}{2}t$. Die Eigenvektoren zum Eigenwert $3$
+sind damit
+
+\begin{equation*}
+\vec{v} = t\begin{pmatrix} \frac{1}{2} \\ 1 \\ 1 \end{pmatrix}, \quad t \neq 0.
+\end{equation*}
+
+Zur Probe setzen wir $t = 1$ ein und erhalten
+$\mathbf{B}\,(\frac{1}{2}, 1, 1)^{\top} = (\frac{7}{2} - 2,\ -1 + 6 - 2,\ -2 + 5)^{\top}
+= (\frac{3}{2}, 3, 3)^{\top}$, also genau das Dreifache von
+$(\frac{1}{2}, 1, 1)^{\top}$.
+
+```{dropdown} Video "Eigenwerte und Eigenvektoren berechnen" von MathePeter
+<iframe width="1020" height="574"
+src="https://www.youtube.com/embed/YMC_-87gbR8?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
+title="Eigenwerte und Eigenvektoren berechnen + wichtige Eigenschaften von EW&amp;EV"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Was ist der Eigenraum?
+
+Bei der Berechnung haben wir nicht einen einzelnen Eigenvektor erhalten,
+sondern für jeden Eigenwert eine ganze Gerade. Lassen wir die Bedingung
+$t \neq 0$ weg, gehört auch der Nullvektor dazu, und die Lösungsmenge von
+$(\mathbf{A} - 5\mathbf{E})\,\vec{v} = \vec{0}$ ist nach Kapitel 4.3 genau der
+Kern von $\mathbf{A} - 5\mathbf{E}$. Nach Kapitel 4.4 können wir ihn auch als
+lineare Hülle schreiben, also als $\langle (1, 1)^{\top} \rangle$.
+
+*Warum nennen wir diese Menge einen Raum?* In Kapitel 6.1 war die Summe der
+beiden Eigenvektoren $\vec{v}_1$ und $\vec{v}_2$ kein Eigenvektor, aber sie
+gehörten auch zu verschiedenen Eigenwerten. Addieren wir dagegen zwei
+Eigenvektoren $\vec{u}$ und $\vec{w}$ zum selben Eigenwert $\lambda$, erhalten
+wir mit der Linearität aus Kapitel 4.2
+
+\begin{equation*}
+\mathbf{A}\,(\vec{u} + \vec{w}) = \mathbf{A}\vec{u} + \mathbf{A}\vec{w}
+= \lambda\vec{u} + \lambda\vec{w} = \lambda\,(\vec{u} + \vec{w}).
+\end{equation*}
+
+Die Summe ist also wieder ein Eigenvektor zum selben Eigenwert, es sei denn,
+sie ist der Nullvektor. Mit den Vielfachen aus Kapitel 6.1 folgt, dass wir
+innerhalb dieser Menge beliebig addieren und vervielfachen dürfen, ohne sie
+zu verlassen. Genau das macht eine Gerade oder Ebene durch den Ursprung aus.
+
+```{admonition} Was ist ... der Eigenraum?
+:class: note
+Ist $\lambda$ ein Eigenwert der Matrix $\mathbf{M}$, so heißt
+
+\begin{equation*}
+\text{Eig}_{\mathbf{M}}(\lambda) = \text{Kern}(\mathbf{M} - \lambda\mathbf{E})
+= \left\{ \vec{v} \;\middle|\; \mathbf{M}\vec{v} = \lambda\vec{v} \right\}
+\end{equation*}
+
+der **Eigenraum** von $\mathbf{M}$ zum Eigenwert $\lambda$. Er besteht aus
+allen Eigenvektoren zu $\lambda$ und dem Nullvektor.
+```
+
+Für unsere beiden Matrizen erhalten wir aus dem ersten Abschnitt die
+Eigenräume
+
+<!-- markdownlint-disable -->
+\begin{equation*}
+\text{Eig}_{\mathbf{A}}(5) = \left\langle \begin{pmatrix} 1 \\ 1 \end{pmatrix} \right\rangle,
+\qquad
+\text{Eig}_{\mathbf{A}}(2) = \left\langle \begin{pmatrix} 1 \\ -2 \end{pmatrix} \right\rangle,
+\qquad
+\text{Eig}_{\mathbf{B}}(3) = \left\langle \begin{pmatrix} \frac{1}{2} \\ 1 \\ 1 \end{pmatrix} \right\rangle.
+\end{equation*}
+<!-- markdownlint-enable -->
+
+Die ersten beiden sind Geraden durch den Ursprung in der Ebene, der dritte
+ist eine Gerade durch den Ursprung im Raum. Wir prüfen die Summenregel an
+$\text{Eig}_{\mathbf{A}}(5)$ mit $\vec{u} = (1, 1)^{\top}$ und
+$\vec{w} = (3, 3)^{\top}$. Die Summe $(4, 4)^{\top}$ liegt wieder auf der
+Geraden, und tatsächlich ist
+$\mathbf{A}\,(4, 4)^{\top} = (20, 20)^{\top} = 5\cdot(4, 4)^{\top}$.
+
+Ein Eigenraum muss aber keine Gerade sein. Bei der Streckung um den Faktor $2$
+aus Kapitel 6.1 ist jeder Vektor ein Eigenvektor zum Eigenwert $2$, und der
+Eigenraum ist die ganze Ebene. Wie groß ein Eigenraum werden kann und wovon
+das abhängt, klären wir in Kapitel 6.4.
+
+## Wie wählen wir einen Eigenvektor aus?
+
+Zu jedem Eigenwert gibt es unendlich viele Eigenvektoren. Für viele
+Rechnungen brauchen wir aber nur einen, und jeder Vektor $\vec{v} \neq \vec{0}$
+aus dem Eigenraum ist dafür richtig. Wie beim Kern in Kapitel 4.3 kann deshalb
+ein Eigenvektor, der anders aussieht als die Musterlösung, trotzdem stimmen.
+Ob er stimmt, entscheidet die Probe $\mathbf{M}\vec{v} = \lambda\vec{v}$.
+Meistens wählen wir einen der folgenden beiden Vertreter.
+
+Der erste ist ein Vektor ohne Brüche. Bei $\mathbf{B}$ wählen wir $t = 2$ und
+erhalten $\vec{b}_1 = (1, 2, 2)^{\top}$ statt $(\frac{1}{2}, 1, 1)^{\top}$.
+Der zweite ist ein Vektor der Länge $1$, den wir wie in Kapitel 5.3 durch
+Normieren erhalten, also durch Division durch seine Länge. Für $\vec{b}_1$ ist
+die Länge $\sqrt{1 + 4 + 4} = 3$, für $\vec{v}_1$ und $\vec{v}_2$ aus
+$\mathbf{A}$ ist sie $\sqrt{2}$ und $\sqrt{5}$. Die normierten Eigenvektoren
+sind damit
+
+\begin{equation*}
+\frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \qquad
+\frac{1}{\sqrt{5}}\begin{pmatrix} 1 \\ -2 \end{pmatrix}, \qquad
+\frac{1}{3}\begin{pmatrix} 1 \\ 2 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Auch ein normierter Eigenvektor ist nicht eindeutig, denn sein Gegenvektor hat
+ebenfalls die Länge $1$.
+
+*Wie viele Eigenvektoren brauchen wir, um eine Matrix zu verstehen?* In
+Kapitel 6.1 haben wir $\vec{e}_1$ in die Eigenvektoren $\vec{v}_1$ und
+$\vec{v}_2$ zerlegt. Das ging, weil sie linear unabhängig sind, und nach
+Kapitel 4.3 bestätigt das die Determinante:
+
+\begin{equation*}
+\det\begin{pmatrix} 1 & 1 \\ 1 & -2 \end{pmatrix} = -2 - 1 = -3 \neq 0.
+\end{equation*}
+
+Das ist kein Zufall. Wäre $\vec{v}_2$ ein Vielfaches von $\vec{v}_1$, so wäre
+$\vec{v}_2$ nach Kapitel 6.1 ein Eigenvektor zum Eigenwert $\lambda_1$, also
+$\mathbf{A}\vec{v}_2 = \lambda_1\vec{v}_2$. Zugleich gilt
+$\mathbf{A}\vec{v}_2 = \lambda_2\vec{v}_2$, und die Differenz der beiden
+Gleichungen ergibt $(\lambda_1 - \lambda_2)\,\vec{v}_2 = \vec{0}$. Weil
+$\lambda_1 \neq \lambda_2$ ist, müsste $\vec{v}_2 = \vec{0}$ sein, und das ist
+für einen Eigenvektor ausgeschlossen. Für mehr als zwei Eigenvektoren gilt
+dieselbe Aussage, den Beweis lassen wir aber weg.
+
+```{admonition} Sind Eigenvektoren zu verschiedenen Eigenwerten linear unabhängig?
+:class: note
+Ja. Wählen wir zu verschiedenen Eigenwerten einer Matrix je einen
+Eigenvektor, so sind diese Eigenvektoren linear unabhängig. Hat eine
+$n\times n$-Matrix $n$ verschiedene Eigenwerte, bilden $n$ zugehörige
+Eigenvektoren deshalb eine Basis des $\mathbb{R}^n$.
+```
+
+Für die $3\times 3$-Matrix $\mathbf{B}$ wissen wir damit schon, ohne die
+übrigen Eigenvektoren zu berechnen, dass je ein Eigenvektor zu den
+Eigenwerten $3$, $6$ und $9$ eine Basis des $\mathbb{R}^3$ bildet. Für
+$\mathbf{A}$ stellen wir wie in Kapitel 6.1 einen Einheitsvektor in der Basis
+$\vec{v}_1, \vec{v}_2$ dar, diesmal $\vec{e}_2$. Aus
+$s\,\vec{v}_1 + t\,\vec{v}_2 = \vec{e}_2$ folgen die Gleichungen $s + t = 0$
+und $s - 2t = 1$, also $s = \frac{1}{3}$ und $t = -\frac{1}{3}$. Zur Probe
+rechnen wir
+$\frac{1}{3}\,(1, 1)^{\top} - \frac{1}{3}\,(1, -2)^{\top} = (0, 1)^{\top}$
+nach.
+
+Linear unabhängig heißt aber nicht senkrecht. Das Skalarprodukt
+$\vec{v}_1 \cdot \vec{v}_2 = 1 - 2 = -1$ ist nicht null, die Eigenvektoren von
+$\mathbf{A}$ stehen also nicht senkrecht aufeinander. Bei der Matrix
+$\mathbf{B}$ ist das anders, denn ihre Eigenvektoren stehen paarweise
+senkrecht aufeinander. Dahinter steckt, dass $\mathbf{B}$ symmetrisch ist, und
+in Kapitel 7.2 werden wir sehen, warum.
+
+## Zusammenfassung und Ausblick
+
+Die Eigenvektoren zu einem Eigenwert $\lambda$ sind die Lösungen
+$\vec{v} \neq \vec{0}$ des homogenen Gleichungssystems
+$(\mathbf{M} - \lambda\mathbf{E})\,\vec{v} = \vec{0}$. Zusammen mit dem
+Nullvektor bilden sie den Eigenraum
+$\text{Eig}_{\mathbf{M}}(\lambda) = \text{Kern}(\mathbf{M} - \lambda\mathbf{E})$.
+Weil jedes Vielfache wieder ein Eigenvektor ist, geben wir meist einen
+Vertreter ohne Brüche oder einen normierten Vertreter an. Eigenvektoren zu
+verschiedenen Eigenwerten sind linear unabhängig. In Kapitel 6.4 sehen wir,
+was passiert, wenn ein Eigenwert mehrfach auftritt. Dann kann der Eigenraum
+eine Ebene sein, oder es fehlen Eigenvektoren für eine Basis. In Kapitel 7.1
+schreiben wir die Eigenvektoren als Spalten in eine Matrix und nutzen die
+Basis aus Eigenvektoren, um die Matrix auf eine besonders einfache Form zu
+bringen.

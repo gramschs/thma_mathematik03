@@ -1,0 +1,275 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 6.4 Algebraische und geometrische Vielfachheit
+
+In den meisten Beispielen bisher gehörte zu jedem Eigenwert genau eine Gerade
+von Eigenvektoren. Die Streckung und die Scherung aus Kapitel 6.1 passen nicht
+in dieses Muster. Bei der Streckung ist jeder Vektor $\vec{v} \neq \vec{0}$ ein
+Eigenvektor, und die Eigenvektoren füllen die ganze Ebene. Bei der Scherung
+liegen sie zwar auf einer Geraden, aber nach Kapitel 6.2 ist ihr Eigenwert
+eine doppelte Nullstelle. In diesem Kapitel zählen wir Eigenwerte und
+Eigenvektoren genauer und sehen, dass die beiden Zahlen nicht immer
+übereinstimmen. Doppelte Eigenwerte treten im Maschinenbau zum Beispiel
+bei symmetrischen Bauteilen auf, etwa bei einer Welle mit kreisrundem
+Querschnitt, die in zwei Richtungen mit derselben Eigenfrequenz schwingt.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können die **algebraische Vielfachheit** $m_\lambda$ eines
+  Eigenwerts am charakteristischen Polynom ablesen.
+* [ ] Sie können die **geometrische Vielfachheit** $d_\lambda$ eines
+  Eigenwerts als Dimension seines Eigenraums bestimmen.
+* [ ] Sie wissen, dass stets $1 \leq d_\lambda \leq m_\lambda$ gilt und dass
+  die algebraischen Vielfachheiten zusammen höchstens $n$ ergeben.
+* [ ] Sie können die geometrische Vielfachheit mit der Formel
+  $d_\lambda = n - \text{Rang}(\mathbf{A} - \lambda\mathbf{E})$ berechnen.
+* [ ] Sie können entscheiden, ob es eine Basis aus Eigenvektoren gibt.
+```
+
+## Was bedeutet ein mehrfacher Eigenwert?
+
+Wir vergleichen die Streckung und die Scherung aus Kapitel 4.1:
+
+\begin{equation*}
+\mathbf{B} = \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}
+\qquad\text{und}\qquad
+\mathbf{D} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Beide sind Dreiecksmatrizen, und nach Kapitel 6.2 lesen wir ihre
+charakteristischen Polynome direkt ab:
+
+\begin{equation*}
+p_{\mathbf{B}}(\lambda) = (2 - \lambda)^2, \qquad
+p_{\mathbf{D}}(\lambda) = (1 - \lambda)^2.
+\end{equation*}
+
+Jede der beiden Matrizen hat also nur einen einzigen Eigenwert, aber er tritt
+als doppelte Nullstelle auf. Ganz anders ist es bei der Matrix $\mathbf{A}$
+aus Kapitel 6.1 mit $p(\lambda) = (\lambda - 5)(\lambda - 2)$, denn dort kommt
+jeder Linearfaktor nur einmal vor. Wie in Mathematik 1 zählen wir, wie oft ein
+Linearfaktor im Polynom vorkommt, und nennen das die Vielfachheit der
+Nullstelle.
+
+```{admonition} Was ist ... die algebraische Vielfachheit?
+:class: note
+Die **algebraische Vielfachheit** $m_\lambda$ eines Eigenwerts $\lambda$ der
+Matrix $\mathbf{M}$ gibt an, wie oft $\lambda$ als Nullstelle des
+charakteristischen Polynoms vorkommt. Zerfällt das charakteristische Polynom
+einer $n\times n$-Matrix vollständig in Linearfaktoren, ergeben die
+algebraischen Vielfachheiten aller Eigenwerte zusammen $n$. Andernfalls ist
+ihre Summe kleiner als $n$.
+```
+
+Bei der Streckung hat der Eigenwert $2$ also die algebraische Vielfachheit
+$m_2 = 2$, bei der Scherung hat der Eigenwert $1$ die Vielfachheit $m_1 = 2$.
+Die beiden Eigenwerte von $\mathbf{A}$ sind einfache Nullstellen und haben
+jeweils die algebraische Vielfachheit $1$. In allen drei Fällen ist die Summe
+$2$, weil alle drei Polynome in Linearfaktoren zerfallen. Bei der Drehung aus
+Kapitel 6.2 ist das nicht so. Ihr charakteristisches Polynom hat keine reelle
+Nullstelle, und die Summe ist $0$.
+
+Bei Matrizen, die keine Dreiecksmatrizen sind, sehen wir die Vielfachheit erst
+nach einer Rechnung. Wir nehmen die Matrix
+
+\begin{equation*}
+\mathbf{C} = \begin{pmatrix} 5 & -1 & 2 \\ -1 & 5 & 2 \\ 2 & 2 & 2 \end{pmatrix}
+\end{equation*}
+
+und entwickeln $\det(\mathbf{C} - \lambda\mathbf{E})$ wie in Kapitel 6.2 nach
+der ersten Zeile. Die drei Unterdeterminanten sind
+
+\begin{align*}
+\det\begin{pmatrix} 5 - \lambda & 2 \\ 2 & 2 - \lambda \end{pmatrix}
+&= \lambda^2 - 7\lambda + 6 = (\lambda - 1)(\lambda - 6), \\
+\det\begin{pmatrix} -1 & 2 \\ 2 & 2 - \lambda \end{pmatrix}
+&= \lambda - 6, \\
+\det\begin{pmatrix} -1 & 5 - \lambda \\ 2 & 2 \end{pmatrix}
+&= 2\lambda - 12 = 2\,(\lambda - 6).
+\end{align*}
+
+In allen dreien steckt der Faktor $\lambda - 6$, und statt auszumultiplizieren
+klammern wir ihn aus. Mit den Einträgen $5 - \lambda$, $-1$ und $2$ der ersten
+Zeile und den Vorzeichen des Entwicklungssatzes ergibt sich
+
+\begin{align*}
+p(\lambda)
+&= (5 - \lambda)(\lambda - 1)(\lambda - 6) - (-1)(\lambda - 6) +
+2\cdot 2\,(\lambda - 6) \\
+&= (\lambda - 6)\big((5 - \lambda)(\lambda - 1) + 5\big)
+= (\lambda - 6)(-\lambda^2 + 6\lambda) = -\lambda\,(\lambda - 6)^2.
+\end{align*}
+```
+
+Die Matrix $\mathbf{C}$ hat also den einfachen Eigenwert $0$ mit $m_0 = 1$ und
+den doppelten Eigenwert $6$ mit $m_6 = 2$. Zusammen ergibt das $3$, wie es bei
+einer $3\times 3$-Matrix sein muss, deren Polynom in Linearfaktoren zerfällt.
+Zur Probe prüfen wir den Eigenwert $0$. Nach Kapitel 6.1 muss dann
+$\det(\mathbf{C}) = 0$ sein, also müssen die Spalten von $\mathbf{C}$ linear
+abhängig sein. Tatsächlich ist die Summe der ersten beiden Spalten
+$(4, 4, 4)^{\top}$, also das Doppelte der dritten.
+
+## Wie viele Eigenvektoren gibt es?
+
+Nach Kapitel 6.3 ist der Eigenraum zu $\lambda$ der Kern von
+$\mathbf{M} - \lambda\mathbf{E}$. Bei der Streckung ist
+
+\begin{equation*}
+\mathbf{B} - 2\mathbf{E} = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Jeder Vektor löst $(\mathbf{B} - 2\mathbf{E})\,\vec{v} = \vec{0}$, und der
+Eigenraum ist die ganze Ebene, also
+$\text{Eig}_{\mathbf{B}}(2) = \langle \vec{e}_1, \vec{e}_2 \rangle$. Er enthält
+zwei linear unabhängige Eigenvektoren, etwa $\vec{e}_1$ und $\vec{e}_2$. Bei
+der Scherung ist dagegen
+
+\begin{equation*}
+\mathbf{D} - \mathbf{E} = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Die erste Zeile verlangt $v_2 = 0$, und $v_1 = t$ ist frei. Der Eigenraum ist
+$\text{Eig}_{\mathbf{D}}(1) = \langle \vec{e}_1 \rangle$, also nur die
+$x$-Achse, genau wie wir es in Kapitel 6.1 geometrisch gesehen haben. Obwohl
+der Eigenwert $1$ doppelt ist, finden wir nur einen linear unabhängigen
+Eigenvektor. *Wie messen wir die Größe eines Eigenraums?* Nach Kapitel 4.4
+mit seiner Dimension, also der größten Anzahl linear unabhängiger Vektoren,
+die wir darin finden.
+
+```{admonition} Was ist ... die geometrische Vielfachheit?
+:class: note
+Die **geometrische Vielfachheit** $d_\lambda$ eines Eigenwerts $\lambda$ der
+Matrix $\mathbf{M}$ ist die Dimension seines Eigenraums:
+
+\begin{equation*}
+d_\lambda = \dim\big(\text{Eig}_{\mathbf{M}}(\lambda)\big).
+\end{equation*}
+
+Sie gibt an, wie viele linear unabhängige Eigenvektoren zu $\lambda$ gehören.
+Für jeden Eigenwert gilt $1 \leq d_\lambda \leq m_\lambda$.
+```
+
+Bei der Streckung ist $d_2 = 2 = m_2$, bei der Scherung dagegen
+$d_1 = 1 < 2 = m_1$. Die beiden Eigenwerte von $\mathbf{A}$ haben nach
+Kapitel 6.3 jeweils eine Gerade als Eigenraum, also die geometrische
+Vielfachheit $1$, die mit der algebraischen übereinstimmt. Die folgende
+Tabelle stellt die drei Matrizen gegenüber.
+
+| Matrix | Eigenwerte | $m_\lambda$ | $d_\lambda$ |
+| --- | --- | --- | --- |
+| $\mathbf{A}$ aus Kapitel 6.1 | $5$, $2$ | $1$, $1$ | $1$, $1$ |
+| $\mathbf{B}$ (Streckung) | $2$ | $2$ | $2$ |
+| $\mathbf{D}$ (Scherung) | $1$ | $2$ | $1$ |
+
+*Stimmen bei einfachen Eigenwerten die beiden Vielfachheiten immer überein?*
+Die untere Schranke $d_\lambda \geq 1$ kennen wir aus Kapitel 6.3. Weil
+$\det(\mathbf{M} - \lambda\mathbf{E}) = 0$ ist, hat das Gleichungssystem
+mindestens einen freien Parameter. Dass $d_\lambda$ nie größer als $m_\lambda$
+werden kann, nehmen wir ohne Beweis hin. Für einen einfachen Eigenwert folgt
+aus beiden Schranken sofort $d_\lambda = 1$. Genauer hinsehen müssen wir also
+nur bei mehrfachen Eigenwerten, und dort kann die geometrische Vielfachheit
+wie bei der Scherung zu klein sein.
+
+```{dropdown} Video "Vielfachheiten" von The Bright Side of Mathematics
+<iframe width="1020" height="566" src="https://www.youtube.com/embed/xV2TWp1K_CQ"
+title="Algebraische und geometrische Vielfachheit?" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+## Wie hängen Vielfachheit und Rang zusammen?
+
+Bei den $2\times 2$-Matrizen konnten wir die Eigenräume direkt ablesen. Für
+größere Matrizen hilft die Dimensionsformel aus Kapitel 4.4. Die Matrix
+$\mathbf{D} - \mathbf{E}$ von oben ist schon in Zeilenstufenform und hat ein
+Pivotelement, also den Rang $1$. Nach der Dimensionsformel hat ihr Kern, also
+der Eigenraum, die Dimension $2 - 1 = 1$, und das ist genau $d_1$. Bei der
+Nullmatrix $\mathbf{B} - 2\mathbf{E}$ gibt es kein Pivotelement, und wir
+erhalten $d_2 = 2 - 0 = 2$. Statt das Gleichungssystem vollständig zu lösen,
+genügt es also, die Pivotelemente zu zählen.
+
+```{admonition} Wie berechnen wir die geometrische Vielfachheit?
+:class: note
+Für einen Eigenwert $\lambda$ einer $n\times n$-Matrix $\mathbf{M}$ gilt nach
+der Dimensionsformel
+
+\begin{equation*}
+d_\lambda = n - \text{Rang}(\mathbf{M} - \lambda\mathbf{E}).
+\end{equation*}
+
+Den Rang bestimmen wir, indem wir $\mathbf{M} - \lambda\mathbf{E}$ auf
+Zeilenstufenform bringen und die Pivotelemente zählen.
+```
+
+Für den doppelten Eigenwert $6$ der Matrix $\mathbf{C}$ bringen wir
+$\mathbf{C} - 6\mathbf{E}$ auf Zeilenstufenform:
+
+\begin{equation*}
+\begin{pmatrix} -1 & -1 & 2 \\ -1 & -1 & 2 \\ 2 & 2 & -4 \end{pmatrix}
+\;\to\;
+\begin{pmatrix} -1 & -1 & 2 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Mit $Z_2 \to Z_2 - Z_1$ und $Z_3 \to Z_3 + 2Z_1$ entstehen zwei Nullzeilen.
+Es bleibt ein Pivotelement, der Rang ist $1$, und damit ist
+$d_6 = 3 - 1 = 2 = m_6$. Der Eigenraum ist also eine Ebene. Zur Probe
+berechnen wir ihn. Die verbleibende Gleichung $-v_1 - v_2 + 2v_3 = 0$ hat die
+freien Parameter $v_2 = s$ und $v_3 = t$, und mit $v_1 = -s + 2t$ ergibt sich
+
+\begin{equation*}
+\text{Eig}_{\mathbf{C}}(6)
+= \left\langle \begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix},
+\begin{pmatrix} 2 \\ 0 \\ 1 \end{pmatrix} \right\rangle.
+\end{equation*}
+
+Das sind tatsächlich zwei Parameter. Außerdem rechnen wir
+$\mathbf{C}\,(-1, 1, 0)^{\top} = (-6, 6, 0)^{\top}$ und
+$\mathbf{C}\,(2, 0, 1)^{\top} = (12, 0, 6)^{\top}$ nach, also jeweils das
+Sechsfache. Für den einfachen Eigenwert $0$ ist $d_0 = 1$ ohne weitere
+Rechnung klar. Einen Eigenvektor kennen wir sogar schon aus dem ersten
+Abschnitt. Weil die Summe der ersten beiden Spalten von $\mathbf{C}$ das
+Doppelte der dritten ist, gilt $\mathbf{C}\,(1, 1, -2)^{\top} = \vec{0}$.
+
+*Reichen die Eigenvektoren für eine Basis?* Nehmen wir aus jedem Eigenraum so
+viele linear unabhängige Eigenvektoren, wie seine Dimension angibt, sind auch
+alle zusammen linear unabhängig. Das folgt ähnlich wie in Kapitel 6.3, und wir
+verzichten auf den Beweis. Ergibt die Summe der geometrischen Vielfachheiten
+$n$, haben wir also eine Basis des $\mathbb{R}^n$ aus Eigenvektoren. Bei
+$\mathbf{C}$ ist $d_0 + d_6 = 1 + 2 = 3$, und die Vektoren $(-1, 1, 0)^{\top}$,
+$(2, 0, 1)^{\top}$ und $(1, 1, -2)^{\top}$ bilden eine solche Basis. Ergänzen
+wir die Tabelle aus dem zweiten Abschnitt um $\mathbf{C}$ und um diese Frage,
+erhalten wir eine Übersicht über alle Matrizen dieses Kapitels.
+
+| Matrix | Eigenwerte | $m_\lambda$ | $d_\lambda$ | Basis aus Eigenvektoren |
+| --- | --- | --- | --- | --- |
+| $\mathbf{A}$ aus Kapitel 6.1 | $5$, $2$ | $1$, $1$ | $1$, $1$ | ja |
+| $\mathbf{B}$ (Streckung) | $2$ | $2$ | $2$ | ja |
+| $\mathbf{C}$ | $0$, $6$ | $1$, $2$ | $1$, $2$ | ja |
+| $\mathbf{D}$ (Scherung) | $1$ | $2$ | $1$ | nein |
+
+Nur bei der Scherung ist die geometrische Vielfachheit kleiner als die
+algebraische, und genau dort fehlt ein Eigenvektor. Die beiden Eigenvektoren
+von $\mathbf{C}$ zum Eigenwert $6$ stehen übrigens nicht senkrecht
+aufeinander. In Kapitel 7.2 machen wir sie mit dem Gram-Schmidt-Verfahren aus
+Kapitel 5.3 senkrecht zueinander.
+
+## Zusammenfassung und Ausblick
+
+Die algebraische Vielfachheit $m_\lambda$ zählt, wie oft $\lambda$ Nullstelle
+des charakteristischen Polynoms ist. Die geometrische Vielfachheit $d_\lambda$
+zählt, wie viele linear unabhängige Eigenvektoren zu $\lambda$ gehören, und
+wir berechnen sie mit der Dimensionsformel als
+$n - \text{Rang}(\mathbf{M} - \lambda\mathbf{E})$. Es gilt immer
+$1 \leq d_\lambda \leq m_\lambda$, und nur wenn die geometrischen
+Vielfachheiten zusammen $n$ ergeben, gibt es eine Basis aus Eigenvektoren. Bei
+der Streckung und bei $\mathbf{C}$ ist das so, bei der Scherung fehlt ein
+Eigenvektor. In Kapitel 7.1 schreiben wir die Eigenvektoren als Spalten in
+eine Matrix und sehen, was eine Basis aus Eigenvektoren aus einer Matrix
+macht. Ob das gelingt, entscheiden genau die beiden Vielfachheiten aus diesem
+Kapitel.
