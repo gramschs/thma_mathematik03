@@ -1,170 +1,300 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
 # 6.1 Eigenwerte und Eigenvektoren
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-Bisher haben wir Matrizen als Werkzeuge für lineare Gleichungssysteme und als
-Beschreibung von Drehungen und Transformationen kennengelernt. Jetzt stellen
-wir eine ganz andere Frage: *Gibt es Richtungen im Raum, die durch eine
-Matrixtransformation nicht verbogen, sondern nur gestreckt oder gestaucht
-werden?* Diese Frage führt uns direkt zum Begriff der Eigenwerte und
-Eigenvektoren, der zu den bedeutsamsten Konzepten der gesamten linearen
-Algebra gehört.
+In Kapitel 4 haben wir gesehen, wie eine Matrix die Ebene streckt, spiegelt,
+schert oder dreht. Am Ende von Kapitel 5.4 sind wir auf eine Drehung gestoßen,
+die jeden Vektor aus seiner Richtung bringt. Jetzt suchen wir gezielt nach dem
+Gegenteil, nämlich nach Vektoren, die eine Matrix nur streckt. Diese
+Richtungen verraten oft mehr über eine Abbildung als die einzelnen Einträge
+der Matrix. Im Maschinenbau stecken sie zum Beispiel hinter den
+Hauptspannungen in der Festigkeitslehre und hinter den Eigenfrequenzen
+schwingender Bauteile.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie verstehen, was ein **Eigenvektor** und ein **Eigenwert** einer
-  quadratischen Matrix sind, und können die definierende Gleichung
-  \begin{equation*}
-  \mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
-  \end{equation*} 
-  erläutern.
-* [ ] Sie können geometrisch beschreiben, was es bedeutet, dass ein Vektor
-  Eigenvektor einer Abbildung ist: Er wird durch die Abbildung nur gestreckt
-  oder gestaucht, nicht gedreht.
-* [ ] Sie wissen, dass der Nullvektor kein Eigenvektor ist.
-* [ ] Sie kennen mindestens zwei maschinenbauliche Anwendungen von Eigenwerten,
-  etwa **Hauptspannungen** in der Festigkeitslehre und **Eigenfrequenzen** in
-  der Schwingungsanalyse.
+* [ ] Sie wissen, was ein **Eigenvektor** und ein **Eigenwert** einer
+  quadratischen Matrix sind.
+* [ ] Sie können prüfen, ob ein gegebener Vektor ein Eigenvektor ist, und den
+  zugehörigen Eigenwert angeben.
+* [ ] Sie können die Eigenvektoren von Streckung, Spiegelung, Scherung und
+  Drehung der Ebene geometrisch begründen.
+* [ ] Sie können deuten, was ein Eigenwert über die Abbildung aussagt.
+* [ ] Sie wissen, warum der Nullvektor kein Eigenvektor ist, der Eigenwert $0$
+  aber erlaubt ist.
 ```
 
-## Wo begegnen uns Eigenwerte im Maschinenbau?
+## Welche Vektoren behalten ihre Richtung?
 
-In der Festigkeitslehre wird der Spannungszustand an einem Punkt eines Bauteils
-durch den Spannungstensor beschrieben, eine symmetrische $3\times 3$-Matrix.
-Die Frage, welche Schnittflächen an diesem Punkt keine Schubspannungen erfahren
-und nur durch Normalspannungen belastet sind, führt auf ein Eigenwertproblem.
-Die Eigenwerte des Spannungstensors sind die **Hauptspannungen**, und die
-Eigenvektoren zeigen in die **Hauptspannungsrichtungen**. Diese Größen sind für
-die Auslegung von Bauteilen unter Betriebslast unverzichtbar.
-
-Ein zweites, sehr vertrautes Beispiel aus dem Maschinenbau sind schwingungsfähige
-Systeme. Ein einfacher Zweimassenschwinger besteht aus zwei Massen, die über
-Federn miteinander und mit einem Rahmen verbunden sind. Die Differentialgleichungen
-der Bewegung lassen sich in Matrizenform schreiben. Die Frequenzen, bei denen
-das System resonant schwingt, die **Eigenfrequenzen**, sind direkt mit den
-Eigenwerten der Systemmatrix verknüpft. Wir werden diesen Zusammenhang im
-weiteren Verlauf des Kurses noch vertiefen.
-
-## Was ist ein Eigenvektor?
-
-Wir betrachten eine konkrete Situation. Gegeben sei die Matrix
+Wir untersuchen die Matrix
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}.
+\mathbf{A} = \begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix}
 \end{equation*}
 
-Wir multiplizieren verschiedene Vektoren mit $\mathbf{A}$ und beobachten,
-was geschieht. Für den Vektor $\vec{u} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
-ergibt sich:
+und schauen, was sie mit einzelnen Vektoren macht. Nach Kapitel 4.1 stehen in
+ihren Spalten die Bilder der Einheitsvektoren, also
+$\mathbf{A}\vec{e}_1 = (4, 2)^{\top}$ und $\mathbf{A}\vec{e}_2 = (1, 3)^{\top}$.
+Der Vektor $\vec{e}_1$ zeigt entlang der $x$-Achse, sein Bild dagegen schräg
+nach oben. Die Matrix hat $\vec{e}_1$ also nicht nur verlängert, sondern auch
+aus seiner Richtung gedreht, und bei $\vec{e}_2$ ist es genauso. *Gibt es
+überhaupt einen Vektor, dessen Richtung $\mathbf{A}$ nicht verändert?*
+
+Wir probieren als Nächstes $\vec{v}_1 = (1, 1)^{\top}$, die Summe der beiden
+Einheitsvektoren. Weil $\mathbf{A}$ eine lineare Abbildung ist, ist sein Bild
+nach Kapitel 4.2 die Summe der beiden Spalten:
 
 \begin{equation*}
-\mathbf{A}\cdot\vec{u} = \begin{pmatrix} 6 \\ 2 \end{pmatrix}.
+\mathbf{A}\vec{v}_1 =
+\begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix}
+\begin{pmatrix} 1 \\ 1 \end{pmatrix} =
+\begin{pmatrix} 5 \\ 5 \end{pmatrix} = 5\cdot\begin{pmatrix} 1 \\ 1 \end{pmatrix}.
 \end{equation*}
 
-Der Vektor zeigt nach der Transformation in eine andere Richtung. Versuchen
-wir es mit $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$:
+Das Bild ist ein Vielfaches von $\vec{v}_1$ selbst. Die Matrix streckt
+$\vec{v}_1$ auf das Fünffache, ohne seine Richtung zu ändern. Nach etwas
+Probieren finden wir einen zweiten solchen Vektor, nämlich
+$\vec{v}_2 = (1, -2)^{\top}$ mit
 
 \begin{equation*}
-\mathbf{A}\cdot\vec{v} =
-\begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}
-\begin{pmatrix} 2 \\ 1 \end{pmatrix} =
-\begin{pmatrix} 14 \\ 7 \end{pmatrix} = 7 \cdot \begin{pmatrix} 2 \\ 1 \end{pmatrix}
-= 7\cdot\vec{v}.
+\mathbf{A}\vec{v}_2 =
+\begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix}
+\begin{pmatrix} 1 \\ -2 \end{pmatrix} =
+\begin{pmatrix} 2 \\ -4 \end{pmatrix} = 2\cdot\begin{pmatrix} 1 \\ -2 \end{pmatrix}.
 \end{equation*}
 
-Hier passiert etwas Besonderes: Das Ergebnis ist dasselbe wie $\vec{v}$,
-lediglich mit dem Faktor $7$ gestreckt. Die Matrix hat die Richtung von $\vec{v}$
-vollständig erhalten und ihn nur skaliert. Genau solche Vektoren nennen wir
-Eigenvektoren.
+Diesen Vektor streckt die Matrix auf das Doppelte. Die folgende Abbildung
+zeigt den Unterschied zu $\vec{e}_1$.
 
-```{admonition} Was sind ... Eigenwert und Eigenvektor?
+```{figure} pics/eigenvektoren_streckung.svg
+---
+name: eigenvektoren_streckung
+---
+Darstellung der Vektoren $\vec{e}_1$, $\vec{v}_1$, $\vec{v}_2$ (links) und
+ihrer Bilder unter $\mathbf{A}$ (rechts).
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Die Vektoren $\vec{v}_1$ und $\vec{v}_2$ bleiben auf ihrer hellblauen Geraden
+durch den Ursprung, nur ihre Länge ändert sich. Der Vektor $\vec{e}_1$
+verlässt dagegen die $x$-Achse. Damit wir ein Bild überhaupt mit dem
+ursprünglichen Vektor vergleichen können, müssen beide im selben Raum liegen.
+Wir betrachten deshalb nur quadratische Matrizen.
+
+```{admonition} Was sind ... Eigenvektoren und Eigenwerte?
 :class: note
 Ein Vektor $\vec{v} \neq \vec{0}$ heißt **Eigenvektor** der quadratischen
-Matrix $\mathbf{A}$, wenn es eine reelle Zahl $\lambda$ gibt, sodass
+Matrix $\mathbf{M}$, wenn es eine reelle Zahl $\lambda$ gibt mit
 
 \begin{equation*}
-\mathbf{A}\cdot\vec{v} = \lambda\cdot\vec{v}
+\mathbf{M}\vec{v} = \lambda\vec{v}.
 \end{equation*}
 
-gilt. Die Zahl $\lambda$ heißt der zu $\vec{v}$ gehörende **Eigenwert**.
-
-Der Nullvektor $\vec{0}$ ist ausdrücklich kein Eigenvektor, da
-$\mathbf{A}\cdot\vec{0} = \vec{0} = \lambda\cdot\vec{0}$ für jedes $\lambda$
-gilt und damit keine sinnvolle Aussage über eine Richtung liefert.
+Die Zahl $\lambda$ heißt dann **Eigenwert** von $\mathbf{M}$, und wir sagen,
+$\vec{v}$ ist ein Eigenvektor zum Eigenwert $\lambda$.
 ```
 
-Wir haben bereits überprüft, dass $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$
-ein Eigenvektor von $\mathbf{A}$ zum Eigenwert $\lambda = 7$ ist. Jedes
-skalare Vielfache $s\cdot\vec{v}$ mit $s \neq 0$ ist ebenfalls ein Eigenvektor
-zum selben Eigenwert, denn:
+Für unsere Matrix bedeutet das: $\vec{v}_1$ ist ein Eigenvektor von
+$\mathbf{A}$ zum Eigenwert $5$, und $\vec{v}_2$ ist ein Eigenvektor zum
+Eigenwert $2$. Der griechische Buchstabe $\lambda$ (lambda) ist für Eigenwerte
+üblich, und die deutsche Vorsilbe „eigen“ hat es sogar ins Englische
+geschafft, wo von eigenvalue und eigenvector die Rede ist.
+
+*Ist auch $(3, 3)^{\top}$ ein Eigenvektor?* Wir rechnen die Definition nach und
+erhalten $\mathbf{A}\,(3, 3)^{\top} = (15, 15)^{\top} = 5\cdot(3, 3)^{\top}$,
+also ja, zum selben Eigenwert $5$. Das ist kein Zufall. Nach Kapitel 4.2
+dürfen wir einen Faktor $s$ vor die Matrix ziehen, und deshalb gilt für jedes
+$s \neq 0$
 
 \begin{equation*}
-\mathbf{A}\cdot(s\vec{v}) = s\cdot(\mathbf{A}\vec{v}) = s\cdot 7\vec{v} = 7\cdot(s\vec{v}).
+\mathbf{A}\,(s\,\vec{v}_1) = s\,\mathbf{A}\vec{v}_1 = s\cdot 5\,\vec{v}_1
+= 5\,(s\,\vec{v}_1).
 \end{equation*}
 
-Es gibt also nicht den einen Eigenvektor zu einem Eigenwert, sondern eine ganze
-Richtung im Raum. Alle Vielfachen von $\vec{v}$ bilden zusammen den
-**Eigenraum** zum Eigenwert $\lambda = 7$.
+Mit einem Eigenvektor ist also jedes Vielfache $s\,\vec{v}$ mit $s \neq 0$ ein
+Eigenvektor zum selben Eigenwert. Zu einem Eigenwert gehört deshalb nie nur
+ein einzelner Eigenvektor, sondern die ganze Gerade durch den Ursprung, nur
+ohne den Nullvektor.
 
-## Was bedeutet ein negativer Eigenwert?
-
-Ein Eigenwert $\lambda > 1$ entspricht einer Streckung in die Richtung des
-Eigenvektors. Für $0 < \lambda < 1$ schrumpft der Vektor. Ist $\lambda < 0$,
-kehrt sich die Richtung um, der Vektor wird gespiegelt und zusätzlich skaliert.
-Für $\lambda = 0$ wäre $\mathbf{A}\vec{v} = \vec{0}$, was bedeutet, dass der
-Eigenvektor auf den Nullvektor abgebildet wird. In diesem Fall ist die Matrix
-nicht invertierbar, wie wir aus dem Kapitel über Determinanten wissen.
-
-*Aber wie berechnet man Eigenwerte systematisch, ohne wie oben nach Vektoren
-raten zu müssen?* Diese Frage führt auf das charakteristische Polynom, das wir
-im nächsten Abschnitt kennenlernen.
-
-## Eigenwerte und Eigenvektoren in der Festigkeitslehre
-
-In der Technischen Mechanik beschreibt der ebene Spannungstensor den
-Spannungszustand an einem Punkt eines dünnwandigen Bauteils:
-
-\begin{equation*}
-\boldsymbol{\sigma} =
-\begin{pmatrix} \sigma_{xx} & \tau_{xy} \\ \tau_{xy} & \sigma_{yy} \end{pmatrix}.
-\end{equation*}
-
-Die Diagonalelemente sind Normalspannungen, die Nebendiagonalelemente sind
-Schubspannungen. Die Eigenwerte dieser Matrix sind genau die Hauptspannungen
-$\sigma_1$ und $\sigma_2$, auf die es für die Bewertung nach der Gestaltänderungs-
-energiehypothese (von-Mises-Kriterium) ankommt. Die Eigenvektoren zeigen in die
-Richtungen, in denen keine Schubspannungen auftreten. Diese Verbindung werden
-Sie in der Technischen Mechanik II vertiefen.
+Genauso prüfen wir, dass ein Vektor kein Eigenvektor ist. Für die Summe
+$\vec{v}_1 + \vec{v}_2 = (2, -1)^{\top}$ erhalten wir
+$\mathbf{A}\,(2, -1)^{\top} = (7, 1)^{\top}$. Wäre das ein Vielfaches
+$\lambda\,(2, -1)^{\top}$, müsste $2\lambda = 7$ und $-\lambda = 1$ gelten,
+also gleichzeitig $\lambda = \frac{7}{2}$ und $\lambda = -1$. Ein solches
+$\lambda$ gibt es nicht. Der Vektor $(2, -1)^{\top}$ ist also kein
+Eigenvektor, obwohl er die Summe zweier Eigenvektoren ist.
 
 ```{dropdown} Video "Eigenwertproblem Einfach Erklärt!" von MathePeter
 <iframe width="1020" height="574"
 src="https://www.youtube.com/embed/eJWgKvrhDmE?list=PLvBnQVOJXCUF0BfLnT5kOu3N8ueAXSscb"
-title="Eigenwertproblem Einfach Erklärt! | Eigenwerte und Eigenvektoren: Bedeutung, Anwendung, Herleitung"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+title="Eigenwertproblem Einfach Erklärt! | Eigenwerte und Eigenvektoren:
+Bedeutung, Anwendung, Herleitung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-```{dropdown} Video (EN) "Eigenvectors and Eigenvalues" von 3Blue1Brown
+## Was bedeutet der Eigenwert geometrisch?
+
+Bei $\mathbf{A}$ mussten wir rechnen und probieren. Bei den Abbildungen aus
+Kapitel 4.1 sehen wir die Eigenvektoren dagegen direkt, weil wir wissen, was
+die Abbildung mit der Ebene macht. Dort hatten wir unter anderem die
+Streckung, die Spiegelung an der Winkelhalbierenden, die Scherung und die
+Drehung um $90^\circ$ mit den Matrizen
+
+\begin{align*}
+\mathbf{B} &= \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}, &
+\mathbf{C} &= \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \\
+\mathbf{D} &= \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}, &
+\mathbf{R} &= \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}.
+\end{align*}
+
+Die Streckung $\mathbf{B}$ verdoppelt jeden Vektor, also ist jeder Vektor
+$\vec{v} \neq \vec{0}$ ein Eigenvektor zum Eigenwert $2$. Die Spiegelung
+$\mathbf{C}$ lässt alle Vektoren auf der Spiegelachse $y = x$ an ihrem Platz,
+etwa $\mathbf{C}\,(1, 1)^{\top} = (1, 1)^{\top}$. Das sind Eigenvektoren zum
+Eigenwert $1$. Die Vektoren senkrecht zur Achse klappt sie dagegen auf die
+Gegenseite, etwa $\mathbf{C}\,(1, -1)^{\top} = (-1, 1)^{\top} = -1\cdot(1, -1)^{\top}$,
+und das sind Eigenvektoren zum Eigenwert $-1$.
+
+Bei der Scherung $\mathbf{D}$ bleibt $\vec{e}_1$ liegen, er ist also ein
+Eigenvektor zum Eigenwert $1$. Jeder Vektor, der nicht auf der $x$-Achse
+liegt, kippt dagegen zur Seite, wie das Einheitsquadrat in Kapitel 4.1 gezeigt
+hat. Die Scherung hat also nur eine einzige Richtung von Eigenvektoren. Die
+Drehung $\mathbf{R}$ bringt schließlich jeden Vektor aus seiner Richtung und
+hat überhaupt keinen Eigenvektor, und für die Drehung um $53.13^\circ$ aus
+Kapitel 5.4 gilt dasselbe. Eine Matrix muss also keine Eigenvektoren haben.
+
+Die Spiegelung zeigt, dass „Richtung behalten“ großzügig gemeint ist. Ein
+Eigenvektor bleibt auf seiner Geraden durch den Ursprung, sein Bild darf aber
+auch in die Gegenrichtung zeigen. Was auf dieser Geraden passiert, verrät uns
+der Eigenwert.
+
+```{admonition} Was verrät ein Eigenwert über die Abbildung?
+:class: note
+Ist $\vec{v}$ ein Eigenvektor von $\mathbf{M}$ zum Eigenwert $\lambda$, so
+liegt sein Bild $\mathbf{M}\vec{v} = \lambda\vec{v}$ auf derselben Geraden
+durch den Ursprung. Dabei gilt:
+
+* Für $\lambda > 1$ wird $\vec{v}$ gestreckt.
+* Für $0 < \lambda < 1$ wird $\vec{v}$ gestaucht.
+* Für $\lambda = 1$ bleibt $\vec{v}$ unverändert.
+* Für $\lambda = 0$ wird $\vec{v}$ auf den Nullvektor abgebildet.
+* Für $\lambda < 0$ zeigt das Bild in die Gegenrichtung, und seine Länge ist
+  das $|\lambda|$-Fache der Länge von $\vec{v}$.
+```
+
+Für $\mathbf{A}$ sind beide Eigenwerte größer als $1$. Die Matrix streckt die
+Ebene also in Richtung von $\vec{v}_1$ auf das Fünffache und in Richtung von
+$\vec{v}_2$ auf das Doppelte. *Aber warum kippt dann $\vec{e}_1$ aus seiner
+Richtung?* Weil $\vec{v}_1$ und $\vec{v}_2$ nicht parallel sind, bilden sie
+nach Kapitel 5.1 eine Basis der Ebene, und wir können $\vec{e}_1$ in dieser
+Basis darstellen. Aus $s\,\vec{v}_1 + t\,\vec{v}_2 = \vec{e}_1$ folgen die
+Gleichungen $s + t = 1$ und $s - 2t = 0$, also $t = \frac{1}{3}$ und
+$s = \frac{2}{3}$. Den Anteil in Richtung $\vec{v}_1$ streckt $\mathbf{A}$ auf
+das Fünffache, den Anteil in Richtung $\vec{v}_2$ nur auf das Doppelte:
+
+\begin{equation*}
+\mathbf{A}\vec{e}_1 = \frac{2}{3}\cdot 5\,\vec{v}_1 + \frac{1}{3}\cdot 2\,\vec{v}_2
+= \frac{10}{3}\begin{pmatrix} 1 \\ 1 \end{pmatrix} +
+\frac{2}{3}\begin{pmatrix} 1 \\ -2 \end{pmatrix}
+= \begin{pmatrix} 4 \\ 2 \end{pmatrix}.
+\end{equation*}
+
+Das ist genau die erste Spalte von $\mathbf{A}$. Weil die beiden Anteile
+verschieden stark gestreckt werden, verschiebt sich das Verhältnis zugunsten
+von $\vec{v}_1$, und $\vec{e}_1$ kippt in dessen Richtung. Weil sich jeder
+Vektor der Ebene so zerlegen lässt, legen die beiden Eigenvektoren und
+Eigenwerte die ganze Abbildung fest. Das klappt allerdings nur, weil die
+Eigenvektoren hier eine Basis bilden. Bei der Scherung und der Drehung von oben
+reichen die Eigenvektoren dafür nicht aus, und in Kapitel 6.4 kommen wir darauf
+zurück. In Kapitel 7 beschreiben wir $\mathbf{A}$ in der Basis aus ihren
+Eigenvektoren, in der sie nur noch streckt.
+
+```{dropdown} Video (EN) "Eigenvectors and eigenvalues" von 3Blue1Brown
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PFDu9oVAE-g"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
+## Was ist mit dem Nullvektor und dem Eigenwert null?
+
+In der Definition haben wir den Nullvektor ausdrücklich ausgeschlossen.
+*Warum eigentlich?* Für jede Zahl $\lambda$ gilt
+
+\begin{equation*}
+\mathbf{A}\vec{0} = \vec{0} = \lambda\,\vec{0},
+\end{equation*}
+
+und das nicht nur für $\mathbf{A}$, sondern für jede Matrix. Ließen wir den
+Nullvektor zu, wäre er ein Eigenvektor zu jedem beliebigen
+$\lambda$, und jede Zahl wäre ein Eigenwert jeder Matrix. Der Begriff würde
+dann nichts mehr über die Matrix aussagen. Außerdem hat der Nullvektor keine
+Richtung, die erhalten bleiben könnte.
+
+Mit dem Eigenwert $0$ ist es anders. Die Projektion auf die $x$-Achse aus
+Kapitel 4.1 hat die Matrix
+
+\begin{equation*}
+\mathbf{P} = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}.
+\end{equation*}
+
+Sie lässt $\vec{e}_1$ liegen und drückt $\vec{e}_2$ auf den Nullvektor, also
+ist $\mathbf{P}\vec{e}_1 = 1\cdot\vec{e}_1$ und
+$\mathbf{P}\vec{e}_2 = \vec{0} = 0\cdot\vec{e}_2$. Der Vektor $\vec{e}_2$ ist
+nicht der Nullvektor und erfüllt die Eigenwertgleichung mit $\lambda = 0$. Er
+ist also ein Eigenvektor zum Eigenwert $0$. Der Eigenwert darf null sein, nur
+der Eigenvektor nicht.
+
+Die Gleichung $\mathbf{P}\vec{e}_2 = \vec{0}$ kennen wir aus Kapitel 4.3. Sie
+besagt, dass $\vec{e}_2$ im Kern von $\mathbf{P}$ liegt. Allgemein sind die
+Eigenvektoren zum Eigenwert $0$ genau die Vektoren im Kern, die nicht der
+Nullvektor sind. Einen solchen Vektor gibt es nur, wenn der Kern mehr als den
+Nullvektor enthält. Nach Kapitel 4.3 sind dann die Spalten der Matrix linear
+abhängig, und bei einer quadratischen Matrix ist das genau dann der Fall, wenn
+ihre Determinante null ist.
+
+```{admonition} Wann ist null ein Eigenwert?
+:class: note
+Der Nullvektor ist nie ein Eigenvektor, der Eigenwert $0$ ist dagegen
+erlaubt. Die Eigenvektoren zum Eigenwert $0$ sind die Vektoren
+$\vec{v} \neq \vec{0}$ im Kern von $\mathbf{M}$. Eine quadratische Matrix hat
+deshalb genau dann den Eigenwert $0$, wenn $\det(\mathbf{M}) = 0$ ist, also
+wenn sie nicht invertierbar ist.
+```
+
+Für die Projektion passt das, denn $\det(\mathbf{P}) = 1\cdot 0 - 0\cdot 0 = 0$.
+Für unsere Matrix $\mathbf{A}$ ist dagegen
+
+\begin{equation*}
+\det(\mathbf{A}) = 4\cdot 3 - 1\cdot 2 = 10 \neq 0.
+\end{equation*}
+
+Also ist $0$ kein Eigenwert von $\mathbf{A}$. Zur Probe berechnen wir den
+Kern. Aus der ersten Zeile von $\mathbf{A}\vec{x} = \vec{0}$ folgt
+$x_2 = -4x_1$, und eingesetzt in die zweite Zeile ergibt sich
+$2x_1 - 12x_1 = 0$, also $x_1 = 0$ und damit auch $x_2 = 0$. Der Kern von
+$\mathbf{A}$ enthält tatsächlich nur den Nullvektor.
+
+*Hat $\mathbf{A}$ außer $5$ und $2$ vielleicht noch weitere Eigenwerte?* Durch
+Probieren können wir das nicht entscheiden, denn alle Vektoren der Ebene
+können wir nie durchprobieren. Wir brauchen ein Verfahren, das sämtliche
+Eigenwerte liefert, ohne dass wir vorher einen Eigenvektor erraten müssen.
+
 ## Zusammenfassung und Ausblick
 
-Ein Eigenvektor einer Matrix ist ein Vektor, dessen Richtung durch die
-Matrixtransformation nicht geändert wird. Er wird nur gestreckt, gestaucht oder
-gespiegelt, und der Streckungsfaktor ist der zugehörige Eigenwert. Der Nullvektor
-ist ausdrücklich kein Eigenvektor.
-
-Im nächsten Abschnitt lernen wir, wie wir die Eigenwerte einer Matrix
-systematisch berechnen: über das charakteristische Polynom, das durch
-$\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ definiert ist. Die Kenntnis der
-Determinante aus Kapitel 1 zahlt sich jetzt aus.
+Ein Eigenvektor einer quadratischen Matrix ist ein Vektor $\vec{v} \neq \vec{0}$,
+den die Matrix nur mit einer Zahl $\lambda$ multipliziert, und diese Zahl ist
+der zugehörige Eigenwert. Mit $\vec{v}$ ist jedes Vielfache ein Eigenvektor zum
+selben Eigenwert, und am Eigenwert lesen wir ab, ob die Matrix in dieser
+Richtung streckt, staucht oder umklappt. Der Eigenwert $0$ ist erlaubt und
+tritt genau bei den nicht invertierbaren Matrizen auf. In Kapitel 6.2 führen
+wir die Suche nach den Eigenwerten auf die Gleichung
+$\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ zurück, und dabei zahlt sich die
+Determinante aus Kapitel 3 aus. In Kapitel 7 sehen wir dann, wie einfach eine
+Matrix in einer Basis aus ihren Eigenvektoren wird.

@@ -1,202 +1,287 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
 # 6.2 Das charakteristische Polynom
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-Im letzten Abschnitt haben wir den Eigenvektor von $\mathbf{A}$ durch
-glückliches Raten gefunden. In der Praxis mit großen Matrizen ist das natürlich
-keine taugliche Methode. Wir brauchen ein systematisches Verfahren. Die
-Schlüsselidee ist dabei eine Bedingung, die wir bereits kennen: die
-Determinante. Wenn wir die Eigenwertgleichung geschickt umformulieren, führt
-sie direkt auf die Suche nach den Nullstellen eines Polynoms.
+In Kapitel 6.1 haben wir die Eigenvektoren der Matrix $\mathbf{A}$ durch
+Probieren gefunden, und offen geblieben ist, ob sie noch weitere Eigenwerte
+hat. In diesem Kapitel entwickeln wir ein Verfahren, das alle Eigenwerte ohne
+Raten liefert. Den Schlüssel dazu kennen wir schon, denn die Determinante
+entscheidet, ob ein homogenes Gleichungssystem mehr als die Nulllösung hat. Im
+Maschinenbau sind zum Beispiel die Hauptspannungen eines räumlichen
+Spannungszustands die Nullstellen genau eines solchen Polynoms.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können die Eigenwerte einer quadratischen Matrix $\mathbf{A}$ berechnen,
-  indem Sie das **charakteristische Polynom**
-  $p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = 0$
-  aufstellen und lösen.
-* [ ] Sie können das charakteristische Polynom für $2\times 2$- und
-  $3\times 3$-Matrizen explizit berechnen.
-* [ ] Sie wissen, dass eine $n\times n$-Matrix **höchstens $n$ verschiedene
-  Eigenwerte** besitzen kann.
-* [ ] Sie können die Eigenwerte einer **Diagonal- oder Dreiecksmatrix** direkt
-  aus der Diagonalen ablesen, ohne das charakteristische Polynom berechnen
-  zu müssen.
+* [ ] Sie können begründen, warum die Eigenwerte einer Matrix $\mathbf{A}$ die
+  Gleichung $\det(\mathbf{A} - \lambda\mathbf{E}) = 0$ erfüllen.
+* [ ] Sie können das **charakteristische Polynom** einer $2\times 2$- und einer
+  $3\times 3$-Matrix aufstellen und seine Nullstellen berechnen.
+* [ ] Sie wissen, dass eine $n\times n$-Matrix höchstens $n$ verschiedene
+  Eigenwerte hat.
+* [ ] Sie können die Eigenwerte einer Dreiecksmatrix direkt ablesen.
+* [ ] Sie erkennen am charakteristischen Polynom, dass eine Matrix keine
+  reellen Eigenwerte hat.
 ```
 
-## Wie kommen wir von der Eigenwertgleichung zum charakteristischen Polynom?
+## Wie kommen wir von der Eigenwertgleichung zum Polynom?
 
-Wir starten mit der definierenden Gleichung $\mathbf{A}\vec{v} = \lambda\vec{v}$
-und bringen alles auf eine Seite:
-
-\begin{equation*}
-\mathbf{A}\vec{v} - \lambda\vec{v} = \vec{0}.
-\end{equation*}
-
-Da wir $\mathbf{A}$ und $\lambda\mathbf{E}$ beide mit $\vec{v}$ multiplizieren,
-können wir ausklammern:
+Wir schreiben die Eigenwertgleichung $\mathbf{A}\vec{v} = \lambda\vec{v}$ für
+unsere Matrix aus Kapitel 6.1,
 
 \begin{equation*}
-(\mathbf{A} - \lambda\mathbf{E})\vec{v} = \vec{0}.
+\mathbf{A} = \begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix},
 \end{equation*}
 
-Das ist ein homogenes lineares Gleichungssystem. Es hat eine nichttriviale
-Lösung $\vec{v} \neq \vec{0}$ genau dann, wenn die Koeffizientenmatrix
-$\mathbf{A} - \lambda\mathbf{E}$ nicht invertierbar ist, also wenn ihre
-Determinante null ist. Aus dem Kapitel über Determinanten wissen wir: eine
-Matrix ist genau dann nicht invertierbar, wenn ihre Determinante verschwindet.
-Damit ergibt sich die Bedingung für Eigenwerte:
+komponentenweise auf:
+
+\begin{align*}
+4v_1 + v_2 &= \lambda v_1, \\
+2v_1 + 3v_2 &= \lambda v_2.
+\end{align*}
+
+Wir bringen in beiden Gleichungen alles auf die linke Seite und fassen
+zusammen:
+
+\begin{align*}
+(4 - \lambda)\,v_1 + v_2 &= 0, \\
+2v_1 + (3 - \lambda)\,v_2 &= 0.
+\end{align*}
+
+Für jedes feste $\lambda$ ist das ein homogenes lineares Gleichungssystem.
+Seine Koeffizientenmatrix ist $\mathbf{A}$, nur dass von den Einträgen auf der
+Hauptdiagonalen jeweils $\lambda$ abgezogen wird. Die Lösung $\vec{v} = \vec{0}$
+hat es immer, aber die suchen wir nicht. *Für welche $\lambda$ gibt es weitere
+Lösungen?* Wie beim Eigenwert $0$ in Kapitel 6.1 ist das nach Kapitel 4.3
+genau dann der Fall, wenn die Determinante der Koeffizientenmatrix null ist:
 
 \begin{equation*}
-\det(\mathbf{A} - \lambda\mathbf{E}) = 0.
+\det\begin{pmatrix} 4 - \lambda & 1 \\ 2 & 3 - \lambda \end{pmatrix}
+= (4 - \lambda)(3 - \lambda) - 1\cdot 2
+= \lambda^2 - 7\lambda + 10 = 0.
 \end{equation*}
+
+Aus der Suche nach Vektoren ist eine quadratische Gleichung für $\lambda$
+geworden. Mit der $pq$-Formel erhalten wir
+
+\begin{equation*}
+\lambda_{1,2} = \frac{7}{2} \pm \sqrt{\frac{49}{4} - 10}
+= \frac{7}{2} \pm \sqrt{\frac{9}{4}} = \frac{7}{2} \pm \frac{3}{2},
+\end{equation*}
+
+also $\lambda_1 = 5$ und $\lambda_2 = 2$. Das sind genau die beiden Eigenwerte,
+die wir in Kapitel 6.1 durch Probieren gefunden haben, und jetzt wissen wir,
+dass es keine weiteren gibt. Zur Probe setzen wir beide Werte ein und erhalten
+$5^2 - 7\cdot 5 + 10 = 0$ und $2^2 - 7\cdot 2 + 10 = 0$.
+
+In Matrixschreibweise geht die Umformung genauso, nur mit einem kleinen Kniff.
+In $\mathbf{A}\vec{v} - \lambda\vec{v} = \vec{0}$ möchten wir $\vec{v}$
+ausklammern, aber $\mathbf{A} - \lambda$ ergibt keinen Sinn, weil wir von
+einer Matrix keine Zahl abziehen können. Deshalb schreiben wir
+$\lambda\vec{v} = \lambda\mathbf{E}\vec{v}$ mit der Einheitsmatrix aus
+Kapitel 1.2:
+
+\begin{equation*}
+\mathbf{A}\vec{v} = \lambda\vec{v}
+\quad\Longleftrightarrow\quad
+\mathbf{A}\vec{v} - \lambda\mathbf{E}\vec{v} = \vec{0}
+\quad\Longleftrightarrow\quad
+(\mathbf{A} - \lambda\mathbf{E})\,\vec{v} = \vec{0}.
+\end{equation*}
+
+Die Matrix $\lambda\mathbf{E}$ hat auf der Hauptdiagonalen den Eintrag
+$\lambda$ und sonst Nullen. Deshalb zieht $\mathbf{A} - \lambda\mathbf{E}$
+genau wie oben $\lambda$ von den Diagonaleinträgen ab.
 
 ```{admonition} Was ist ... das charakteristische Polynom?
 :class: note
-Für eine quadratische Matrix $\mathbf{A} \in \mathbb{R}^{n\times n}$ heißt der
-Ausdruck
+Für eine quadratische Matrix $\mathbf{M}$ heißt
 
 \begin{equation*}
-p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E})
+p(\lambda) = \det(\mathbf{M} - \lambda\mathbf{E})
 \end{equation*}
 
-das **charakteristische Polynom** von $\mathbf{A}$. Es ist ein Polynom vom Grad
-$n$ in $\lambda$. Die Eigenwerte von $\mathbf{A}$ sind genau die reellen
-Nullstellen von $p(\lambda)$. Die Gleichung $p(\lambda) = 0$ heißt die
-**charakteristische Gleichung**.
+das **charakteristische Polynom** von $\mathbf{M}$, und $p(\lambda) = 0$ heißt
+**charakteristische Gleichung**. Die Eigenwerte von $\mathbf{M}$ sind genau
+die reellen Nullstellen von $p$.
 ```
 
-Eine $n\times n$-Matrix hat also höchstens $n$ verschiedene Eigenwerte, da ein
-Polynom vom Grad $n$ höchstens $n$ Nullstellen hat. Für $2\times 2$-Matrizen
-ist das charakteristische Polynom quadratisch, für $3\times 3$-Matrizen kubisch.
+*Wie viele Eigenwerte kann eine Matrix haben?* Bei einer $n\times n$-Matrix
+steht $\lambda$ in den $n$ Diagonaleinträgen von $\mathbf{M} - \lambda\mathbf{E}$.
+Die höchste Potenz von $\lambda$ entsteht, wenn wir alle Diagonaleinträge
+miteinander multiplizieren, und ist $(-\lambda)^n$. Das charakteristische
+Polynom hat also den Grad $n$, und nach Mathematik 1 hat ein Polynom vom Grad
+$n$ höchstens $n$ Nullstellen. Eine $n\times n$-Matrix hat deshalb höchstens
+$n$ verschiedene Eigenwerte. Für $\mathbf{A}$ ist $n = 2$, und mit $5$ und $2$
+haben wir beide gefunden.
 
-## Wie berechnen wir Eigenwerte für eine $2\times 2$-Matrix?
+```{dropdown} Video "Eigenwerte, Eigenvektoren 2x2" von Daniel Jung
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Rr0aa7oo5u8"
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
 
-Wir kehren zu der Matrix zurück, die wir im letzten Abschnitt untersucht haben:
+## Wie berechnen wir die Eigenwerte einer $3\times 3$-Matrix?
 
-\begin{equation*}
-\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix}.
-\end{equation*}
-
-Die Matrix $\mathbf{A} - \lambda\mathbf{E}$ lautet:
-
-\begin{equation*}
-\mathbf{A} - \lambda\mathbf{E} =
-\begin{pmatrix} 6 - \lambda & 2 \\ 2 & 3 - \lambda \end{pmatrix}.
-\end{equation*}
-
-Die Determinante dieser Matrix ist das charakteristische Polynom:
-
-\begin{equation*}
-p(\lambda) = \det\begin{pmatrix} 6 - \lambda & 2 \\ 2 & 3 - \lambda \end{pmatrix}
-= (6 - \lambda)(3 - \lambda) - 2 \cdot 2.
-\end{equation*}
-
-Wir multiplizieren aus und vereinfachen:
+Für eine $3\times 3$-Matrix gehen wir genauso vor, nur wird die Gleichung
+kubisch. Wir nehmen die Matrix
 
 \begin{equation*}
-p(\lambda) = 18 - 9\lambda + \lambda^2 - 4 = \lambda^2 - 9\lambda + 14.
+\mathbf{B} = \begin{pmatrix} 7 & -2 & 0 \\ -2 & 6 & -2 \\ 0 & -2 & 5 \end{pmatrix}
 \end{equation*}
 
-Die charakteristische Gleichung $p(\lambda) = 0$ lösen wir mit der pq-Formel:
+und ziehen $\lambda$ von ihren Diagonaleinträgen ab. Die Determinante
+berechnen wir mit dem Laplaceschen Entwicklungssatz aus Kapitel 3.2 und
+entwickeln nach der ersten Zeile, weil dort eine Null steht:
 
 \begin{align*}
-\lambda_{1/2}
-&= \frac{9}{2} \pm \sqrt{\frac{81}{4} - 14}
-= \frac{9}{2} \pm \sqrt{\frac{25}{4}}
-= \frac{9}{2} \pm \frac{5}{2}.
+p(\lambda)
+&= \det\begin{pmatrix} 7 - \lambda & -2 & 0 \\ -2 & 6 - \lambda & -2 \\
+0 & -2 & 5 - \lambda \end{pmatrix} \\
+&= (7 - \lambda)\det\begin{pmatrix} 6 - \lambda & -2 \\
+-2 & 5 - \lambda \end{pmatrix} - (-2)\det\begin{pmatrix} -2 & -2 \\ 0 & 5 - \lambda \end{pmatrix} \\
+&= (7 - \lambda)\big((6 - \lambda)(5 - \lambda) - 4\big) + 2\cdot(-2)(5 - \lambda).
 \end{align*}
 
-Damit erhalten wir die beiden Eigenwerte:
+Den dritten Summanden der Entwicklung haben wir weggelassen, weil er mit der
+Null multipliziert wird. Ausmultiplizieren und Zusammenfassen ergibt
 
 \begin{equation*}
-\lambda_{1} = 7 \quad \text{und} \quad \lambda_{2} = 2.
+p(\lambda) = (7 - \lambda)(\lambda^2 - 11\lambda + 26) - 4\,(5 - \lambda)
+= -\lambda^3 + 18\lambda^2 - 99\lambda + 162.
 \end{equation*}
 
-Das überprüfen wir sofort: $p(7) = 49 - 63 + 14 = 0$ und $p(2) = 4 - 18 + 14 = 0$.
-Beide Werte sind tatsächlich Nullstellen des charakteristischen Polynoms.
-
-Für den Maschinenbau ist dieses Beispiel nicht nur akademisch. Stellen wir uns
-vor, $\mathbf{A}$ sei der ebene Spannungstensor eines Biegebalkens mit
-$\sigma_{xx} = 6~\text{MPa}$, $\sigma_{yy} = 3~\text{MPa}$ und
-$\tau_{xy} = 2~\text{MPa}$. Dann sind die Eigenwerte $\lambda_1 = 7~\text{MPa}$
-und $\lambda_2 = 2~\text{MPa}$ die Hauptspannungen des Spannungszustands.
-
-## Wie berechnen wir Eigenwerte für eine $3\times 3$-Matrix?
-
-Das Verfahren ist identisch: charakteristisches Polynom aufstellen,
-Nullstellen bestimmen. Der Unterschied ist, dass die Determinante einer
-$3\times 3$-Matrix ein kubisches Polynom in $\lambda$ ergibt.
-
-Wir betrachten die Matrix
+Für eine kubische Gleichung gibt es keine so handliche Formel wie die
+$pq$-Formel. Wie in Mathematik 1 raten wir deshalb eine Nullstelle.
+Ganzzahlige Nullstellen müssen hier Teiler des Absolutglieds $162$ sein, und
+wir probieren die kleinen Teiler der Reihe nach aus:
 
 \begin{equation*}
-\mathbf{A} = \begin{pmatrix} 5 & -1 & 2 \\ -1 & 5 & 2 \\ 2 & 2 & 2 \end{pmatrix}.
+p(1) = 80, \qquad p(2) = 28, \qquad p(3) = -27 + 162 - 297 + 162 = 0.
 \end{equation*}
 
-Die charakteristische Gleichung lautet:
+Also ist $\lambda_1 = 3$ eine Nullstelle, und wir spalten den Linearfaktor
+$(\lambda - 3)$ mit einer Polynomdivision ab:
 
 \begin{equation*}
-\det\begin{pmatrix} 5 - \lambda & -1 & 2 \\ -1 & 5 - \lambda & 2 \\ 2 & 2 & 2 - \lambda \end{pmatrix} = 0.
+(-\lambda^3 + 18\lambda^2 - 99\lambda + 162) : (\lambda - 3)
+= -\lambda^2 + 15\lambda - 54.
 \end{equation*}
 
-Die Berechnung der Determinante mit der Regel von Sarrus oder dem Laplaceschen
-Entwicklungssatz ergibt nach Ausmultiplizieren:
+Die restliche Gleichung $-\lambda^2 + 15\lambda - 54 = 0$ multiplizieren wir
+mit $-1$ und lösen $\lambda^2 - 15\lambda + 54 = 0$ mit der $pq$-Formel:
 
 \begin{equation*}
-p(\lambda) = -\lambda^3 + 12\lambda^2 - 36\lambda = -\lambda(\lambda^2 - 12\lambda + 36)
-= -\lambda(\lambda - 6)^2.
+\lambda_{2,3} = \frac{15}{2} \pm \sqrt{\frac{225}{4} - 54}
+= \frac{15}{2} \pm \sqrt{\frac{9}{4}} = \frac{15}{2} \pm \frac{3}{2}.
 \end{equation*}
 
-Die Nullstellen sind $\lambda_3 = 0$ und $\lambda_1 = \lambda_2 = 6$. Der
-Eigenwert $\lambda = 6$ ist eine doppelte Nullstelle: Wir sagen, er hat die
-**algebraische Vielfachheit** $2$. Die drei Eigenwerte der Matrix sind somit
-$\{0, 6, 6\}$.
+Die Matrix $\mathbf{B}$ hat also die drei Eigenwerte $\lambda_1 = 3$,
+$\lambda_2 = 6$ und $\lambda_3 = 9$. Beim Ausmultiplizieren kubischer
+Polynome schleichen sich leicht Vorzeichenfehler ein, und deshalb setzen wir
+zur Probe die beiden neuen Werte in die ausmultiplizierte Form ein:
 
-*Was bedeutet es, wenn ein Eigenwert gleich Null ist?* Dann ist
-$\det(\mathbf{A} - 0 \cdot \mathbf{E}) = \det(\mathbf{A}) = 0$. Die Matrix ist
-nicht invertierbar, und das lineare Gleichungssystem $\mathbf{A}\vec{x} = \vec{b}$
-hat keine eindeutige Lösung für jeden beliebigen Ergebnisvektor $\vec{b}$.
+\begin{align*}
+p(6) &= -216 + 648 - 594 + 162 = 0, \\
+p(9) &= -729 + 1458 - 891 + 162 = 0.
+\end{align*}
 
-## Können wir Eigenwerte manchmal direkt ablesen?
+Beide Werte sind Nullstellen. Weil $p$ den Grad $3$ hat, kann es keine
+weiteren geben, und $\mathbf{B}$ hat damit die größtmögliche Anzahl von drei
+verschiedenen Eigenwerten.
 
-Ja. Für Dreiecks- und Diagonalmatrizen lässt sich das charakteristische Polynom
-besonders einfach berechnen. Erinnern wir uns an die Eigenschaft aus Kapitel 1:
-die Determinante einer Dreiecksmatrix ist das Produkt ihrer Diagonalelemente.
-Damit gilt für eine obere Dreiecksmatrix mit den Einträgen $d_1, d_2, \ldots, d_n$
-auf der Diagonale:
+## Wann sehen wir die Eigenwerte ohne Rechnung?
+
+Bei $\mathbf{B}$ hat uns die Null in der ersten Zeile einen Summanden
+erspart. Noch besser wird es, wenn unterhalb der Hauptdiagonalen nur Nullen
+stehen, wie bei der Matrix
 
 \begin{equation*}
-p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = (d_1 - \lambda)(d_2 - \lambda)\cdots(d_n - \lambda).
+\mathbf{C} = \begin{pmatrix} 3 & 1 & 7 \\ 0 & -2 & 4 \\ 0 & 0 & 5 \end{pmatrix}.
 \end{equation*}
 
-Die Nullstellen sind direkt die Diagonaleinträge: Die Eigenwerte einer
-Dreiecksmatrix (oder Diagonalmatrix) stehen auf der Hauptdiagonale. Für die
-Matrix
+Ziehen wir $\lambda$ von der Diagonalen ab, bleibt $\mathbf{C} - \lambda\mathbf{E}$
+eine obere Dreiecksmatrix. Nach Kapitel 3.3 ist ihre Determinante das Produkt
+der Diagonaleinträge, und wir erhalten das charakteristische Polynom ohne
+jedes Ausmultiplizieren schon als Produkt von Linearfaktoren:
 
 \begin{equation*}
-\mathbf{T} = \begin{pmatrix} 3 & 1 & 7 \\ 0 & -2 & 4 \\ 0 & 0 & 5 \end{pmatrix}
+p(\lambda)
+= \det\begin{pmatrix} 3 - \lambda & 1 & 7 \\ 0 & -2 - \lambda & 4 \\
+0 & 0 & 5 - \lambda \end{pmatrix}
+= (3 - \lambda)(-2 - \lambda)(5 - \lambda).
 \end{equation*}
 
-können wir sofort ablesen: die Eigenwerte sind $\lambda_1 = 3$, $\lambda_2 = -2$
-und $\lambda_3 = 5$.
+Die Nullstellen sind $3$, $-2$ und $5$, also genau die Diagonaleinträge von
+$\mathbf{C}$. Die Einträge oberhalb der Diagonalen spielen für die Eigenwerte
+keine Rolle. Bei einer unteren Dreiecksmatrix ist es genauso, denn nach
+Kapitel 3.3 gilt die Regel für beide Arten von Dreiecksmatrizen.
+
+```{admonition} Wie lesen wir die Eigenwerte einer Dreiecksmatrix ab?
+:class: note
+Die Eigenwerte einer oberen oder unteren Dreiecksmatrix sind ihre
+Diagonaleinträge. Das gilt insbesondere für Diagonalmatrizen.
+```
+
+Zur Probe suchen wir für den Eigenwert $3$ einen Eigenvektor. Die erste
+Spalte von $\mathbf{C}$ ist $3\,\vec{e}_1$, also gilt
+$\mathbf{C}\vec{e}_1 = 3\,\vec{e}_1$, und $\vec{e}_1$ ist tatsächlich ein
+Eigenvektor zum Eigenwert $3$. Auch die Scherung $\mathbf{D}$ aus
+Kapitel 4.1 ist eine Dreiecksmatrix:
+
+\begin{equation*}
+\mathbf{D} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}.
+\end{equation*}
+
+Auf ihrer Diagonalen steht zweimal die $1$, ihr charakteristisches Polynom
+ist $(1 - \lambda)^2$, und der Eigenwert $1$ ist eine doppelte Nullstelle.
+Was das für die Eigenvektoren bedeutet, untersuchen wir in Kapitel 6.4. Bei
+Matrizen, die keine Dreiecksmatrizen sind, dürfen wir die Eigenwerte dagegen
+nicht von der Diagonalen ablesen. Auf der Diagonalen von $\mathbf{A}$ stehen
+$4$ und $3$, ihre Eigenwerte sind aber $5$ und $2$.
+
+*Und wenn das charakteristische Polynom gar keine reellen Nullstellen hat?*
+In Kapitel 6.1 haben wir gesehen, dass eine Drehung keinen Eigenvektor hat.
+Die orthogonale Matrix aus Kapitel 5.2 ist nach Kapitel 5.4 die Drehmatrix
+$\mathbf{R}(\varphi)$ mit $\cos\varphi = \frac{3}{5}$ und
+$\sin\varphi = \frac{4}{5}$, also mit $\varphi \approx 53.13^\circ$:
+
+\begin{equation*}
+\mathbf{R}(\varphi) = \frac{1}{5}\begin{pmatrix} 3 & -4 \\ 4 & 3 \end{pmatrix}.
+\end{equation*}
+
+Ihr charakteristisches Polynom ist
+
+\begin{equation*}
+p(\lambda)
+= \left(\frac{3}{5} - \lambda\right)^2 - \left(-\frac{4}{5}\right)\cdot\frac{4}{5}
+= \left(\frac{3}{5} - \lambda\right)^2 + \frac{16}{25}.
+\end{equation*}
+
+Ein Quadrat ist nie negativ, und wenn wir die positive Zahl $\frac{16}{25}$
+addieren, kann das Ergebnis nie null werden. Das Polynom hat also keine
+reelle Nullstelle, und $\mathbf{R}(\varphi)$ hat keinen Eigenwert, genau wie
+es die Anschauung verlangt. Dasselbe Argument funktioniert für jede Drehung
+mit $\sin\varphi \neq 0$, also für jeden Drehwinkel, der kein Vielfaches von
+$180^\circ$ ist. Mit den komplexen Zahlen aus Mathematik 1 hätte das Polynom
+die Nullstellen $\frac{3}{5} \pm \frac{4}{5}\,\mathrm{i}$, aber komplexe
+Eigenwerte betrachten wir in diesem Kurs nicht.
 
 ## Zusammenfassung und Ausblick
 
-Die Eigenwerte einer quadratischen Matrix werden als Nullstellen des
-charakteristischen Polynoms $p(\lambda) = \det(\mathbf{A} - \lambda\mathbf{E}) = 0$
-berechnet. Für $2\times 2$-Matrizen führt das auf eine quadratische, für
-$3\times 3$-Matrizen auf eine kubische Gleichung. Dreiecks- und Diagonalmatrizen
-erlauben das direkte Ablesen der Eigenwerte aus der Diagonale.
-
-Jetzt kennen wir die Eigenwerte, aber noch nicht die zugehörigen Eigenvektoren.
-Der nächste Abschnitt zeigt, wie man für jeden gefundenen Eigenwert $\lambda_i$
-das homogene Gleichungssystem $(\mathbf{A} - \lambda_i\mathbf{E})\vec{v} = \vec{0}$
-löst und damit die Eigenvektoren bestimmt.
+Die Eigenwerte einer quadratischen Matrix $\mathbf{M}$ sind die reellen
+Nullstellen ihres charakteristischen Polynoms
+$p(\lambda) = \det(\mathbf{M} - \lambda\mathbf{E})$. Bei einer
+$n\times n$-Matrix hat es den Grad $n$, und deshalb gibt es höchstens $n$
+verschiedene Eigenwerte. Bei $2\times 2$-Matrizen hilft die $pq$-Formel, bei
+$3\times 3$-Matrizen raten wir eine Nullstelle und spalten sie mit einer
+Polynomdivision ab, und bei Dreiecksmatrizen stehen die Eigenwerte direkt auf
+der Diagonalen. Eine Drehung hat keine reellen Eigenwerte. In Kapitel 6.3
+berechnen wir zu jedem Eigenwert die zugehörigen Eigenvektoren. Eine
+charakteristische Gleichung begegnet uns außerdem in Kapitel 11 wieder, wenn
+wir Schwingungen mit Differentialgleichungen beschreiben, und dort werden
+ausgerechnet die komplexen Nullstellen wichtig.
