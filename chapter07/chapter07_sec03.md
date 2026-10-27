@@ -1,205 +1,326 @@
-# 7.3 Anwendungen der Eigenwertberechnung
+---
+authors:
+  - name: Simone Gramsch
+---
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
+# 7.3 Hauptachsentransformation (Vertiefung)
+
+```{admonition} Vertiefung
+:class: note
+Dieses Kapitel ist eine Vertiefung. Es ist optional und kein Prüfungsstoff der
+CA-Tests.
 ```
 
-Wir haben in diesem Kapitel das Werkzeug der Diagonalisierung vollständig
-entwickelt. Jetzt setzen wir es ein. Der Trägheitstensor des L-Profils und der
-Spannungstensor haben uns als Leitbeispiele begleitet, und beide sind bereits
-vollständig behandelt. In diesem Abschnitt fassen wir die Ergebnisse dieser
-beiden Beispiele aus Ingenieurperspektive zusammen und fügen eine dritte
-wichtige Anwendung hinzu: die Modalanalyse schwingender Systeme.
+In Kapitel 7.2 haben wir für die symmetrische Matrix $\mathbf{A}$ eine
+Drehmatrix $\mathbf{Q}$ gefunden, mit der $\mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}$
+eine Diagonalmatrix wird. In diesem Kapitel sehen wir, was diese Drehung
+geometrisch bewirkt. Eine symmetrische Matrix beschreibt eine schräg liegende
+Ellipse, und die Drehung bringt die Ellipse in eine Lage, in der wir ihre
+Achsen direkt ablesen können. Im Maschinenbau steckt dieses Verfahren zum
+Beispiel hinter den Hauptspannungen in einem Bauteil und hinter den
+Hauptträgheitsachsen eines Querschnitts.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie können erläutern, wie die Diagonalisierung des **Trägheitstensors**
-  die Hauptträgheitsmomente und Hauptträgheitsachsen eines Querschnitts liefert.
-* [ ] Sie können den Zusammenhang zwischen Diagonalisierung und der Berechnung
-  von **Hauptspannungen** erläutern: Die Eigenwerte des Spannungstensors sind
-  die Hauptspannungen, die Eigenvektoren geben die Hauptspannungsrichtungen an.
-* [ ] Sie können erläutern, wie die Diagonalisierung in der **Modalanalyse**
-  eingesetzt wird: Ein gekoppeltes Schwingungssystem zerfällt in der Basis der
-  Eigenvektoren in unabhängige Einzelschwingungen.
+* [ ] Sie können einen Ausdruck $ax^2 + 2bxy + cy^2$ als **quadratische Form**
+  $\vec{x}^{\top}\mathbf{M}\vec{x}$ mit einer symmetrischen Matrix schreiben.
+* [ ] Sie können mit einer **Hauptachsentransformation** den gemischten Term
+  einer quadratischen Form beseitigen.
+* [ ] Sie können die **Hauptachsen** und die Halbachsen einer Ellipse aus den
+  Eigenvektoren und Eigenwerten bestimmen.
+* [ ] Sie können an den Vorzeichen der Eigenwerte erkennen, ob die Gleichung
+  $\vec{x}^{\top}\mathbf{M}\vec{x} = 1$ eine Ellipse oder eine Hyperbel
+  beschreibt.
 ```
 
-## Hauptträgheitsmomente und Hauptträgheitsachsen
+## Wie beschreibt eine symmetrische Matrix eine Ellipse?
 
-Ein Balken mit L-förmigem Querschnitt wurde in diesem Kapitel als durchgehendes
-Beispiel verwendet. Der Trägheitstensor im ursprünglichen Koordinatensystem
-
-\begin{equation*}
-\mathbf{I} = \begin{pmatrix} 5 & 2 \\ 2 & 2 \end{pmatrix} \cdot 10^4\,\text{mm}^4
-\end{equation*}
-
-hat den Nebendiagonaleintrag $2 \cdot 10^4\,\text{mm}^4$, weil die
-Koordinatenachsen nicht mit den natürlichen Symmetrieachsen des Profils
-übereinstimmen. Durch Diagonalisierung haben wir in Abschnitt 5.4 das
-Koordinatensystem der Hauptträgheitsachsen gefunden:
+Wir beginnen mit der Gleichung
 
 \begin{equation*}
-\mathbf{D} = \begin{pmatrix} 6 & 0 \\ 0 & 1 \end{pmatrix} \cdot 10^4\,\text{mm}^4.
+7x^2 + 2y^2 = 1.
 \end{equation*}
 
-Die Diagonaleinträge sind die **Hauptträgheitsmomente** $I_1 = 6 \cdot 10^4\,\text{mm}^4$
-und $I_2 = 1 \cdot 10^4\,\text{mm}^4$. Die zugehörigen Eigenvektoren
+Setzen wir $y = 0$, bleibt $7x^2 = 1$, also $x = \pm\frac{1}{\sqrt{7}} \approx \pm 0.38$.
+Für $x = 0$ erhalten wir ebenso $y = \pm\frac{1}{\sqrt{2}} \approx \pm 0.71$.
+Die Gleichung beschreibt eine Ellipse durch diese vier Punkte, deren Achsen auf
+den Koordinatenachsen liegen, wie das linke Teilbild der Abbildung am Ende
+dieses Abschnitts zeigt. Die halben Achsenlängen $\frac{1}{\sqrt{7}}$ und $\frac{1}{\sqrt{2}}$
+heißen **Halbachsen**. Wären beide gleich, hätten wir einen Kreis.
+
+*Was hat diese Gleichung mit Matrizen zu tun?* Wir schreiben den Vektor
+$\vec{x} = (x, y)^{\top}$ und nehmen die Diagonalmatrix
+$\mathbf{D} = \text{diag}(7, 2)$ aus Kapitel 7.2. Wie in Kapitel 5.2 ist
+$\vec{x}^{\top}\vec{y}$ das Skalarprodukt, und damit ist
 
 \begin{equation*}
-\vec{v}_1 = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 \\ 1 \end{pmatrix}
-\quad \text{und} \quad
-\vec{v}_2 = \frac{1}{\sqrt{5}}\begin{pmatrix} 1 \\ -2 \end{pmatrix}
+\vec{x}^{\top}\mathbf{D}\vec{x}
+= \begin{pmatrix} x & y \end{pmatrix}
+\begin{pmatrix} 7 & 0 \\ 0 & 2 \end{pmatrix}
+\begin{pmatrix} x \\ y \end{pmatrix}
+= \begin{pmatrix} x & y \end{pmatrix}
+\begin{pmatrix} 7x \\ 2y \end{pmatrix}
+= 7x^2 + 2y^2.
 \end{equation*}
 
-zeigen in die **Hauptträgheitsachsen**, also in die Richtungen der größten und
-kleinsten Biegesteifigkeit. Um den Balken zu biegen, ist die Kraft in Richtung
-$\vec{v}_2$ am wirksamsten, weil das kleinste Trägheitsmoment dort liegt.
-
-Diese Information ist in der Praxis unverzichtbar: In der Norm DIN EN 1993
-(Bemessung von Stahlbauten) werden alle Nachweise für Biegung und Knickung
-bezüglich der Hauptträgheitsachsen geführt. Ohne die Diagonalisierung müsste
-man mit dem ungünstigeren ursprünglichen Koordinatensystem rechnen und würde
-dabei entweder auf der sicheren Seite zu konservativ oder im ungünstigen Fall
-falsch liegen.
-
-## Hauptspannungen und Hauptspannungsrichtungen
-
-Der Spannungstensor an einem Punkt eines belasteten Bauteils beschreibt, welche
-Normal- und Schubspannungen auf Schnittflächen in verschiedene Richtungen
-wirken. Im Beispiel aus Abschnitt 5.2 lautete er:
+Die Ellipse ist also die Gleichung $\vec{x}^{\top}\mathbf{D}\vec{x} = 1$. Jetzt
+ersetzen wir $\mathbf{D}$ durch die symmetrische Matrix aus Kapitel 7.2,
 
 \begin{equation*}
-\boldsymbol{\sigma} = \begin{pmatrix} 7 & 2 \\ 2 & 4 \end{pmatrix}~\text{MPa}.
+\mathbf{A} = \begin{pmatrix} 6 & 2 \\ 2 & 3 \end{pmatrix},
 \end{equation*}
 
-Durch Diagonalisierung haben wir in Abschnitt 5.4 die Hauptspannungen
-$\sigma_1 = 8~\text{MPa}$ und $\sigma_2 = 3~\text{MPa}$ bestimmt. Die
-zugehörigen Eigenvektoren geben die **Hauptspannungsrichtungen** an, also die
-Schnittflächen, auf denen ausschließlich Normalspannungen und keine
-Schubspannungen wirken.
-
-*Warum ist das für die Auslegung wichtig?* Die meisten Versagenskriterien im
-Maschinenbau, wie das von-Mises-Kriterium oder das Tresca-Kriterium, werden in
-den Hauptspannungen formuliert. Konkret lautet die von-Mises-Vergleichsspannung
-für den ebenen Spannungszustand:
+und rechnen genauso:
 
 \begin{equation*}
-\sigma_V = \sqrt{\sigma_1^2 - \sigma_1\sigma_2 + \sigma_2^2}.
+\vec{x}^{\top}\mathbf{A}\vec{x}
+= \begin{pmatrix} x & y \end{pmatrix}
+\begin{pmatrix} 6x + 2y \\ 2x + 3y \end{pmatrix}
+= 6x^2 + 2xy + 2yx + 3y^2
+= 6x^2 + 4xy + 3y^2.
 \end{equation*}
 
-Für unser Beispiel ergibt sich:
+Die Diagonaleinträge $6$ und $3$ stehen wieder vor $x^2$ und $y^2$. Neu ist
+der Summand $4xy$, und er entsteht aus den beiden Einträgen $2$ neben der
+Diagonalen, von denen jeder einmal $2xy$ beiträgt. Bei einer Diagonalmatrix
+fehlt er, weil dort neben der Diagonalen nur Nullen stehen.
+
+```{admonition} Was ist ... eine quadratische Form?
+:class: note
+Für eine symmetrische Matrix $\mathbf{M}$ und den Vektor
+$\vec{x} = (x, y)^{\top}$ heißt
 
 \begin{equation*}
-\sigma_V = \sqrt{8^2 - 8\cdot 3 + 3^2} = \sqrt{64 - 24 + 9} = \sqrt{49} = 7~\text{MPa}.
+\vec{x}^{\top}\mathbf{M}\vec{x}
+= \begin{pmatrix} x & y \end{pmatrix}
+\begin{pmatrix} a & b \\ b & c \end{pmatrix}
+\begin{pmatrix} x \\ y \end{pmatrix}
+= ax^2 + 2bxy + cy^2
 \end{equation*}
 
-Diesen Wert vergleicht man mit der Streckgrenze des Werkstoffs. Die
-Diagonalisierung ist hier also kein Selbstzweck, sondern der notwendige erste
-Schritt vor dem Festigkeitsnachweis. In der Technischen Mechanik II werden Sie
-diesen Zusammenhang für den räumlichen Spannungszustand mit einem $3\times 3$-Tensor
-vertiefen.
+die **quadratische Form** von $\mathbf{M}$. Der Summand $2bxy$ heißt
+**gemischter Term**. Umgekehrt gehört zu jedem Ausdruck $ax^2 + 2bxy + cy^2$
+genau eine symmetrische Matrix, in der neben der Diagonalen jeweils der halbe
+Faktor vor $xy$ steht.
+```
 
-## Modalanalyse: wenn Maschinen schwingen
+Für $\mathbf{A}$ ist $a = 6$, $b = 2$ und $c = 3$, und wir erhalten wieder
+$6x^2 + 4xy + 3y^2$. Zur Probe setzen wir $\vec{x} = (1, 1)^{\top}$ auf beiden
+Wegen ein. Mit der Matrix ist
+$\vec{x}^{\top}\mathbf{A}\vec{x} = (1, 1)^{\top}\cdot(8, 5)^{\top} = 13$, und
+mit dem Ausdruck ist $6 + 4 + 3 = 13$.
 
-Eine dritte, in der Praxis besonders wichtige Anwendung der Diagonalisierung
-ist die Analyse schwingender Systeme. Jede Maschine schwingt, wenn sie in
-Betrieb ist: Motoren, Pumpen, Brücken, Flugzeugtragflächen. Die Frage, bei
-welchen Frequenzen Resonanz auftritt, entscheidet über Komfort, Lärm und im
-Extremfall über das Versagen des Bauteils.
+Das rechte Teilbild zeigt die Kurve $6x^2 + 4xy + 3y^2 = 1$. Sie sieht aus wie
+die Ellipse aus dem linken Teilbild, nur gedreht. Ihre Schnittpunkte mit den
+Koordinatenachsen liegen bei $x = \pm\frac{1}{\sqrt{6}} \approx \pm 0.41$ und
+$y = \pm\frac{1}{\sqrt{3}} \approx \pm 0.58$, aber das sind keine Halbachsen
+mehr, denn die Achsen der Ellipse liegen schräg. *Wie lang sind die
+Halbachsen, und in welche Richtung zeigen sie?*
 
-Wir betrachten ein einfaches Modell: zwei Massen $m_1$ und $m_2$, die über
-Federn miteinander und mit einem festen Rahmen verbunden sind. Die Bewegung
-beider Massen ist gekoppelt, weil die mittlere Feder beide Massen gleichzeitig
-beeinflusst. Die Gleichgewichtsbedingung führt auf ein lineares
-Gleichungssystem der Form
+```{figure} pics/hauptachsen_ellipse.svg
+---
+name: hauptachsen_ellipse
+---
+Darstellung der Ellipse $\vec{x}^{\top}\mathbf{D}\vec{x} = 1$ in
+Hauptachsenlage und der gedrehten Ellipse $\vec{x}^{\top}\mathbf{A}\vec{x} = 1$
+mit ihren Hauptachsen $u$ und $v$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+## Wie drehen wir die Ellipse in ihre Hauptachsen?
+
+In Kapitel 7.2 haben wir die normierten Eigenvektoren
+$\vec{q}_1 = \frac{1}{\sqrt{5}}(2, 1)^{\top}$ zum Eigenwert $7$ und
+$\vec{q}_2 = \frac{1}{\sqrt{5}}(-1, 2)^{\top}$ zum Eigenwert $2$ als Spalten in
+die Drehmatrix
 
 \begin{equation*}
-\mathbf{K}\vec{x} = \omega^2 \mathbf{M}\vec{x},
+\mathbf{Q} = \frac{1}{\sqrt{5}}\begin{pmatrix} 2 & -1 \\ 1 & 2 \end{pmatrix}
+= \mathbf{R}(26.57^\circ)
 \end{equation*}
 
-wobei $\mathbf{K}$ die **Steifigkeitsmatrix**, $\mathbf{M}$ die **Massenmatrix**,
-$\vec{x}$ der Vektor der Auslenkungen und $\omega$ die gesuchte Kreisfrequenz
-ist. Das ist ein verallgemeinertes Eigenwertproblem. Für den Sonderfall gleicher
-Massen $m_1 = m_2 = m$ vereinfacht es sich auf ein gewöhnliches Eigenwertproblem
-für die Matrix $\mathbf{A} = \frac{1}{m}\mathbf{K}$.
+geschrieben, und es galt $\mathbf{Q}^{\top}\mathbf{A}\mathbf{Q} = \mathbf{D}$.
+Die Vektoren $\vec{q}_1$ und $\vec{q}_2$ bilden eine Orthonormalbasis. Wie bei
+der passiven Drehung in Kapitel 5.4 nehmen wir sie als Achsen eines neuen
+Koordinatensystems, das gegenüber dem alten um $26.57^\circ$ gedreht ist. Die
+neuen Koordinaten nennen wir $u$ und $v$. Nach Kapitel 5.2 ist der
+Koordinatenvektor $\vec{w} = (u, v)^{\top}$ eines Punktes $\vec{x}$ dann
+$\vec{w} = \mathbf{Q}^{\top}\vec{x}$, und umgekehrt gilt nach Kapitel 5.1
+$\vec{x} = \mathbf{Q}\vec{w}$.
 
-Als konkretes Beispiel wählen wir $m = 1\,\text{kg}$ und die Steifigkeitsmatrix
+*Wie sieht die quadratische Form in den neuen Koordinaten aus?* Wir setzen
+$\vec{x} = \mathbf{Q}\vec{w}$ ein und nutzen die Regel
+$(\mathbf{Q}\vec{w})^{\top} = \vec{w}^{\top}\mathbf{Q}^{\top}$ aus Kapitel 2.1:
 
 \begin{equation*}
-\mathbf{K} = \begin{pmatrix} 3 & -1 \\ -1 & 3 \end{pmatrix}~\frac{\text{N}}{\text{m}},
+\vec{x}^{\top}\mathbf{A}\vec{x}
+= (\mathbf{Q}\vec{w})^{\top}\mathbf{A}\,\mathbf{Q}\vec{w}
+= \vec{w}^{\top}\,\mathbf{Q}^{\top}\mathbf{A}\mathbf{Q}\,\vec{w}
+= \vec{w}^{\top}\mathbf{D}\,\vec{w}
+= 7u^2 + 2v^2.
 \end{equation*}
 
-sodass $\mathbf{A} = \mathbf{K}$. Die Matrix ist symmetrisch, der Spektralsatz
-garantiert, dass die Diagonalisierung gelingt. Wir berechnen die Eigenwerte:
+Im letzten Schritt haben wir die quadratische Form von $\mathbf{D}$ aus dem
+ersten Abschnitt verwendet, nur mit $u$ und $v$ statt $x$ und $y$. Die
+Gleichung $6x^2 + 4xy + 3y^2 = 1$ lautet in den neuen Koordinaten also
+$7u^2 + 2v^2 = 1$, und der gemischte Term ist verschwunden. Zur Probe setzen
+wir die Komponenten von $\vec{x} = \mathbf{Q}\vec{w}$, also
+$x = \frac{1}{\sqrt{5}}(2u - v)$ und $y = \frac{1}{\sqrt{5}}(u + 2v)$, direkt in
+die drei Summanden ein:
+
+\begin{align*}
+6x^2 &= \tfrac{6}{5}\,(4u^2 - 4uv + v^2) = \tfrac{1}{5}\,(24u^2 - 24uv + 6v^2), \\
+4xy &= \tfrac{4}{5}\,(2u^2 + 3uv - 2v^2) = \tfrac{1}{5}\,(8u^2 + 12uv - 8v^2), \\
+3y^2 &= \tfrac{3}{5}\,(u^2 + 4uv + 4v^2) = \tfrac{1}{5}\,(3u^2 + 12uv + 12v^2).
+\end{align*}
+
+Zusammen ergibt das $\frac{1}{5}(35u^2 + 0\cdot uv + 10v^2) = 7u^2 + 2v^2$. Die
+gemischten Terme $-24uv$, $12uv$ und $12uv$ heben sich genau auf. Das ist kein
+Zufall, denn in $\mathbf{D}$ stehen neben der Diagonalen nur Nullen.
+
+```{admonition} Was ist ... eine Hauptachsentransformation?
+:class: note
+Ist $\mathbf{M}$ eine symmetrische $2\times 2$-Matrix mit
+$\mathbf{Q}^{\top}\mathbf{M}\mathbf{Q} = \text{diag}(\lambda_1, \lambda_2)$
+nach dem Spektralsatz, so gilt in den Koordinaten
+$(u, v)^{\top} = \mathbf{Q}^{\top}\vec{x}$
 
 \begin{equation*}
-p(\lambda) = (3 - \lambda)^2 - 1 = \lambda^2 - 6\lambda + 8 = (\lambda - 4)(\lambda - 2) = 0.
+\vec{x}^{\top}\mathbf{M}\vec{x} = \lambda_1 u^2 + \lambda_2 v^2.
 \end{equation*}
 
-Die Eigenwerte sind $\lambda_1 = 4$ und $\lambda_2 = 2$. Die zugehörigen
-**Eigenkreisfrequenzen** sind:
+Der gemischte Term fällt weg. Die neuen Koordinatenachsen zeigen in Richtung
+der Eigenvektoren von $\mathbf{M}$ und heißen **Hauptachsen**. Den Wechsel in
+dieses Koordinatensystem nennen wir **Hauptachsentransformation**.
+```
+
+Für unsere Ellipse sind die Hauptachsen die gestrichelten Geraden $u$ und $v$
+im rechten Teilbild. In den neuen Koordinaten lautet ihre Gleichung
+$7u^2 + 2v^2 = 1$, und das ist dieselbe Gleichung wie im linken Teilbild. Die
+Halbachse in Richtung $\vec{q}_1$ hat also die Länge $\frac{1}{\sqrt{7}}$, die
+in Richtung $\vec{q}_2$ die Länge $\frac{1}{\sqrt{2}}$. Das passt zu
+Kapitel 5.4: Drehen sich die Achsen um $26.57^\circ$, erscheint die Ellipse in
+den neuen Koordinaten um $-26.57^\circ$ gedreht, und damit liegt sie wie im
+linken Teilbild.
+
+Zur Probe berechnen wir die Endpunkte der Halbachsen in den alten Koordinaten.
+Zu $u = \frac{1}{\sqrt{7}}$, $v = 0$ gehört der Punkt
+$\frac{1}{\sqrt{7}}\,\vec{q}_1 = \frac{1}{\sqrt{35}}(2, 1)^{\top}$, und
+Einsetzen in die ursprüngliche Gleichung ergibt
+$\frac{1}{35}(6\cdot 4 + 4\cdot 2 + 3\cdot 1) = 1$. Zu $u = 0$,
+$v = \frac{1}{\sqrt{2}}$ gehört
+$\frac{1}{\sqrt{2}}\,\vec{q}_2 = \frac{1}{\sqrt{10}}(-1, 2)^{\top}$, und hier
+ergibt sich $\frac{1}{10}(6\cdot 1 - 4\cdot 2 + 3\cdot 4) = 1$. Beide Punkte
+liegen also auf der Ellipse. Die lange Halbachse $\frac{1}{\sqrt{2}} \approx 0.71$
+ist deutlich länger als der Abschnitt $\frac{1}{\sqrt{3}} \approx 0.58$ auf der
+$y$-Achse, wie es die Abbildung zeigt.
+
+## Was verraten die Eigenwerte über die Form?
+
+Aus $7u^2 + 2v^2 = 1$ lesen wir ab, dass zum Eigenwert $\lambda$ die Halbachse
+$\frac{1}{\sqrt{\lambda}}$ gehört. Je größer der Eigenwert, desto kürzer ist
+also die Halbachse. Die lange Achse unserer Ellipse zeigt deshalb in Richtung
+des Eigenvektors zum kleineren Eigenwert $2$. Länge und Lage der Ellipse
+kennen wir damit allein aus den Eigenwerten und Eigenvektoren von
+$\mathbf{A}$, ohne eine einzige Kurve zu zeichnen. Hat eine symmetrische
+$2\times 2$-Matrix den doppelten Eigenwert $\lambda > 0$, sind beide
+Halbachsen gleich lang, und die Kurve ist ein Kreis mit dem Radius
+$\frac{1}{\sqrt{\lambda}}$.
+
+*Und was passiert, wenn ein Eigenwert negativ ist?* Wir untersuchen die
+Gleichung $2xy = 1$, also $y = \frac{1}{2x}$. Ihr Graph ist eine Hyperbel mit
+zwei Ästen, die sich den Koordinatenachsen nähern. Für die zugehörige
+symmetrische Matrix halbieren wir den Faktor $2$ vor $xy$ und schreiben die
+Hälfte neben die Diagonale. Weil $x^2$ und $y^2$ nicht vorkommen, stehen auf
+der Diagonalen Nullen:
 
 \begin{equation*}
-\omega_1 = \sqrt{\lambda_1} = 2~\frac{\text{rad}}{\text{s}}
-\quad \text{und} \quad
-\omega_2 = \sqrt{\lambda_2} = \sqrt{2}~\frac{\text{rad}}{\text{s}} \approx 1.41~\frac{\text{rad}}{\text{s}}.
+\mathbf{B} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}.
 \end{equation*}
 
-Jetzt berechnen wir die Eigenvektoren. Für $\lambda_1 = 4$:
+Das ist die Spiegelung an der Winkelhalbierenden, die in Kapitel 6.1
+$\mathbf{C}$ hieß. Dort haben wir gesehen, dass $(1, 1)^{\top}$ ein
+Eigenvektor zum Eigenwert $1$ ist und $(1, -1)^{\top}$ einer zum Eigenwert
+$-1$. Wie in Kapitel 7.2 nehmen wir statt $(1, -1)^{\top}$ den Gegenvektor
+$(-1, 1)^{\top}$, damit wir nach dem Normieren die Drehmatrix
+$\mathbf{R}(45^\circ)$ aus Kapitel 5.4 erhalten. Die Hauptachsentransformation
+liefert dann
 
 \begin{equation*}
-\mathbf{A} - 4\mathbf{E} = \begin{pmatrix} -1 & -1 \\ -1 & -1 \end{pmatrix}
-\quad \Rightarrow \quad
-\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
+2xy = 1\cdot u^2 + (-1)\cdot v^2 = u^2 - v^2.
 \end{equation*}
 
-Für $\lambda_2 = 2$:
+Zur Probe setzen wir $x = \frac{1}{\sqrt{2}}(u - v)$ und
+$y = \frac{1}{\sqrt{2}}(u + v)$ ein und erhalten
+$2xy = (u - v)(u + v) = u^2 - v^2$. In den Hauptachsen lautet die Gleichung
+also $u^2 - v^2 = 1$. Für $v = 0$ ist $u = \pm 1$, und die Kurve schneidet die
+$u$-Achse in den Punkten $\pm\frac{1}{\sqrt{2}}(1, 1)^{\top}$, für die
+tatsächlich $2\cdot\frac{1}{\sqrt{2}}\cdot\frac{1}{\sqrt{2}} = 1$ gilt. Für
+$u = 0$ müsste dagegen $-v^2 = 1$ sein, und das ist unmöglich. Die
+$v$-Achse schneidet die Kurve also gar nicht, und genau deshalb zerfällt sie
+in zwei Äste.
 
-\begin{equation*}
-\mathbf{A} - 2\mathbf{E} = \begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}
-\quad \Rightarrow \quad
-\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}.
-\end{equation*}
+```{figure} pics/hauptachsen_hyperbel.svg
+---
+name: hauptachsen_hyperbel
+---
+Darstellung der Hyperbel $2xy = 1$ mit ihren Hauptachsen $u$ und $v$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
 
-Diese Eigenvektoren sind die **Eigenformen** des Schwingungssystems. Sie
-beschreiben, wie die beiden Massen bei der jeweiligen Eigenfrequenz relativ
-zueinander schwingen. Im ersten Eigenvektor $\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}$
-bewegen sich die beiden Massen in entgegengesetzte Richtungen: Die eine geht
-nach links, während die andere nach rechts geht. Im zweiten Eigenvektor
-$\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ bewegen sich beide Massen
-gemeinsam in dieselbe Richtung.
+Ob die Kurve eine Ellipse oder eine Hyperbel ist, entscheiden also die
+Vorzeichen der Eigenwerte. Sind beide negativ, ist
+$\lambda_1 u^2 + \lambda_2 v^2$ für jeden Punkt negativ oder null, und die
+Gleichung hat gar keine Lösung. Ist ein Eigenwert null und der andere positiv,
+bleibt zum Beispiel $\lambda_1 u^2 = 1$, und die Kurve besteht aus zwei
+parallelen Geraden. Diesen Sonderfall nehmen wir nicht in die folgende
+Übersicht auf.
 
-*Wozu hilft die Diagonalisierung hier?* Das originale System mit der Matrix
-$\mathbf{A}$ beschreibt zwei gekoppelte Schwingungen: Die Bewegung von Masse 1
-beeinflusst Masse 2 und umgekehrt. In der Basis der Eigenvektoren, also nach
-der Transformation $\mathbf{D} = \mathbf{V}^{-1}\mathbf{A}\mathbf{V}$ mit
+```{admonition} Was verraten die Eigenwerte über die Kurve?
+:class: note
+Hat die symmetrische $2\times 2$-Matrix $\mathbf{M}$ die Eigenwerte
+$\lambda_1$ und $\lambda_2$, so beschreibt die Gleichung
+$\vec{x}^{\top}\mathbf{M}\vec{x} = 1$
 
-\begin{equation*}
-\mathbf{V} = \begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}
-\quad \text{und} \quad
-\mathbf{D} = \begin{pmatrix} 4 & 0 \\ 0 & 2 \end{pmatrix},
-\end{equation*}
+* eine Ellipse mit den Halbachsen $\frac{1}{\sqrt{\lambda_1}}$ und
+  $\frac{1}{\sqrt{\lambda_2}}$ in Richtung der zugehörigen Eigenvektoren, wenn
+  beide Eigenwerte positiv sind, und für $\lambda_1 = \lambda_2$ einen Kreis,
+* eine Hyperbel, wenn ein Eigenwert positiv und einer negativ ist,
+* keinen einzigen Punkt, wenn beide Eigenwerte negativ sind.
+```
 
-zerfällt das gekoppelte System in zwei vollständig unabhängige Einzelschwingungen.
-Jede Einzelschwingung lässt sich separat analysieren und lösen. Das ist der
-zentrale Vorteil der Modalanalyse: Ein kompliziertes gekoppeltes System wird
-durch Diagonalisierung in einfache Teilsysteme zerlegt. In der
-Maschinendynamik, die Sie in höheren Semestern kennenlernen werden, bildet
-dieses Prinzip die Grundlage für die rechnergestützte Schwingungsanalyse ganzer
-Fahrzeuge, Turbinen und Brückentragwerke.
+Für die Vorzeichen müssen wir die Eigenwerte nicht einmal berechnen. Aus
+$\mathbf{Q}^{\top}\mathbf{M}\mathbf{Q} = \mathbf{D}$ folgt mit der
+Produktregel aus Kapitel 3.3 und $\det(\mathbf{Q}^{\top})\det(\mathbf{Q}) = 1$
+aus Kapitel 5.2, dass $\det(\mathbf{M}) = \det(\mathbf{D}) = \lambda_1\lambda_2$
+ist. Für $\mathbf{A}$ ist $\det(\mathbf{A}) = 18 - 4 = 14 = 7\cdot 2$, die
+Eigenwerte haben also dasselbe Vorzeichen. Beide negativ können sie nicht
+sein, denn für $\vec{x} = \vec{e}_1$ ist
+$\vec{x}^{\top}\mathbf{A}\vec{x} = 6 > 0$, also beschreibt $\mathbf{A}$ eine
+Ellipse. Für $\mathbf{B}$ ist dagegen $\det(\mathbf{B}) = -1 = 1\cdot(-1)$,
+die Eigenwerte haben verschiedene Vorzeichen, und wir erhalten eine Hyperbel.
 
-## Zusammenfassung
+Im Raum funktioniert die Hauptachsentransformation genauso, nur mit drei
+Koordinaten. Für die $3\times 3$-Matrix aus Kapitel 7.2 mit den Eigenwerten
+$3$, $6$ und $9$ wird $\vec{x}^{\top}\mathbf{M}\vec{x} = 1$ in den
+Hauptachsen zu $3u^2 + 6v^2 + 9w^2 = 1$. Das ist ein Ellipsoid, eine Art
+gestauchte Kugel, mit den Halbachsen $\frac{1}{\sqrt{3}}$,
+$\frac{1}{\sqrt{6}}$ und $\frac{1}{3}$ in Richtung der drei Eigenvektoren.
 
-Die Diagonalisierung ist in allen drei Beispielen dasselbe mathematische
-Werkzeug, aber die Interpretation der Eigenwerte und Eigenvektoren wechselt
-mit dem physikalischen Kontext. Beim Trägheitstensor sind die Eigenwerte
-Hauptträgheitsmomente und die Eigenvektoren Hauptachsen. Beim Spannungstensor
-sind die Eigenwerte Hauptspannungen und die Eigenvektoren spannungsfreie
-Schnittrichtungen. Bei der Modalanalyse sind die Wurzeln der Eigenwerte
-Eigenfrequenzen und die Eigenvektoren Schwingungsformen. Das verbindende
-Prinzip ist stets dasselbe: Im Koordinatensystem der Eigenvektoren wird eine
-komplizierte, gekoppelte Beschreibung durch eine einfache, diagonale ersetzt.
+## Zusammenfassung und Ausblick
+
+Eine symmetrische Matrix $\mathbf{M}$ gehört zur quadratischen Form
+$\vec{x}^{\top}\mathbf{M}\vec{x} = ax^2 + 2bxy + cy^2$, deren gemischter Term
+von den Einträgen neben der Diagonalen kommt. Bei der Hauptachsentransformation
+drehen wir das Koordinatensystem mit der orthogonalen Matrix $\mathbf{Q}$ aus
+dem Spektralsatz in die Eigenvektoren, und die quadratische Form wird zu
+$\lambda_1 u^2 + \lambda_2 v^2$. Sind beide Eigenwerte positiv, beschreibt
+$\vec{x}^{\top}\mathbf{M}\vec{x} = 1$ eine Ellipse mit den Halbachsen
+$\frac{1}{\sqrt{\lambda_1}}$ und $\frac{1}{\sqrt{\lambda_2}}$, bei
+verschiedenen Vorzeichen eine Hyperbel. Damit schließen wir die lineare
+Algebra ab. In der Festigkeitslehre begegnet uns die Hauptachsentransformation
+wieder, wenn Hauptspannungen und Hauptträgheitsmomente berechnet werden. In
+Kapitel 8 beginnen wir mit den Differentialgleichungen, und in Kapitel 11
+taucht bei Schwingungen auch wieder ein charakteristisches Polynom auf.

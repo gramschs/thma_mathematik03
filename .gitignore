@@ -218,3 +218,6 @@ __marimo__/
 
 # MyST build outputs
 _build
+
+# Interne Planung, nicht veröffentlichen
+plan_semester.md
