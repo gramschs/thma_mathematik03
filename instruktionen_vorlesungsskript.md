@@ -185,7 +185,19 @@ Regeln:
   verwendet, nicht `warning`. Im MyST-Theme haben `attention`, `warning` und
   `caution` dieselbe gelbe Farbe, und Gelb ist für die Lernziele reserviert.
   So gilt durchgehend: Lernziele gelb (`attention`), Definitionen und
-  Merkregeln blau (`note`), Stolperfallen rot (`danger`).
+  Merkregeln blau (`note`), Stolperfallen rot (`danger`). Grün (`tip`) ist
+  für Übungen reserviert.
+- Vertiefungskapitel tragen „(Vertiefung)“ im Titel und direkt unter dem
+  Titel einen grauen Hinweis mit der eigenen Klasse `advanced` (definiert in
+  `my_styling.css`):
+
+  ````markdown
+  ```{admonition} Vertiefung
+  :class: advanced
+  Dieses Kapitel ist eine Vertiefung. Es ist optional und kein Prüfungsstoff der
+  CA-Tests.
+  ```
+  ````
 
 ---
 

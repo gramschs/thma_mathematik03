@@ -5,244 +5,272 @@ authors:
 
 # 8.4 Trennung der Variablen
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-In Abschnitt 6.3 haben wir das Euler-Verfahren kennengelernt: einen Algorithmus, der die
-Lösungskurve einer DGL Schritt für Schritt durch Geradenstücke annähert. Dabei blieb eine
-Frage bewusst offen. Woher stammt eigentlich die exakte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$, gegen die wir den Euler-Fehler gemessen haben, und wie
-leitet man sie her? Die Antwort ist die **Methode der Trennung der Variablen**, das erste
-analytische Lösungsverfahren dieses Kapitels. Es greift immer dann, wenn sich die rechte
-Seite einer DGL als Produkt zweier Funktionen schreiben lässt: eine, die nur von der
-unabhängigen Variablen abhängt, und eine, die nur von der gesuchten Funktion abhängt.
+In Kapitel 8.1 haben wir die allgemeine Lösung $y = A\,e^{x^2/2}$ der DGL
+$y' = xy$ erraten und durch Einsetzen bestätigt, und in Kapitel 8.2 haben wir
+daraus mit einer Anfangsbedingung eine spezielle Lösung ausgewählt. Offen
+geblieben ist, wie wir auf eine solche Formel kommen, ohne sie zu raten, und ob
+es neben ihr noch weitere Lösungen gibt. In diesem Kapitel lernen wir das erste
+Lösungsverfahren kennen, das beide Fragen beantwortet. Im Maschinenbau führen
+zum Beispiel das Ausfließen eines Behälters oder die Seilreibung an einer
+Trommel auf DGL, die sich mit diesem Verfahren lösen lassen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie erkennen eine **separierbare** (trennbare) ODE 1. Ordnung der Form
+* [ ] Sie erkennen eine **trennbare** DGL 1. Ordnung an der Form
   $y' = f(x) \cdot g(y)$.
-* [ ] Sie beherrschen das Verfahren der **Separation der Variablen** und können die vier
-  Lösungsschritte (Trennen, Integrieren, Stammfunktion einsetzen, nach $y$ auflösen) auf
-  eine gegebene DGL anwenden.
-* [ ] Sie können die **allgemeine Lösung** einer separierbaren ODE angeben.
-* [ ] Sie beachten den Sonderfall $g(y) = 0$ und können die zugehörige **konstante
-  Lösung** bestimmen.
+* [ ] Sie können eine trennbare DGL mit der **Trennung der Variablen** lösen.
+* [ ] Sie können mit der allgemeinen Lösung ein Anfangswertproblem lösen und
+  dabei ein Vorzeichen und den Definitionsbereich richtig wählen.
+* [ ] Sie wissen, dass jede Nullstelle von $g$ eine **konstante Lösung**
+  liefert, und prüfen, ob sie in der allgemeinen Lösung enthalten ist.
 ```
 
-## Wann lässt sich eine DGL "trennen"?
+## Wann lässt sich eine DGL trennen?
 
-Unsere Fallschirmspringer-Gleichung lautet $\dot{v} = g - kv$. Die rechte Seite enthält
-nur $v$, nicht die Zeit $t$ explizit. *Lässt sich das als Produkt zweier unabhängiger
-Faktoren schreiben?* Ja: Wir schreiben $g - kv = 1 \cdot (g - kv)$, wobei der erste
-Faktor ausschließlich von $t$ abhängt (er ist die Konstante $1$) und der zweite
-ausschließlich von $v$. Diese Produktstruktur ist das entscheidende Merkmal einer
-**separierbaren** Differentialgleichung.
+In der DGL $y' = xy$ ist die rechte Seite ein Produkt aus zwei Faktoren. Der
+eine Faktor $x$ hängt nur von der Variablen ab, der andere Faktor $y$ nur von
+der gesuchten Funktion. Diese Bauart erlaubt einen Trick, den wir in Kapitel
+8.1 schon angekündigt haben. Schreiben wir die Ableitung in der
+Leibniz-Schreibweise als $\frac{dy}{dx}$, können wir alles, was $y$ enthält, auf
+die eine Seite der Gleichung bringen und alles, was $x$ enthält, auf die andere.
+Die Variablen werden dabei voneinander getrennt, und genau daher hat das
+Verfahren seinen Namen.
 
-Ein weiteres Beispiel verdeutlicht das Muster. Ein erwärmtes Maschinenbauteil
-kühlt nach dem Newtonschen Abkühlgesetz gemäß $\dot{T} = -\alpha(T - T_\infty)$
-ab, wobei $T_\infty$ die Umgebungstemperatur und $\alpha > 0$ ein
-materialabhängiger Koeffizient ist. Die rechte Seite hat die Form $1 \cdot
-(-\alpha)(T - T_\infty)$: ein Produkt aus einer Funktion von $t$ (der Konstanten
-$-\alpha$) und einer Funktion von $T$. Dieselbe Struktur, dasselbe Verfahren. In
-der Wärme- und Stoffübertragung ist dieser Gleichungstyp allgegenwärtig.
-
-Nicht separierbar wäre dagegen eine DGL wie $\dot{v} = g - k \cdot t \cdot v^2$: Die
-rechte Seite enthält $t$ und $v$ so verflochten, dass sie sich nicht als sauberes
-Produkt $f(t) \cdot g(v)$ schreiben lässt.
-
-```{admonition} Was ist ... eine separierbare Differentialgleichung?
+```{admonition} Was ist ... eine trennbare DGL?
 :class: note
-Eine gewöhnliche Differentialgleichung 1. Ordnung
+Eine DGL 1. Ordnung heißt **trennbar** oder **separierbar**, wenn sie sich in
+der Form
 
 \begin{equation*}
 y' = f(x) \cdot g(y)
 \end{equation*}
 
-heißt **separierbar** (oder **trennbar**), wenn sich die rechte Seite als Produkt einer
-Funktion $f$, die nur von der unabhängigen Variablen $x$ abhängt, und einer Funktion $g$,
-die nur von der gesuchten Funktion $y$ abhängt, schreiben lässt.
+schreiben lässt. Dabei hängt die Funktion $f$ nur von $x$ ab und die Funktion
+$g$ nur von $y$.
 ```
 
-Für unsere Fallschirmspringer-DGL in der allgemeinen Notation $y' = f(x) \cdot g(y)$
-lautet die Zuordnung: $x \equiv t$, $y \equiv v$, $f(t) = 1$ und $g(v) = g - kv$. Die
-Gleichung ist damit separierbar, und wir können das Verfahren anwenden.
+Für unsere DGL $y' = xy$ ist $f(x) = x$ und $g(y) = y$. Manchmal ist die
+Produktform erst auf den zweiten Blick zu sehen. Die DGL $y' = e^{x + y}$ ist
+trennbar, denn nach dem Potenzgesetz gilt $e^{x + y} = e^x \cdot e^y$, also
+$f(x) = e^x$ und $g(y) = e^y$. Auch ein Faktor, der konstant ist, zählt mit. In
+$y' = y^2$ ist $f(x) = 1$, und in $y' = 3x^2$ ist $g(y) = 1$. Die zweite
+Gleichung enthält $y$ gar nicht mehr, und wir lösen sie wie die einfachsten
+DGL aus Kapitel 8.1 durch Integrieren.
 
-## Wie funktioniert das Verfahren? Die vier Lösungsschritte
-
-Das Verfahren arbeitet mit der Leibniz-Notation $\frac{dv}{dt}$, die wir in Abschnitt 6.1
-eingeführt haben. Der entscheidende Kunstgriff ist, $dv$ und $dt$ wie algebraische Größen
-zu behandeln und alles, was $v$ enthält, auf eine Seite zu sortieren und alles, was $t$
-enthält, auf die andere.
-
-**Schritt 1: Variablen trennen.** Wir schreiben $\frac{dv}{dt} = g - kv$ um und dividieren
-durch $g - kv$ (was voraussetzt, dass $g - kv \neq 0$; diesen Sonderfall untersuchen wir
-am Ende des Abschnitts):
+Steht eine DGL in impliziter Form da, lösen wir sie vorher nach $y'$ auf. Aus
+$y\,y' = \cos(x)$ wird für $y \neq 0$ die explizite Form
 
 \begin{equation*}
-\frac{dv}{g - kv} = dt.
+y' = \cos(x) \cdot \frac{1}{y},
 \end{equation*}
 
-Auf der linken Seite steht nun nur noch $v$, auf der rechten nur noch $t$. Die Variablen
-sind getrennt.
+also eine trennbare DGL mit $f(x) = \cos(x)$ und $g(y) = \frac{1}{y}$. *Ist
+damit jede DGL 1. Ordnung trennbar?* Nein. In $y' = x + y$ steht auf der
+rechten Seite eine Summe, und sie lässt sich nicht in ein Produkt aus einem
+Faktor mit $x$ und einem Faktor mit $y$ zerlegen. Solche DGL lösen wir in
+Kapitel 9 mit anderen Mitteln.
 
-**Schritt 2: Auf beiden Seiten integrieren.** Wir integrieren die linke Seite nach $v$
-und die rechte nach $t$:
+## Wie funktioniert das Verfahren?
+
+Wir lösen $y' = xy$ Schritt für Schritt. Zunächst schreiben wir die Ableitung
+als $\frac{dy}{dx}$ und bringen für $y \neq 0$ alle Terme mit $y$ nach links,
+alle Terme mit $x$ nach rechts:
 
 \begin{equation*}
-\int \frac{dv}{g - kv} = \int dt.
+\frac{dy}{dx} = x \cdot y
+\quad\Rightarrow\quad
+\frac{1}{y}\,dy = x\,dx.
 \end{equation*}
 
-**Schritt 3: Stammfunktionen einsetzen.** Das linke Integral ist vom Typ
-$\int \frac{du}{a + bu}$. Mit der Substitution $w = g - kv$, also $dw = -k\,dv$, folgt:
+Dann integrieren wir beide Seiten, die linke nach $y$ und die rechte nach $x$.
+Bei beiden Integrationen entsteht eine Konstante, die wir zu einer einzigen
+Konstanten $C = C_2 - C_1$ auf der rechten Seite zusammenfassen:
 
 \begin{equation*}
-\int \frac{dv}{g - kv} = -\frac{1}{k} \ln|g - kv|.
+\int \frac{1}{y}\,dy = \int x\,dx
+\quad\Rightarrow\quad
+\ln|y| = \frac{x^2}{2} + C.
 \end{equation*}
 
-Das rechte Integral ergibt $t$. Mit einer gemeinsamen Integrationskonstante $C_1 \in \mathbb{R}$:
+Zum Schluss lösen wir nach $y$ auf. Die $e$-Funktion hebt den Logarithmus auf,
+und das Potenzgesetz zieht die Konstante als Faktor heraus:
 
 \begin{equation*}
--\frac{1}{k}\ln|g - kv| = t + C_1.
+|y| = e^{\frac{x^2}{2} + C} = e^{C} \cdot e^{\frac{x^2}{2}}
+\quad\Rightarrow\quad
+y = \pm e^{C} \cdot e^{\frac{x^2}{2}}.
 \end{equation*}
 
-**Schritt 4: Nach $v$ auflösen.** Wir multiplizieren mit $-k$, nehmen die
-Exponentialfunktion und fassen alle Konstanten in einer neuen reellen Konstante $C$
-zusammen:
+Die Zahl $e^C$ kann jeden positiven Wert annehmen, und mit dem Vorzeichen
+davor ergibt $\pm e^C$ jede Zahl außer null. Wir fassen sie zu einer neuen
+Konstanten $A$ zusammen und erhalten $y = A\,e^{x^2/2}$ mit $A \neq 0$. Das ist
+genau die Formel, die wir in Kapitel 8.1 erraten haben, und diesmal haben wir
+sie hergeleitet. Den ausgeschlossenen Fall $y = 0$ holen wir im dritten
+Abschnitt nach.
 
-\begin{align*}
-\ln|g - kv| &= -k(t + C_1), \\
-g - kv      &= e^{-kC_1} \cdot e^{-kt} =: C \cdot e^{-kt}.
-\end{align*}
-
-Auflösen nach $v$ liefert die allgemeine Lösung:
+*Dürfen wir mit $dy$ und $dx$ überhaupt rechnen wie mit Zahlen?* Die
+Kettenregel zeigt, dass das Ergebnis stimmt. Ist $G$ eine Stammfunktion von
+$\frac{1}{g}$ und $F$ eine Stammfunktion von $f$, dann gilt für jede Lösung
+$y(x)$ der trennbaren DGL
 
 \begin{equation*}
-v(t) = \frac{g}{k} + C'\,e^{-kt}, \quad C' \in \mathbb{R},
+\frac{d}{dx}\,G\big(y(x)\big) = G'\big(y(x)\big) \cdot y'(x)
+= \frac{y'(x)}{g\big(y(x)\big)} = f(x) = \frac{d}{dx}\,F(x).
 \end{equation*}
 
-wobei $C' = -C/k$ wieder eine freie reelle Konstante ist. Zur Vereinfachung der
-Schreibweise nennen wir sie von nun an wieder $C$. Genau diese Lösungsschar haben wir in
-Abschnitt 6.1 durch Einsetzen verifiziert. Jetzt wissen wir, wie sie zustande kommt.
+Zwei Funktionen mit derselben Ableitung unterscheiden sich nur um eine
+Konstante, also ist $G(y) = F(x) + C$. Genau diese Gleichung liefert auch das
+formale Rechnen mit $dy$ und $dx$, denn auf beiden Wegen stehen links die
+Stammfunktion von $\frac{1}{g}$ und rechts die von $f$.
 
-```{admonition} Was ist ... die Methode der Separation der Variablen?
+```{admonition} Wie funktioniert die Trennung der Variablen?
 :class: note
-Gegeben sei die separierbare DGL $y' = f(x) \cdot g(y)$ mit $g(y) \neq 0$.
-Das Verfahren der **Separation der Variablen** besteht aus vier Schritten:
+Eine trennbare DGL $y' = f(x) \cdot g(y)$ lösen wir für $g(y) \neq 0$ in vier
+Schritten:
 
-1. **Trennen:** $\dfrac{dy}{g(y)} = f(x)\,dx$.
-2. **Integrieren:** $\displaystyle\int \frac{dy}{g(y)} = \int f(x)\,dx + C$.
-3. **Stammfunktionen einsetzen:** $G(y) = F(x) + C$.
-4. **Nach $y$ auflösen** (sofern möglich).
+1. Wir schreiben $y'$ als $\frac{dy}{dx}$ und trennen die Variablen:
+   $\frac{1}{g(y)}\,dy = f(x)\,dx$.
+2. Wir integrieren beide Seiten: $\int \frac{1}{g(y)}\,dy = \int f(x)\,dx$.
+3. Wir setzen die Stammfunktionen ein und fassen die beiden
+   Integrationskonstanten zu einer Konstanten $C$ zusammen.
+4. Wir lösen nach $y$ auf, falls das möglich ist.
 
-Die entstehende Familie von Lösungen ist die **allgemeine Lösung** der DGL.
+Das Verfahren heißt **Trennung der Variablen** oder Separation der Variablen.
 ```
 
-## Wie legt eine Anfangsbedingung die Lösung fest?
-
-Die allgemeine Lösung $v(t) = \frac{g}{k} + Ce^{-kt}$ enthält die freie Konstante $C$
-und beschreibt damit unendlich viele mögliche Bewegungen, genau die Kurvenschar aus
-Abschnitt 6.1. Erst eine Anfangsbedingung wählt eine einzige Kurve heraus. Der
-Fallschirmspringer startet aus der Ruhe: $v(0) = 0$. Einsetzen ergibt:
-
-\begin{equation*}
-v(0) = \frac{g}{k} + C \cdot e^{0} = \frac{g}{k} + C = 0
-\quad \Rightarrow \quad
-C = -\frac{g}{k} = -v_\infty.
-\end{equation*}
-
-Die spezielle Lösung des Anfangswertproblems lautet damit:
+Mit der allgemeinen Lösung lösen wir wie in Kapitel 8.2 auch das
+Anfangswertproblem mit $y(0) = 2$. Aus $y(0) = A\,e^{0} = A = 2$ folgt die
+spezielle Lösung $y = 2e^{x^2/2}$. Nicht immer ist die Konstante aber so
+bequem ein Faktor. Wir lösen deshalb noch die DGL $y\,y' = \cos(x)$ aus dem
+ersten Abschnitt, und zwar mit der Anfangsbedingung $y(0) = -1$. In der
+expliziten Form $\frac{dy}{dx} = \frac{\cos(x)}{y}$ trennen wir die Variablen
+und integrieren:
 
 \begin{equation*}
-v(t) = \frac{g}{k}\bigl(1 - e^{-kt}\bigr) = v_\infty\bigl(1 - e^{-kt}\bigr).
+y\,dy = \cos(x)\,dx
+\quad\Rightarrow\quad
+\int y\,dy = \int \cos(x)\,dx
+\quad\Rightarrow\quad
+\frac{y^2}{2} = \sin(x) + C.
 \end{equation*}
 
-Mit $g = 9.81~\text{m\,s}^{-2}$, $k = 0.2~\text{s}^{-1}$ und damit
-$v_\infty = g/k = 49.05~\text{m\,s}^{-1}$:
+Nach Multiplikation mit $2$ ziehen wir die Wurzel. Dabei entstehen zwei
+Vorzeichen:
 
 \begin{equation*}
-v(t) = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
+y = \pm\sqrt{2\sin(x) + 2C}.
 \end{equation*}
 
-**Verifikation.** Wir prüfen, ob diese Funktion die DGL $\dot{v} = g - kv$ und die
-Anfangsbedingung erfüllt.
-
-Anfangsbedingung: $v(0) = 49.05\,(1 - 1) = 0~\text{m\,s}^{-1}$. Korrekt.
-
-Ableitung der Lösung:
+Diesmal steckt die Konstante unter der Wurzel. Welches Vorzeichen wir brauchen,
+entscheidet die Anfangsbedingung. Weil $y(0) = -1$ negativ ist, kommt nur das
+Minuszeichen infrage, und aus $-\sqrt{2C} = -1$ folgt $2C = 1$. Die spezielle
+Lösung lautet
 
 \begin{equation*}
-\dot{v}(t) = 49.05 \cdot 0.2\,e^{-0.2\,t} = 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
+y = -\sqrt{2\sin(x) + 1}.
 \end{equation*}
 
-Rechte Seite der DGL:
+Zur Probe ist $y(0) = -\sqrt{1} = -1$. Die Kettenregel liefert
+$y' = -\frac{\cos(x)}{\sqrt{2\sin(x) + 1}}$, und das Produkt
+$y\,y'$ ergibt $\cos(x)$, weil sich die beiden Wurzeln und die beiden
+Minuszeichen wegheben. Die Lösung existiert allerdings nicht überall. Unter der
+Wurzel muss $2\sin(x) + 1 > 0$ gelten, also $\sin(x) > -\frac{1}{2}$, und das
+Intervall um die Startstelle $0$, auf dem das zutrifft, ist
+$-\frac{\pi}{6} < x < \frac{7\pi}{6}$. Wie in der Definition aus Kapitel 8.1
+ist die Lösung also eine Lösung auf einem Intervall, hier auf
+$I = \left(-\frac{\pi}{6}, \frac{7\pi}{6}\right)$.
 
-\begin{align*}
-g - k\,v(t) &= 9.81 - 0.2 \cdot 49.05\,(1 - e^{-0.2\,t}) \\
-             &= 9.81 - 9.81 + 9.81\,e^{-0.2\,t} \\
-             &= 9.81\,e^{-0.2\,t}~\text{m\,s}^{-2}.
-\end{align*}
-
-Linke und rechte Seite stimmen überein. Das Versprechen aus Abschnitt 6.3 ist damit
-eingelöst: Die Trennung der Variablen liefert exakt die Funktion, die das Euler-Verfahren
-nur näherungsweise berechnen konnte.
+```{dropdown} Video "Lösung separable Differentialgleichung" von Simone Gramsch
+<iframe
+src="https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=bc52e263-cf13-4313-8f1f-ad53009d2b3c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+height="405" width="720" style="border: 1px solid #464646;" allowfullscreen
+allow="autoplay"></iframe>
+```
 
 ## Was passiert, wenn $g(y) = 0$ ist?
 
-Im ersten Schritt des Verfahrens haben wir durch $g(v) = g - kv$ dividiert. Das ist nur
-erlaubt, solange $g - kv \neq 0$ gilt. *Was tun wir, wenn der Nenner verschwindet?* Ist
-$g(v) = 0$, so ist $\dot{v} = g(v) = 0$: Die Ableitung verschwindet identisch, und wir
-erhalten unmittelbar eine **konstante Lösung**.
-
-Für unsere DGL: $g(v) = g - kv = 0$ ergibt $v = g/k = v_\infty = 49.05~\text{m\,s}^{-1}$.
-Wir prüfen durch Einsetzen:
+Beim Trennen von $y' = xy$ haben wir durch $g(y) = y$ geteilt und deshalb
+$y = 0$ ausgeschlossen. Die Nullfunktion ist aber eine Lösung, denn
+$y' = 0 = x \cdot 0$. Sie passt sogar in die Formel, nämlich mit $A = 0$. Damit
+lautet die allgemeine Lösung
 
 \begin{equation*}
-\dot{v} = 0 \stackrel{?}{=} g - k \cdot v_\infty = 9.81 - 0.2 \cdot 49.05 = 9.81 - 9.81 = 0.
-\quad \checkmark
+y = A\,e^{\frac{x^2}{2}}, \qquad A \in \mathbb{R}.
 \end{equation*}
 
-Die konstante Lösung $v(t) = v_\infty$ ist die Grenzgeschwindigkeit, die wir schon im
-Richtungsfeld von Abschnitt 6.2 als Nullisokline identifiziert haben. Bei unserer linearen
-DGL ist sie im Übrigen bereits in der allgemeinen Lösung enthalten, nämlich für den
-Spezialfall $C = 0$. Das muss nicht immer so sein: Bei nichtlinearen DGL kann die
-konstante Lösung außerhalb der allgemeinen Lösungsschar liegen und ist dann separat
-anzugeben.
+Jetzt können wir auch die Frage aus Kapitel 8.1 beantworten. Jede Lösung, die
+nicht die Nullfunktion ist, hat nach unserer Herleitung die Form $A\,e^{x^2/2}$
+mit $A \neq 0$, und die Nullfunktion gehört mit $A = 0$ ebenfalls dazu.
+Weitere Lösungen von $y' = xy$ gibt es also nicht.
 
-```{dropdown} Video "Trennung der Variable" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/IPbG7lnzccE?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="DGL 1. Ordnung - Trennung der Variable"
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+*Steckt die konstante Lösung immer in der allgemeinen Lösung?* Wir trennen die
+Variablen in $y' = y^2$ mit $f(x) = 1$ und $g(y) = y^2$. Für $y \neq 0$
+erhalten wir
+
+\begin{equation*}
+\int \frac{1}{y^2}\,dy = \int 1\,dx
+\quad\Rightarrow\quad
+-\frac{1}{y} = x + C
+\quad\Rightarrow\quad
+y = -\frac{1}{x + C}.
+\end{equation*}
+
+Auch hier ist die Nullfunktion eine Lösung, denn $0 = 0^2$. Der Bruch
+$-\frac{1}{x + C}$ wird aber für keine Wahl von $C$ zur Nullfunktion. Die
+Lösung $y = 0$ ist beim Trennen verloren gegangen, und wir müssen sie
+ausdrücklich zur Schar dazuschreiben. Die Lösungen von $y' = y^2$ sind also
+$y = -\frac{1}{x + C}$ mit $C \in \mathbb{R}$ und zusätzlich $y = 0$.
+
+```{admonition} Was liefern die Nullstellen von g?
+:class: note
+Ist $y^*$ eine Nullstelle von $g$, also $g(y^*) = 0$, dann ist die konstante
+Funktion $y = y^*$ eine Lösung der trennbaren DGL $y' = f(x) \cdot g(y)$, denn
+beide Seiten sind null. Nach der Trennung der Variablen prüfen wir für jede
+Nullstelle von $g$, ob diese **konstante Lösung** in der allgemeinen Lösung
+enthalten ist. Wenn nicht, geben wir sie zusätzlich an.
 ```
 
-```{dropdown} Video "Trennung der Variablen" von Mathematrick
-<iframe width="927" height="521" src="https://www.youtube.com/embed/Sm0Go9IioJ4"
-title="Differentialgleichung lösen - DGL 1. Ordnung, Anfangswertproblem, Trennung der Variablen" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
+Für $y' = y^2$ ist $y^* = 0$ die einzige Nullstelle von $g(y) = y^2$, und die
+zugehörige konstante Lösung fehlt in der Schar. Das spielt beim
+Anfangswertproblem eine Rolle. Zur Anfangsbedingung $y(0) = 0$ passt kein $C$,
+die einzige Lösung ist die konstante Lösung $y = 0$. Zur Anfangsbedingung
+$y(0) = 1$ gehört dagegen $-\frac{1}{C} = 1$, also $C = -1$ und
 
-```{dropdown} Video "Separierbare Differentialgleichungen" von MathePeter
-<iframe width="927" height="521" src="https://www.youtube.com/embed/Oa7a6rP8Zd4"
-title="Separierbare Differentialgleichungen | Trennung der Veränderlichen (3-Schritte-Methode)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
+\begin{equation*}
+y = -\frac{1}{x - 1} = \frac{1}{1 - x}.
+\end{equation*}
+
+Zur Probe ist $y(0) = 1$ und $y' = \frac{1}{(1 - x)^2} = y^2$. Bei $x = 1$
+hat diese Lösung einen Pol. Sie existiert deshalb nur auf dem Intervall
+$x < 1$, obwohl die DGL $y' = y^2$ selbst für alle $x$ sinnvoll ist. Bei
+$y\,y' = \cos(x)$ aus dem zweiten Abschnitt hat $g(y) = \frac{1}{y}$ dagegen
+keine Nullstelle, und es gibt keine konstante Lösung. Wer Kapitel 8.3 gelesen
+hat, erkennt die konstanten Lösungen im Richtungsfeld wieder. Sie sind die
+waagerechten Nullisoklinen, auf denen die Linienelemente entlang der Linie
+selbst liegen.
+
+```{dropdown} Video "Trennung der Variablen" von Prof. Hielscher (TH Mannheim)
+<iframe width="927" height="588"
+src="https://www.youtube.com/embed/IPbG7lnzccE?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="DGL 1. Ordnung - Trennung der Variable" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Die Separation der Variablen überführt eine separierbare DGL $y' = f(x) \cdot g(y)$
-durch vier Schritte (Trennen, Integrieren, Stammfunktion einsetzen, auflösen) in ihre
-allgemeine Lösung. Am Fallschirmspringer-Beispiel haben wir damit die Funktion
-$v(t) = v_\infty(1 - e^{-kt})$ vollständig hergeleitet und durch Einsetzen verifiziert.
-Der Sonderfall $g(y) = 0$ liefert konstante Lösungen, die stets gesondert zu prüfen sind.
-
-In Abschnitt 7.2 stoßen wir auf DGL der Form $y' = f(ax + by + c)$, die sich auf den
-ersten Blick nicht trennen lassen. Eine geeignete Substitution verwandelt sie in eine
-separierbare DGL und erschließt damit einen deutlich breiteren Bereich von
-Gleichungstypen. Diese Substitutionstechnik ist der erste Schritt in Richtung der
-allgemeinen Lösungstheorie, die Sie in der Vorlesung Technische Mechanik für die
-Analyse von Schwingungssystemen mit nichtlinearen Rückstellkräften benötigen werden.
+Eine trennbare DGL $y' = f(x) \cdot g(y)$ lösen wir, indem wir die Variablen
+trennen, beide Seiten integrieren und nach $y$ auflösen. Für $y' = xy$ haben wir
+so die allgemeine Lösung $y = A\,e^{x^2/2}$ hergeleitet und gezeigt, dass es
+keine weiteren Lösungen gibt. Jede Nullstelle von $g$ liefert eine konstante
+Lösung, die wir gesondert prüfen müssen, wie bei $y' = y^2$. Die Anfangsbedingung
+entscheidet über die Konstante, manchmal auch über ein Vorzeichen, und die
+spezielle Lösung existiert oft nur auf einem Intervall. In Kapitel 9 sehen wir,
+wie eine Substitution DGL wie $y' = (x + y)^2$ in trennbare DGL verwandelt, und
+lernen mit den linearen DGL eine weitere Klasse kennen, zu der auch
+$y' = x + y$ gehört. Wer sehen möchte, wie der Computer DGL ohne Lösungsformel
+behandelt, findet in Kapitel 8.5 das Euler-Verfahren als Vertiefung, dort auch
+für $y' = y^2$.

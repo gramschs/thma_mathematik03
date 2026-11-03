@@ -1,0 +1,258 @@
+---
+authors:
+  - name: Simone Gramsch
+kernelspec:
+  name: python3
+  display_name: 'Python 3'
+---
+
+# 8.5 Euler-Verfahren (Vertiefung)
+
+```{admonition} Vertiefung
+:class: advanced
+Dieses Kapitel ist eine Vertiefung. Es ist optional und kein Prüfungsstoff der
+CA-Tests.
+```
+
+In Kapitel 8.4 haben wir trennbare DGL exakt gelöst. Viele DGL lassen sich aber
+mit keinem bekannten Verfahren in eine Lösungsformel verwandeln, etwa
+$y' = x^2 + y^2$. Trotzdem kennen wir in jedem Punkt die Steigung der
+Lösungskurve, denn die DGL schreibt sie vor. In diesem Kapitel machen wir
+daraus ein Rechenverfahren, das statt einer Formel eine Tabelle von
+Näherungswerten liefert. Im Maschinenbau stecken solche Verfahren in jeder
+Simulationssoftware, etwa für Mehrkörpersysteme oder Strömungen.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können die **Euler-Formel** $y_{k+1} = y_k + h \cdot F(x_k, y_k)$
+  aus dem Differenzenquotienten herleiten.
+* [ ] Sie können mit dem **Euler-Verfahren** einige Schritte eines
+  Anfangswertproblems von Hand berechnen.
+* [ ] Sie wissen, wie die **Schrittweite** $h$ die Genauigkeit beeinflusst.
+* [ ] Sie kennen Grenzen des Verfahrens bei Polstellen und senkrechten
+  Tangenten.
+```
+
+## Wie wird aus einem Linienelement ein Rechenschritt?
+
+Wir üben an einem Anfangswertproblem, dessen exakte Lösung wir kennen, damit
+wir die Näherung später überprüfen können. Für $y' = xy$ mit $y(0) = 2$ ist das
+nach Kapitel 8.4 die Funktion $y = 2e^{x^2/2}$. Im Startpunkt $(0, 2)$ schreibt
+die DGL die Steigung $0 \cdot 2 = 0$ vor. Wir tun nun so, als ob die
+Lösungskurve auf einem kurzen Stück der Länge $h = 0.5$ einfach geradeaus mit
+dieser Steigung weiterläuft, also entlang ihrer Tangente. Dann schätzen wir an
+der Stelle $x = 0.5$ den Wert $y \approx 2 + 0.5 \cdot 0 = 2$.
+
+Im neuen Punkt $(0.5, 2)$ fragen wir die DGL erneut nach der Steigung und
+erhalten $0.5 \cdot 2 = 1$. Mit dieser Steigung gehen wir den nächsten Schritt
+und so weiter. Nach drei Schritten sind wir bei $x = 1.5$:
+
+\begin{align*}
+y_1 &= 2 + 0.5 \cdot (0 \cdot 2) = 2,\\
+y_2 &= 2 + 0.5 \cdot (0.5 \cdot 2) = 2.5,\\
+y_3 &= 2.5 + 0.5 \cdot (1 \cdot 2.5) = 3.75.
+\end{align*}
+
+In jeder Zeile steht der alte Wert plus die Schrittweite mal die Steigung im
+alten Punkt. Die Steigung in der Klammer ist jeweils $x \cdot y$ mit den Werten
+des alten Punkts. Wer Kapitel 8.3 gelesen hat, erkennt die Idee wieder: Wir
+folgen dem Linienelement ein Stück weit und richten uns am neuen Punkt nach dem
+nächsten Linienelement.
+
+Dass diese Rechnung sinnvoll ist, zeigt der Differenzenquotient aus der
+Mathematik 1. Für eine kleine Schrittweite $h$ ist die Ableitung an der Stelle
+$x_k$ ungefähr die Steigung der Sekante:
+
+\begin{equation*}
+y'(x_k) \approx \frac{y(x_k + h) - y(x_k)}{h}.
+\end{equation*}
+
+Die DGL $y' = F(x, y)$ gibt uns die linke Seite, nämlich $F(x_k, y_k)$, wobei
+$y_k$ unsere Näherung für $y(x_k)$ ist. Setzen wir das ein und lösen nach dem
+gesuchten Wert $y_{k+1} \approx y(x_k + h)$ auf, erhalten wir
+
+\begin{equation*}
+y_{k+1} = y_k + h \cdot F(x_k, y_k).
+\end{equation*}
+
+```{admonition} Wie funktioniert das Euler-Verfahren?
+:class: note
+Gegeben sei das Anfangswertproblem $y' = F(x, y)$, $y(x_0) = y_0$, und eine
+Schrittweite $h > 0$. Das **Euler-Verfahren** berechnet Näherungswerte
+$y_k \approx y(x_k)$ an den Stellen $x_k = x_0 + k\,h$ mit der **Euler-Formel**
+
+\begin{equation*}
+y_{k+1} = y_k + h \cdot F(x_k, y_k), \qquad k = 0, 1, 2, \ldots
+\end{equation*}
+
+Verbinden wir die Punkte $(x_k, y_k)$ durch Strecken, entsteht ein
+Polygonzug, der die Lösungskurve annähert.
+```
+
+Unsere drei Schritte von oben sind genau diese Formel mit $x_0 = 0$,
+$y_0 = 2$, $h = 0.5$ und $F(x, y) = xy$. Wegen des Polygonzugs heißt das
+Verfahren auch eulersches Polygonzugverfahren. Anders als die Trennung der
+Variablen liefert es keine Formel für die Lösung, sondern eine Wertetabelle,
+und es funktioniert für jede explizite DGL 1. Ordnung, auch für
+$y' = x^2 + y^2$.
+
+## Wie gut ist die Näherung?
+
+Wir vergleichen die Euler-Werte mit der exakten Lösung $2e^{x^2/2}$. Neben der
+Schrittweite $h = 0.5$ haben wir auch mit $h = 0.25$ gerechnet. Dafür brauchen
+wir doppelt so viele Schritte, etwa
+$y_2 = 2 + 0.25 \cdot (0.25 \cdot 2) = 2.125$ an der Stelle $x = 0.5$.
+
+| $x$ | Euler, $h = 0.5$ | Euler, $h = 0.25$ | exakt $2e^{x^2/2}$ |
+| --- | --- | --- | --- |
+| $0$ | $2$ | $2$ | $2$ |
+| $0.5$ | $2$ | $2.125$ | $2.266$ |
+| $1$ | $2.5$ | $2.839$ | $3.297$ |
+| $1.5$ | $3.75$ | $4.658$ | $6.160$ |
+
+Die Euler-Werte bleiben hinter der exakten Lösung zurück, und der Abstand
+wächst von Schritt zu Schritt. Mit $h = 0.5$ beträgt der Fehler bei $x = 1$
+schon $0.80$ und bei $x = 1.5$ sogar $2.41$. Die folgende Abbildung zeigt, wie
+die beiden Polygonzüge unter der exakten Kurve liegen.
+
+```{figure} pics/euler_polygonzug.svg
+---
+name: euler_polygonzug
+---
+Darstellung der Euler-Näherungen für $y' = xy$, $y(0) = 2$ mit zwei
+Schrittweiten im Vergleich zur exakten Lösung.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+*Warum liegt die Näherung immer zu tief?* Die exakte Lösung ist nach oben
+gekrümmt, und die Tangente einer solchen Kurve verläuft unterhalb der Kurve.
+Jeder Euler-Schritt landet deshalb etwas zu tief. Dazu kommt, dass der nächste
+Schritt vom bereits zu tiefen Wert aus startet und dort mit $x \cdot y_k$ auch
+eine zu kleine Steigung verwendet. Die Fehler der einzelnen Schritte summieren
+sich also auf.
+
+Mit der halben Schrittweite liegt der Polygonzug deutlich näher an der Kurve.
+Bei $x = 1$ sinkt der Fehler von $0.80$ auf $0.46$, und halbieren wir die
+Schrittweite weiter, erhalten wir die Fehler $0.25$, $0.13$ und $0.07$. Jede
+Halbierung von $h$ halbiert also ungefähr den Fehler, kostet aber doppelt so
+viele Rechenschritte. Von Hand wird das schnell mühsam, und genau hier
+übernimmt der Computer.
+
+Die folgenden beiden Code-Zellen sind optional. Sie geben einen Ausblick auf
+die Vorlesung Angewandte Numerik im Maschinenbau. Die erste Zelle setzt die
+Euler-Formel in Python um und berechnet den Fehler bei $x = 1$ für immer
+kleinere Schrittweiten. Die zweite Zelle zeichnet die Polygonzüge in einer
+interaktiven Grafik.
+
+```{code-cell} python
+import numpy as np
+
+def F(x, y):
+    """Rechte Seite der DGL y' = x * y."""
+    return x * y
+
+def euler(F, x0, y0, h, x_ende):
+    """Euler-Verfahren für y' = F(x, y) mit y(x0) = y0 und Schrittweite h."""
+    n = int(round((x_ende - x0) / h))   # Anzahl der Schritte
+    x = x0 + h * np.arange(n + 1)       # Stellen x_0, x_1, ..., x_n
+    y = np.zeros(n + 1)
+    y[0] = y0                           # Anfangsbedingung
+    for k in range(n):
+        y[k + 1] = y[k] + h * F(x[k], y[k])   # Euler-Formel
+    return x, y
+
+def y_exakt(x):
+    return 2 * np.exp(x**2 / 2)
+
+for h in [0.5, 0.25, 0.125, 0.0625, 0.03125]:
+    x, y = euler(F, 0.0, 2.0, h, 1.0)
+    print(f"h = {h:<8} y(1) ≈ {y[-1]:.4f}   Fehler = {y_exakt(1.0) - y[-1]:.4f}")
+```
+
+```{code-cell} python
+import pandas as pd
+import plotly.express as px
+
+zeilen = []
+for h in [0.5, 0.25, 0.125]:
+    x, y = euler(F, 0.0, 2.0, h, 1.5)
+    zeilen += [{'x': xi, 'y': yi, 'Kurve': f'Euler, h = {h}'}
+               for xi, yi in zip(x, y)]
+x_fein = np.linspace(0, 1.5, 300)
+zeilen += [{'x': xi, 'y': yi, 'Kurve': 'exakte Lösung'}
+           for xi, yi in zip(x_fein, y_exakt(x_fein))]
+
+fig = px.line(pd.DataFrame(zeilen), x='x', y='y', color='Kurve')
+fig.for_each_trace(lambda t: t.update(mode='lines+markers')
+                   if t.name.startswith('Euler') else None)
+fig.show()
+```
+
+## Wo stößt das Verfahren an Grenzen?
+
+Das Euler-Verfahren rechnet immer weiter und liefert immer Zahlen. Ob diese
+Zahlen etwas mit der Lösung zu tun haben, sagt es uns nicht. Wir greifen das
+Anfangswertproblem $y' = y^2$, $y(0) = 1$ aus Kapitel 8.4 auf. Seine Lösung
+$y = \frac{1}{1 - x}$ hat bei $x = 1$ einen Pol und existiert nur für $x < 1$.
+Mit $h = 0.25$ und $F(x, y) = y^2$ liefert die Euler-Formel die folgenden Werte.
+
+| $x$ | Euler, $h = 0.25$ | exakt $\frac{1}{1 - x}$ |
+| --- | --- | --- |
+| $0$ | $1$ | $1$ |
+| $0.25$ | $1.25$ | $1.333$ |
+| $0.5$ | $1.641$ | $2$ |
+| $0.75$ | $2.314$ | $4$ |
+| $1$ | $3.652$ | Pol |
+| $1.25$ | $6.985$ | keine Lösung |
+
+Bis $x = 0.75$ bleibt die Näherung wie im vorigen Abschnitt hinter der
+Lösung zurück. An der Stelle $x = 1$ liefert das Verfahren dann den harmlos
+aussehenden Wert $3.652$, obwohl die Lösung dort gar nicht existiert, und
+rechnet danach unbeirrt weiter. *Woran merken wir, dass hier etwas nicht
+stimmt?* Ein Hinweis ist der Vergleich mehrerer Schrittweiten. Halbieren wir
+$h$ immer wieder, so wächst der Euler-Wert bei $x = 1$ von $3.65$ über $5.36$
+und $8.25$ auf $13.18$, statt sich wie bei $y' = xy$ einem festen Wert zu
+nähern.
+
+Ähnlich verhält sich das Verfahren an einer senkrechten Tangente. Die Lösung
+$y = -\sqrt{2\sin(x) + 1}$ von $y\,y' = \cos(x)$ aus Kapitel 8.4 endet bei
+$x = \frac{7\pi}{6}$, wo $y$ den Wert null erreicht. Dort wird die Steigung
+$y' = \frac{\cos(x)}{y}$ beliebig groß, die Kurve hat also eine senkrechte
+Tangente. Kurz davor verlangt die Euler-Formel riesige Schritte in
+$y$-Richtung, und der Polygonzug springt über die $x$-Achse hinweg auf
+Werte, die zu keiner Lösung dieses Anfangswertproblems gehören. In beiden
+Fällen hilft nur, was wir in den vorigen Kapiteln gelernt haben. Wir müssen
+wissen, auf welchem Intervall die Lösung existiert, und die numerischen Werte
+kritisch prüfen.
+
+Auch ohne solche Sonderfälle ist das Euler-Verfahren für die Praxis meist zu
+ungenau, weil der Fehler nur proportional zur Schrittweite sinkt. Genauere
+Verfahren wie das klassische **Runge-Kutta-Verfahren** werten in jedem Schritt
+die Steigung an mehreren Stellen aus und mitteln geschickt. Bei ihm sinkt der
+Fehler beim Halbieren der Schrittweite nicht auf die Hälfte, sondern auf etwa
+ein Sechzehntel. Solche Verfahren stecken in den Löserbibliotheken von Python
+und MATLAB, und sie sind Thema der Vorlesung Angewandte Numerik im
+Maschinenbau.
+
+```{dropdown} Video "Graphische und numerische Lösung für DGL 1. Ordnung" von Prof. Hielscher (TH Mannheim), Teil 2
+<iframe width="966" height="613"
+src="https://www.youtube.com/embed/7J5cJspIpl8?start=496"
+title="graphische und numerische Lösung für DGL 1. Ordnung" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+## Zusammenfassung und Ausblick
+
+Das Euler-Verfahren ersetzt die Lösungskurve auf kurzen Stücken durch ihre
+Tangente und berechnet mit der Euler-Formel $y_{k+1} = y_k + h \cdot F(x_k, y_k)$
+eine Tabelle von Näherungswerten. Für $y' = xy$ mit $y(0) = 2$ bleibt der
+Polygonzug unter der exakten Lösung $2e^{x^2/2}$, und der Fehler halbiert sich
+ungefähr mit der Schrittweite. An einem Pol oder einer senkrechten Tangente
+liefert das Verfahren weiter Zahlen, obwohl die Lösung dort endet, und
+deshalb müssen wir seine Ergebnisse immer kritisch prüfen. In Kapitel 9 kehren
+wir zu exakten Verfahren zurück und lösen DGL, die sich nicht trennen lassen,
+mit einer Substitution oder als lineare DGL.

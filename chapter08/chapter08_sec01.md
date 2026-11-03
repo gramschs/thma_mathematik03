@@ -5,269 +5,367 @@ authors:
 
 # 8.1 Was ist eine Differentialgleichung?
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-Am Ende von Kapitel 5 haben wir gesehen, wie die Modalanalyse ein gekoppeltes
-Schwingungssystem auf seine Eigenfrequenzen zurückführt. Dabei sind Ausdrücke
-wie $m\ddot{x} = -kx$ aufgetaucht: Gleichungen, in denen die gesuchte Funktion
-und ihre Ableitungen gemeinsam vorkommen. Solche Gleichungen sind kein
-Sonderfall, sondern das wichtigste mathematische Werkzeug der Ingenieurpraxis.
-Wärmeübertragung, Strömungsmechanik, Regelungstechnik und Festigkeitslehre
-führen alle auf denselben Typ von Beschreibung. In diesem Kapitel klären wir,
-was eine **Differentialgleichung** ist, was ihre Lösungen bedeuten und wie
-eine einzige Zusatzbedingung die Lösung eindeutig festlegt.
+Mit Kapitel 7 haben wir die lineare Algebra abgeschlossen. Dort waren die
+Unbekannten stets Zahlen oder Vektoren, etwa die Lösung $\vec{x}$ eines
+linearen Gleichungssystems in Kapitel 2.4 oder ein Eigenvektor in Kapitel 6. In
+den Ingenieurwissenschaften wird aber oft keine Zahl gesucht, sondern eine
+Funktion, und in der Gleichung für diese Funktion kommen ihre Ableitungen vor.
+Solche Gleichungen beschreiben im Maschinenbau zum Beispiel die
+Fallgeschwindigkeit mit Luftwiderstand, die Biegelinie eines Balkens oder den
+Temperaturverlauf in einem Bauteil.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, was eine **gewöhnliche Differentialgleichung (ODE)** ist,
-  und können sie von einer partiellen Differentialgleichung unterscheiden.
-* [ ] Sie kennen die wichtigsten **Schreibweisen** für ODEs und können
-  dieselbe Gleichung in Punkt-, Strich- und Leibniz-Notation lesen.
-* [ ] Sie kennen die Begriffe **Ordnung** und **Grad** einer ODE und können
-  diese an konkreten Beispielen bestimmen.
-* [ ] Sie können zwischen der **allgemeinen Lösung** und der **speziellen
-  (partikulären) Lösung** einer ODE unterscheiden.
-* [ ] Sie wissen, was ein **Anfangswertproblem (AWP)** und ein
-  **Randwertproblem (RWP)** sind, und können für ein gegebenes AWP die
-  Anfangsbedingungen benennen.
+* [ ] Sie wissen, was eine **gewöhnliche Differentialgleichung** ist, und
+  können sie von Gleichungen unterscheiden, in denen eine Zahl gesucht ist.
+* [ ] Sie können die **Ordnung** einer Differentialgleichung bestimmen.
+* [ ] Sie können Differentialgleichungen in Strich-, Punkt- und
+  Leibniz-Schreibweise lesen und zwischen **expliziter** und **impliziter**
+  Form unterscheiden.
+* [ ] Sie können durch Einsetzen nachweisen, dass eine Funktion eine
+  **Lösung** einer Differentialgleichung ist.
+* [ ] Sie wissen, was die **allgemeine Lösung** einer Differentialgleichung
+  ist und warum sie bei einer Differentialgleichung $n$-ter Ordnung $n$ frei
+  wählbare Konstanten enthält.
 ```
 
-## Wie wird aus einem Physikproblem eine Differentialgleichung?
+## Wie wird aus einer Änderungsrate eine Gleichung?
 
-Ein Mensch mit Masse $m = 80~\text{kg}$ springt aus einem Flugzeug. Vor dem
-Öffnen des Fallschirms wirken auf ihn zwei Kräfte: die Schwerkraft
-$F_g = mg$ nach unten und der Luftwiderstand $F_L = b\,v$ entgegen der
-Fallrichtung. Der Luftwiderstand wächst mit der Geschwindigkeit $v(t)$; je
-schneller der Fall, desto stärker bremst die Luft. Mit dem
-Luftwiderstandskoeffizient $b = 16~\text{kg\,s}^{-1}$ und
-$g = 9.81~\text{m\,s}^{-2}$ lautet das zweite Newtonsche Gesetz:
+Aus der Schule kennen wir Gleichungen, deren Lösungen Zahlen sind. Die
+quadratische Gleichung $x^2 - x - 6 = 0$ wird zum Beispiel von $x_1 = -2$ und
+$x_2 = 3$ erfüllt. Dass diese beiden Zahlen Lösungen sind, prüfen wir durch
+Einsetzen: $(-2)^2 - (-2) - 6 = 4 + 2 - 6 = 0$ und $3^2 - 3 - 6 = 0$. Wie wir
+auf die Lösungen kommen, ob durch Raten, mit einer Lösungsformel oder mit dem
+Computer, ist eine eigene Frage. Auch sehen wir einer Gleichung nicht sofort
+an, ob sie überhaupt lösbar ist und wie viele Lösungen sie hat. Bei den
+linearen Gleichungssystemen in Kapitel 2.4 gab es je nach Matrix und rechter
+Seite keine, genau eine oder unendlich viele Lösungen.
 
-\begin{equation*}
-m\,\dot{v} = mg - b\,v.
-\end{equation*}
-
-Wir dividieren durch $m$ und führen die Abkürzung $k = b/m = 0.2~\text{s}^{-1}$
-ein:
-
-\begin{equation*}
-\dot{v} = g - k\,v.
-\end{equation*}
-
-In dieser Gleichung ist $v(t)$ die gesuchte Funktion. Auf der linken Seite
-steht ihre Ableitung $\dot{v}$, auf der rechten Seite ein Ausdruck, der $v$
-selbst enthält. Das unterscheidet diese Gleichung grundlegend von einer
-algebraischen Gleichung wie $2x - 3 = 0$: Dort suchen wir eine Zahl, hier
-suchen wir eine Funktion, deren Ableitung eine vorgeschriebene Beziehung zur
-Funktion selbst erfüllt.
-
-### Schreibweisen für dieselbe Gleichung
-
-In Lehrbüchern und späteren Lehrveranstaltungen begegnet dieselbe ODE in
-verschiedenen Notationen. Unsere Fallgleichung lässt sich äquivalent
-schreiben als:
+Jetzt suchen wir statt einer Zahl eine Funktion. Wir stellen uns eine Kurve
+$y(x)$ vor, deren Steigung an jeder Stelle $x$ genau das $x$-Fache ihres
+Funktionswerts ist. Die Steigung ist die Ableitung $y'(x)$, also die
+Änderungsrate von $y$, und damit lautet unsere Forderung
 
 \begin{equation*}
-\dot{v} = g - kv \quad \text{(Punkt-Notation, üblich bei Zeitableitungen)},
+y'(x) = x \cdot y(x).
 \end{equation*}
+
+Links steht die Ableitung der gesuchten Funktion, rechts die Funktion selbst,
+multipliziert mit der Stelle $x$. Die Gleichung soll nicht nur an einer
+einzelnen Stelle gelten, sondern für jedes $x$. An der Stelle $x = 0$ muss die
+Kurve also waagerecht verlaufen, und an der Stelle $x = 2$ muss ihre Steigung
+doppelt so groß sein wie ihr Funktionswert.
+
+*Welche Funktion kommt infrage?* Weil in der Ableitung die Funktion selbst
+wieder auftauchen soll, liegt die $e$-Funktion nahe. Für $y = e^x$ ist
+$y' = e^x$, die rechte Seite lautet aber $x \cdot e^x$. Beide stimmen nur an
+der Stelle $x = 1$ überein, und das reicht nicht. Beim nächsten Versuch
+$y = e^{x^2}$ liefert die Kettenregel $y' = 2x\,e^{x^2} = 2x \cdot y$, also einen
+Faktor $2$ zu viel. Halbieren wir den Exponenten, verschwindet dieser Faktor:
 
 \begin{equation*}
-v' = g - kv \quad \text{(Strich-Notation)},
+y(x) = e^{\frac{x^2}{2}}
+\quad\Rightarrow\quad
+y'(x) = e^{\frac{x^2}{2}} \cdot \frac{2x}{2} = x \cdot e^{\frac{x^2}{2}}
+= x \cdot y(x).
 \end{equation*}
 
-\begin{equation*}
-\frac{dv}{dt} = g - kv \quad \text{(Leibniz-Notation, betont die unabhängige Variable $t$)}.
-\end{equation*}
+Die innere Ableitung von $\frac{x^2}{2}$ ist $x$, und genau dieser Faktor wird
+verlangt. Linke und rechte Seite stimmen für jedes $x$ überein, die Funktion
+$y = e^{x^2/2}$ erfüllt also unsere Forderung. Wir haben damit die Begriffe,
+die wir von Gleichungen für Zahlen kennen, auf eine neue Art von Gleichung
+übertragen. Gesucht ist eine Funktion, in der Gleichung kommen die Funktion
+und ihre Ableitung vor, und ob eine Funktion die Gleichung erfüllt, prüfen wir
+wieder durch Einsetzen.
 
-Alle drei Schreibweisen drücken dieselbe Forderung aus. In der Mechanik ist die
-Punkt-Notation für Zeitableitungen am gebräuchlichsten; in der Mathematik und
-bei Ableitungen nach dem Ort wird meist die Strich- oder Leibniz-Notation
-bevorzugt.
-
-```{admonition} Was ist ... eine gewöhnliche Differentialgleichung?
+```{admonition} Was ist ... eine Differentialgleichung?
 :class: note
-Eine **gewöhnliche Differentialgleichung** (englisch: *ordinary differential
-equation*, **ODE**) ist eine Gleichung, die eine unbekannte Funktion einer
-einzigen unabhängigen Variable und mindestens eine ihrer Ableitungen enthält.
-
-Die **Ordnung** einer ODE ist die höchste auftretende Ableitungsordnung. Der
-**Grad** ist der Exponent, mit dem diese höchste Ableitung in der Gleichung
-vorkommt, sofern die Gleichung polynomial in den Ableitungen ist.
-
-Eine **partielle Differentialgleichung** enthält partielle Ableitungen nach
-mehreren unabhängigen Variablen gleichzeitig.
+Eine **Differentialgleichung**, kurz **DGL**, ist eine Gleichung für eine
+gesuchte Funktion $y(x)$, in der mindestens eine Ableitung von $y$ vorkommt.
+Außerdem dürfen $y$ selbst und die Variable $x$ darin auftreten. Hängt die
+gesuchte Funktion nur von einer einzigen Variablen ab, heißt die Gleichung
+**gewöhnliche Differentialgleichung**. Statt $y(x)$ und $y'(x)$ schreiben wir
+oft kurz $y$ und $y'$.
 ```
 
-Unsere Fallgleichung $\dot{v} = g - kv$ ist eine ODE 1. Ordnung und 1. Grades,
-denn $\dot{v}$ erscheint linear und es tritt keine höhere Ableitung auf.
-Zum Vergleich: Die Bewegungsgleichung eines ungedämpften Schwingers
-$m\ddot{x} = -kx$ ist eine ODE 2. Ordnung. Die Wärmeleitungsgleichung
-$\partial T/\partial t = a\,\partial^2 T/\partial x^2$ hingegen ist eine
-partielle Differentialgleichung, denn die Temperatur $T$ hängt sowohl von der
-Zeit $t$ als auch vom Ort $x$ ab; solche Gleichungen liegen außerhalb des
-Rahmens dieses Kapitels.
+Unsere Gleichung $y' = xy$ ist eine gewöhnliche DGL, denn die gesuchte Funktion
+$y$ hängt nur von $x$ ab, und ihre Ableitung $y'$ kommt vor. Hängt die gesuchte
+Funktion dagegen von mehreren Variablen ab, etwa von Ort und Zeit, enthält die
+Gleichung partielle Ableitungen und heißt **partielle Differentialgleichung**.
+Solche Gleichungen behandeln wir in diesem Kurs nicht, mit DGL meinen wir
+deshalb immer eine gewöhnliche DGL. Im Englischen heißen sie *ordinary
+differential equations*, kurz ODE.
 
-In der Strukturmechanik trifft man regelmäßig auf ODEs höherer Ordnung.
-Die Biegelinie eines Balkens genügt der Gleichung $EI\,w'' = M(x)$, einer
-ODE 2. Ordnung in der Durchbiegung $w(x)$. Die Gleichung $EI\,w'''' = q(x)$
-für eine verteilte Streckenlast $q(x)$ ist sogar eine ODE 4. Ordnung. In der
-Technischen Mechanik werden Sie diese Gleichungen ausführlich einsetzen.
+Nicht jede Gleichung, in der $x$ und $y$ vorkommen, ist eine DGL. Die
+Kreisgleichung $x^2 + y^2 = 4$ beschreibt zwar eine Kurve, enthält aber keine
+Ableitung. Auch $y = x^2 + 1$ ist keine DGL, denn hier ist nichts gesucht, die
+Gleichung legt die Funktion direkt fest. Entscheidend ist, dass eine unbekannte
+Funktion gesucht wird und dass mindestens eine ihrer Ableitungen in der
+Gleichung auftaucht.
+
+```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher (TH Mannheim)
+<iframe width="966" height="613"
+src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+```{dropdown} Video "Gewöhnliche Differentialgleichung" von Simone Gramsch
+<iframe
+src="https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=2df731d3-5569-405e-b6ed-b0180090a481&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+height="405" width="720" style="border: 1px solid #464646;" allowfullscreen
+allow="autoplay"></iframe>
+```
+
+## Was ist die Ordnung einer DGL?
+
+In $y' = xy$ kommt nur die erste Ableitung vor. Eine DGL darf aber auch höhere
+Ableitungen enthalten. Als zweites Beispiel nehmen wir
+
+\begin{equation*}
+y'' + 9y = 0.
+\end{equation*}
+
+Gesucht ist eine Funktion $y$, deren zweite Ableitung $y''$ zusammen mit dem
+Neunfachen von $y$ null ergibt. Anders gesagt muss die Funktion zweimal
+abgeleitet das $(-9)$-Fache von sich selbst ergeben. *Kennen wir eine Funktion,
+die nach zweimaligem Ableiten bis auf einen Faktor wieder sich selbst ergibt?*
+Die Antwort heben wir uns für den nächsten Abschnitt auf. Schon jetzt sehen wir
+aber den wesentlichen Unterschied zu $y' = xy$, denn hier müssen wir die
+gesuchte Funktion zweimal ableiten, um die Gleichung überhaupt prüfen zu
+können. Die höchste Ableitung ist so wichtig, dass wir DGL danach einteilen.
+
+```{admonition} Was ist ... die Ordnung einer DGL?
+:class: note
+Die **Ordnung** einer DGL ist die Ordnung der höchsten Ableitung der gesuchten
+Funktion, die in der Gleichung vorkommt. Eine DGL $n$-ter Ordnung enthält also
+die Ableitung $y^{(n)}$, aber keine höhere.
+```
+
+Unsere Gleichung $y' = xy$ ist damit eine DGL 1. Ordnung, die Gleichung
+$y'' + 9y = 0$ eine DGL 2. Ordnung. Dass $y'$ in der zweiten Gleichung fehlt,
+spielt keine Rolle, denn es zählt nur die höchste Ableitung. Auch eine Potenz
+ändert die Ordnung nicht. Die Gleichung $(y')^2 + y^2 = 1$ ist eine
+DGL 1. Ordnung, obwohl die Ableitung darin quadriert wird.
+
+```{dropdown} Video "Ordnung einer gewöhnlichen Differentialgleichung" von Simone Gramsch
+<iframe
+src="https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=e9c4b3da-35c2-4320-babb-b0180090ad24&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+height="405" width="720" style="border: 1px solid #464646;" allowfullscreen
+allow="autoplay"></iframe>
+```
+
+Je nach Anwendung sehen DGL sehr unterschiedlich aus, weil die Bezeichnungen
+aus dem jeweiligen Zusammenhang stammen. Die Variable $x$, von der die gesuchte
+Funktion abhängt, heißt **unabhängige Variable**. Die gesuchte Funktion $y$
+heißt auch **abhängige Variable**, obwohl sie eine Funktion ist. Hängt die
+gesuchte Funktion von der Zeit ab, heißt die unabhängige Variable meist $t$,
+und die Ableitung nach der Zeit wird in den Ingenieurwissenschaften gern mit
+einem Punkt über dem Funktionsnamen geschrieben. Oft heißt die gesuchte
+Funktion dann $x(t)$, und unsere Gleichung $y' = xy$ wird zu
+
+\begin{equation*}
+\dot{x} = t \cdot x.
+\end{equation*}
+
+Der Buchstabe $x$ hat hier die Rolle gewechselt, er bezeichnet jetzt die
+gesuchte Funktion und nicht mehr die Variable. Zwei Punkte stehen für die
+zweite Ableitung nach der Zeit, aus $y'' + 9y = 0$ wird so $\ddot{x} + 9x = 0$.
+Die dritte Schreibweise stammt von Leibniz und schreibt die Ableitung als
+Quotient $\frac{dy}{dx}$:
+
+\begin{equation*}
+\frac{dy}{dx} = x \cdot y
+\qquad\text{und}\qquad
+\frac{d^2y}{dx^2} + 9y = 0.
+\end{equation*}
+
+Die hochgestellte $2$ in $\frac{d^2y}{dx^2}$ zeigt die zweite Ableitung an, die
+Ordnung können wir also auch hier direkt ablesen. Alle drei Schreibweisen
+drücken dieselbe Frage aus, für die erste Gleichung etwa: Welche Funktion hat
+an jeder Stelle eine Steigung, die gleich dem Produkt aus Stelle und
+Funktionswert ist? In Kapitel 8.4 zahlt sich die Leibniz-Schreibweise aus,
+denn dort rechnen wir mit $\frac{dy}{dx}$ wie mit einem Bruch und lösen
+$y' = xy$, ohne zu raten.
+
+Bei $y' = xy$ steht die höchste Ableitung allein auf der linken Seite, und alle
+anderen Terme stehen rechts. Das muss nicht so sein. In $y'' + 9y = 0$ stehen
+alle Terme links, und auf der rechten Seite steht die Null. Durch Umstellen
+erhalten wir $y'' = -9y$, und jetzt ist die Gleichung nach der höchsten
+Ableitung aufgelöst.
+
+```{admonition} Was ist ... eine explizite und eine implizite DGL?
+:class: note
+Eine DGL $n$-ter Ordnung heißt **explizit**, wenn sie nach der höchsten
+Ableitung aufgelöst ist, also die Form
+
+\begin{equation*}
+y^{(n)} = F\left(x, y, y', \ldots, y^{(n-1)}\right)
+\end{equation*}
+
+hat. Steht sie dagegen in der Form
+
+\begin{equation*}
+G\left(x, y, y', \ldots, y^{(n)}\right) = 0,
+\end{equation*}
+
+heißt sie **implizit**.
+```
+
+Die Gleichung $y' = xy$ ist explizit mit $F(x, y) = xy$. Die Gleichung
+$y'' + 9y = 0$ ist implizit mit $G(x, y, y', y'') = y'' + 9y$, und ihre
+explizite Form lautet $y'' = -9y$. Ob die allein stehende höchste Ableitung
+links oder rechts vom Gleichheitszeichen steht, ist dabei gleichgültig. Eine
+explizite DGL lässt sich durch Umstellen immer in eine implizite verwandeln,
+umgekehrt gelingt das nicht immer so glatt. Lösen wir $(y')^2 + y^2 = 1$ nach
+$y'$ auf, erhalten wir $y' = \sqrt{1 - y^2}$ oder $y' = -\sqrt{1 - y^2}$, also
+gleich zwei explizite DGL statt einer.
+
+```{dropdown} Video "Explizite und implizite Differentialgleichungen" von Simone Gramsch
+<iframe
+src="https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=f685aee3-bac5-4459-839e-b01800ec5f8a&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+height="405" width="720" style="border: 1px solid #464646;" allowfullscreen
+allow="autoplay"></iframe>
+```
 
 ## Was ist eine Lösung, und warum gibt es unendlich viele?
 
-*Was bedeutet es überhaupt, eine ODE zu „lösen"?* Eine Lösung ist eine
-Funktion, die die Gleichung identisch erfüllt, wenn man sie einsetzt. Für
-unser Fallbeispiel behaupten wir, dass die Funktion
+Im ersten Abschnitt haben wir geprüft, ob $e^{x^2/2}$ die DGL $y' = xy$
+erfüllt, indem wir die Funktion und ihre Ableitung eingesetzt haben. Damit das
+überhaupt geht, muss die Funktion so oft differenzierbar sein, wie die Ordnung
+der DGL angibt. Außerdem soll die Gleichung nicht nur an einzelnen Stellen
+gelten, sondern auf einem ganzen Intervall.
+
+```{admonition} Was ist ... eine Lösung einer DGL?
+:class: note
+Eine Funktion $y$ heißt **Lösung** einer DGL $n$-ter Ordnung auf einem
+Intervall $I$, wenn sie dort $n$-mal differenzierbar ist und die DGL für alle
+$x \in I$ erfüllt, sobald wir $y$ und ihre Ableitungen einsetzen.
+```
+
+Die Funktion $y = e^{x^2/2}$ ist auf ganz $\mathbb{R}$ differenzierbar, und die
+Probe aus dem ersten Abschnitt gilt für jedes $x$. Sie ist also eine Lösung von
+$y' = xy$ auf $I = \mathbb{R}$. Die Funktion $y = e^x$ ist dagegen keine
+Lösung, denn $e^x = x\,e^x$ gilt nur an der einzelnen Stelle $x = 1$ und auf
+keinem Intervall. Wie bei Gleichungen für Zahlen ist auch nicht jede DGL
+lösbar. Die DGL $(y')^2 + 1 = 0$ hat keine Lösung, weil ein Quadrat nie
+negativ ist, so wie die Gleichung $x^2 + 1 = 0$ keine reelle Lösung hat.
+
+*Ist $e^{x^2/2}$ die einzige Lösung von $y' = xy$?* Probieren wir das Doppelte,
+also $y = 2e^{x^2/2}$. Der Faktor $2$ bleibt beim Ableiten erhalten, und wir
+erhalten $y' = 2x\,e^{x^2/2} = x \cdot 2e^{x^2/2} = x \cdot y$. Mit jedem
+anderen Faktor klappt das genauso. Für eine beliebige Konstante $A$ gilt
 
 \begin{equation*}
-v(t) = \frac{g}{k} + C\,e^{-kt}
+y = A\,e^{\frac{x^2}{2}}
+\quad\Rightarrow\quad
+y' = A\,x\,e^{\frac{x^2}{2}} = x \cdot A\,e^{\frac{x^2}{2}} = x \cdot y.
 \end{equation*}
 
-für jede Konstante $C \in \mathbb{R}$ eine Lösung von $\dot{v} = g - kv$ ist.
-Die Größe $g/k = 9.81 / 0.2 = 49.05~\text{m\,s}^{-1}$ ist die
-**Grenzgeschwindigkeit** $v_\infty$: die Geschwindigkeit, bei der sich
-Schwerkraft und Luftwiderstand gerade ausgleichen.
+Die Konstante $A$ wandert beim Ableiten unverändert mit, und die Probe gelingt
+für jedes $A \in \mathbb{R}$. Das gilt sogar für $A = 0$, denn die Nullfunktion
+$y = 0$ hat die Ableitung $y' = 0 = x \cdot 0$. Die DGL hat also unendlich
+viele Lösungen, für jede Wahl von $A$ eine. Die folgende Abbildung zeigt fünf
+davon.
 
-Wir verifizieren das durch Einsetzen. Die Ableitung der behaupteten Lösung ist:
+```{figure} pics/kurvenschar_exponential.svg
+---
+name: kurvenschar_exponential
+---
+Darstellung der Lösungen $y = A\,e^{x^2/2}$ der DGL $y' = xy$ für fünf Werte
+von $A$.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Alle Kurven verlaufen an der Stelle $x = 0$ waagerecht, wie es die DGL verlangt,
+und je weiter wir uns von $x = 0$ entfernen, desto steiler werden sie. Die
+Konstante $A$ ist genau der Funktionswert an der Stelle $x = 0$, denn
+$A\,e^{0} = A$. Zwei verschiedene Kurven der Schar schneiden sich nirgends, und
+durch jeden Punkt der Ebene geht genau eine von ihnen.
+
+*Woher kommen die vielen Lösungen?* Am deutlichsten sehen wir das an einer DGL,
+in der die gesuchte Funktion selbst gar nicht vorkommt, etwa
 
 \begin{equation*}
-\dot{v}(t) = -kC\,e^{-kt}.
+y'' = -\sin(x).
 \end{equation*}
 
-Die rechte Seite der ODE lautet mit unserer Lösung:
+Diese DGL lösen wir, indem wir zweimal unbestimmt integrieren. Die erste
+Integration liefert $y' = \cos(x) + C_1$, die zweite
+
+\begin{equation*}
+y = \sin(x) + C_1\,x + C_2.
+\end{equation*}
+
+Bei jeder Integration entsteht eine Integrationskonstante, und weil wir zweimal
+integrieren, enthält das Ergebnis die beiden Konstanten $C_1$ und $C_2$. Zur
+Probe leiten wir zweimal ab. Dabei fallen beide Konstanten weg, und es bleibt
+$y'' = -\sin(x)$, ganz gleich, wie wir $C_1$ und $C_2$ wählen. Je höher die
+Ordnung, desto öfter müssen wir integrieren und desto mehr Konstanten
+entstehen. Das erinnert an die linearen Gleichungssysteme aus Kapitel 4.3. Dort
+haben wir unendlich viele Lösungen mit freien Parametern beschrieben, die wir
+beliebig wählen durften, und bei einer DGL übernehmen die Konstanten diese
+Rolle.
+
+Bei $y'' + 9y = 0$ steht die gesuchte Funktion auch in der expliziten Form
+$y'' = -9y$ auf der rechten Seite, und einfaches Integrieren hilft nicht weiter.
+Wir suchen eine Funktion, die zweimal abgeleitet das $(-9)$-Fache von sich
+selbst ergibt. Der Sinus wird nach zweimaligem Ableiten zum negativen Sinus,
+und der Faktor $9 = 3^2$ deutet auf $\sin(3x)$ hin. Tatsächlich liefert die
+Kettenregel $(\sin(3x))' = 3\cos(3x)$ und $(\sin(3x))'' = -9\sin(3x)$, und
+genauso ist $(\cos(3x))'' = -9\cos(3x)$. Für eine Kombination mit zwei
+Konstanten $C_1$ und $C_2$ gilt deshalb
 
 \begin{align*}
-g - k\,v(t) &= g - k\!\left(\frac{g}{k} + C\,e^{-kt}\right)
-             = g - g - kC\,e^{-kt}
-             = -kC\,e^{-kt}.
+y &= C_1\cos(3x) + C_2\sin(3x),\\
+y'' &= -9C_1\cos(3x) - 9C_2\sin(3x) = -9y.
 \end{align*}
 
-Linke und rechte Seite stimmen für jedes $C$ überein. Die Verifikation ist
-damit abgeschlossen.
+Damit ist $y'' + 9y = 0$ für alle $x \in \mathbb{R}$ erfüllt, und zwar für jede
+Wahl von $C_1$ und $C_2$. Wieder hat eine DGL 2. Ordnung zwei frei wählbare
+Konstanten, und wie bei $y' = xy$ beschreibt eine einzige Formel mit
+Konstanten eine ganze Schar von Lösungen.
 
-```{admonition} Was ist ... die allgemeine Lösung einer ODE?
+```{admonition} Was ist ... die allgemeine Lösung einer DGL?
 :class: note
-Die **allgemeine Lösung** einer ODE $n$-ter Ordnung ist eine Familie von
-Funktionen, die $n$ frei wählbare Konstanten $C_1, \ldots, C_n$ enthält und
-alle Lösungen der Gleichung umfasst. Jede Wahl der Konstanten liefert eine
-**spezielle (partikuläre) Lösung**.
+Eine Lösungsformel, die noch frei wählbare Konstanten enthält und damit eine
+ganze Schar von Lösungen beschreibt, heißt **allgemeine Lösung** der DGL. Bei
+einer DGL $n$-ter Ordnung enthält die allgemeine Lösung $n$ Konstanten.
 ```
 
-In unserem Beispiel ist $v(t) = v_\infty + C\,e^{-kt}$ die allgemeine Lösung.
-Für $C > 0$ startet die Geschwindigkeit über der Grenzgeschwindigkeit und fällt
-auf sie zu; für $C < 0$ startet sie darunter und steigt gegen $v_\infty$; für
-$C = 0$ liegt man von Beginn an exakt auf der Grenzgeschwindigkeit. Die
-Gesamtheit aller Lösungen bildet eine Kurvenschar, in der $v_\infty$ als
-waagerechte Asymptote erscheint. In Abschnitt 6.2 werden wir dieses Bild
-systematisch als Richtungsfeld darstellen, noch bevor wir die Lösung berechnen.
+Für unsere beiden Beispiele bedeutet das: $y = A\,e^{x^2/2}$ ist die allgemeine
+Lösung der DGL $y' = xy$ mit einer Konstanten, und
+$y = C_1\cos(3x) + C_2\sin(3x)$ ist die allgemeine Lösung der DGL
+$y'' + 9y = 0$ mit zwei Konstanten. Wenn wir von *der* Lösung einer DGL
+sprechen, meinen wir also eigentlich unendlich viele Funktionen. Wie wir die
+Konstanten nennen, ist dabei egal, üblich sind $A$, $C$ oder $C_1$ und $C_2$.
 
-<!-- markdownlint-disable MD033 -->
-<div id="applet-container-720a">
+*Haben wir mit $A\,e^{x^2/2}$ aber wirklich alle Lösungen von $y' = xy$
+erfasst?* Durch Einsetzen können wir nur bestätigen, dass eine Funktion eine
+Lösung ist, nicht aber, dass es keine weiteren gibt. In Kapitel 8.4 leiten wir
+die Lösung mit der Trennung der Variablen her, statt sie zu raten, und sehen
+dabei, dass keine weiteren Lösungen hinzukommen.
 
+```{dropdown} Video "Allgemeine Lösung einer DGL" von Simone Gramsch
 <iframe
-  src="https://gramschs.github.io/thma_mathematik03_assets/interactive/chapter06/chap06_kurvenschar.html"
-  width="100%"
-  frameborder="0"
-  scrolling="no">
-</iframe>
-
-</div>
-<!-- markdownlint-enable MD033 -->
-
-## Wie legt eine Bedingung die Lösung fest?
-
-Die allgemeine Lösung enthält eine freie Konstante und beschreibt damit
-unendlich viele mögliche Bewegungen. In der Praxis wissen wir jedoch den
-Anfangszustand: Der Fallschirmspringer ist zu Beginn in Ruhe, also gilt
-$v(0) = 0$. Wir setzen diese Bedingung ein:
-
-\begin{equation*}
-v(0) = v_\infty + C\,e^{0} = v_\infty + C = 0
-\quad \Rightarrow \quad
-C = -v_\infty = -49.05~\text{m\,s}^{-1}.
-\end{equation*}
-
-Die spezielle Lösung lautet damit:
-
-\begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
-\end{equation*}
-
-Probe für $t = 0$: $v(0) = 49.05\,(1 - 1) = 0$. Korrekt. Für große $t$
-nähert sich $e^{-0.2\,t}$ gegen null, und $v(t)$ strebt gegen die
-Grenzgeschwindigkeit $49.05~\text{m\,s}^{-1}$, was etwa
-$177~\text{km\,h}^{-1}$ entspricht. Das ist ein bekannter Richtwert für
-Fallschirmspringer im freien Fall.
-
-```{admonition} Was ist ... ein Anfangswertproblem und ein Randwertproblem?
-:class: note
-Bei einem **Anfangswertproblem (AWP)** werden alle $n$ Bedingungen einer ODE
-$n$-ter Ordnung an derselben Stelle $t_0$ vorgegeben:
-
-\begin{equation*}
-y(t_0) = y_0,\quad \dot{y}(t_0) = y_1,\quad \ldots,\quad y^{(n-1)}(t_0) = y_{n-1}.
-\end{equation*}
-
-Bei einem **Randwertproblem (RWP)** werden die Bedingungen an verschiedenen
-Stellen vorgegeben, typischerweise an den Enden eines Intervalls $[x_0, x_1]$.
-```
-
-Unser Fallbeispiel ist ein AWP: Die einzige Bedingung $v(0) = 0$ liegt am
-Anfangszeitpunkt $t = 0$.
-
-Ein typisches RWP im Maschinenbau ist die Biegelinie eines einfach gelagerten
-Balkens der Länge $L$. Die Gleichung $EI\,w'' = M(x)$ ist eine ODE 2. Ordnung
-in der Durchbiegung $w(x)$. Die allgemeine Lösung enthält zwei freie Konstanten,
-die durch die Auflagerbedingungen $w(0) = 0$ und $w(L) = 0$ festgelegt werden.
-Da die Bedingungen an zwei verschiedenen Stellen liegen, handelt es sich um ein
-Randwertproblem. *Warum führen RWP auf andere mathematische Schwierigkeiten als
-AWP?* Das werden wir in Abschnitt 6.6 bei ODEs 2. Ordnung genauer untersuchen.
-
-## Weiteres Lernmaterial
-
-Die folgenden beiden Videos stammen von Prof. Hielscher der TH Mannheim.
-
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Einführung" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/yFjYQ_J1Uwo?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Gewöhnliche Differentialgleichungen - Einführung" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-</iframe>
-```
-
-```{dropdown} Video "Anfangswert- und Randwertprobleme" von Prof. Hielscher
-<iframe width="966" height="613" src="https://www.youtube.com/embed/kEuTsYsK5nk?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Anfangswert- und Randwertprobleme" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
-
-Das folgende Video zeigt eine Einführung in Differentialgleichungen für
-Ingenieure an der Hochschule Bochum, die im traditionellen Vorlesungsstil
-gehalten wird.
-
-```{dropdown} Video "Gewöhnliche Differentialgleichungen - Ein Einstieg" von Jörg Frochte
-<iframe width="1020" height="574" src="https://www.youtube.com/embed/kN5CxBG_z-k"
-title="Gewöhnliche Differentialgleichungen - Ein Einstieg -" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
-web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+src="https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=b7d5b60a-2bd6-42a6-9f6a-b01800ebb264&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+height="405" width="720" style="border: 1px solid #464646;" allowfullscreen
+allow="autoplay"></iframe>
 ```
 
 ## Zusammenfassung und Ausblick
 
-Eine gewöhnliche Differentialgleichung (ODE) sucht nicht eine Zahl, sondern
-eine Funktion, deren Ableitung einer vorgeschriebenen Bedingung genügt. Die
-allgemeine Lösung einer ODE $n$-ter Ordnung enthält $n$ freie Konstanten und
-beschreibt eine ganze Kurvenschar. Erst eine Anfangsbedingung wählt aus dieser
-Schar eine einzige spezielle Lösung heraus. Unser Leitbeispiel
-$\dot{v} = g - kv$ mit $v(0) = 0$ hat als spezielle Lösung
-$v(t) = v_\infty(1 - e^{-kt})$: Die Geschwindigkeit des Fallschirmspringers
-steigt von null und nähert sich asymptotisch der Grenzgeschwindigkeit
-$v_\infty = 49.05~\text{m\,s}^{-1}$.
-
-In Abschnitt 6.2 lernen wir, wie man die Lösungskurven einer ODE 1. Ordnung
-sieht, bevor man sie berechnet: Das Richtungsfeld macht aus der Gleichung
-$\dot{v} = g - kv$ unmittelbar sichtbar, dass alle Lösungen gegen $v_\infty$
-streben, unabhängig vom Startwert.
+Eine Differentialgleichung ist eine Gleichung für eine gesuchte Funktion, in
+der auch Ableitungen dieser Funktion vorkommen. Ihre Ordnung ist die Ordnung
+der höchsten Ableitung, und ob eine Funktion eine Lösung ist, prüfen wir durch
+Einsetzen. Die DGL $y' = xy$ hat die allgemeine Lösung $y = A\,e^{x^2/2}$ mit
+einer Konstanten, die DGL $y'' + 9y = 0$ die allgemeine Lösung
+$y = C_1\cos(3x) + C_2\sin(3x)$ mit zwei Konstanten. *Wie wählen wir aus einer
+solchen Schar eine einzige Lösung aus, und wie viele Bedingungen brauchen wir
+dafür?* Das klären wir in Kapitel 8.2 mit Anfangs- und Randbedingungen. In
+Kapitel 11 lernen wir dann ein Verfahren, mit dem wir Gleichungen wie
+$y'' + 9y = 0$ lösen, ohne raten zu müssen.

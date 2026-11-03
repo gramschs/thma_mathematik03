@@ -6,7 +6,7 @@ authors:
 # 7.3 Hauptachsentransformation (Vertiefung)
 
 ```{admonition} Vertiefung
-:class: note
+:class: advanced
 Dieses Kapitel ist eine Vertiefung. Es ist optional und kein Prüfungsstoff der
 CA-Tests.
 ```
