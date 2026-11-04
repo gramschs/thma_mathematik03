@@ -59,3 +59,26 @@ div.myst-code {
   width: 100% !important;
   height: 100% !important;
 }
+
+/* ===== VERTIEFUNG: GRAUE ADMONITION (Klasse advanced) ===== */
+/* Nutzung: ```{admonition} Vertiefung  +  :class: advanced
+   Blau = Definitionen, Gelb = Lernziele, Grün = Übungen, Rot = Stolperfallen */
+aside.myst-admonition.advanced {
+  border-left-color: #484949 !important;
+}
+aside.myst-admonition.advanced .myst-admonition-header {
+  background-color: #e4e5e5 !important;
+}
+aside.myst-admonition.advanced .myst-admonition-header-icon {
+  color: #484949 !important;
+}
+
+.dark aside.myst-admonition.advanced {
+  border-left-color: #a3a5a5 !important;
+}
+.dark aside.myst-admonition.advanced .myst-admonition-header {
+  background-color: #3a3b3b !important;
+}
+.dark aside.myst-admonition.advanced .myst-admonition-header-icon {
+  color: #c8caca !important;
+}

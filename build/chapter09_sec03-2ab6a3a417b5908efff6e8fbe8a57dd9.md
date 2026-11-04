@@ -1,0 +1,228 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 9.3 Die homogene lineare DGL
+
+In Kapitel 9.2 haben wir lineare DGL erkannt und eingeordnet. Zu unserer DGL
+$y' + 2y = 4$ gehört die homogene DGL $y' + 2y = 0$, und von ihr wissen wir
+bisher nur, dass sie die triviale Lösung $y = 0$ hat. In diesem Kapitel
+bestimmen wir alle Lösungen einer homogenen linearen DGL 1. Ordnung. Dazu
+brauchen wir kein neues Verfahren, denn die Trennung der Variablen aus Kapitel
+8.4 reicht aus, und am Ende steht eine Formel, die für jeden Koeffizienten
+funktioniert. Im Maschinenbau beschreiben homogene lineare DGL
+Abklingvorgänge, etwa das Abkühlen eines Bauteils oder das Entladen eines
+Kondensators.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können eine homogene lineare DGL 1. Ordnung mit der Trennung der
+  Variablen lösen.
+* [ ] Sie kennen die **homogene Lösung** $y_h = A\,e^{-ax}$ der DGL
+  $y' + a\,y = 0$.
+* [ ] Sie können die Formel $y_h = A\,e^{-\int f(x)\,dx}$ für
+  $y' + f(x)\,y = 0$ herleiten und anwenden.
+* [ ] Sie wissen, warum das Integral in dieser Formel ohne
+  Integrationskonstante auskommt.
+* [ ] Sie können die Formel bei variablen Koeffizienten anwenden und dabei
+  Beträge wie $|x|$ richtig behandeln.
+```
+
+## Wie lösen wir $y' + 2y = 0$ durch Trennung?
+
+Lösen wir $y' + 2y = 0$ nach der Ableitung auf, erhalten wir $y' = -2y$. Das
+ist eine trennbare DGL mit dem konstanten Faktor $-2$ für $x$ und dem Faktor
+$y$ für $y$. Für $y \neq 0$ trennen wir die Variablen und integrieren wie in
+Kapitel 8.4:
+
+\begin{equation*}
+\frac{1}{y}\,dy = -2\,dx
+\quad\Rightarrow\quad
+\int \frac{1}{y}\,dy = \int (-2)\,dx
+\quad\Rightarrow\quad
+\ln|y| = -2x + C.
+\end{equation*}
+
+Die $e$-Funktion hebt den Logarithmus auf, und die Konstante wird zum Faktor:
+
+\begin{equation*}
+|y| = e^{C} \cdot e^{-2x}
+\quad\Rightarrow\quad
+y = \pm e^{C} \cdot e^{-2x}.
+\end{equation*}
+
+Die Zahl $\pm e^C$ kann jeden Wert außer null annehmen. Den Fall $y = 0$ haben
+wir beim Trennen ausgeschlossen, aber die Nullfunktion ist als triviale Lösung
+aus Kapitel 9.2 ebenfalls eine Lösung, und sie entsteht mit dem Faktor null.
+Fassen wir alles in einer Konstanten $A$ zusammen, lauten die Lösungen
+
+\begin{equation*}
+y_h = A\,e^{-2x}, \qquad A \in \mathbb{R}.
+\end{equation*}
+
+Der Index $h$ steht für homogen. Mit $y_h$ meinen wir die allgemeine Lösung der
+homogenen DGL, also die ganze Schar mit der freien Konstanten $A$. Zur Probe
+leiten wir ab: $y_h' = -2A\,e^{-2x}$, und damit ist
+$y_h' + 2y_h = -2A\,e^{-2x} + 2A\,e^{-2x} = 0$. Die Konstante hat auch eine
+anschauliche Bedeutung. Wegen $y_h(0) = A\,e^{0} = A$ ist sie der Wert der
+Lösung an der Stelle $x = 0$. Für wachsendes $x$ strebt jede dieser Lösungen
+gegen null, gleichgültig, wo sie startet.
+
+Statt der Zahl $2$ kann vor $y$ jede andere Konstante $a$ stehen. Die Rechnung
+bleibt dieselbe, aus $y' = -a\,y$ wird $\ln|y| = -ax + C$ und schließlich
+$y_h = A\,e^{-ax}$. Dass es immer eine Exponentialfunktion ist, liegt an ihrer
+besonderen Eigenschaft: Beim Ableiten von $e^{-ax}$ entsteht nur der Faktor
+$-a$, und genau dieser Faktor hebt den Term $a\,y$ auf.
+
+```{admonition} Was ist ... die homogene Lösung bei konstantem Koeffizienten?
+:class: note
+Die allgemeine Lösung der homogenen linearen DGL $y' + a\,y = 0$ mit einer
+Konstanten $a$ ist
+
+\begin{equation*}
+y_h = A\,e^{-ax}, \qquad A \in \mathbb{R}.
+\end{equation*}
+
+Wir nennen sie die **homogene Lösung**. Die Konstante $A$ ist der Wert
+$y_h(0)$.
+```
+
+Diese Eigenschaft der Exponentialfunktion nutzen wir in Kapitel 11 wieder. Dort
+setzen wir bei homogenen linearen DGL 2. Ordnung mit konstanten Koeffizienten
+eine Exponentialfunktion an und sehen, welche Exponenten passen.
+
+## Wie lautet die Lösungsformel für beliebige Koeffizienten?
+
+Jetzt lassen wir auch Koeffizienten zu, die von $x$ abhängen, und betrachten
+die homogene lineare DGL $y' + f(x)\,y = 0$. Nach $y'$ aufgelöst ist
+$y' = -f(x) \cdot y$, und das ist wieder trennbar, diesmal mit dem Faktor
+$-f(x)$ für $x$. Wir gehen genau wie im ersten Abschnitt vor. Ist $F$ eine
+Stammfunktion von $f$, dann erhalten wir für $y \neq 0$
+
+\begin{equation*}
+\int \frac{1}{y}\,dy = -\int f(x)\,dx
+\quad\Rightarrow\quad
+\ln|y| = -F(x) + C
+\quad\Rightarrow\quad
+y = \pm e^{C} \cdot e^{-F(x)}.
+\end{equation*}
+
+Mit der trivialen Lösung $y = 0$ fassen wir $\pm e^C$ und $0$ wieder zu einer
+Konstanten $A \in \mathbb{R}$ zusammen. Die Lösungen sind also
+$y_h = A\,e^{-F(x)}$. Meistens schreibt man statt $F(x)$ direkt das Integral
+$\int f(x)\,dx$ in den Exponenten.
+
+*Müssen wir beim Integral nicht noch eine Integrationskonstante addieren?*
+Das ist nicht nötig. Nehmen wir statt $F$ die Stammfunktion $F + K$ mit einer
+Zahl $K$, so ist
+
+\begin{equation*}
+A\,e^{-(F(x) + K)} = A\,e^{-K} \cdot e^{-F(x)}.
+\end{equation*}
+
+Das Produkt $A\,e^{-K}$ ist wieder eine beliebige Zahl, wir erhalten also
+dieselbe Schar wie mit $F$ allein. Die Konstante $A$ übernimmt die Rolle der
+Integrationskonstanten bereits.
+
+```{admonition} Was ist ... die homogene Lösung einer linearen DGL 1. Ordnung?
+:class: note
+Die allgemeine Lösung der homogenen linearen DGL $y' + f(x)\,y = 0$ ist
+
+\begin{equation*}
+y_h = A\,e^{-\int f(x)\,dx}, \qquad A \in \mathbb{R}.
+\end{equation*}
+
+Für $\int f(x)\,dx$ setzen wir irgendeine Stammfunktion von $f$ ein, eine
+Integrationskonstante ist nicht nötig. Für einen konstanten Koeffizienten
+$f(x) = a$ ist $\int a\,dx = ax$, und die Formel ergibt $y_h = A\,e^{-ax}$.
+```
+
+Für unser Beispiel $y' + 2y = 0$ ist $f(x) = 2$ und $\int 2\,dx = 2x$. Die
+Formel liefert $y_h = A\,e^{-2x}$, also dasselbe Ergebnis wie die Trennung der
+Variablen im ersten Abschnitt. Hätten wir die Stammfunktion $2x + 5$ gewählt,
+stünde dort $A\,e^{-5}\,e^{-2x}$, und das ist mit der neuen Konstanten
+$A\,e^{-5}$ dieselbe Schar. Die Formel spart Schreibarbeit, aber sie ist nichts
+anderes als die zusammengefasste Trennung der Variablen. Wer die Herleitung
+kennt, kann die Formel deshalb jederzeit selbst wieder aufstellen.
+
+<!-- markdownlint-disable MD013 -->
+```{dropdown} Video "Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" von Prof. Hielscher
+<iframe width="927" height="588"
+src="https://www.youtube.com/embed/GS8b6hQt4PU?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Allgemeine Lösung der homogenen linearen DGL 1. Ordnung" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
+```
+
+## Was liefert die Formel bei variablen Koeffizienten?
+
+Als erste Probe nehmen wir die DGL $y' = xy$ aus Kapitel 8. In der Form
+$y' - xy = 0$ ist der Koeffizient $f(x) = -x$, und eine Stammfunktion ist
+$-\frac{x^2}{2}$. Die Formel ergibt
+
+\begin{equation*}
+y_h = A\,e^{-\left(-\frac{x^2}{2}\right)} = A\,e^{\frac{x^2}{2}},
+\qquad A \in \mathbb{R}.
+\end{equation*}
+
+Das ist genau die allgemeine Lösung, die wir in Kapitel 8.4 mit der Trennung
+der Variablen hergeleitet haben. Das durchgehende Beispiel aus Kapitel 8 war
+also schon eine homogene lineare DGL mit variablem Koeffizienten.
+
+Als zweites Beispiel betrachten wir die DGL $x\,y' + y = 0$, die wir für
+$x \neq 0$ als $y' + \frac{1}{x}\,y = 0$ schreiben. Der Koeffizient ist
+$f(x) = \frac{1}{x}$ mit der Stammfunktion $\ln|x|$, und die Formel ergibt
+
+\begin{equation*}
+y_h = A\,e^{-\ln|x|} = A \cdot \frac{1}{e^{\ln|x|}} = \frac{A}{|x|}.
+\end{equation*}
+
+*Was machen wir mit dem Betrag?* An der Stelle $x = 0$ ist die DGL nicht
+definiert, eine Lösung lebt deshalb wie in Kapitel 8.1 auf einem Intervall,
+entweder für $x > 0$ oder für $x < 0$. Für $x > 0$ ist $|x| = x$ und
+$y_h = \frac{A}{x}$. Für $x < 0$ ist $|x| = -x$ und $y_h = -\frac{A}{x}$. Weil
+$A$ jede reelle Zahl sein darf, ist auch $-A$ jede reelle Zahl, und das
+Vorzeichen verschwindet in der Konstanten. Auf beiden Intervallen lautet die
+homogene Lösung also
+
+\begin{equation*}
+y_h = \frac{A}{x}, \qquad A \in \mathbb{R}.
+\end{equation*}
+
+Zur Probe ist $y_h' = -\frac{A}{x^2}$ und damit
+$y_h' + \frac{1}{x}\,y_h = -\frac{A}{x^2} + \frac{A}{x^2} = 0$. Bei dieser DGL
+gibt es noch eine zweite, sehr kurze Kontrolle. Nach der Produktregel ist
+$(x\,y)' = y + x\,y'$, und das ist genau die linke Seite der ursprünglichen
+Form $x\,y' + y = 0$. Die DGL sagt also $(x\,y)' = 0$, das Produkt $x\,y$ ist
+konstant, und aus $x\,y = A$ folgt wieder $y = \frac{A}{x}$.
+
+Obwohl in der Formel eine $e$-Funktion steht, ist das Ergebnis diesmal keine
+Exponentialfunktion, sondern eine Hyperbel. Bei variablen Koeffizienten hängt
+die Gestalt der Lösung eben davon ab, welche Stammfunktion $f$ hat. Auf dieser
+homogenen Lösung baut Kapitel 10.1 auf, wenn wir die inhomogene DGL
+$y' + \frac{1}{x}\,y = x$ lösen.
+
+```{dropdown} Video "Homogene lineare DGL 1. Ordnung" von ScienceBarbie
+<iframe width="927" height="521" src="https://www.youtube.com/embed/dOKdPjvEnuY"
+title="Gewöhnliche Differentialgleichungen: Homogene lineare DGL 1. Ordnung"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
+## Zusammenfassung und Ausblick
+
+Eine homogene lineare DGL 1. Ordnung $y' + f(x)\,y = 0$ ist immer trennbar.
+Die Trennung der Variablen liefert die homogene Lösung
+$y_h = A\,e^{-\int f(x)\,dx}$, in der die Konstante $A$ auch die triviale
+Lösung enthält und eine Integrationskonstante im Exponenten überflüssig macht.
+Bei konstantem Koeffizienten ist das die Exponentialfunktion $A\,e^{-ax}$, bei
+$y' + \frac{1}{x}\,y = 0$ die Hyperbel $\frac{A}{x}$. In jedem Fall sind alle
+Lösungen Vielfache einer einzigen Funktion. In Kapitel 9.4 kehren wir zur
+inhomogenen DGL $y' + 2y = 4$ zurück. Dort sehen wir, dass die homogene Lösung
+$A\,e^{-2x}$ allein nicht ausreicht, dass ihr aber nur noch eine einzige
+weitere Lösung fehlt.
