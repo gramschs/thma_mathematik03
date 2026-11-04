@@ -3,250 +3,217 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.4 Die inhomogene lineare Differentialgleichung
+# 9.4 Der Aufbau der allgemeinen Lösung
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-In Abschnitt 8.2 haben wir die homogene Lösung $y_h = A\,e^{-kt}$ der
-Fallschirmspringer- Gleichung hergeleitet. Sie beschreibt das freie Abklingen
-ohne Antrieb. Die vollständige Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$
-hat aber eine Störfunktion, die die Schwerkraft als dauerhaften Antrieb
-modelliert. Dieser Antrieb erzeugt einen zweiten Teil der Lösung: die
-**partikuläre Lösung** $y_p$. Zusammen ergibt $y_h + y_p$ die allgemeine Lösung
-der inhomogenen Gleichung. In diesem Abschnitt entwickeln wir das Verfahren, mit
-dem wir $y_p$ aus der Struktur der Störfunktion herleiten, und schließen damit
-den Bogen, der in Kapitel 6 geöffnet wurde.
+In Kapitel 9.3 haben wir die homogene DGL $y' + 2y = 0$ gelöst und die Schar
+$y_h = A\,e^{-2x}$ erhalten. Gesucht sind aber die Lösungen der inhomogenen DGL
+$y' + 2y = 4$, mit der wir in Kapitel 9.2 begonnen haben. In diesem Kapitel
+sehen wir, dass ihr nur noch eine einzige Lösung fehlt und dass sich alle
+übrigen Lösungen daraus mit der homogenen Lösung zusammensetzen. Dieser Aufbau
+ist derselbe wie bei den linearen Gleichungssystemen aus Kapitel 4.4. Im
+Maschinenbau entspricht die zusätzliche Lösung oft einem Gleichgewicht, etwa
+der Endtemperatur, auf die sich ein gleichmäßig beheiztes Bauteil einstellt.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, dass sich die allgemeine Lösung einer inhomogenen linearen DGL als Summe
-  $$y_{\text{allgemein}} = y_h + y_p$$
-  aus homogener Lösung und partikulärer Lösung zusammensetzt.
-* [ ] Sie können anhand der Störfunktion $g(x)$ einen geeigneten **Ansatz vom Typ der
-  rechten Seite** aus der Ansatztabelle (Polynom, $\sin$/$\cos$, Exponential) auswählen.
-* [ ] Sie können den gewählten Ansatz in die DGL einsetzen und durch
-  **Koeffizientenvergleich** die unbekannten Konstanten bestimmen.
-* [ ] Sie können die allgemeine Lösung der inhomogenen DGL vollständig angeben und an
-  Anfangsbedingungen anpassen.
+* [ ] Sie wissen, dass die homogene Lösung allein keine inhomogene DGL löst.
+* [ ] Sie wissen, dass sich die **allgemeine Lösung** einer inhomogenen
+  linearen DGL als $y = y_h + y_p$ aus der homogenen Lösung und einer
+  **partikulären Lösung** zusammensetzt, und können das begründen.
+* [ ] Sie können die Begriffe partikuläre Lösung und spezielle Lösung
+  unterscheiden.
+* [ ] Sie können für $y' + a\,y = b$ mit Konstanten $a \neq 0$ und $b$ die
+  **Gleichgewichtslösung** angeben und damit ein Anfangswertproblem lösen.
 ```
 
 ## Warum reicht die homogene Lösung nicht aus?
 
-Wir prüfen, ob $v_h(t) = A\,e^{-kt}$ die inhomogene Gleichung $\dot{v} + kv =
-9.81$ erfüllt:
+Wir setzen die homogene Lösung $y_h = A\,e^{-2x}$ in die inhomogene DGL
+$y' + 2y = 4$ ein. Auf der linken Seite steht
 
 \begin{equation*}
-\dot{v}_h + k\,v_h = -Ak\,e^{-kt} + k \cdot A\,e^{-kt} = 0 \neq 9.81.
+y_h' + 2y_h = -2A\,e^{-2x} + 2A\,e^{-2x} = 0,
 \end{equation*}
 
-$v_h$ löst zwar die homogene Gleichung, aber nicht die inhomogene. Die
-Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ taucht auf der rechten Seite auf und
-wird von $v_h$ nicht abgedeckt. Wir brauchen eine zweite Funktion $y_p$, die
-genau diesen fehlenden Anteil liefert.
+und zwar für jede Wahl von $A$. Rechts steht aber $4$. Das ist kein Zufall,
+denn die homogene Lösung ist gerade so gebaut, dass die linke Seite
+verschwindet. Keine Funktion aus der Schar $A\,e^{-2x}$ löst deshalb die
+inhomogene DGL. Wir brauchen zusätzlich eine Funktion, die auf der linken Seite
+die $4$ erzeugt.
 
-*Warum funktioniert dann die Summe $y_h + y_p$?* Das liegt an der Linearität der
-ODE. Einsetzen von $y = y_h + y_p$ in $y' + f(x)\,y = g(x)$ ergibt:
+*Welche Funktion ist dafür am einfachsten?* Wir probieren eine Konstante
+$y = c$. Ihre Ableitung ist null, und die DGL verlangt $0 + 2c = 4$, also
+$c = 2$. Zur Probe setzen wir $y = 2$ ein und erhalten $0 + 2 \cdot 2 = 4$.
+Damit haben wir eine Lösung gefunden, allerdings nur eine einzige. Nach
+Kapitel 8.1 enthält die allgemeine Lösung einer DGL 1. Ordnung eine frei
+wählbare Konstante, und die fehlt bei $y = 2$. Wir versuchen deshalb die Summe
+aus beiden Teilen, also $y = A\,e^{-2x} + 2$. Mit $y' = -2A\,e^{-2x}$ ist
+
+\begin{equation*}
+y' + 2y = -2A\,e^{-2x} + 2A\,e^{-2x} + 4 = 4.
+\end{equation*}
+
+Die Summe löst die inhomogene DGL also für jedes $A$. Der Grund ist die
+Linearität aus Kapitel 9.2. Die linke Seite einer linearen DGL verhält sich bei
+Summen wie eine lineare Abbildung aus Kapitel 4.2, sie macht aus der Summe
+zweier Funktionen die Summe der Ergebnisse. Die homogene Lösung liefert dabei
+den Anteil $0$, die Konstante $2$ den Anteil $4$. Dasselbe gilt für jede
+lineare DGL $y' + f(x)\,y = g(x)$. Ist $y_h$ eine Lösung der zugehörigen
+homogenen DGL und $y_p$ eine Lösung der inhomogenen DGL, dann ist
 
 <!-- markdownlint-disable -->
-\begin{align*}
+\begin{equation*}
 (y_h + y_p)' + f(x)\,(y_h + y_p)
-  &= \underbrace{y_h' + f(x)\,y_h}_{= \,0} + \underbrace{y_p' + f(x)\,y_p}_{= \,g(x)}
-   = g(x). \quad \checkmark
-\end{align*}
+= \underbrace{y_h' + f(x)\,y_h}_{=\,0} +
+\underbrace{y_p' + f(x)\,y_p}_{=\,g(x)}
+= g(x).
+\end{equation*}
 <!-- markdownlint-enable -->
 
-Die Summe funktioniert, weil $y_h$ den homogenen Teil auf null bringt und $y_p$
-die Störfunktion reproduziert. Dieses Zusammenspiel heißt
-**Superpositionsprinzip**.
+Das ist das Superpositionsprinzip, das wir in Kapitel 4.2 für lineare
+Abbildungen kennengelernt haben: Wir setzen die Lösung aus einfacheren
+Teillösungen zusammen.
 
-```{admonition} Was ist ... die allgemeine Lösung der inhomogenen linearen ODE?
+## Warum unterscheiden sich zwei Lösungen nur um eine homogene Lösung?
+
+Wir wissen jetzt, dass jede Funktion $A\,e^{-2x} + 2$ die DGL $y' + 2y = 4$
+löst. *Gibt es vielleicht noch weitere Lösungen, die nicht in dieser Schar
+stecken?* Um das zu klären, nehmen wir irgendeine Lösung $y$ und betrachten
+ihren Abstand $d = y - 2$ zur bekannten Lösung $2$. Für diese Differenz gilt
+
+\begin{equation*}
+d' + 2d = (y' + 2y) - (0 + 2 \cdot 2) = 4 - 4 = 0.
+\end{equation*}
+
+Die Differenz löst also die homogene DGL, und nach Kapitel 9.3 ist sie deshalb
+von der Form $d = A\,e^{-2x}$. Damit ist $y = A\,e^{-2x} + 2$, und weitere
+Lösungen gibt es nicht. Dasselbe Argument funktioniert für zwei beliebige
+Lösungen $y_1$ und $y_2$ einer linearen DGL $y' + f(x)\,y = g(x)$, denn
+
+\begin{equation*}
+(y_2 - y_1)' + f(x)\,(y_2 - y_1)
+= \big(y_2' + f(x)\,y_2\big) - \big(y_1' + f(x)\,y_1\big)
+= g(x) - g(x) = 0.
+\end{equation*}
+
+Die Differenz zweier Lösungen der inhomogenen DGL ist eine Lösung der homogenen
+DGL. Genau so haben wir in Kapitel 4.4 argumentiert: Lösen $\vec{x}$ und
+$\vec{y}$ das Gleichungssystem $\mathbf{M}\vec{x} = \vec{r}$, dann liegt ihre
+Differenz im Kern von $\mathbf{M}$. Die folgende Tabelle stellt beide
+Situationen nebeneinander.
+
+<!-- markdownlint-disable MD013 -->
+| | lineares Gleichungssystem | lineare DGL 1. Ordnung |
+| --- | --- | --- |
+| inhomogen | $\mathbf{M}\vec{x} = \vec{r}$ | $y' + f(x)\,y = g(x)$ |
+| homogen | $\mathbf{M}\vec{x} = \vec{0}$ | $y' + f(x)\,y = 0$ |
+| alle Lösungen der homogenen Gleichung | $\text{Kern}(\mathbf{M})$ | $y_h$ |
+| eine Lösung der inhomogenen Gleichung | $\vec{x}_p$ | $y_p$ |
+| alle Lösungen der inhomogenen Gleichung | $\vec{x}_p + \text{Kern}(\mathbf{M})$ | $y_h + y_p$ |
+<!-- markdownlint-enable MD013 -->
+
+```{admonition} Wie ist die Lösung einer inhomogenen linearen DGL aufgebaut?
 :class: note
-Die allgemeine Lösung der inhomogenen linearen ODE 1. Ordnung $y' + f(x)\,y = g(x)$
-setzt sich zusammen aus
+Ist $y_p$ eine Lösung der inhomogenen linearen DGL $y' + f(x)\,y = g(x)$ und
+$y_h$ die allgemeine Lösung der zugehörigen homogenen DGL $y' + f(x)\,y = 0$,
+dann ist
 
 \begin{equation*}
-y_{\text{allgemein}}(x) = y_h(x) + y_p(x),
+y_{\text{allgemein}} = y_h + y_p
 \end{equation*}
 
-wobei $y_h$ die allgemeine Lösung der zugehörigen homogenen Gleichung
-$y' + f(x)\,y = 0$ und $y_p$ eine beliebige **partikuläre Lösung** der inhomogenen
-Gleichung ist. Die freie Konstante $A$ in $y_h$ wird durch eine Anfangsbedingung
-festgelegt.
+die **allgemeine Lösung** der inhomogenen DGL. Die einzelne Lösung $y_p$ heißt
+**partikuläre Lösung**.
 ```
 
-## Wie wählen wir den richtigen Ansatz?
+Für unser Beispiel ist $y_h = A\,e^{-2x}$ und $y_p = 2$, die allgemeine Lösung
+lautet also $y_{\text{allgemein}} = A\,e^{-2x} + 2$ mit $A \in \mathbb{R}$. In
+Kapitel 8.2 haben wir angekündigt, dass das Wort partikulär hier eine
+bestimmte Rolle bekommt. Die partikuläre Lösung $y_p = 2$ ist selbst eine
+spezielle Lösung, nämlich die zur Anfangsbedingung $y(0) = 2$ mit $A = 0$.
+Sie ist aber nicht die einzige, die wir als Baustein verwenden könnten. Auch
+$2 + 5e^{-2x}$ löst die DGL, denn die Ableitung $-10e^{-2x}$ und das Doppelte
+$4 + 10e^{-2x}$ ergeben zusammen $4$. Mit diesem $y_p$ erhalten wir
+$A\,e^{-2x} + 2 + 5e^{-2x} = (A + 5)\,e^{-2x} + 2$, also wegen der beliebigen
+Konstanten dieselbe Schar. Eine partikuläre Lösung ist also irgendeine
+spezielle Lösung, die wir als Baustein für die allgemeine Lösung verwenden,
+und wir wählen dafür die einfachste.
 
-Die partikuläre Lösung muss nach dem Einsetzen in die ODE genau die Störfunktion
-$g(x)$ ergeben. Die Idee des **Ansatzes vom Typ der rechten Seite** ist, dass
-$y_p$ dieselbe funktionale Form wie $g(x)$ haben muss, weil Ableiten und lineare
-Kombination diese Form erhalten. Eine Exponentialfunktion bleibt nach dem
-Ableiten eine Exponentialfunktion, ein Polynom bleibt ein Polynom, und
-$\sin$/$\cos$ bleiben $\sin$/$\cos$. Die folgende Tabelle fasst die Ansätze für
-die drei wichtigsten Typen zusammen:
+## Wie finden wir bei konstanter rechter Seite eine erste Lösung?
 
-<!-- markdownlint-disable -->
-| Störfunktion $g(x)$ | Ansatz für $y_p(x)$ |
-| --- | --- |
-| Polynom vom Grad $n$: $a_n x^n + \cdots + a_0$ | $A_n x^n + \cdots + A_0$ |
-| Exponentialfunktion: $\alpha\,e^{bx}$ | $C\,e^{bx}$ |
-| Trigonometrische Funktion: $\alpha\cos(\omega x) + \beta\sin(\omega x)$ | $P\cos(\omega x) + Q\sin(\omega x)$ |
-<!-- markdownlint-enable -->
+Die Konstante $y_p = 2$ haben wir durch einen einfachen Versuch gefunden. Das
+klappt bei jeder DGL $y' + a\,y = b$ mit Konstanten $a \neq 0$ und $b$. Für
+eine Konstante $y = c$ ist $y' = 0$, die DGL verlangt also $a\,c = b$, und
+daraus folgt $c = \frac{b}{a}$. Eine solche konstante Lösung heißt auch
+Gleichgewicht, denn wer bei $y = \frac{b}{a}$ startet, bleibt dort für immer.
 
-Ein wichtiger Sonderfall ist ausgenommen: Wenn der Ansatz selbst eine Lösung der
-homogenen Gleichung ist, schlägt er fehl, weil er dann nach dem Einsetzen wieder
-null ergibt. In diesem **Resonanzfall** muss der Ansatz mit $x$ multipliziert
-werden. Wir werden das in Abschnitt 9.2 genauer untersuchen.
-
-## Beispiel 1: der Fallschirmsprung
-
-Die inhomogene ODE lautet $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ mit $k =
-0.2~\text{s}^{-1}$. Die Störfunktion $g(t) = 9.81~\text{m\,s}^{-2}$ ist ein
-Polynom vom Grad null, also eine Konstante. Laut Tabelle wählen wir den Ansatz:
+```{admonition} Was ist ... eine Gleichgewichtslösung?
+:class: note
+Die lineare DGL $y' + a\,y = b$ mit Konstanten $a \neq 0$ und $b$ hat die
+konstante Lösung $y_p = \frac{b}{a}$. Wir nennen sie **Gleichgewichtslösung**.
+Die allgemeine Lösung ist
 
 \begin{equation*}
-v_p = C, \quad C \in \mathbb{R}.
+y = A\,e^{-ax} + \frac{b}{a}, \qquad A \in \mathbb{R}.
 \end{equation*}
-
-Wir leiten ab und setzen in die ODE ein. Da $\dot{v}_p = 0$:
-
-\begin{equation*}
-\dot{v}_p + k\,v_p = 0 + k\,C = k\,C \stackrel{!}{=} 9.81.
-\end{equation*}
-
-**Koeffizientenvergleich** liefert unmittelbar:
-
-\begin{equation*}
-C = \frac{9.81}{k} = \frac{9.81}{0.2} = 49.05~\text{m\,s}^{-1} = v_\infty.
-\end{equation*}
-
-Die partikuläre Lösung ist die Grenzgeschwindigkeit: $v_p = v_\infty$. Das ist
-physikalisch sinnvoll: Bei $v = v_\infty$ heben sich Schwerkraft und
-Luftwiderstand auf, die Lösung ist stationär und konstant. Mit $v_h =
-A\,e^{-kt}$ aus Abschnitt 8.2 lautet die allgemeine Lösung:
-
-\begin{equation*}
-v(t) = A\,e^{-kt} + v_\infty.
-\end{equation*}
-
-**Anfangsbedingung** $v(0) = 0$:
-
-\begin{equation*}
-v(0) = A\,e^{0} + v_\infty = A + v_\infty = 0
-\quad \Rightarrow \quad A = -v_\infty.
-\end{equation*}
-
-Die spezielle Lösung des AWP lautet:
-
-\begin{equation*}
-v(t) = v_\infty\bigl(1 - e^{-kt}\bigr)
-     = 49.05\,\bigl(1 - e^{-0.2\,t}\bigr)~\text{m\,s}^{-1}.
-\end{equation*}
-
-Das ist die Lösung, die wir in Abschnitt 7.1 durch Trennung der Variablen
-hergeleitet und in Kapitel 6 durch Einsetzen verifiziert hatten. Jetzt sehen wir
-ihre Struktur vollständig: Das Abklingglied $-v_\infty\,e^{-kt}$ stammt aus
-$y_h$, die Grenzgeschwindigkeit $v_\infty$ stammt aus $y_p$.
-
-## Beispiel 2: eine Sinus-Störfunktion
-
-Wir betrachten die ODE
-
-\begin{equation*}
-y' + y = \sin(x).
-\end{equation*}
-
-Die zugehörige homogene Gleichung $y' + y = 0$ hat die Lösung $y_h = A\,e^{-x}$
-(aus der Formel in Abschnitt 8.2 mit $f(x) = 1$). Die Störfunktion $g(x) =
-\sin(x)$ ist trigonometrisch. Laut Tabelle wählen wir:
-
-\begin{equation*}
-y_p(x) = P\cos(x) + Q\sin(x).
-\end{equation*}
-
-Wir leiten ab: $y_p'(x) = -P\sin(x) + Q\cos(x)$. Einsetzen in $y'(x) + y(x) =
-\sin(x)$:
-
-\begin{align*}
-y_p'(x) + y_p(x)
-  &= \bigl(-P\sin(x) + Q\cos(x)\bigr) + \bigl(P\cos(x) + Q\sin(x)\bigr) \\
-  &= (Q - P)\sin(x) + (P + Q)\cos(x)
-   \stackrel{!}{=} \sin(x).
-\end{align*}
-
-**Koeffizientenvergleich:** wir vergleichen die Koeffizienten von $\sin(x)$ und
-$\cos(x)$ auf beiden Seiten:
-
-\begin{align*}
-\sin(x)\text{-Koeffizient:} &\quad Q - P = 1, \\
-\cos(x)\text{-Koeffizient:} &\quad P + Q = 0.
-\end{align*}
-
-Aus der zweiten Gleichung folgt $P = -Q$. Einsetzen in die erste: $Q - (-Q) = 2Q
-= 1$, also $Q = \tfrac{1}{2}$ und $P = -\tfrac{1}{2}$. Die partikuläre Lösung
-lautet:
-
-\begin{equation*}
-y_p(x) = -\frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-Die allgemeine Lösung ist:
-
-\begin{equation*}
-y_{\text{allgemein}}(x) = A\,e^{-x} - \frac{1}{2}\cos(x) + \frac{1}{2}\sin(x).
-\end{equation*}
-
-**Verifikation.** Mit $y' = -A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)$:
-
-\begin{align*}
-y' + y
-  &= \Bigl(-A\,e^{-x} + \tfrac{1}{2}\sin(x) + \tfrac{1}{2}\cos(x)\Bigr) +
-     \Bigl(A\,e^{-x} - \tfrac{1}{2}\cos(x) + \tfrac{1}{2}\sin(x)\Bigr) \\
-  &= \sin(x). \quad \checkmark
-\end{align*}
-
-Dieses Beispiel bereitet Kapitel 11 vor: Wenn eine mechanische Schwingung von außen
-durch eine sinusförmige Kraft angeregt wird, hat die erzwungene Lösung genau diese
-Struktur aus $\cos$ und $\sin$. Das Verhältnis von Amplitude und Phase des eingeschwungenen
-Zustands gegenüber der Anregung ist ein zentrales Thema der Schwingungslehre.
-
-```{dropdown} Video "Lineare DGL 1. Ordnung mit konstanten Koeff." von Prof. Hielscher
-<iframe width="927" height="588" src="https://www.youtube.com/embed/AkJjvVmJuh8?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
-title="Lineare DGL 1. Ordnung mit konstanten Koeffizienten" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
 ```
 
-<!-- markdownlint-disable -->
-```{dropdown} Video "Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" von Mathe mit Nina
-<iframe width="927" height="521" src="https://www.youtube.com/embed/pyErs6V7lR0"
-title="Lineare DGL 1. Ordnung - quadratischer Lösungsansatz" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-allowfullscreen></iframe>
+Für $y' + 2y = 4$ ist $a = 2$ und $b = 4$, also $y_p = \frac{4}{2} = 2$ wie
+oben. Ist $a$ positiv, strebt der Anteil $A\,e^{-ax}$ für wachsendes $x$ gegen
+null. Alle Lösungen nähern sich dann der Gleichgewichtslösung, egal wo sie
+starten, wie die folgende Abbildung zeigt.
+
+```{figure} pics/kurvenschar_gleichgewicht.svg
+---
+name: kurvenschar_gleichgewicht
+---
+Darstellung einiger Lösungen von $y' + 2y = 4$, die sich alle der
+Gleichgewichtslösung $y = 2$ nähern.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
 ```
-<!-- markdownlint-enable -->
+
+Hervorgehoben ist die Lösung des Anfangswertproblems mit $y(0) = 0$. Die
+Anfangsbedingung setzen wir in die allgemeine Lösung ein, also in die Summe
+$y_h + y_p$ und nicht in $y_h$ allein. Aus $y(0) = A + 2 = 0$ folgt $A = -2$,
+und die spezielle Lösung ist
+
+\begin{equation*}
+y = 2 - 2e^{-2x}.
+\end{equation*}
+
+Zur Probe ist $y(0) = 2 - 2 = 0$, und mit $y' = 4e^{-2x}$ ergibt sich
+$y' + 2y = 4e^{-2x} + 4 - 4e^{-2x} = 4$. Hätten wir die Bedingung nur auf $y_h$
+angewendet, wäre $A = 0$ herausgekommen, und die Funktion $y = 2$ erfüllt die
+Anfangsbedingung $y(0) = 0$ nicht. Ist $a$ negativ, entfernen sich die Lösungen
+dagegen vom Gleichgewicht. Bei $y' - y = 1$ ist $y_p = -1$ und
+$y = A\,e^{x} - 1$, und für $A \neq 0$ wächst der Abstand zu $-1$
+exponentiell. Für $a = 0$ gibt es bei $b \neq 0$ gar keine konstante Lösung,
+dann ist $y' = b$, und wir integrieren direkt wie in Kapitel 8.1.
+
+Ist die rechte Seite nicht konstant, hilft eine Konstante nicht weiter. Bei
+$y' = x + y$ aus Kapitel 8.4, also $y' - y = x$, ergibt $y = c$ die Gleichung
+$-c = x$, und die kann nicht für alle $x$ gelten. Die homogene Lösung ist nach
+Kapitel 9.3 mit $a = -1$ die Schar $A\,e^{x}$. Eine partikuläre Lösung ist
+$y_p = -x - 1$, denn $y_p' = -1$ und $x + y_p = x - x - 1 = -1$. Damit ist
+$y = A\,e^{x} - x - 1$ die allgemeine Lösung. Wie wir auf $-x - 1$ kommen, ohne
+es vorher zu kennen, zeigt Kapitel 10.3. Für eine DGL wie
+$y' + \frac{1}{x}\,y = x$ mit variablem Koeffizienten wird das Raten noch
+schwieriger. Kapitel 10.1 stellt deshalb mit der Variation der Konstanten ein
+Verfahren vor, das immer eine partikuläre Lösung liefert.
 
 ## Zusammenfassung und Ausblick
 
-Die allgemeine Lösung einer inhomogenen linearen ODE setzt sich aus zwei
-Bausteinen zusammen: der homogenen Lösung $y_h$, die das freie Verhalten
-beschreibt, und der partikulären Lösung $y_p$, die den Einfluss der Störfunktion
-trägt. Der Ansatz vom Typ der rechten Seite wählt $y_p$ in derselben
-funktionalen Form wie $g(x)$ und bestimmt die unbekannten Koeffizienten durch
-Koeffizientenvergleich. Am Fallschirmspringer-Beispiel schließt sich damit der
-Bogen, der in Kapitel 6 geöffnet wurde: Die seit Abschnitt 6.1 bekannte Lösung
-$v(t) = v_\infty(1 - e^{-kt})$ ist jetzt in ihrer vollständigen Struktur als
-Summe von homogenem Abklingen und stationärer Grenzgeschwindigkeit verstanden.
-
-In Abschnitt 8.4 wenden wir diese Lösungstheorie auf drei technische Szenarien
-an. Abschnitt 9.1 führt dann die Variation der Konstanten ein: ein allgemeineres
-Verfahren, das auch dann eine partikuläre Lösung liefert, wenn die Störfunktion
-nicht in die Ansatztabelle passt.
+Die homogene Lösung allein löst keine inhomogene DGL, sie liefert auf der
+linken Seite immer null. Wegen der Linearität ist aber die Summe aus homogener
+Lösung und einer partikulären Lösung wieder eine Lösung, und weil sich zwei
+Lösungen nur um eine homogene Lösung unterscheiden, erhalten wir so alle
+Lösungen: $y_{\text{allgemein}} = y_h + y_p$. Bei $y' + a\,y = b$ mit $a \neq 0$
+ist die Gleichgewichtslösung $\frac{b}{a}$ eine partikuläre Lösung, und die
+Anfangsbedingung legt danach die Konstante in der Summe fest. Für
+$y' + 2y = 4$ ist die allgemeine Lösung $A\,e^{-2x} + 2$, und mit $y(0) = 0$
+ergibt sich $2 - 2e^{-2x}$. In Kapitel 10 lernen wir, wie wir eine partikuläre
+Lösung auch bei nicht konstanter Störfunktion und variablen Koeffizienten
+finden. Derselbe Aufbau $y_h + y_p$ begegnet uns in Kapitel 11 wieder, dann bei
+linearen DGL 2. Ordnung.

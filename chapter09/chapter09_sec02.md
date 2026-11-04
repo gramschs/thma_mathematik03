@@ -3,219 +3,225 @@ authors:
   - name: Simone Gramsch
 ---
 
-# 9.2 Lineare Differentialgleichungen erkennen
+# 9.2 Lineare DGL erkennen
 
-```{admonition} Dieses Kapitel wird gerade überarbeitet
-:class: warning
-Das Skript wird gerade an den neuen Zeitplan angepasst. Dieses Kapitel ist
-rechtzeitig vor der zugehörigen Vorlesung fertig überarbeitet. Bis dahin können
-sich Aufbau und Inhalt noch ändern.
-```
-
-In Kapitel 7 haben wir zwei Lösungsverfahren für ODEs 1. Ordnung kennengelernt:
-die Trennung der Variablen und die Substitution. Beide greifen, wenn die rechte
-Seite eine bestimmte algebraische Struktur hat. Viele ODEs, die in der
-Ingenieurpraxis auftreten, besitzen eine noch tiefere Eigenschaft, die wir
-bisher nicht explizit benannt haben: **Linearität**. Die
-Fallschirmspringer-Gleichung $\dot{v} + kv = 9.81~\text{m\,s}^{-2}$ aus
-Kapitel 6 ist ein erstes Beispiel dafür. In diesem Abschnitt lernen wir, was
-Linearität bedeutet, wie sie sich in der Gleichungsstruktur zeigt und welche
-weiteren Unterscheidungen für lineare ODEs relevant sind. Das Verständnis dieser
-Klassifikation ist die Voraussetzung für die Lösungstheorie, die in den
-folgenden Abschnitten entwickelt wird.
+Mit der Trennung der Variablen aus Kapitel 8.4 und der Substitution aus
+Kapitel 9.1 lösen wir DGL, deren rechte Seite eine besondere Bauart hat. Bei
+$y' = x + y$ aus Kapitel 8.4 hilft keines der beiden Verfahren direkt weiter.
+Diese DGL gehört zu einer großen Klasse, den linearen DGL, deren Lösungen wir in
+den nächsten Kapiteln systematisch bestimmen. In diesem Kapitel lernen wir,
+lineare DGL zu erkennen und nach zwei weiteren Merkmalen zu unterscheiden. Im
+Maschinenbau beschreiben lineare DGL zum Beispiel das Erwärmen eines Bauteils,
+das Aufladen eines Kondensators oder gedämpfte Schwingungen.
 
 ## Lernziele
 
 ```{admonition} Lernziele
 :class: attention
-* [ ] Sie wissen, wie eine **lineare gewöhnliche Differentialgleichung** definiert ist,
-  und können sie von einer nichtlinearen DGL unterscheiden.
-* [ ] Sie können eine lineare DGL als **homogen** oder **inhomogen** klassifizieren und
-  wissen, dass die Störfunktion $g(x)$ den Unterschied ausmacht.
-* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung** $y(x) = 0$
-  besitzt.
-* [ ] Sie können eine lineare DGL **mit konstanten Koeffizienten** von einer linearen DGL
-  mit variablen Koeffizienten unterscheiden.
+* [ ] Sie erkennen eine **lineare DGL** und können eine lineare DGL 1. Ordnung
+  in die Form $y' + f(x)\,y = g(x)$ bringen.
+* [ ] Sie können lineare von **nichtlinearen** DGL unterscheiden.
+* [ ] Sie können eine DGL als **homogen** oder **inhomogen** einordnen.
+* [ ] Sie wissen, dass jede homogene lineare DGL die **triviale Lösung**
+  $y = 0$ hat.
+* [ ] Sie unterscheiden lineare DGL mit **konstanten Koeffizienten** von
+  linearen DGL mit variablen Koeffizienten.
 ```
 
-## Was bedeutet es, dass eine ODE "linear" ist?
+## Was macht eine DGL linear?
 
-Wir betrachten noch einmal die Fallschirmspringer-Gleichung in der Form, die wir in
-Abschnitt 6.1 aufgestellt haben:
-
-\begin{equation*}
-\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}.
-\end{equation*}
-
-Die gesuchte Funktion $v$ und ihre Ableitung $\dot{v}$ haben beide genau
-Potenz Eins. Sie werden nicht miteinander multipliziert, nicht quadriert und
-nicht in eine nichtlineare Funktion wie $\sin$ oder $\exp$ eingesetzt. Genau das
-meinen wir mit Linearität: Die unbekannte Funktion und alle ihre Ableitungen
-treten ausschließlich linear auf.
-
-*Was würde die Linearität zerstören?* Bereits eine kleine Modifikation des
-Modells reicht. Wäre der Luftwiderstand quadratisch in der Geschwindigkeit, also
-$F_L = b\,v^2$ statt $F_L = b\,v$, so würde die ODE
+Wir stellen die DGL
 
 \begin{equation*}
-\dot{v} + k\,v^2 = 9.81~\text{m\,s}^{-2}
+y' + 2y = 4
 \end{equation*}
 
-lauten. Hier erscheint $v^2$. Das ist kein linearer Term, und die Gleichung ist
-daher nichtlinear. Ebenso nichtlinear wären $\dot{v} = \sin(v)$ oder $\dot{v}
-\cdot v = 1$: im ersten Fall steckt $v$ in einer nichtlinearen Funktion, im
-zweiten Beispiel werden $\dot{v}$ und $v$ miteinander multipliziert.
+neben einige DGL, die wir schon kennen. In $y' + 2y = 4$ kommen $y'$ und $y$
+nur einzeln vor, $y'$ ohne Faktor und $y$ mit dem Faktor $2$. Ganz anders ist
+es bei $y' = y^2$ aus Kapitel 8.4, dort wird $y$ quadriert. In $y\,y' = \cos(x)$
+werden $y$ und $y'$ miteinander multipliziert, und in $y' = (x + y)^2$ aus
+Kapitel 9.1 steckt $y$ in einem Quadrat. *Darf der Faktor vor $y$ auch von $x$
+abhängen?* Ja. Bringen wir in $y' = xy$ aus Kapitel 8 alle Terme mit $y$ auf
+die linke Seite, erhalten wir $y' - xy = 0$. Der Faktor vor $y$ ist jetzt die
+Funktion $-x$, aber $y$ selbst kommt weiterhin nur einzeln vor. Ebenso wird
+$y' = x + y$ zu $y' - y = x$.
 
-Die allgemeine Form einer linearen ODE $n$-ter Ordnung lautet:
+Alle drei DGL haben damit dieselbe Bauart $y' + f(x)\,y = g(x)$, in der $f$ und
+$g$ nur von $x$ abhängen. Bei $y' + 2y = 4$ ist $f(x) = 2$ und $g(x) = 4$, bei
+$y' - xy = 0$ ist $f(x) = -x$ und $g(x) = 0$, und bei $y' - y = x$ ist
+$f(x) = -1$ und $g(x) = x$. Steht vor $y'$ noch ein Faktor, teilen wir durch
+ihn. Aus $x\,y' + y = x^2$ wird für $x \neq 0$ die DGL
 
 \begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x).
+y' + \frac{1}{x}\,y = x
 \end{equation*}
 
-Jede Ableitung $y^{(k)}$ tritt genau einmal und zur ersten Potenz auf,
-multipliziert mit einem Koeffizient $a_k(x)$, der von $x$ abhängen darf, aber
-nicht von $y$. Die rechte Seite $g(x)$ hängt ebenfalls nur von $x$ ab.
+mit $f(x) = \frac{1}{x}$ und $g(x) = x$. Dieselbe Bauart gibt es bei höherer
+Ordnung. In $y'' + 9y = 0$ aus Kapitel 8.1 kommen $y''$ und $y$ ebenfalls nur
+einzeln vor, und $y'$ fehlt, hat also den Faktor null.
 
-```{admonition} Was ist ... eine lineare ODE?
+```{admonition} Was ist ... eine lineare DGL?
 :class: note
-Eine **lineare ODE** $n$-ter Ordnung hat die Form
+Eine DGL $n$-ter Ordnung heißt **linear**, wenn sie sich in der Form
 
 \begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_1(x)\,y' + a_0(x)\,y = g(x),
+y^{(n)} + f_{n-1}(x)\,y^{(n-1)} + \ldots + f_1(x)\,y' + f_0(x)\,y = g(x)
 \end{equation*}
 
-wobei die Koeffizientenfunktionen $a_0(x), \ldots, a_{n-1}(x)$ und die rechte Seite
-$g(x)$ nur von $x$ abhängen. Die gesuchte Funktion $y$ und alle ihre Ableitungen
-erscheinen ausschließlich zur ersten Potenz und werden nicht miteinander multipliziert.
-
-Eine ODE, die diese Form nicht hat, heißt **nichtlinear**.
+schreiben lässt. Die **Koeffizienten** $f_0, \ldots, f_{n-1}$ und die rechte
+Seite $g$ sind Funktionen, die nur von $x$ abhängen. Eine lineare DGL
+1. Ordnung hat also die Form $y' + f(x)\,y = g(x)$, eine lineare DGL
+2. Ordnung die Form $y'' + f_1(x)\,y' + f_0(x)\,y = g(x)$. Eine DGL, die sich
+nicht so schreiben lässt, heißt **nichtlinear**.
 ```
 
-Die Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ ist
-eine lineare ODE 1. Ordnung mit $n = 1$, $a_0(t) = k$ und $g(t) =
-9.81~\text{m\,s}^{-2}$. Die Torricellische Ausflussgleichung $\dot{h} =
--k\sqrt{h}$ aus Abschnitt 7.3 ist hingegen nichtlinear: $\sqrt{h} = h^{1/2}$ ist
-kein linearer Term in $h$.
+In einer linearen DGL treten $y$ und seine Ableitungen also nur in der ersten
+Potenz auf, sie werden nicht miteinander multipliziert und stecken nicht in
+einer Funktion wie $\sin$ oder $e^y$. Damit sind $y' + 2y = 4$, $y' - xy = 0$,
+$y' - y = x$, $y' + \frac{1}{x}\,y = x$ und $y'' + 9y = 0$ linear, die DGL
+$y' = y^2$, $y\,y' = \cos(x)$ und $y' = (x + y)^2$ dagegen nichtlinear.
+
+Der Name erinnert an die linearen Abbildungen aus Kapitel 4.2, und das hat
+einen Grund. Wir fassen die linke Seite $L(y) = y' + 2y$ als Vorschrift auf,
+die aus einer Funktion $y$ eine neue Funktion macht. Für $y = x$ ist
+$L(x) = 1 + 2x$, für $y = x^2$ ist $L(x^2) = 2x + 2x^2$, und für die Summe
+ergibt sich
+
+\begin{equation*}
+L(x + x^2) = (1 + 2x) + 2(x + x^2) = 1 + 4x + 2x^2 = L(x) + L(x^2).
+\end{equation*}
+
+Das gilt für alle Funktionen, denn die Ableitung einer Summe ist die Summe der
+Ableitungen, und ein konstanter Faktor bleibt beim Ableiten erhalten. Also ist
+$L(y_1 + y_2) = L(y_1) + L(y_2)$ und $L(\alpha\,y) = \alpha\,L(y)$, genau wie
+bei einer linearen Abbildung. Bei $y' + y^2$ klappt das nicht, denn beim
+Quadrieren von $x + x^2$ entsteht der gemischte Term $2x^3$, der in
+$x^2 + x^4$ fehlt. In Kapitel 9.4 nutzen wir diese Eigenschaft, um alle
+Lösungen einer linearen DGL aus wenigen Bausteinen zusammenzusetzen.
 
 ## Homogen oder inhomogen?
 
-Innerhalb der linearen ODEs gibt es eine weitere wichtige Unterscheidung. Wir
-schauen auf die rechte Seite der allgemeinen Form, die Funktion $g(x)$.
+In der Form $y' + f(x)\,y = g(x)$ stehen links alle Terme mit $y$, rechts
+bleibt die Funktion $g$, die nur von $x$ abhängt. Bei $y' - xy = 0$ und bei
+$y'' + 9y = 0$ ist diese rechte Seite null. Bei $y' + 2y = 4$ und bei
+$y' - y = x$ ist sie es nicht, dort steht rechts ein Term, der $y$ gewissermaßen
+von außen antreibt. Ersetzen wir in $y' + 2y = 4$ die rechte Seite durch null,
+erhalten wir $y' + 2y = 0$. Diese DGL gehört zu $y' + 2y = 4$ wie das
+homogene Gleichungssystem $\mathbf{M}\vec{x} = \vec{0}$ aus Kapitel 4.3 zu
+$\mathbf{M}\vec{x} = \vec{r}$.
 
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist die rechte Seite die konstante Funktion $g(t) = 9.81~\text{m\,s}^{-2}$, die
-nirgends gleich null ist. Das physikalische Bild dahinter: Die Schwerkraft
-treibt das System ständig an, auch wenn die Geschwindigkeit null ist. Eine
-solche ODE heißt **inhomogen**.
-
-Streichen wir die Antriebskraft, ergibt sich die vereinfachte Gleichung $\dot{v}+
-k\,v = 0$. Physikalisch beschreibt das einen Körper, der ohne äußere Kraft nur
-durch Reibung gebremst wird. Hier ist $g(t) = 0$ für alle $t$. Eine solche ODE
-heißt **homogen**.
-
-```{admonition} Was ist ... eine homogene und eine inhomogene lineare ODE?
+```{admonition} Was ist ... eine homogene lineare DGL?
 :class: note
-Eine lineare ODE
-
-\begin{equation*}
-y^{(n)} + a_{n-1}(x)\,y^{(n-1)} + \cdots + a_0(x)\,y = g(x)
-\end{equation*}
-
-heißt **homogen**, wenn $g(x) = 0$ für alle $x$ im Definitionsbereich gilt, und
-**inhomogen**, wenn $g(x)$ nicht identisch null ist. Die Funktion $g(x)$ auf der
-rechten Seite heißt **Störfunktion**.
+Eine lineare DGL heißt **homogen**, wenn ihre rechte Seite $g$ null ist, und
+**inhomogen**, wenn $g$ nicht die Nullfunktion ist. Die Funktion $g$ heißt dann
+**Störfunktion**. Ersetzen wir in einer inhomogenen DGL die Störfunktion durch
+null, erhalten wir die **zugehörige homogene DGL**.
 ```
 
-Die homogene Form spielt in der Lösungstheorie eine zentrale Rolle. *Warum?*
-Weil jede homogene lineare ODE eine ausgezeichnete Lösung besitzt, die wir
-sofort hinschreiben können: die **triviale Lösung** $y(x) = 0$. Einsetzen
-bestätigt das sofort, denn alle Ableitungen von $y = 0$ sind ebenfalls null:
+Für unsere Beispiele bedeutet das: $y' + 2y = 4$ ist inhomogen mit der
+Störfunktion $g(x) = 4$, und die zugehörige homogene DGL ist $y' + 2y = 0$. Die
+DGL $y' - y = x$ ist inhomogen mit $g(x) = x$. Die DGL $y' - xy = 0$ und
+$y'' + 9y = 0$ sind homogen.
+
+Homogene lineare DGL haben eine Lösung, die wir sofort angeben können, nämlich
+die Nullfunktion $y = 0$. Alle ihre Ableitungen sind ebenfalls null, und
+Einsetzen in die homogene lineare DGL $n$-ter Ordnung ergibt
 
 \begin{equation*}
-0^{(n)} + a_{n-1}(x)\cdot 0 + \cdots + a_0(x)\cdot 0 = 0 = g(x). \quad \checkmark
+0 + f_{n-1}(x) \cdot 0 + \ldots + f_1(x) \cdot 0 + f_0(x) \cdot 0 = 0.
 \end{equation*}
 
-Diese triviale Lösung ist mathematisch wenig interessant, aber sie zeigt eine
-tiefe Eigenschaft linearer ODEs: Das System „ruht" immer bei $y = 0$. In der
-Schwingungslehre, die in der Technischen Mechanik vertieft wird, entspricht das
-dem ungestörten Gleichgewichtszustand. Die Störfunktion $g(x)$ beschreibt dann
-eine äußere Anregung, die das System aus diesem Gleichgewicht herausreißt.
+Die Nullfunktion heißt deshalb die **triviale Lösung**. Bei $y' - xy = 0$ ist
+sie die Lösung $A\,e^{x^2/2}$ mit $A = 0$ aus Kapitel 8.4. Eine inhomogene DGL
+hat diese Lösung nicht: Setzen wir $y = 0$ in $y' + 2y = 4$ ein, steht links
+$0$ und rechts $4$. Auch das kennen wir aus der linearen Algebra. Das homogene
+Gleichungssystem $\mathbf{M}\vec{x} = \vec{0}$ hat immer die Lösung
+$\vec{x} = \vec{0}$, ein inhomogenes System dagegen nicht.
+
+Die Wörter homogen und inhomogen verwenden wir im selben Sinn auch für
+nichtlineare DGL. Wir bringen alle Terme, die $y$ oder eine Ableitung von $y$
+enthalten, auf die linke Seite. Bleibt rechts null, heißt die DGL homogen,
+sonst inhomogen. So ist $y' - y^2 = 0$ homogen und $y\,y' = \cos(x)$ inhomogen.
+Nützlich ist die Unterscheidung aber vor allem bei linearen DGL, denn nur dort
+hängen die Lösungen der homogenen und der inhomogenen DGL so eng zusammen, wie
+wir in Kapitel 9.4 sehen werden.
 
 ## Konstante oder variable Koeffizienten?
 
-Eine weitere Unterscheidung betrifft die Koeffizientenfunktionen $a_0(x), \ldots,
-a_{n-1}(x)$. Hängen sie wirklich von $x$ ab, oder sind sie Konstanten?
+Bei $y' + 2y = 4$ steht vor $y$ die Zahl $2$, bei $y' - xy = 0$ dagegen die
+Funktion $-x$. Im ersten Fall ist der Koeffizient konstant, im zweiten hängt er
+von $x$ ab. Für diese Unterscheidung zählen nur die Koeffizienten vor $y$ und
+seinen Ableitungen, nicht die Störfunktion. Die DGL $y' - y = x$ hat also
+konstante Koeffizienten, obwohl ihre rechte Seite $g(x) = x$ von $x$ abhängt.
+Auch ein fehlender Term zählt mit, sein Koeffizient ist die Konstante null. So
+ist $y'' = -\sin(x)$ aus Kapitel 8.1 eine inhomogene lineare DGL 2. Ordnung
+mit den konstanten Koeffizienten $0$ vor $y'$ und $0$ vor $y$.
 
-Bei der Fallschirmspringer-Gleichung $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$
-ist der Koeffizient vor $v$ die Konstante $k = 0.2~\text{s}^{-1}$. Sie hängt
-nicht von $t$ ab. Das ist eine lineare ODE **mit konstanten Koeffizienten**.
-
-Betrachten wir zum Vergleich die Gleichung
+```{admonition} Was ist ... eine lineare DGL mit konstanten Koeffizienten?
+:class: note
+Eine lineare DGL hat **konstante Koeffizienten**, wenn alle Koeffizienten
+$f_0, \ldots, f_{n-1}$ Zahlen sind. Wir schreiben sie dann als
+$a_0, \ldots, a_{n-1}$:
 
 \begin{equation*}
-y' + \frac{1}{x}\,y = x^2.
+y^{(n)} + a_{n-1}\,y^{(n-1)} + \ldots + a_1\,y' + a_0\,y = g(x).
 \end{equation*}
 
-Hier ist der Koeffizient vor $y$ die Funktion $\frac{1}{x}$, die von $x$
-abhängt. Das ist eine lineare ODE **mit variablen Koeffizienten**. Solche
-Gleichungen treten beispielsweise in der Wärmeübertragung auf, wenn der
-Wärmeübergangskoeffizient entlang einer Kühlrippe mit dem Ort variiert, oder in
-der Strukturmechanik bei Balken mit veränderlichem Querschnitt.
-
-```{admonition} Was ist ... eine lineare ODE mit konstanten Koeffizienten?
-:class: note
-Eine lineare ODE heißt **lineare ODE mit konstanten Koeffizienten**, wenn alle
-Koeffizientenfunktionen $a_0, \ldots, a_{n-1}$ konstant sind, also nicht von $x$
-abhängen. Andernfalls spricht man von einer linearen ODE mit **variablen
-Koeffizienten**.
+Für $n = 1$ ist das $y' + a\,y = g(x)$. Hängt mindestens ein Koeffizient von
+$x$ ab, hat die DGL **variable Koeffizienten**.
 ```
 
-Für die Lösungstheorie ist diese Unterscheidung entscheidend: Lineare ODEs mit
-konstanten Koeffizienten lassen sich vollständig und systematisch lösen, wie wir
-in den Abschnitten 8.2 und 8.3 sehen werden. Bei variablen Koeffizienten ist das
-im Allgemeinen schwieriger und gelingt nur für spezielle Typen. Kapitel 8
-konzentriert sich daher auf den Fall konstanter Koeffizienten.
+Unsere DGL $y' + 2y = 4$ hat also konstante Koeffizienten mit $a = 2$, ebenso
+$y' - y = x$ mit $a = -1$ und $y'' + 9y = 0$ mit $a_1 = 0$ und $a_0 = 9$. Die
+DGL $y' - xy = 0$ und $y' + \frac{1}{x}\,y = x$ haben variable Koeffizienten.
+Die Unterscheidung ist wichtig, weil sich DGL mit konstanten Koeffizienten
+leichter lösen lassen. Die homogene DGL $y' + a\,y = 0$ führt immer auf eine
+Exponentialfunktion, wie wir in Kapitel 9.3 sehen, und in Kapitel 11 lösen wir
+damit sogar alle homogenen linearen DGL 2. Ordnung mit konstanten
+Koeffizienten. Bei variablen Koeffizienten brauchen wir dagegen Integrale, die
+nicht immer einfach sind.
 
-## Klassifikation auf einen Blick
+Die folgende Tabelle ordnet alle Beispiele nach den drei Merkmalen ein. Bei
+nichtlinearen DGL gibt es keine Koeffizienten im Sinne der Definition.
 
-Die drei Unterscheidungen lassen sich an konkreten Beispielen direkt ablesen:
+<!-- markdownlint-disable MD013 -->
+| DGL | umgeformt | linear? | homogen? | Koeffizienten |
+| --- | --- | --- | --- | --- |
+| $y' + 2y = 4$ | | ja | nein | konstant |
+| $y' + 2y = 0$ | | ja | ja | konstant |
+| $y' = x + y$ | $y' - y = x$ | ja | nein | konstant |
+| $y'' + 9y = 0$ | | ja | ja | konstant |
+| $y' = xy$ | $y' - xy = 0$ | ja | ja | variabel |
+| $x\,y' + y = x^2$ | $y' + \frac{1}{x}\,y = x$ | ja | nein | variabel |
+| $y' = y^2$ | $y' - y^2 = 0$ | nein | ja | – |
+| $y\,y' = \cos(x)$ | | nein | nein | – |
+<!-- markdownlint-enable MD013 -->
 
-| ODE | Linear? | Homogen? | Koeffizienten |
-| --- | --- | --- | --- |
-| $\dot{v} + k\,v = 9.81~\text{m\,s}^{-2}$ | ja | nein | konstant |
-| $\dot{v} + k\,v = 0$ | ja | ja | konstant |
-| $y' + \tfrac{1}{x}\,y = x^2$ | ja | nein | variabel |
-| $\dot{h} + k\sqrt{h} = 0$ | nein | — | — |
-| $y' = y^2$ | nein | — | — |
+Jede Zeile der Tabelle beantwortet nacheinander drei Fragen. Lässt sich die
+DGL in die Form der Definition bringen? Ist die rechte Seite null? Sind die
+Koeffizienten Zahlen? In dieser Reihenfolge gehen wir vor, wenn wir eine neue
+DGL einordnen.
 
-Bei nichtlinearen ODEs entfällt die Unterscheidung in homogen und inhomogen: Sie
-ist nur für lineare ODEs definiert.
-
+<!-- markdownlint-disable MD013 -->
 ```{dropdown} Video "Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" von Prof. Hielscher (TH Mannheim)
-<iframe width="927" height="588" src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07" title="Lineare DGL 1. Ordnung - Definition
-und Vorbetrachtung" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-encrypted-media; gyroscope; picture-in-picture; web-share"
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="927" height="588"
+src="https://www.youtube.com/embed/RM1VXVxF9SM?list=PLlvMVb7Fec1LGxUqOpbsCwdgUZHp1It07"
+title="Lineare DGL 1. Ordnung - Definition und Vorbetrachtung" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen></iframe>
 ```
-
-```{dropdown} Video "Lineare Differentialgleichung (DGL) 1. Ordnung" von MathePeter
-<iframe width="927" height="521" src="https://www.youtube.com/embed/qwJPZHmNcIs"
-title="Lineare Differentialgleichung (DGL) 1. Ordnung | Einfach erklärt!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
-picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-```
+<!-- markdownlint-enable MD013 -->
 
 ## Zusammenfassung und Ausblick
 
-Eine lineare ODE zeichnet sich dadurch aus, dass die gesuchte Funktion und alle
-ihre Ableitungen ausschließlich zur ersten Potenz auftreten. Innerhalb dieser
-Klasse unterscheiden wir nach der Störfunktion $g(x)$: Bei $g(x) = 0$ ist die
-ODE homogen und besitzt stets die triviale Lösung $y = 0$; bei $g(x) \not\equiv
-0$ ist sie inhomogen. Eine weitere Unterscheidung betrifft die
-Koeffizientenfunktionen: Konstante Koeffizienten ermöglichen eine vollständige
-Lösungstheorie, während variable Koeffizienten den Lösungsaufwand erheblich
-steigern.
-
-In Abschnitt 8.2 entwickeln wir das Lösungsverfahren für lineare ODEs 1. Ordnung
-mit konstanten Koeffizienten. Das Schlüsselwerkzeug ist die Variation der
-Konstanten, eine Methode, die die homogene Lösung als Ausgangspunkt nimmt und
-daraus die vollständige Lösung der inhomogenen Gleichung konstruiert.
+Eine DGL ist linear, wenn $y$ und seine Ableitungen nur einzeln mit Faktoren
+vorkommen, die von $x$ abhängen dürfen. Eine lineare DGL 1. Ordnung bringen wir
+in die Form $y' + f(x)\,y = g(x)$. Ist die Störfunktion $g$ null, ist die DGL
+homogen und hat die triviale Lösung $y = 0$. Sind die Koeffizienten Zahlen,
+hat die DGL konstante Koeffizienten, unabhängig davon, wie die Störfunktion
+aussieht. In Kapitel 9.3 lösen wir die homogene DGL $y' + 2y = 0$ und finden
+eine Formel für jede homogene lineare DGL 1. Ordnung. In Kapitel 9.4 sehen wir
+dann, warum die Linearität es erlaubt, die Lösungen der inhomogenen DGL
+$y' + 2y = 4$ aus der homogenen Lösung und einer einzigen weiteren Lösung
+zusammenzusetzen.
