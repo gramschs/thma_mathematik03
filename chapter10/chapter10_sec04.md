@@ -1,0 +1,209 @@
+---
+authors:
+  - name: Simone Gramsch
+---
+
+# 10.4 Welches Verfahren für welche DGL 1. Ordnung?
+
+Seit Kapitel 8 haben wir eine ganze Reihe von Verfahren für DGL 1. Ordnung
+kennengelernt, von der Trennung der Variablen über zwei Substitutionen bis zur
+Lösungsformel und zum Ansatz vom Typ der rechten Seite in Kapitel 10.3. Jedes
+dieser Verfahren passt nur zu einer bestimmten Bauart von DGL. In diesem
+Kapitel ordnen wir die Verfahren und üben, einer DGL anzusehen, welches zu ihr
+passt. Im Maschinenbau ist das der erste Schritt, wenn ein Modell auf eine DGL
+führt, denn von der Einordnung hängt ab, ob wir eine Formel für die Lösung
+finden oder numerisch rechnen müssen.
+
+## Lernziele
+
+```{admonition} Lernziele
+:class: attention
+* [ ] Sie können eine DGL 1. Ordnung als linear oder nichtlinear einordnen,
+  auch wenn sie dafür erst umgeformt werden muss.
+* [ ] Sie können für eine nichtlineare DGL entscheiden, ob die Trennung der
+  Variablen oder eine Substitution zum Ziel führt.
+* [ ] Sie können für eine lineare DGL entscheiden, ob der Ansatz vom Typ der
+  rechten Seite oder die Lösungsformel schneller ist.
+* [ ] Sie können eine DGL 1. Ordnung vom Einordnen bis zur Probe selbstständig
+  lösen.
+```
+
+## Ist die DGL linear oder nicht?
+
+Die erste Frage an eine neue DGL 1. Ordnung lautet immer, ob sie linear ist.
+Für lineare DGL haben wir mit der Lösungsformel aus Kapitel 10.2 ein
+Verfahren, das immer funktioniert, solange wir die Integrale berechnen können.
+Für nichtlineare DGL gibt es kein solches Verfahren. Dort suchen wir nach einer
+besonderen Bauart, und wenn wir keine finden, bleibt uns mit den Mitteln dieses
+Kurses keine Formel für die Lösung.
+
+Um die Frage zu beantworten, gehen wir wie in Kapitel 9.2 vor. Wir bringen alle
+Terme mit $y$ und $y'$ auf die linke Seite und prüfen, ob $y$ und $y'$ dort nur
+einzeln vorkommen, mit Faktoren, die höchstens von $x$ abhängen. Wichtig ist,
+die DGL vor dem Urteil umzuformen. Bei
+
+\begin{equation*}
+x\,y' = 4x^2 - 2y
+\end{equation*}
+
+steht $y$ auf der rechten Seite, und die Bauart ist auf den ersten Blick nicht
+zu erkennen. Bringen wir $-2y$ nach links, erhalten wir $x\,y' + 2y = 4x^2$,
+und nach dem Teilen durch $x$ die lineare DGL $y' + \frac{2}{x}\,y = 4x$ mit
+einem variablen Koeffizienten. Umgekehrt ist $2x\,y\,y' + y^2 = x^2$ aus
+Kapitel 10.2 nichtlinear, auch wenn wir sie mit einer Substitution in eine
+lineare DGL verwandeln konnten. Linear heißt eine DGL nur, wenn sie selbst die
+Form $y' + f(x)\,y = g(x)$ hat.
+
+*Kann eine DGL auch zu mehreren Bauarten gehören?* Ja. Die DGL $y' + 2y = 4$
+aus Kapitel 9 ist linear, lässt sich als $y' = 1 \cdot (4 - 2y)$ aber auch
+trennen. Ebenso ist $y' = xy$ aus Kapitel 8 linear und trennbar. In solchen
+Fällen dürfen wir uns das Verfahren aussuchen, mit dem wir am wenigsten
+rechnen müssen. Die folgende Tabelle ordnet die Beispiele dieses Kapitels ein.
+Wie in Kapitel 9.2 notieren wir auch, ob die DGL homogen ist. Alle Beispiele
+haben die Ordnung $1$.
+
+<!-- markdownlint-disable MD013 -->
+| DGL | umgeformt | linear? | homogen? | Koeffizienten |
+| --- | --- | --- | --- | --- |
+| $y' = x\,y^2$ | $y' - x\,y^2 = 0$ | nein | ja | – |
+| $y' + 3y = e^{-x}$ | | ja | nein | konstant |
+| $x\,y' = 4x^2 - 2y$ | $y' + \frac{2}{x}\,y = 4x$ | ja | nein | variabel |
+| $2x\,y\,y' + y^2 = x^2$ | $y' = \frac{x^2 - y^2}{2xy}$ | nein | nein | – |
+| $y' = x^2 + y^2$ | $y' - y^2 = x^2$ | nein | nein | – |
+| $y' + 2y = 4$ | $y' = 4 - 2y$ | ja, auch trennbar | nein | konstant |
+<!-- markdownlint-enable MD013 -->
+
+## Welches Verfahren passt zu einer nichtlinearen DGL?
+
+Bei einer nichtlinearen DGL lösen wir zuerst nach $y'$ auf, wie bei
+$y\,y' = \cos(x)$ in Kapitel 8.4, und prüfen dann die rechte Seite. Am
+einfachsten ist die Trennung der Variablen, wir fragen deshalb zuerst, ob sich
+die rechte Seite als Produkt $f(x) \cdot g(y)$ schreiben lässt. Ist das nicht
+der Fall, prüfen wir, ob sie nur von einer Kombination $ax + by + c$ oder nur
+vom Quotienten $\frac{y}{x}$ abhängt. Dann führt eine Substitution aus Kapitel
+9.1 auf eine trennbare DGL. Kommt $y$ nur in den Termen $y\,y'$ und $y^2$ vor,
+macht die Substitution $z = y^2$ aus Kapitel 10.2 die DGL linear. Die folgende
+Abbildung fasst diesen Weg zusammen.
+
+```{figure} pics/verfahren_nichtlinear.svg
+---
+name: verfahren_nichtlinear
+---
+Darstellung des Entscheidungswegs für nichtlineare DGL 1. Ordnung.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Als Beispiel lösen wir $y' = x\,y^2$. Die rechte Seite ist das Produkt aus
+$f(x) = x$ und $g(y) = y^2$, die DGL ist also trennbar. Wie in Kapitel 8.4
+prüfen wir zuerst die Nullstellen von $g$. Aus $y^2 = 0$ folgt die konstante
+Lösung $y = 0$. Für $y \neq 0$ trennen wir die Variablen und integrieren:
+
+\begin{equation*}
+\int \frac{1}{y^2}\,dy = \int x\,dx
+\quad\Rightarrow\quad
+-\frac{1}{y} = \frac{x^2}{2} + C
+\quad\Rightarrow\quad
+y = -\frac{2}{x^2 + 2C}.
+\end{equation*}
+
+Weil $2C$ jede reelle Zahl sein kann, schreiben wir kürzer
+$y = -\frac{2}{x^2 + C}$ mit $C \in \mathbb{R}$. Zur Probe ist
+$y' = \frac{4x}{(x^2 + C)^2}$, und das ist $x \cdot \frac{4}{(x^2 + C)^2} =
+x\,y^2$. Mit der Anfangsbedingung $y(0) = 1$ folgt $-\frac{2}{C} = 1$, also
+$C = -2$ und $y = \frac{2}{2 - x^2}$. Wie bei $y' = y^2$ in Kapitel 8.4 hat die
+Lösung Polstellen, hier bei $x = \pm\sqrt{2}$, und sie lebt nur auf dem
+Intervall $-\sqrt{2} < x < \sqrt{2}$.
+
+Bei $2x\,y\,y' + y^2 = x^2$ führen sogar zwei Wege zum Ziel. Neben der
+Substitution $z = y^2$ aus Kapitel 10.2 können wir in der umgeformten DGL
+Zähler und Nenner durch $x^2$ teilen und erhalten
+
+\begin{equation*}
+y' = \frac{x^2 - y^2}{2xy}
+= \frac{1 - \left(\frac{y}{x}\right)^2}{2\,\frac{y}{x}}.
+\end{equation*}
+
+Die rechte Seite hängt nur von $\frac{y}{x}$ ab, also führt auch
+$u = \frac{y}{x}$ auf eine trennbare DGL. Mit $z = y^2$ rechnen wir aber
+weniger, weil wir die lineare DGL für $z$ schon kennen. Passt eine
+nichtlineare DGL in keine der
+Bauarten, wie $y' = x^2 + y^2$, finden wir mit unseren Verfahren keine Formel
+für die Lösung. Das liegt nicht an unseren Verfahren, denn die Lösungen dieser
+DGL lassen sich mit den Funktionen, die wir kennen, gar nicht ausdrücken. Ein
+Richtungsfeld wie in Kapitel 8.3 zeigt trotzdem, wie die Lösungen verlaufen,
+und das Euler-Verfahren aus Kapitel 8.5 berechnet Näherungswerte. Beide
+Kapitel sind eine Vertiefung.
+
+## Welches Verfahren passt zu einer linearen DGL?
+
+Bei einer linearen DGL bringen wir die DGL zuerst in die Form
+$y' + f(x)\,y = g(x)$ und bestimmen die homogene Lösung
+$y_h = A\,e^{-\int f(x)\,dx}$ aus Kapitel 9.3. Ist die DGL homogen, sind wir
+damit schon fertig. Sonst brauchen wir eine partikuläre Lösung, und dann
+entscheiden die Koeffizienten. Sind sie konstant und steht die Störfunktion in
+der Tabelle aus Kapitel 10.3, ist der Ansatz vom Typ der rechten Seite meist
+der schnellste Weg, wobei wir vorher den Resonanzfall prüfen. In allen anderen
+Fällen hilft die Lösungsformel aus Kapitel 10.2. Am Ende setzen wir
+$y = y_h + y_p$ zusammen und passen die Konstante, falls verlangt, an eine
+Anfangsbedingung an.
+
+```{figure} pics/verfahren_linear.svg
+---
+name: verfahren_linear
+---
+Darstellung des Entscheidungswegs für lineare DGL 1. Ordnung.
+(Quelle: eigene Abbildung; Lizenz [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+```
+
+Als erstes Beispiel nehmen wir $y' + 3y = e^{-x}$. Der Koeffizient ist
+konstant mit $a = 3$, und die homogene Lösung ist $y_h = A\,e^{-3x}$. Die
+Störfunktion ist eine Exponentialfunktion mit $b = -1$. Wegen
+$b \neq -a = -3$ liegt kein Resonanzfall vor, und wir machen den Ansatz
+$y_p = C\,e^{-x}$. Einsetzen ergibt
+
+\begin{equation*}
+-C\,e^{-x} + 3C\,e^{-x} = 2C\,e^{-x} \stackrel{!}{=} e^{-x}
+\quad\Rightarrow\quad
+C = \frac{1}{2}.
+\end{equation*}
+
+Die allgemeine Lösung ist also $y = A\,e^{-3x} + \frac{1}{2}\,e^{-x}$ mit
+$A \in \mathbb{R}$. Zur Probe ist $y' = -3A\,e^{-3x} - \frac{1}{2}\,e^{-x}$ und
+$3y = 3A\,e^{-3x} + \frac{3}{2}\,e^{-x}$, und die Summe ist $e^{-x}$. Hätte die
+Störfunktion $e^{-3x}$ gelautet, wären wir im Resonanzfall aus Kapitel 10.3
+gewesen und hätten den Ansatz $C\,x\,e^{-3x}$ gebraucht.
+
+Als zweites Beispiel lösen wir $x\,y' = 4x^2 - 2y$, also
+$y' + \frac{2}{x}\,y = 4x$ für $x \neq 0$. Der Koeffizient $\frac{2}{x}$ hängt
+von $x$ ab, die Tabelle hilft also nicht, und wir verwenden die Lösungsformel.
+Eine Stammfunktion von $\frac{2}{x}$ ist $2\ln|x|$, und nach den Rechenregeln
+für den Logarithmus ist $e^{2\ln|x|} = |x|^2 = x^2$. Der Betrag verschwindet
+diesmal also von selbst, und die Formel ergibt
+
+\begin{equation*}
+y = \frac{A}{x^2} + \left[\int 4x \cdot x^2\,dx\right] \cdot \frac{1}{x^2}
+= \frac{A}{x^2} + \frac{x^4}{x^2}
+= \frac{A}{x^2} + x^2, \qquad A \in \mathbb{R}.
+\end{equation*}
+
+Zur Probe setzen wir in die ursprüngliche Form ein. Mit
+$y' = -\frac{2A}{x^3} + 2x$ ist die linke Seite
+$x\,y' = -\frac{2A}{x^2} + 2x^2$. Auf der rechten Seite steht
+$4x^2 - 2y = 4x^2 - \frac{2A}{x^2} - 2x^2 = 2x^2 - \frac{2A}{x^2}$, und beide
+Seiten stimmen überein. Ganz gleich, welches Verfahren wir wählen, am Ende
+steht immer diese Probe. Sie kostet wenig Zeit und deckt Rechenfehler sofort
+auf.
+
+## Zusammenfassung und Ausblick
+
+Beim Lösen einer DGL 1. Ordnung fragen wir zuerst, ob sie linear ist, und
+formen sie dafür gegebenenfalls um. Eine nichtlineare DGL prüfen wir nach dem
+Auflösen nach $y'$ auf die Bauarten $f(x)\,g(y)$, $f(ax + by + c)$ und
+$f\left(\frac{y}{x}\right)$, dazu kommt die Substitution $z = y^2$ für DGL, in
+denen $y$ nur als $y\,y'$ und $y^2$ vorkommt. Bei einer linearen DGL bestimmen
+wir $y_h$ und suchen $y_p$ mit dem Ansatz vom Typ der rechten Seite, wenn die
+Koeffizienten konstant sind und die Störfunktion in der Tabelle steht, sonst
+mit der Lösungsformel. Damit ist der Teil über DGL 1. Ordnung abgeschlossen.
+In Kapitel 11 beginnen wir mit den linearen DGL 2. Ordnung. Ihre allgemeine
+Lösung hat wieder den Aufbau $y_h + y_p$, aber die homogene Lösung setzt sich
+dann aus zwei Funktionen zusammen statt aus einer.
